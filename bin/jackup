@@ -1,0 +1,29 @@
+#!/usr/bin/env java org.mozilla.javascript.tools.shell.Main
+
+load("core.js");
+require("lib/jack.js");
+
+//var app = new Jack.URLMap({
+//    "http://asdf.com/earth" : new Jack.Lobster("1"),
+//    "http://asdf.com/moon" : new Jack.Lobster("2"),
+//    "/earth" : new Jack.Lobster("3"),
+//    "/moon" : new Jack.Lobster("4"),
+//    "/asdfasdf" : new Jack.Lobster("5"),
+//    "http://apple.com/asdfasdf" : new Jack.Lobster("6"),
+//    "http://apple.com/asdfasdfasdf" : new Jack.Lobster("6")
+//});
+//app = new Jack.Lint(app);
+//app = new Jack.CommonLogger(app);
+
+var app = Jack.Builder.app(function()
+{
+    this.use(Jack.CommonLogger);
+    //this.use(Jack.ShowExceptions);
+    this.map("/lobster", function()
+    {
+        this.use(Jack.Lint);
+        this.run(new Jack.Lobster("lobster"));
+    });
+});
+
+Jack.Handler.Jetty.run(app);
