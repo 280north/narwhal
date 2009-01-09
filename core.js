@@ -1,4 +1,16 @@
 (function() {
+    
+if (typeof readFile === "undefined") {
+    if (typeof Ruby !== "undefined") {
+        readFile = function(path) {
+            try {
+                if (Ruby.File["readable?"](file_name))
+                    return String(Ruby.File.read(path));
+            } catch (e) {}
+            return "";
+        }
+    }
+}
 
 // TODO: make an IO class and Rhino specific subclass for this
 STDERR = {
@@ -24,7 +36,7 @@ include = function(name) {
     }
     else
     {
-        var pwd = dirname(requireFileStack[requireFileStack.length-1]),
+        var pwd = File.dirname(requireFileStack[requireFileStack.length-1]),
             extensions = (/\.\w+$/).test(name) ? [""] : requireExtensions;
         for (var j = 0; j < extensions.length; j++)
         {
@@ -78,8 +90,9 @@ var attemptLoad = function(name, path) {
     return false;
 }
 
-// TODO: create a File object, make this a method
-dirname = function(path) {
+File = {};
+File.SEPARATOR = "/";
+File.dirname = function(path) {
     var raw = String(path),
         match = raw.match(/^(.*)\/[^\/]+\/?$/);
     if (match && match[1])
@@ -89,8 +102,14 @@ dirname = function(path) {
     else
         return "."
 }
+File.join = function() {
+    return Array.prototype.join.apply(arguments, [File.SEPARATOR]);
+}
 
-isArray = function(obj) { return obj && typeof obj === "object" && obj.constructor === Array; }
+
+Dir = {};
+Dir.pwd = function() { return "." }; // FIXME
+
 
 // Enumerable module
 
@@ -143,8 +162,13 @@ Array.prototype.inject = function(block, initial) {
     return memo;
 }
 
+Array.prototype.any = function(block) {
+    return Boolean(this.inject(function(m,o) { return m || block(o); }, false));
+}
+
 Array.prototype.each = Array.prototype.forEach || function(block) { for (var i = 0; i < this.length; i++) block(this[i]); };
 
+isArray = function(obj) { return obj && typeof obj === "object" && obj.constructor === Array; }
 
 // String additions
 

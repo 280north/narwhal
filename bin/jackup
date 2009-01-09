@@ -1,7 +1,9 @@
 #!/usr/bin/env java org.mozilla.javascript.tools.shell.Main
 
 load("core.js");
-require("lib/jack.js");
+
+require("lib/jack");
+require("lib/jack/lobster");
 
 //var app = new Jack.URLMap({
 //    "http://asdf.com/earth" : new Jack.Lobster("1"),
@@ -15,15 +17,23 @@ require("lib/jack.js");
 //app = new Jack.Lint(app);
 //app = new Jack.CommonLogger(app);
 
-var app = Jack.Builder.app(function()
-{
-    this.use(Jack.CommonLogger);
-    //this.use(Jack.ShowExceptions);
-    this.map("/lobster", function()
-    {
-        this.use(Jack.Lint);
-        this.run(new Jack.Lobster("lobster"));
-    });
-});
+//var app = Jack.Builder.app(function()
+//{
+//    this.use(Jack.CommonLogger);
+//    //this.use(Jack.ShowExceptions);
+//    this.map("/lobster", function()
+//    {
+//        this.use(Jack.Lint);
+//        this.run(new Jack.Lobster("lobster"));
+//    });
+//});
+
+var app = new Jack.Lobster("lobster");
+app = new Jack.Static(app, { "urls" : ["/bin"] });
+app = new Jack.Lint(app);
+app = new Jack.ShowExceptions(app);
+app = new Jack.ContentLength(app);
+app = new Jack.Head(app);
+app = new Jack.CommonLogger(app);
 
 Jack.Handler.Jetty.run(app);
