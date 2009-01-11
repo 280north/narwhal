@@ -1,29 +1,97 @@
-Rack for JavaScript.
+Jack: Rack for JavaScript
 
-Essentially a port from Ruby to JavaScript with adjustments where applicable.
+	echo "Rack provides an minimal interface between webservers supporting Ruby and Ruby frameworks" | sed s/Rack/Jack/g | sed s/Ruby/JavaScript/g
+
+	Indeed, Jack is a fairly straightforward port of Rack (http://rack.rubyforge.org/) to JavaScript, with adjustments where necessary. Of course it is meant for use on the server rather than in the browser.
+
+== Getting Started:
+
+	Jack currently supports Rhino and Jetty, but it should be easy to integrate with other JavaScript interpretters and web servers. The only Rhino/Jetty specific code is in the jetty.js and servlet.js handlers.
+	
+  To start working with Jack, ensure you have the Rhino (js.jar) and Jetty (jetty, jetty-util, servlet-api) jars in your CLASSPATH environment variable. From the root of the project, run "bin/jackup", which will start a sample application at localhost:8080:
+
+		./bin/jackup
+	
+
+== Writing Jack Applications:
+		
+	A Rack application is simply a JavaScript object that responds to the "invoke" method. It should return an array containing three elements: the status code (an integer), the headers values (a hash), and a body object (anything that responds to the "each" method).
+	
+	We have extended JavaScript Function objects to respond to "invoke" (it just calls itself, so any function is a valid Rack application, provided it returns the right types), and JavaScript Array and String objects to respond to "each" (so they are valid "body" responses), thus the following is a valid Jack application:
+	
+		function(env) {
+			return [200, {"Content-Type":"text/plain"}, "Hello world!"];
+		}
+	
+	If you need something more complex, your object simply needs to have an "invoke" method:
+		
+		MyApp = function(something) {
+			this.something = something;
+		}
+		MyApp.prototype.invoke = function(env) {
+			return [200, {"Content-Type":"text/plain"}, "Hello " + this.something + "!"];
+		}
+		
+		new MyApp("Fred");
+		
+	The first (and only) argument to the invoke method is the "environment", which contains a number of properties. Many of the common CGI environment variables are included, as well as some Jack specific properties which are prefixed with "jack.".
+
+
+== Writing Jack Middleware:
+
+	Jack middleware performs some sort of pre or post processing on requests, such as logging, authentication, etc. Most Jack middleware, by convention (and required for use with the Builder DSL, etc), is a constructor that takes in one argument, "app" (which will be a Jack application) and creates a Jack application (i.e. something that responds to "invoke"). In it's "invoke" method it will typically optionally do some preprocessing, followed by calling the "app" that was provided in the constructor, optionally followed by some post processing.
+	
+	For example, the "Head" middleware call the "app", then checks to see if the request method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests don't have a body.
+	
+	
+	
+	A more complicated middleware might need to peform postprocessing on the body contents. A common pattern is to call the app, then store the body as a property of itself and return itself *as* the body instead. It also defines an "each" method on itself that proxies to the stored body property. A good example of this is the CommonLogger middleware, which does this in order to calculate the body length for logging.
+
+
+== Misc:
+
+	Jack depends on a small library currently named "core.js" which contains a basic Ruby-style "require" method as well as some additions to the built in JavaScript objects, etc. Eventually this should be split off into a separate project for general server-side JavaScript usage.
+
+
+== Component Status:
 
 Core:
 
-	Request: needs work
-	Response: needs work
+	Request:	incomplete
+	Response: incomplete
+	
+Utilities:
+
+	Builder: complete?
 	Jackup: unimplemented
-	Builder: mostly done but broken?
 
 Handlers:
 
 	Servlet: for use with Rhino and Jetty or other servlet container. mostly complete.
-	Jetty: simple wrapper using Servlet handler and Jetty Java libs
+	Jetty: simple wrapper using Servlet handler and Jetty Java libs (the jetty, jetty-util, servlet-api jars)
+	
 	FastCGI: incomplete. needs FastCGI lib
 
 Middleware:
 
-	URLMap: complete
-	Lint: mostly complete (needs stream wrappers)
-	CommonLogger: mostly complete (needs correct date formatting)
-	
-	
+	CommonLogger: 	mostly complete (needs correct date formatting)
+	ContentLength:	complete
+	File: 					broken (needs better file IO)
+	Head:						complete
+	Lint: 					mostly complete (needs stream wrappers)
+	ShowExceptions: simple version complete
+	Static: 				complete (but broken due to File dependecy)
+	URLMap: 				complete
 
-Jack License:
+
+== Acknowledgments
+
+This software was influenced by Rack, written by Christian Neukirchen.'
+
+http://rack.rubyforge.org/
+
+
+== License:
 
 Copyright (c) 2009 Thomas Robinson <tlrobinson.net>
 
@@ -44,24 +112,3 @@ THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-Rack License:
-
-Copyright (c) 2007 Christian Neukirchen <purl.org/net/chneukirchen>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to
-deal in the Software without restriction, including without limitation the
-rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

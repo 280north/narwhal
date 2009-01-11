@@ -29,6 +29,7 @@ var requireExtensions   = [".js"],// ".j"],
     requireLoadedFiles  = {};
 
 include = function(name) {
+    print(" + include: " + name);
     if (name.charAt(0) === "/")
     {
         if (attemptLoad(name, name))
@@ -58,6 +59,7 @@ include = function(name) {
 }    
 
 require = function(name) {
+    print(" + require: " + name);
     if (requireLoadedFiles[name])
         return false;
     return include(name);
@@ -66,6 +68,8 @@ require = function(name) {
 var attemptLoad = function(name, path) {
     var code;
     
+    print(" + attemptLoad: " + path +" ("+name+")");
+    
     // some interpreters throw exceptions
     try { code = readFile(path); } catch (e) {}
     
@@ -73,6 +77,8 @@ var attemptLoad = function(name, path) {
     {
         requireLoadedFiles[name] = path;
         requireFileStack.push(path);
+        
+        print(" + eval-ing")
         
         var evalString = "(function(__FILE__){\n" + code+ "\n})('"+path+"')";
         
@@ -125,26 +131,74 @@ Enumerable.map = function(block) {
 
 // Hash object
 
-Hash = function(hash) {
-    this.hash = {};
-    this.merge(hash);
+Hash = {};
+Hash.merge = function(hash, other) {
+    var merged = {};
+    if (hash) Hash.update(merged, hash);
+    if (other) Hash.update(merged, other);
+    return merged;
 }
-Hash.prototype.get      = function(k)    { return this.hash[k]; }
-Hash.prototype.set      = function(k, v) { this.hash[k] = v; }
-Hash.prototype.unset    = function(k)    { delete this.hash[k]; }
-Hash.prototype.includes = function(k)    { return this.get(k) !== undefined; }
-Hash.prototype.merge = function(other) {
-    if (!other) return;
-    var hash = other.hash || other;
+Hash.update = function(hash, other) {
+    for (var key in other)
+        hash[key] = other[key];
+    return hash;
+}
+Hash.each = function(hash, block) {
     for (var key in hash)
-        this.set(key, hash[key]);
+        block(key, hash[key]);
 }
-Hash.prototype.each = function(block) {
-    for (var key in this.hash)
-        block(key, this.hash[key]);
+Hash.map = function(hash, block) {
+    var result = [];
+    for (var key in hash)
+        result.push(block(key, hash[key]));
+    return result;
 }
-Hash.prototype.map = Enumerable.map;
 
+// HashP : Case Preserving hash
+HashP = {};
+HashP.get = function(hash, key) {
+    var ikey = HashP._findKey(hash, key);
+    if (ikey !== null)
+        return hash[ikey];
+    // not found
+    return undefined;
+}
+HashP.set = function(hash, key, value) {
+    // do case insensitive search, and delete if present
+    var ikey = HashP._findKey(hash, key);
+    if (ikey && ikey !== key)
+        delete hash[ikey];
+    // set it, preserving key case
+    hash[key] = value;
+}
+HashP.includes = function(hash, key) {
+    return HashP.get(hash, key) !== undefined
+}
+HashP.merge = function(hash, other) {
+    var merged = {};
+    if (hash) HashP.update(merged, hash);
+    if (other) HashP.update(merged, other);
+    return merged;
+}
+HashP.update = function(hash, other) {
+    for (var key in other)
+        HashP.set(hash, key, other[key]);
+    return hash;
+}
+HashP.each = Hash.each;
+HashP.map = Hash.map;
+
+HashP._findKey = function(hash, key) {
+    // optimization
+    if (hash[key] !== undefined)
+        return key;
+    // case insensitive search
+    var key = key.toLowerCase();
+    for (var i in hash)
+        if (i.toLowerCase() === key)
+            return i;
+    return null;
+}
 
 // Array additions
 
@@ -189,6 +243,12 @@ String.prototype.squeeze = function() {
 String.prototype.chomp = function(separator) {
     var extra = separator ? separator + "|" : "";
     return this.replace(new RegExp("("+extra+"\\r|\\n|\\r\\n)*$"), "");
+}
+
+// Function additions
+
+Function.prototype.invoke = function() {
+    return this.apply(this, arguments);
 }
 
 })();

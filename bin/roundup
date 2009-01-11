@@ -1,0 +1,32 @@
+#!/usr/bin/env java org.mozilla.javascript.tools.shell.Main
+
+load("core.js");
+
+require("lib/roundabout");
+require("lib/jack/lobster");
+
+Roundabout.GET("/", function() {
+    return "hello world!";
+});
+
+Roundabout.GET("/asdf", new Jack.Lobster("asdf"));
+
+Roundabout.route({
+    path: "/hello/*",
+    GET: function() {
+        this.redirect("http://"+this.wildcards[0]);
+    },
+    POST: function() {
+        this.redirect("/");
+    },
+    filter: function() {
+        return true;//Math.random() > 0.5;
+    }
+});
+
+Roundabout.GET("/*/{asdf}", function() {
+    return "Hello " + this.wildcards[0] + " and " + this.wildcards["asdf"];
+});
+
+
+Roundabout.run();

@@ -2,20 +2,9 @@
 
 load("core.js");
 
+
 require("lib/jack");
 require("lib/jack/lobster");
-
-//var app = new Jack.URLMap({
-//    "http://asdf.com/earth" : new Jack.Lobster("1"),
-//    "http://asdf.com/moon" : new Jack.Lobster("2"),
-//    "/earth" : new Jack.Lobster("3"),
-//    "/moon" : new Jack.Lobster("4"),
-//    "/asdfasdf" : new Jack.Lobster("5"),
-//    "http://apple.com/asdfasdf" : new Jack.Lobster("6"),
-//    "http://apple.com/asdfasdfasdf" : new Jack.Lobster("6")
-//});
-//app = new Jack.Lint(app);
-//app = new Jack.CommonLogger(app);
 
 //var app = Jack.Builder.app(function()
 //{
@@ -29,11 +18,14 @@ require("lib/jack/lobster");
 //});
 
 var app = new Jack.Lobster("lobster");
-app = new Jack.Static(app, { "urls" : ["/bin"] });
-app = new Jack.Lint(app);
-app = new Jack.ShowExceptions(app);
-app = new Jack.ContentLength(app);
-app = new Jack.Head(app);
-app = new Jack.CommonLogger(app);
+//var app = new Jack.URLMap({
+//    "/earth" : new Jack.Lobster("1")
+//});
+////app = new Jack.Static(app, { "urls" : ["/bin"] });
+//app = new Jack.Lint(app);
+////app = new Jack.ShowExceptions(app);
+////app = new Jack.ContentLength(app);
+////app = new Jack.Head(app);
+//app = new Jack.CommonLogger(app);
 
 Jack.Handler.Jetty.run(app);
