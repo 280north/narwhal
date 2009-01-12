@@ -1,8 +1,11 @@
 Jack: Rack for JavaScript
 
-	echo "Rack provides an minimal interface between webservers supporting Ruby and Ruby frameworks" | sed s/Rack/Jack/g | sed s/Ruby/JavaScript/g
+	echo "Rack provides an minimal interface between webservers supporting Ruby and Ruby frameworks" | sed -e s/Rack/Jack/g -e s/Ruby/JavaScript/g
 
 	Indeed, Jack is a fairly straightforward port of Rack (http://rack.rubyforge.org/) to JavaScript, with adjustments where necessary. Of course it is meant for use on the server rather than in the browser.
+	
+	It provides a common interface between web servers and web applications or frameworks written in JavaScript.
+
 
 == Getting Started:
 
@@ -23,7 +26,7 @@ Jack: Rack for JavaScript
 			return [200, {"Content-Type":"text/plain"}, "Hello world!"];
 		}
 	
-	If you need something more complex, your object simply needs to have an "invoke" method:
+	If you need something more complex with extra state, you may use an object that has an "invoke" method:
 		
 		MyApp = function(something) {
 			this.something = something;
@@ -36,14 +39,33 @@ Jack: Rack for JavaScript
 		
 	The first (and only) argument to the invoke method is the "environment", which contains a number of properties. Many of the common CGI environment variables are included, as well as some Jack specific properties which are prefixed with "jack.".
 
+	The Request and Response objects aren't required, but may be helpful in getting request parameters, and building a valid response. They are used as follows:
+	
+		var req = new Jack.Request(env);
+		var name = req.GET()["name"];
+		
+		var resp = new Jack.Response();
+		resp.setHeader("Content-Type", "text/plain");
+		resp.write("hello "+name+"!");
+		return resp.finish(); // equivalent to returning [200, {"Content-Type" : "text/plain"}, "hello "+name+"!"]
+		
+	These objects are works in progress.
 
+
+== Roundabout
+
+	Roundabout is a Rack compatible application / middleware that works like the Sinatra Ruby framework.
+	
+	One major difference is that Roundabout can be used as middleware to map other Rack components to specific URL patterns, like a more powerful version of the URLMap middleware.
+	
+	More documentation forthcoming. See the "roundup" script for examples.
+
+	
 == Writing Jack Middleware:
 
 	Jack middleware performs some sort of pre or post processing on requests, such as logging, authentication, etc. Most Jack middleware, by convention (and required for use with the Builder DSL, etc), is a constructor that takes in one argument, "app" (which will be a Jack application) and creates a Jack application (i.e. something that responds to "invoke"). In it's "invoke" method it will typically optionally do some preprocessing, followed by calling the "app" that was provided in the constructor, optionally followed by some post processing.
 	
-	For example, the "Head" middleware call the "app", then checks to see if the request method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests don't have a body.
-	
-	
+	For example, the "Head" middleware call the "app", then checks to see if the request HTTP method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests shouldn't have a response body.
 	
 	A more complicated middleware might need to peform postprocessing on the body contents. A common pattern is to call the app, then store the body as a property of itself and return itself *as* the body instead. It also defines an "each" method on itself that proxies to the stored body property. A good example of this is the CommonLogger middleware, which does this in order to calculate the body length for logging.
 
@@ -51,6 +73,11 @@ Jack: Rack for JavaScript
 == Misc:
 
 	Jack depends on a small library currently named "core.js" which contains a basic Ruby-style "require" method as well as some additions to the built in JavaScript objects, etc. Eventually this should be split off into a separate project for general server-side JavaScript usage.
+
+
+== Differences between Jack and Rack:
+
+  Jack uses "invoke" instead of "call" as the interface between Jack apps/middleware. This is because "call" is already defined on functions in JavaScript, and uses the first parameter as the "this" for the method call. The primary difference is that "invoke" does not use the first argument for "this"; the arguments provided to "invoke" will be exactly the arguments provided to the method body.
 
 
 == Component Status:
@@ -82,11 +109,11 @@ Middleware:
 	ShowExceptions: simple version complete
 	Static: 				complete (but broken due to File dependecy)
 	URLMap: 				complete
-
+	
 
 == Acknowledgments
 
-This software was influenced by Rack, written by Christian Neukirchen.'
+This software was influenced by Rack, written by Christian Neukirchen.
 
 http://rack.rubyforge.org/
 
