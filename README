@@ -9,9 +9,9 @@ Jack: Rack for JavaScript
 
 == Getting Started:
 
-	Jack currently supports Rhino and Jetty, but it should be easy to integrate with other JavaScript interpretters and web servers. The only Rhino/Jetty specific code is in the jetty.js and servlet.js handlers.
-	
-  To start working with Jack, ensure you have the Rhino (js.jar) and Jetty (jetty, jetty-util, servlet-api) jars in your CLASSPATH environment variable. From the root of the project, run "bin/jackup", which will start a sample application at localhost:8080:
+	Jack currently supports the Jetty (and other servlet containers) and Simple webservers using Rhino, and it should be easy to integrate with other JavaScript interpreters and web servers.
+
+    To start working with Jack, ensure you have the Rhino (js.jar) and Jetty ("jetty", "jetty-util", "servlet-api") or Simple ("simple") jars in your CLASSPATH environment variable. From the root of the project, run "bin/jackup", which will start a sample application at localhost:8080:
 
 		./bin/jackup
 	
@@ -96,6 +96,7 @@ Handlers:
 
 	Servlet: for use with Rhino and Jetty or other servlet container. mostly complete.
 	Jetty: simple wrapper using Servlet handler and Jetty Java libs (the jetty, jetty-util, servlet-api jars)
+    Simple: for use with the Simple webserver
 	
 	FastCGI: incomplete. needs FastCGI lib
 
