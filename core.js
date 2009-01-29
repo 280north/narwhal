@@ -1,6 +1,8 @@
 (function() {
-    
+
+// readFile is used by require. Attempt to define it if it's not already.
 if (typeof readFile === "undefined") {
+    // Ruby
     if (typeof Ruby !== "undefined") {
         readFile = function(path) {
             try {
@@ -10,14 +12,61 @@ if (typeof readFile === "undefined") {
             return "";
         }
     }
+    // v8cgi
+    else if (typeof File !== "undefined") {
+        readFile = function(path) {
+            var result = "",
+                f = new File(path);
+            try {
+                if (!f.exists())
+                    throw new Error();
+                    
+                f.open("r");
+                result = f.read();
+                
+            } finally {
+                f.close();
+            }
+            return result;
+        }
+    }
+}
+// TODO: implement a File object on top of readFile instead of vice versa
+
+// IO class
+
+IO = function() {}
+IO.prototype.puts = function() {
+    this.write(arguments.length === 0 ? "\n" : Array.prototype.join.apply(arguments, ["\n"]));
+}
+IO.prototype.write = function(object) {
+    this.writeStream(String(object));
+};
+IO.prototype.flush = function() {};
+
+// TODO: currently implementing bare minimum
+
+// setup STDOUT and STDERR:
+STDOUT = new IO();
+STDERR = new IO();
+
+// Rhino
+if (typeof Packages !== "undefined")
+{
+    STDOUT.writeStream = function(string) { Packages.java.lang.System.out.print(string); };
+    STDERR.writeStream = function(string) { Packages.java.lang.System.err.print(string); };
+}
+// Other
+else
+{
+    STDERR.writeStream = function(){};
+    
+    if (typeof print === "function")
+        STDOUT.writeStream = function(string) { print(string); };
+    else
+        STDOUT.writeStream = function() {};
 }
 
-// TODO: make an IO class and Rhino specific subclass for this
-STDERR = {
-    puts  : function()       { this.write(arguments.length === 0 ? "\n" : Array.prototype.join.apply(arguments, ["\n"])); },
-    write : function(string) { Packages.java.lang.System.err.println(string); },
-    flush : function()       {}
-}
 
 // Ruby style "require" and "include" (can't used "load" as it's taken by several JS shells)
 
@@ -96,7 +145,9 @@ var attemptLoad = function(name, path) {
     return false;
 }
 
-File = {};
+if (typeof File === "undefined")
+    File = {};
+
 File.SEPARATOR = "/";
 File.dirname = function(path) {
     var raw = String(path),
