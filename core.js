@@ -1,87 +1,22 @@
+// This file contains some basic features that *should* be provided by a standard library
+
 (function() {
-
-// readFile is used by require. Attempt to define it if it's not already.
-if (typeof readFile === "undefined") {
-    // Ruby
-    if (typeof Ruby !== "undefined") {
-        readFile = function(path) {
-            try {
-                if (Ruby.File["readable?"](file_name))
-                    return String(Ruby.File.read(path));
-            } catch (e) {}
-            return "";
-        }
-    }
-    // v8cgi
-    else if (typeof File !== "undefined") {
-        readFile = function(path) {
-            var result = "",
-                f = new File(path);
-            try {
-                if (!f.exists())
-                    throw new Error();
-                    
-                f.open("r");
-                result = f.read();
-                
-            } finally {
-                f.close();
-            }
-            return result;
-        }
-    }
-}
-// TODO: implement a File object on top of readFile instead of vice versa
-
-// IO class
-
-IO = function() {}
-IO.prototype.puts = function() {
-    this.write(arguments.length === 0 ? "\n" : Array.prototype.join.apply(arguments, ["\n"]));
-}
-IO.prototype.write = function(object) {
-    this.writeStream(String(object));
-};
-IO.prototype.flush = function() {};
-
-// TODO: currently implementing bare minimum
-
-// setup STDOUT and STDERR:
-STDOUT = new IO();
-STDERR = new IO();
-
-// Rhino
-if (typeof Packages !== "undefined")
-{
-    STDOUT.writeStream = function(string) { Packages.java.lang.System.out.print(string); };
-    STDERR.writeStream = function(string) { Packages.java.lang.System.err.print(string); };
-}
-// Other
-else
-{
-    STDERR.writeStream = function(){};
-    
-    if (typeof print === "function")
-        STDOUT.writeStream = function(string) { print(string); };
-    else
-        STDOUT.writeStream = function() {};
-}
-
 
 // Ruby style "require" and "include" (can't used "load" as it's taken by several JS shells)
 
 if (typeof $s === "undefined")
     $s = ["."];
 
-var requireExtensions   = [".js"],// ".j"],
-    requireFileStack    = ["."], // FIXME: only works on "first pass", not includes in functions called from different file, etc
+var requireExtensions   = [".js"],
+    requireFileStack    = ["."], // FIXME: only works on the "first pass", not includes in functions called from different file, etc
     requireLoadedFiles  = {};
 
 include = function(name) {
-    print(" + include: " + name);
+    log.debug(" + include: " + name);
+    
     if (name.charAt(0) === "/")
     {
-        if (attemptLoad(name, name))
+        if (_attemptLoad(name, name))
             return true;
     }
     else
@@ -96,7 +31,7 @@ include = function(name) {
                 var searchDirectory = ($s[i] === ".") ? pwd : $s[i],
                     path = searchDirectory + "/" + name + ext;
                     
-                if (attemptLoad(name, path))
+                if (_attemptLoad(name, path))
                     return true;
             }
         }
@@ -108,16 +43,17 @@ include = function(name) {
 }    
 
 require = function(name) {
-    print(" + require: " + name);
+    log.debug(" + require: " + name);
+    
     if (requireLoadedFiles[name])
         return false;
     return include(name);
 }
 
-var attemptLoad = function(name, path) {
+var _attemptLoad = function(name, path) {
     var code;
     
-    print(" + attemptLoad: " + path +" ("+name+")");
+    log.debug(" + attemptLoad: " + path +" ("+name+")");
     
     // some interpreters throw exceptions
     try { code = readFile(path); } catch (e) {}
@@ -127,7 +63,7 @@ var attemptLoad = function(name, path) {
         requireLoadedFiles[name] = path;
         requireFileStack.push(path);
         
-        print(" + eval-ing")
+        log.debug(" + eval-ing")
         
         var evalString = "(function(__FILE__){\n" + code+ "\n})('"+path+"')";
         
@@ -301,5 +237,86 @@ String.prototype.chomp = function(separator) {
 Function.prototype.invoke = function() {
     return this.apply(this, arguments);
 }
+
+// IO
+
+IO = function() {}
+IO.prototype.puts = function() {
+    this.write(arguments.length === 0 ? "\n" : Array.prototype.join.apply(arguments, ["\n"]));
+}
+IO.prototype.write = function(object) {
+    this.writeStream(String(object));
+};
+IO.prototype.flush = function() {};
+
+
+// Logging
+
+log = {
+    debug : function(string) {
+        if (typeof print === "function")
+            print(string);
+    }
+};
+
+log.error = log.warn = log.error = 
+
+
+// Interpreter specific code:
+
+
+// setup STDOUT and STDERR:
+STDOUT = new IO();
+STDERR = new IO();
+
+// Rhino
+if (typeof Packages !== "undefined")
+{
+    STDOUT.writeStream = function(string) { Packages.java.lang.System.out.print(string); };
+    STDERR.writeStream = function(string) { Packages.java.lang.System.err.print(string); };
+}
+// Other
+else
+{
+    STDERR.writeStream = function(){};
+    
+    if (typeof print === "function")
+        STDOUT.writeStream = function(string) { print(string); };
+    else
+        STDOUT.writeStream = function() {};
+}
+
+// readFile is used by require. Attempt to define it if it's not already.
+if (typeof readFile === "undefined") {
+    // Ruby
+    if (typeof Ruby !== "undefined") {
+        readFile = function(path) {
+            try {
+                if (Ruby.File["readable?"](file_name))
+                    return String(Ruby.File.read(path));
+            } catch (e) {}
+            return "";
+        }
+    }
+    // v8cgi
+    else if (typeof File !== "undefined") {
+        readFile = function(path) {
+            var result = "",
+                f = new File(path);
+            try {
+                if (!f.exists())
+                    throw new Error();
+                    
+                f.open("r");
+                result = f.read();
+                
+            } finally {
+                f.close();
+            }
+            return result;
+        }
+    }
+}
+// TODO: implement a File object on top of readFile instead of vice versa
 
 })();

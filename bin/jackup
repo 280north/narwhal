@@ -5,6 +5,7 @@ load("core.js");
 
 require("lib/jack");
 require("lib/jack/lobster");
+require("lib/jack/handler/jetty");
 
 //var app = Jack.Builder.app(function()
 //{
