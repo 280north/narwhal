@@ -2,50 +2,34 @@
 
 load("core.js");
 
-require("lib/roundabout");
-require("lib/jack/lobster");
+// this adds the relative path "lib" to the search paths.
+// you should change it to an absolute path so you can load libraries from anywhere
+$p.push("lib");
 
-Roundabout.GET("/", function() {
-    return "hello world!";
-});
+require("roundabout");
 
-Roundabout.GET("/asdf", new Jack.Lobster("asdf"));
+function main() {
+    
+    if (ARGV.length < 1)
+        printUsage();
 
-Roundabout.route({
-    path: "/hello/*",
-    GET: function() {
-        this.redirect("http://"+this.wildcards[0]);
-    },
-    POST: function() {
-        this.redirect("/");
-    },
-    filter: function() {
-        return true;//Math.random() > 0.5;
-    }
-});
+    var config = ARGV[0];
+        configFile = readFile(config)
+    
+    if (!configFile)
+        throw new Error("configuration " + config + " not found");
 
-Roundabout.GET("/*/{asdf}", function() {
-    //this.response.write("Hello " + this.wildcards[0] + " and " + this.wildcards["asdf"] + "\n");
-    var gets = this.request.GET();
-    for (var i in gets) {
-        this.response.write(i + " => " + gets[i] + "\n");
-    }
-});
+    eval(configFile);
 
-Roundabout.GET("/hello", function(env) {
-	var req = new Jack.Request(env);
-	var name = req.GET()["name"];
-	
-	var resp = new Jack.Response();
-	resp.setHeader("Content-Type", "text/plain");
-	resp.write("hello "+name+"!");
-	return resp.finish(); // equivalent to returning [200, {"Content-Type" : "text/plain"}, "hello "+name+"!"]
-});
+    Roundabout.run();
+}
 
-Roundabout.GET("/hello1", function() {
-	var name = this.request.GET()["name"];
-	this.header("Content-Type", "text/plain");
-	this.body("hello "+name+"!");
-});
+function printUsage() {
+    throw new Error("Usage: roundup [roundup config]");
+}
 
-Roundabout.run();
+try {
+    main();
+} catch (e) {
+    print(e.message);
+}

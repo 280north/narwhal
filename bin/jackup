@@ -2,31 +2,111 @@
 
 load("core.js");
 
+// this adds the relative path "lib" to the search paths.
+// you should change it to an absolute path so you can load libraries from anywhere
+$p.push("lib");
 
-require("lib/jack");
-require("lib/jack/lobster");
-require("lib/jack/handler/jetty");
+require("jack");
+require("jack/handler");
+require("jack/commonlogger");
+require("jack/contentlength");
+require("jack/file");
+require("jack/head");
+require("jack/lint");
+require("jack/showexceptions");
+require("jack/static");
+require("jack/urlmap");
 
-//var app = Jack.Builder.app(function()
-//{
-//    this.use(Jack.CommonLogger);
-//    //this.use(Jack.ShowExceptions);
-//    this.map("/lobster", function()
-//    {
-//        this.use(Jack.Lint);
-//        this.run(new Jack.Lobster("lobster"));
-//    });
-//});
+function main() {
+    
+    var env = "development",
+        options = { port : 8080, host : "0.0.0.0" },
+        server = null,
+        config = null;
 
-var app = new Jack.Lobster("lobster");
-//var app = new Jack.URLMap({
-//    "/earth" : new Jack.Lobster("1")
-//});
-////app = new Jack.Static(app, { "urls" : ["/bin"] });
-//app = new Jack.Lint(app);
-////app = new Jack.ShowExceptions(app);
-////app = new Jack.ContentLength(app);
-////app = new Jack.Head(app);
-//app = new Jack.CommonLogger(app);
+    while (ARGV.length) {
+        var arg = ARGV.shift();
+        switch (arg) {
+            case "-s" :
+            case "--server" :
+                server = ARGV.shift();
+                break;
+            case "-o" :
+            case "--host" :
+                options.host = ARGV.shift();
+                break;
+            case "-p" :
+            case "--port" :
+                options.host = ARGV.shift();
+                break;
+            case "-E" :
+            case "--env" :
+                env = ARGV.shift();
+                break;
+            case "-r" :
+            case "--require" :
+                require(ARGV.shift());
+                break;
+            case "-h" :
+            case "--help" :
+                printUsage();
+            case "--version" :
+                throw new Error("Jack 0.1");
+            default :
+                if (config || arg.charAt(0) === "-")
+                    printUsage();
+                else
+                    config = arg;
+        }
+    }
 
-Jack.Handler.Jetty.run(app);
+    config = config || "config.ju"
+
+    var configFile = readFile(config);
+    if (!configFile)
+        throw new Error("configuration " + config + " not found");
+
+    var innerApp = eval(configFile),
+        app;
+
+    switch (env) {
+        case "development" :
+            app = new Jack.CommonLogger(new Jack.ShowExceptions(new Jack.Lint(innerApp)));
+            break;
+        case "deployment" :
+            app = new Jack.CommonLogger(innerApp);
+            break;
+        case "none" :
+            app = innerApp;
+            break;
+        default :
+            throw new Error("Unknown environment");
+    }
+
+    if (!(server = Jack.Handler.get(server))) {
+        server = Jack.Handler.Jetty;
+    }
+    
+    server.run(app, options);
+}
+
+function printUsage() {
+    throw new Error("Usage: jackup [jack options] [jackup config]\n\
+\n\
+    Jack options:\n\
+      -s, --server SERVER      serve using SERVER (jetty/simple)\n\
+      -o, --host HOST          listen on HOST (default: 0.0.0.0)\n\
+      -p, --port PORT          use PORT (default: 9292)\n\
+      -E, --env ENVIRONMENT    use ENVIRONMENT for defaults (default: development)\n\
+      -r, --require LIBRARY    require the library, before executing your script\n\
+\n\
+    Common options:\n\
+      -h, --help               Show this message\n\
+          --version            Show version");
+}
+
+try {
+    main();
+} catch (e) {
+    print(e.message);
+}

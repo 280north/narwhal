@@ -1,10 +1,11 @@
 Jack: Rack for JavaScript
 
-	echo "Rack provides an minimal interface between webservers supporting Ruby and Ruby frameworks" | sed -e s/Rack/Jack/g -e s/Ruby/JavaScript/g
+    "Rack provides an minimal interface between webservers supporting Ruby and Ruby frameworks".replace("Rack","Jack").replace("Ruby","JavaScript")
 
-	Indeed, Jack is a fairly straightforward port of Rack (http://rack.rubyforge.org/) to JavaScript, with adjustments where necessary. Of course it is meant for use on the server rather than in the browser.
-	
-	It provides a common interface between web servers and web applications or frameworks written in JavaScript.
+
+    Indeed, Jack is heavily inspired by Rack (http://rack.rubyforge.org/), as well as Python's WSGI (http://www.wsgi.org/), with adjustments where necessary.
+    
+    It provides a common interface between web servers and web applications or frameworks written in JavaScript. At it's core, Jack is simply a protocol that defines an interface, but it is also a set of handlers (to connect to web servers), adapters (to connect to JavaScript frameworks and applications), middleware (to intercept and manipulate requests or responses), and utilities (to make your life easier) implemented in JavaScript.
 
     Homepage: http://jackjs.org/
 
@@ -17,71 +18,105 @@ Jack: Rack for JavaScript
 
 == Getting Started:
 
-	Jack currently supports the Jetty (and other servlet containers) and Simple webservers using Rhino, and it should be easy to integrate with other JavaScript interpreters and web servers.
+    Jack currently supports the Jetty (and other servlet containers) and Simple webservers using Rhino, and it should be easy to integrate with other JavaScript interpreters and web servers. It also has preliminary support for v8cgi.
 
-    To start working with Jack, ensure you have the Rhino (js.jar) and Jetty ("jetty", "jetty-util", "servlet-api") or Simple ("simple") jars in your CLASSPATH environment variable. From the root of the project, run "bin/jackup", which will start a sample application at localhost:8080:
+    To start working with Jack, ensure you have the Rhino ("js.jar") and Jetty ("jetty", "jetty-util", "servlet-api") or Simple ("simple") jars in your CLASSPATH environment variable. From the Jack project directory execute "bin/jackup" with the path to a Jackup configuration file:
 
-		./bin/jackup
-	
+        ./bin/jackup example/hello.js
+        
+    or (this one specifies a path to an extra library that needs to be included, "lib/jack/lobster.js"):
+    
+        ./bin/jackup -r lib/jack/lobster.js example/example.js
+    
+    Jackup configuration files simply contain JavaScript with the last statement being a reference to a Jack application (or middleware)
+
+    To see other options of Jackup, use the "-h" option:
+
+        ./bin/jackup -h
+
+    If you want to install and run Jackup from a different directory you can edit the following line at the top of the jackup (and roundup) scripts to be an absolute path to the "lib" directory:
+
+        $p.push("lib");
+
 
 == Writing Jack Applications:
-		
-	A Rack application is simply a JavaScript object that responds to the "invoke" method. It should return an array containing three elements: the status code (an integer), the headers values (a hash), and a body object (anything that responds to the "each" method).
-	
-	We have extended JavaScript Function objects to respond to "invoke" (it just calls itself, so any function is a valid Rack application, provided it returns the right types), and JavaScript Array and String objects to respond to "each" (so they are valid "body" responses), thus the following is a valid Jack application:
-	
-		function(env) {
-			return [200, {"Content-Type":"text/plain"}, "Hello world!"];
-		}
-	
-	If you need something more complex with extra state, you may use an object that has an "invoke" method:
-		
-		MyApp = function(something) {
-			this.something = something;
-		}
-		MyApp.prototype.invoke = function(env) {
-			return [200, {"Content-Type":"text/plain"}, "Hello " + this.something + "!"];
-		}
-		
-		new MyApp("Fred");
-		
-	The first (and only) argument to the invoke method is the "environment", which contains a number of properties. Many of the common CGI environment variables are included, as well as some Jack specific properties which are prefixed with "jack.".
+        
+    A Jack application is simply a JavaScript object that responds to the "invoke" method. It should return an array containing three elements: the status code (an integer), the headers values (a hash), and a body object (anything that responds to the "each" method).
+    
+    We have extended JavaScript Function objects to respond to "invoke" (it just calls itself, so any function is a valid Rack application, provided it returns the right types), and JavaScript Array and String objects to respond to "each" (so they are valid "body" responses), thus the following is a valid Jack application:
+    
+        function(env) {
+            return [200, {"Content-Type":"text/plain"}, "Hello world!"];
+        }
+    
+    If you need something more complex with extra state, you may use an object that has an "invoke" method:
+        
+        MyApp = function(something) {
+            this.something = something;
+        }
+        MyApp.prototype.invoke = function(env) {
+            return [200, {"Content-Type":"text/plain"}, "Hello " + this.something + "!"];
+        }
+        
+        new MyApp("Fred");
+    
+    Be careful to ensure you application is threadsafe if you plan to use a multithreaded server.
+        
+    The first (and only) argument to the invoke method is the "environment", which contains a number of properties. Many of the common CGI environment variables are included, as well as some Jack specific properties which are prefixed with "jack.".
 
-	The Request and Response objects aren't required, but may be helpful in getting request parameters, and building a valid response. They are used as follows:
-	
-		var req = new Jack.Request(env);
-		var name = req.GET()["name"];
-		
-		var resp = new Jack.Response();
-		resp.setHeader("Content-Type", "text/plain");
-		resp.write("hello "+name+"!");
-		return resp.finish(); // equivalent to returning [200, {"Content-Type" : "text/plain"}, "hello "+name+"!"]
-		
-	These objects are works in progress.
+    The Request and Response objects aren't required, but may be helpful in parsing request parameters, and building a valid response. They are used as follows:
+    
+        var req = new Jack.Request(env);
+        var name = req.GET("name");
+        
+        var resp = new Jack.Response();
+        resp.setHeader("Content-Type", "text/plain");
+        resp.write("hello ");
+        resp.write(name);
+        resp.write("!");
+        return resp.finish(); // equivalent to returning [200, {"Content-Type" : "text/plain"}, "hello "+name+"!"]
+        
+    These objects are currently partially implemented.
 
 
 == Roundabout
 
-	Roundabout is a Rack compatible application / middleware that works like the Sinatra Ruby framework.
-	
-	One major difference is that Roundabout can be used as middleware to map other Rack components to specific URL patterns, like a more powerful version of the URLMap middleware.
-	
-	More documentation forthcoming. See the "roundup" script for examples.
+    Roundabout is a Rack compatible application / middleware that works similarly to the Ruby Sinatra framework.
+    
+    One major difference is that Roundabout can be used as middleware to map other Rack components to specific URL patterns, like a more powerful version of the URLMap middleware.
+    
+    More documentation forthcoming. Run the roundup script with a Roundabout app:
 
-	
+        ./bin/roundup example/roundup/example.js
+
+    
 == Writing Jack Middleware:
 
-	Jack middleware performs some sort of pre or post processing on requests, such as logging, authentication, etc. Most Jack middleware, by convention (and required for use with the Builder DSL, etc), is a constructor that takes in one argument, "app" (which will be a Jack application) and creates a Jack application (i.e. something that responds to "invoke"). In it's "invoke" method it will typically optionally do some preprocessing, followed by calling the "app" that was provided in the constructor, optionally followed by some post processing.
-	
-	For example, the "Head" middleware call the "app", then checks to see if the request HTTP method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests shouldn't have a response body.
-	
-	A more complicated middleware might need to peform postprocessing on the body contents. A common pattern is to call the app, then store the body as a property of itself and return itself *as* the body instead. It also defines an "each" method on itself that proxies to the stored body property. A good example of this is the CommonLogger middleware, which does this in order to calculate the body length for logging.
+    Jack middleware performs some sort of pre or post processing on requests, such as logging, authentication, etc. Most Jack middleware, by convention (and required for use with the Builder DSL, etc), is a constructor that takes in one argument, "app" (which will be a Jack application) and creates a Jack application (i.e. something that responds to "invoke"). In it's "invoke" method it will typically optionally do some preprocessing, followed by calling the "app" that was provided in the constructor, optionally followed by some post processing.
+    
+    For example, the "Head" middleware call the "app", then checks to see if the request HTTP method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests shouldn't have a response body.
+    
+    A more complicated middleware might need to peform postprocessing on the body contents. A common pattern is to call the app, then store the body as a property of itself and return itself *as* the body instead. It also defines an "each" method on itself that proxies to the stored body property. A good example of this is the CommonLogger middleware, which does this in order to calculate the body length for logging.
 
 
-== Misc:
+== Caveats
 
-	Jack depends on a small library currently named "core.js" which contains a basic Ruby-style "require" method as well as some additions to the built in JavaScript objects, etc. Eventually this should be split off into a separate project for general server-side JavaScript usage.
+    Thread safety:
 
+        Jack is simply a protocol, which is inherently thread safe. However, some compontents of the Jack implementation are currently not threadsafe, namely the CommonLogger, Lint, and File middleware. This will be fixed soon.
+
+    Completeness:
+
+        The basic functionality of the handlers and middleware is complete. Some things are missing though.
+
+    API stability:
+
+        The Jack protocol will likely not change significantly, but some of the details may. Keep up to date on the mailing list mentioned above.
+
+    Misc:
+
+        Jack depends on a small library currently named "core.js" which contains a basic Ruby-style "require" method as well as some additions to the built in JavaScript objects, etc. Eventually this will be replaced by a standardized general purpose API: http://groups.google.com/group/serverjs/
+        
 
 == Differences between Jack and Rack:
 
@@ -92,33 +127,33 @@ Jack: Rack for JavaScript
 
 Core:
 
-	Request:	incomplete
-	Response: incomplete
-	
+    Request:  incomplete
+    Response: incomplete
+    
 Utilities:
 
-	Builder: complete?
-	Jackup: unimplemented
+    Jackup:  complete (?)
+    Builder: complete (?)
 
 Handlers:
 
-	Servlet: for use with Rhino and Jetty or other servlet container. mostly complete.
-	Jetty: simple wrapper using Servlet handler and Jetty Java libs (the jetty, jetty-util, servlet-api jars)
-    Simple: for use with the Simple webserver
-	
-	FastCGI: incomplete. needs FastCGI lib
+    Servlet: for use with Jetty on Rhino, or other servlet container.
+    Jetty: simple wrapper for Jetty using Servlet handler (http://www.mortbay.org/jetty/)
+    Simple: for use with the Simple webserver (http://www.simpleframework.org/)
+    
+    V8CGI: for use with the v8cgi project (http://code.google.com/p/v8cgi/)
 
 Middleware:
 
-	CommonLogger: 	mostly complete (needs correct date formatting)
-	ContentLength:	complete
-	File: 					broken (needs better file IO)
-	Head:						complete
-	Lint: 					mostly complete (needs stream wrappers)
-	ShowExceptions: simple version complete
-	Static: 				complete (but broken due to File dependecy)
-	URLMap: 				complete
-	
+    CommonLogger:     mostly complete (needs correct date formatting)
+    ContentLength:    complete
+    File:                     broken (needs better file IO)
+    Head:                        complete
+    Lint:                     mostly complete (needs stream wrappers)
+    ShowExceptions: simple version complete
+    Static:                 complete (but broken due to File dependecy)
+    URLMap:                 complete
+    
 
 == Acknowledgments
 

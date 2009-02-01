@@ -4,8 +4,8 @@
 
 // Ruby style "require" and "include" (can't used "load" as it's taken by several JS shells)
 
-if (typeof $s === "undefined")
-    $s = ["."];
+if (typeof $p === "undefined")
+    $p = ["."];
 
 var requireExtensions   = [".js"],
     requireFileStack    = ["."], // FIXME: only works on the "first pass", not includes in functions called from different file, etc
@@ -26,9 +26,9 @@ include = function(name) {
         for (var j = 0; j < extensions.length; j++)
         {
             var ext = extensions[j];
-            for (var i = 0; i < $s.length; i++)
+            for (var i = 0; i < $p.length; i++)
             {
-                var searchDirectory = ($s[i] === ".") ? pwd : $s[i],
+                var searchDirectory = ($p[i] === ".") ? pwd : $p[i],
                     path = searchDirectory + "/" + name + ext;
                     
                 if (_attemptLoad(name, path))
@@ -252,18 +252,15 @@ IO.prototype.flush = function() {};
 
 // Logging
 
-log = {
-    debug : function(string) {
-        if (typeof print === "function")
-            print(string);
-    }
-};
-
-log.error = log.warn = log.error = 
+log = {};
+log.error = function(string) {
+    if (typeof print === "function")
+        print(string);
+}
+log.debug = function(string) {}
 
 
 // Interpreter specific code:
-
 
 // setup STDOUT and STDERR:
 STDOUT = new IO();
@@ -320,3 +317,9 @@ if (typeof readFile === "undefined") {
 // TODO: implement a File object on top of readFile instead of vice versa
 
 })();
+
+// needs to be outside the function
+if (typeof arguments !== "undefined")
+    ARGV = arguments;
+else
+    ARGV = [];
