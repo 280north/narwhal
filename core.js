@@ -8,20 +8,23 @@ if (typeof $p === "undefined")
     $p = ["."];
 
 var requireExtensions   = [".js"],
-    requireFileStack    = ["."], // FIXME: only works on the "first pass", not includes in functions called from different file, etc
     requireLoadedFiles  = {};
 
-include = function(name) {
-    log.debug(" + include: " + name);
+_include = function(name, parentPath, loadOnce) {
+    // optimization
+    if (loadOnce && requireLoadedFiles[name])
+        return;
+        
+    log.debug(" + _include: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
     
     if (name.charAt(0) === "/")
     {
-        if (_attemptLoad(name, name))
+        if (_attemptLoad(name, name, loadOnce))
             return true;
     }
     else
     {
-        var pwd = File.dirname(requireFileStack[requireFileStack.length-1]),
+        var pwd = File.dirname(parentPath),
             extensions = (/\.\w+$/).test(name) ? [""] : requireExtensions;
         for (var j = 0; j < extensions.length; j++)
         {
@@ -31,7 +34,7 @@ include = function(name) {
                 var searchDirectory = ($p[i] === ".") ? pwd : $p[i],
                     path = searchDirectory + "/" + name + ext;
                     
-                if (_attemptLoad(name, path))
+                if (_attemptLoad(name, path, loadOnce))
                     return true;
             }
         }
@@ -40,18 +43,20 @@ include = function(name) {
     throw new Error("No such file to load: " + name);
     
     return false;
-}    
-
+}
+include = function(name) {
+    return _include(name, ".", false);
+}
+_require = function(name, parentPath) {
+    return _include(name, parentPath, true);
+}
 require = function(name) {
-    log.debug(" + require: " + name);
-    
-    if (requireLoadedFiles[name])
-        return false;
-    return include(name);
+    return _include(name, ".", true);
 }
 
-var _attemptLoad = function(name, path) {
-    var code;
+var _attemptLoad = function(name, path, loadOnce) {
+    var path = File.canonicalize(path),
+        code;
     
     log.debug(" + attemptLoad: " + path +" ("+name+")");
     
@@ -60,20 +65,26 @@ var _attemptLoad = function(name, path) {
     
     if (code)
     {
-        requireLoadedFiles[name] = path;
-        requireFileStack.push(path);
-        
-        log.debug(" + eval-ing")
-        
-        var evalString = "(function(__FILE__){\n" + code+ "\n})('"+path+"')";
-        
-        // this gives us slightly better exception backtraces in Rhino
-        if (typeof Packages !== "undefined")
-            Packages.org.mozilla.javascript.Context.getCurrentContext().evaluateString(this, evalString, path, 0, null);
+        if (!requireLoadedFiles[path] || !loadOnce)
+        {
+            requireLoadedFiles[path] = true;
+            
+            log.debug(" + eval-ing: " + name + " => " + path);
+
+            var evalString = "(function(require,include,__FILE__){\n" + code+ "\n})("+
+                "function(name){return _include(name,'"+path+"',true);},"+
+                "function(name){return _include(name,'"+path+"',false);},"+
+                "'"+path+"'"+
+            ")";
+
+            // this gives us slightly better exception backtraces in Rhino
+            if (typeof Packages !== "undefined")
+                Packages.org.mozilla.javascript.Context.getCurrentContext().evaluateString(this, evalString, path, 0, null);
+            else
+                eval(evalString);
+        }
         else
-            eval(evalString);
-        
-        requireFileStack.pop();
+            log.debug(" + already eval'd: " + name + " => " + path);
 
         return true;
     }
@@ -98,7 +109,9 @@ File.dirname = function(path) {
 File.join = function() {
     return Array.prototype.join.apply(arguments, [File.SEPARATOR]);
 }
-
+File.canonicalize = function(path) {
+    return path.replace(/[^\/]+\/..\//g, "").replace(/([^.])\.\//, "$1");
+}
 
 Dir = {};
 Dir.pwd = function() { return "." }; // FIXME
@@ -259,7 +272,6 @@ log.error = function(string) {
 }
 log.debug = function(string) {}
 
-
 // Interpreter specific code:
 
 // setup STDOUT and STDERR:
@@ -289,7 +301,7 @@ if (typeof readFile === "undefined") {
     if (typeof Ruby !== "undefined") {
         readFile = function(path) {
             try {
-                if (Ruby.File["readable?"](file_name))
+                if (Ruby.File["readable?"](path))
                     return String(Ruby.File.read(path));
             } catch (e) {}
             return "";
