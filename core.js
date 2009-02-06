@@ -4,23 +4,17 @@
 
 // Ruby style "require" and "include" (can't used "load" as it's taken by several JS shells)
 
-if (typeof $p === "undefined")
-    $p = ["."];
+var requireExtensions = [".js"],
+    loadedModules = {};
 
-var requireExtensions   = [".js"],
-    requireLoadedFiles  = {};
-
-_include = function(name, parentPath, loadOnce) {
-    // optimization
-    if (loadOnce && requireLoadedFiles[name])
-        return;
-        
-    log.debug(" + _include: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
+var _require = function(name, parentPath, loadOnce) {
+    log.debug(" + _require: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
     
     if (name.charAt(0) === "/")
     {
-        if (_attemptLoad(name, name, loadOnce))
-            return true;
+        var result = _attemptLoad(name, name, loadOnce);
+        if (result)
+            return result;
     }
     else
     {
@@ -29,66 +23,66 @@ _include = function(name, parentPath, loadOnce) {
         for (var j = 0; j < extensions.length; j++)
         {
             var ext = extensions[j];
-            for (var i = 0; i < $p.length; i++)
+            for (var i = 0; i < require.paths.length; i++)
             {
-                var searchDirectory = ($p[i] === ".") ? pwd : $p[i],
+                var searchDirectory = (require.paths[i] === ".") ? pwd : require.paths[i],
                     path = searchDirectory + "/" + name + ext;
                     
-                if (_attemptLoad(name, path, loadOnce))
-                    return true;
+                var result = _attemptLoad(name, path, loadOnce);
+                if (result)
+                    return result;
             }
         }
     }
     
-    throw new Error("No such file to load: " + name);
+    log.error("couldn't find " + name);
     
-    return false;
+    return undefined;
 }
-include = function(name) {
-    return _include(name, ".", false);
-}
-_require = function(name, parentPath) {
-    return _include(name, parentPath, true);
-}
+
 require = function(name) {
-    return _include(name, ".", true);
+    return _require(name, ".", true);
+}
+require.paths = ["."];
+
+include = function(name) {
+    return _require(name, ".", false);
+}
+
+function _requireFactory(path, loadOnce) {
+    return function(name) {
+        return _require(name, path, loadOnce || false);
+    }
 }
 
 var _attemptLoad = function(name, path, loadOnce) {
     var path = File.canonicalize(path),
-        code;
+        moduleCode;
     
     log.debug(" + attemptLoad: " + path +" ("+name+")");
     
-    // some interpreters throw exceptions
-    try { code = readFile(path); } catch (e) {}
-    
-    if (code)
+    // see if the module is already loaded
+    if (loadedModules[path] && loadOnce)
     {
-        if (!requireLoadedFiles[path] || !loadOnce)
-        {
-            requireLoadedFiles[path] = true;
-            
-            log.debug(" + eval-ing: " + name + " => " + path);
-
-            var evalString = "(function(require,include,__FILE__){\n" + code+ "\n})("+
-                "function(name){return _include(name,'"+path+"',true);},"+
-                "function(name){return _include(name,'"+path+"',false);},"+
-                "'"+path+"'"+
-            ")";
-
-            // this gives us slightly better exception backtraces in Rhino
-            if (typeof Packages !== "undefined")
-                Packages.org.mozilla.javascript.Context.getCurrentContext().evaluateString(this, evalString, path, 0, null);
-            else
-                eval(evalString);
-        }
-        else
-            log.debug(" + already eval'd: " + name + " => " + path);
-
-        return true;
+        log.debug(" + already loaded: " + name + " => " + path);
+        return loadedModules[path];
     }
     
+    // FIXME: replace with the real File object
+    // some interpreters throw exceptions.
+    try { moduleCode = readFile(path); } catch (e) {}
+    
+    if (moduleCode)
+    {
+        log.debug(" + loading: " + name + " => " + path);
+        
+        loadedModules[path] = {};
+        
+        var module = new Function("require", "exports", moduleCode)
+        module(_requireFactory(path), loadedModules[path]);
+        
+        return loadedModules[path];
+    }
     return false;
 }
 
@@ -270,7 +264,8 @@ log.error = function(string) {
     if (typeof print === "function")
         print(string);
 }
-log.debug = function(string) {}
+//log.debug = function(string) {}
+log.debug = log.error;
 
 // Interpreter specific code:
 

@@ -4,18 +4,23 @@ load("core.js");
 
 // this adds the relative path "lib" to the search paths.
 // you should change it to an absolute path so you can load libraries from anywhere
-$p.push("lib");
+require.paths.push("lib");
 
-require("jack");
-require("jack/handler");
-require("jack/commonlogger");
-require("jack/contentlength");
-require("jack/file");
-require("jack/head");
-require("jack/lint");
-require("jack/showexceptions");
-require("jack/static");
-require("jack/urlmap");
+
+// record globals
+var globals = {};
+for (var i in this)
+    globals[i] = true;
+
+var Jack = require("jack").Jack;
+
+// check for new globals
+for (var i in this)
+    if (!globals[i])
+        print("NEW GLOBAL: " + i);
+        
+print("DONE LOADING");
+
 
 function main() {
     
