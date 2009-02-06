@@ -17,9 +17,9 @@ var Jack = require("jack").Jack;
 // check for new globals
 for (var i in this)
     if (!globals[i])
-        print("NEW GLOBAL: " + i);
+        log.error("NEW GLOBAL: " + i);
         
-print("DONE LOADING");
+log.error("DONE LOADING");
 
 
 function main() {

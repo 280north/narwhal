@@ -36,7 +36,7 @@ Jack: Rack for JavaScript
 
     If you want to install and run Jackup from a different directory you can edit the following line at the top of the jackup (and roundup) scripts to be an absolute path to the "lib" directory:
 
-        $p.push("lib");
+        require.paths.push("lib");
 
 
 == Writing Jack Applications:
