@@ -9,7 +9,7 @@ require.paths.push("lib");
 var CommonLogger    = require("jack/commonlogger").CommonLogger,
     ShowExceptions  = require("jack/showexceptions").ShowExceptions,
     Lint            = require("jack/lint").Lint,
-    Handler         = require("jack/Handler");
+    Handler         = require("jack/handler");
 
 function main() {
     
