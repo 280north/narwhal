@@ -1,8 +1,5 @@
 var Jack = require("jack");
 
-for (var i in Jack)
-    print(i);
-
 var map = {};
 
 // an extremely simple Jack application

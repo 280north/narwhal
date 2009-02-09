@@ -88,7 +88,12 @@ function _attemptLoad(name, path, loadOnce) {
                 globals[name] = true;
         }
         
-        var module = new Function("require", "exports", moduleCode)
+        var module;
+        if (typeof Packages !== "undefined" && Packages.java)
+            module = Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(__global__, "function(require,exports){"+moduleCode+"}", path, 0, null);
+        else
+            module = new Function("require", "exports", moduleCode)
+        
         module(_requireFactory(path, true), require.loaded[path]);
         
         if (debug) {
