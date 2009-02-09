@@ -1,3 +1,8 @@
+var Jack = require("jack");
+
+for (var i in Jack)
+    print(i);
+
 var map = {};
 
 // an extremely simple Jack application
@@ -17,8 +22,11 @@ map["/httproulette"] = function(env) {
 
 // an index page demonstrating using a Response object
 map["/"] = function(env) {
-    var response = new Jack.Response();
+    var request = new Jack.Request(env),
+        response = new Jack.Response();
 
+    response.write('hello ' + request.GET("name")+"<br />");
+        
     response.write('<a href="hello">hello</a><br />');
     response.write('<a href="httproulette">httproulette</a><br />');
     response.write('<a href="lobster">lobster</a><br />');
@@ -26,10 +34,17 @@ map["/"] = function(env) {
     return response.finish();
 }
 
-// the "Lobster" sample app
-if (Jack.Lobster)
-    map["/lobster"] = new Jack.Lobster();
+map["/lobster"] = Jack.Lobster;
+
+// use the JSONP middleware on this one
+map["/jsontest"] = Jack.JSONP(function(env) {
+    return [200, { "Content-Type" : "application/json" }, "{ hello : 'world' }"];
+});
 
 // middleware:
 
-new Jack.URLMap(map);
+// apply the URLMap
+var app = Jack.ContentLength(Jack.URLMap(map));
+
+// serve the "/example" directory files
+Jack.Static(app, { urls : ["/example"] });

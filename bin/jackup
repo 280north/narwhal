@@ -6,21 +6,10 @@ load("core.js");
 // you should change it to an absolute path so you can load libraries from anywhere
 require.paths.push("lib");
 
-
-// record globals
-var globals = {};
-for (var i in this)
-    globals[i] = true;
-
-var Jack = require("jack").Jack;
-
-// check for new globals
-for (var i in this)
-    if (!globals[i])
-        log.error("NEW GLOBAL: " + i);
-        
-log.error("DONE LOADING");
-
+var CommonLogger    = require("jack/commonlogger").CommonLogger,
+    ShowExceptions  = require("jack/showexceptions").ShowExceptions,
+    Lint            = require("jack/lint").Lint,
+    Handler         = require("jack/Handler");
 
 function main() {
     
@@ -76,10 +65,10 @@ function main() {
 
     switch (env) {
         case "development" :
-            app = new Jack.CommonLogger(new Jack.ShowExceptions(new Jack.Lint(innerApp)));
+            app = CommonLogger(ShowExceptions(Lint(innerApp)));
             break;
         case "deployment" :
-            app = new Jack.CommonLogger(innerApp);
+            app = CommonLogger(innerApp);
             break;
         case "none" :
             app = innerApp;
@@ -88,8 +77,8 @@ function main() {
             throw new Error("Unknown environment");
     }
 
-    if (!(server = Jack.Handler.get(server))) {
-        server = Jack.Handler.Jetty;
+    if (!(server = Handler.get(server))) {
+        server = Handler.Jetty;
     }
     
     server.run(app, options);

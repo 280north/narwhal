@@ -1,14 +1,22 @@
 // This file contains some basic features that *should* be provided by a standard library
 
-(function() {
+(function(__global__) {
 
-// Ruby style "require" and "include" (can't used "load" as it's taken by several JS shells)
+var debug = true;
 
-var requireExtensions = [".js"],
-    loadedModules = {};
+// Securable Modules compatible "require" method
+// https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
 
-var _require = function(name, parentPath, loadOnce) {
-    log.debug(" + _require: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
+require = function(name) {
+    return _require(name, ".", true);
+}
+
+require.paths       = ["."];
+require.loaded      = {};
+require.extensions  = [".js"];
+
+function _require(name, parentPath, loadOnce) {
+    //log.debug(" + _require: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
     
     if (name.charAt(0) === "/")
     {
@@ -19,7 +27,7 @@ var _require = function(name, parentPath, loadOnce) {
     else
     {
         var pwd = File.dirname(parentPath),
-            extensions = (/\.\w+$/).test(name) ? [""] : requireExtensions;
+            extensions = (/\.\w+$/).test(name) ? [""] : require.extensions;
         for (var j = 0; j < extensions.length; j++)
         {
             var ext = extensions[j];
@@ -37,17 +45,12 @@ var _require = function(name, parentPath, loadOnce) {
     
     log.error("couldn't find " + name);
     
+    if (debug)
+        throw new Error("couldn't find " + name); // make this the default behavior pending Securable Modules decision
+    
     return undefined;
 }
 
-require = function(name) {
-    return _require(name, ".", true);
-}
-require.paths = ["."];
-
-include = function(name) {
-    return _require(name, ".", false);
-}
 
 function _requireFactory(path, loadOnce) {
     return function(name) {
@@ -55,17 +58,17 @@ function _requireFactory(path, loadOnce) {
     }
 }
 
-var _attemptLoad = function(name, path, loadOnce) {
+function _attemptLoad(name, path, loadOnce) {
     var path = File.canonicalize(path),
         moduleCode;
     
-    log.debug(" + attemptLoad: " + path +" ("+name+")");
+    //log.debug(" + attemptLoad: " + path +" ("+name+")");
     
     // see if the module is already loaded
-    if (loadedModules[path] && loadOnce)
+    if (require.loaded[path] && loadOnce)
     {
-        log.debug(" + already loaded: " + name + " => " + path);
-        return loadedModules[path];
+        //log.debug(" + already loaded: " + name + " => " + path);
+        return require.loaded[path];
     }
     
     // FIXME: replace with the real File object
@@ -74,14 +77,28 @@ var _attemptLoad = function(name, path, loadOnce) {
     
     if (moduleCode)
     {
-        log.debug(" + loading: " + name + " => " + path);
+        log.debug(" + loading: " + path + " (" + name + ")");
         
-        loadedModules[path] = {};
+        require.loaded[path] = {};
+        
+        var globals = {};
+        if (debug) {
+            // record globals
+            for (var name in __global__)
+                globals[name] = true;
+        }
         
         var module = new Function("require", "exports", moduleCode)
-        module(_requireFactory(path), loadedModules[path]);
+        module(_requireFactory(path, true), require.loaded[path]);
         
-        return loadedModules[path];
+        if (debug) {
+            // check for new globals
+            for (var name in __global__)
+                if (!globals[name])
+                    log.error("NEW GLOBAL: " + name);
+        }
+        
+        return require.loaded[path];
     }
     return false;
 }
@@ -100,28 +117,20 @@ File.dirname = function(path) {
     else
         return "."
 }
+File.extname = function(path) {
+    var index = path.lastIndexOf(".");
+    return index < 0 ? "" : path.substring(index);
+}
 File.join = function() {
     return Array.prototype.join.apply(arguments, [File.SEPARATOR]);
 }
 File.canonicalize = function(path) {
-    return path.replace(/[^\/]+\/..\//g, "").replace(/([^.])\.\//, "$1");
+    return path.replace(/[^\/]+\/\.\.\//g, "").replace(/([^\.])\.\//, "$1").replace(/^\.\//, "");
 }
 
 Dir = {};
 Dir.pwd = function() { return "." }; // FIXME
 
-
-// Enumerable module
-
-Enumerable = {};
-Enumerable.map = function(block) {
-    var that = this,
-        result = [];
-    this.each(function() {
-        result.push(block.apply(that, arguments));
-    });
-    return result;
-}
 
 // Hash object
 
@@ -137,7 +146,7 @@ Hash.update = function(hash, other) {
         hash[key] = other[key];
     return hash;
 }
-Hash.each = function(hash, block) {
+Hash.forEach = function(hash, block) {
     for (var key in hash)
         block(key, hash[key]);
 }
@@ -148,7 +157,9 @@ Hash.map = function(hash, block) {
     return result;
 }
 
-// HashP : Case Preserving hash
+
+// HashP : Case Preserving hash, used for headers
+
 HashP = {};
 HashP.get = function(hash, key) {
     var ikey = HashP._findKey(hash, key);
@@ -179,7 +190,7 @@ HashP.update = function(hash, other) {
         HashP.set(hash, key, other[key]);
     return hash;
 }
-HashP.each = Hash.each;
+HashP.forEach = Hash.forEach;
 HashP.map = Hash.map;
 
 HashP._findKey = function(hash, key) {
@@ -194,37 +205,24 @@ HashP._findKey = function(hash, key) {
     return null;
 }
 
+
 // Array additions
 
-Array.prototype.reverse = function() {
-    var result = [],
-        i = this.length;
-    while(i--) result[i] = this[this.length-i-1];
-    return result;
-}
-
-Array.prototype.inject = function(block, initial) {
-    var memo = (initial === undefined) ? this[0] : initial;
-    for (var i = (initial === undefined) ? 1 : 0; i < this.length; i++)
-        memo = block(memo, this[i]);
-    return memo;
-}
-
-Array.prototype.any = function(block) {
-    return Boolean(this.inject(function(m,o) { return m || block(o); }, false));
-}
-
-Array.prototype.each = Array.prototype.forEach || function(block) { for (var i = 0; i < this.length; i++) block(this[i]); };
+if (typeof Array.prototype.forEach !== "function")
+    Array.prototype.forEach =  function(block) { for (var i = 0; i < this.length; i++) block(this[i]); };
 
 isArray = function(obj) { return obj && typeof obj === "object" && obj.constructor === Array; }
 
+
 // String additions
 
-String.prototype.each = function(block, separator) {
-    if (!separator)
-        separator = /\n+/;
+String.prototype.forEach = function(block, separator) {
+    block(String(this)); // RHINO bug: it things "this" is a Java string (?!)
     
-    this.split(separator).each(block);
+    //if (!separator)
+    //    separator = /\n+/;
+    //
+    //this.split(separator).forEach(block);
 }
 
 String.prototype.squeeze = function() {
@@ -239,11 +237,6 @@ String.prototype.chomp = function(separator) {
     return this.replace(new RegExp("("+extra+"\\r|\\n|\\r\\n)*$"), "");
 }
 
-// Function additions
-
-Function.prototype.invoke = function() {
-    return this.apply(this, arguments);
-}
 
 // IO
 
@@ -264,8 +257,7 @@ log.error = function(string) {
     if (typeof print === "function")
         print(string);
 }
-//log.debug = function(string) {}
-log.debug = log.error;
+log.debug = debug ? log.error : function(){};
 
 // Interpreter specific code:
 
@@ -323,10 +315,6 @@ if (typeof readFile === "undefined") {
 }
 // TODO: implement a File object on top of readFile instead of vice versa
 
-})();
+ARGV = __global__.arguments ||  [];
 
-// needs to be outside the function
-if (typeof arguments !== "undefined")
-    ARGV = arguments;
-else
-    ARGV = [];
+})(this);

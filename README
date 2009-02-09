@@ -3,9 +3,9 @@ Jack: Rack for JavaScript
     "Rack provides an minimal interface between webservers supporting Ruby and Ruby frameworks".replace("Rack","Jack").replace("Ruby","JavaScript")
 
 
-    Indeed, Jack is heavily inspired by Rack (http://rack.rubyforge.org/), as well as Python's WSGI (http://www.wsgi.org/), with adjustments where necessary.
+    Indeed, Jack is heavily inspired by Rack (http://rack.rubyforge.org/), as well as Python's WSGI (http://www.wsgi.org/), with adjustments to suit JavaScript where necessary.
     
-    It provides a common interface between web servers and web applications or frameworks written in JavaScript. At it's core, Jack is simply a protocol that defines an interface, but it is also a set of handlers (to connect to web servers), adapters (to connect to JavaScript frameworks and applications), middleware (to intercept and manipulate requests or responses), and utilities (to make your life easier) implemented in JavaScript.
+    It provides a common interface between web servers and web applications or frameworks written in JavaScript. At it's core, Jack is simply a protocol that defines an interface, but it is also an implementation of a set of handlers (to connect to web servers), adapters (to connect to JavaScript frameworks and applications), middleware (to intercept and manipulate requests or responses), and utilities (to make using Jack easier) implemented in JavaScript.
 
     Homepage: http://jackjs.org/
 
@@ -41,24 +41,23 @@ Jack: Rack for JavaScript
 
 == Writing Jack Applications:
         
-    A Jack application is simply a JavaScript object that responds to the "invoke" method. It should return an array containing three elements: the status code (an integer), the headers values (a hash), and a body object (anything that responds to the "each" method).
+    A Jack application is simply a JavaScript function. It should return an array containing three elements: the status code (an integer), the headers values (a hash), and a body object (anything that responds to the "forEach" method).
     
-    We have extended JavaScript Function objects to respond to "invoke" (it just calls itself, so any function is a valid Rack application, provided it returns the right types), and JavaScript Array and String objects to respond to "each" (so they are valid "body" responses), thus the following is a valid Jack application:
+    We have extended JavaScript Array and String objects to respond to "forEach" (so they are valid "body" responses), thus the following is a valid Jack application:
     
         function(env) {
             return [200, {"Content-Type":"text/plain"}, "Hello world!"];
         }
     
-    If you need something more complex with extra state, you may use an object that has an "invoke" method:
+    If you need something more complex with extra state, you can provide use a "constructor" in the form of a function
         
         MyApp = function(something) {
-            this.something = something;
-        }
-        MyApp.prototype.invoke = function(env) {
-            return [200, {"Content-Type":"text/plain"}, "Hello " + this.something + "!"];
+            return function(env) {
+                return [200, {"Content-Type":"text/plain"}, "Hello " + this.something + "!"];
+            }
         }
         
-        new MyApp("Fred");
+        app = MyApp("Fred");
     
     Be careful to ensure you application is threadsafe if you plan to use a multithreaded server.
         
@@ -92,18 +91,18 @@ Jack: Rack for JavaScript
     
 == Writing Jack Middleware:
 
-    Jack middleware performs some sort of pre or post processing on requests, such as logging, authentication, etc. Most Jack middleware, by convention (and required for use with the Builder DSL, etc), is a constructor that takes in one argument, "app" (which will be a Jack application) and creates a Jack application (i.e. something that responds to "invoke"). In it's "invoke" method it will typically optionally do some preprocessing, followed by calling the "app" that was provided in the constructor, optionally followed by some post processing.
+    Jack middleware performs some sort of pre or post processing on requests, such as logging, authentication, etc. Most Jack middleware, by convention (and required for use with the Builder DSL, etc), is a function that takes in one argument, "app" (which will be a Jack application) and creates a Jack application (i.e. another function that takes in an "env" argument and returns a three element array). In the returned Jack application it will typically optionally do some preprocessing on the request, followed by calling the "app" that was provided, optionally followed by some post processing.
     
     For example, the "Head" middleware call the "app", then checks to see if the request HTTP method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests shouldn't have a response body.
     
-    A more complicated middleware might need to peform postprocessing on the body contents. A common pattern is to call the app, then store the body as a property of itself and return itself *as* the body instead. It also defines an "each" method on itself that proxies to the stored body property. A good example of this is the CommonLogger middleware, which does this in order to calculate the body length for logging.
+    A more complicated middleware might need to peform postprocessing on the body contents. A common pattern is to call the app, then store the body as a property of a "context" and return the context *as* the body instead. It also defines an "forEach" method on the context, which proxies to the stored body property. It is important to proxy the response body rather than buffer the entire response when dealing with streaming type applications. A good example of this pattern is the CommonLogger middleware, which does this in order to calculate the body length for logging.
 
 
 == Caveats
 
     Thread safety:
 
-        Jack is simply a protocol, which is inherently thread safe. However, some compontents of the Jack implementation are currently not threadsafe, namely the CommonLogger, Lint, and File middleware. This will be fixed soon.
+        Jack is simply a protocol, which is inherently thread safe. Additionally, all these components should be threadsafe. If you find one that is not, please report it.
 
     Completeness:
 
@@ -120,38 +119,37 @@ Jack: Rack for JavaScript
 
 == Differences between Jack and Rack:
 
-  Jack uses "invoke" instead of "call" as the interface between Jack apps/middleware. This is because "call" is already defined on functions in JavaScript, and uses the first parameter as the "this" for the method call. The primary difference is that "invoke" does not use the first argument for "this"; the arguments provided to "invoke" will be exactly the arguments provided to the method body.
+  Jack applications are simply functions, rather than objects that respond to the "call" method.
 
 
 == Component Status:
 
+    Component       Status
+    ---------       ------
 Core:
-
-    Request:  incomplete
-    Response: incomplete
+    Request:        incomplete
+    Response:       incomplete
     
 Utilities:
-
-    Jackup:  complete (?)
+    Jackup:         complete (?)
 
 Handlers:
-
-    Servlet: for use with Jetty on Rhino, or other servlet container.
-    Jetty: simple wrapper for Jetty using Servlet handler (http://www.mortbay.org/jetty/)
-    Simple: for use with the Simple webserver (http://www.simpleframework.org/)
-    
-    V8CGI: for use with the v8cgi project (http://code.google.com/p/v8cgi/)
+    Servlet:        complete (?), for use with Jetty on Rhino, or other servlet container.
+    Jetty:          complete (?), simple wrapper for Jetty using Servlet handler (http://www.mortbay.org/jetty/)
+    Simple:         complete (?), for use with the Simple webserver (http://www.simpleframework.org/)
+    V8CGI:          complete (?), for use with the v8cgi project (http://code.google.com/p/v8cgi/)
 
 Middleware:
-
-    CommonLogger:     mostly complete (needs correct date formatting)
-    ContentLength:    complete
-    File:                     broken (needs better file IO)
-    Head:                        complete
-    Lint:                     mostly complete (needs stream wrappers)
-    ShowExceptions: simple version complete
-    Static:                 complete (but broken due to File dependecy)
-    URLMap:                 complete
+    CommonLogger:   mostly complete (needs correct date formatting)
+    ContentLength:  complete
+    File:           broken for non-ASCII files
+    Head:           complete
+    JSONP:          complete
+    Lint:           mostly complete (needs stream wrappers)
+    MethodOverride: complete
+    ShowExceptions: simple version complete, needs better HTML output
+    Static:         complete
+    URLMap:         complete
     
 
 == Acknowledgments

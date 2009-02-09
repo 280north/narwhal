@@ -1,4 +1,4 @@
-require("jack/lobster");
+var Lobster = require("jack/lobster").Lobster;
 
 // the simplest possible Roundabout handler: just return a string
 Roundabout.GET("/", function() {
@@ -11,7 +11,7 @@ Roundabout.GET("/", function() {
 });
 
 // Roundabout can use Jack apps as handlers too
-Roundabout.GET("/asdf", new Jack.Lobster());
+Roundabout.GET("/asdf", Lobster);
 
 // alternate syntax. 
 Roundabout.route({
@@ -35,18 +35,7 @@ Roundabout.GET("/*/{asdf}", function() {
         this.response.write(key + " => " + this.request.GET(key) + "<br />");
 });
 
-// you're given the Jack environment object, so you could instantiate your own Request and Response objects...
-Roundabout.GET("/hello", function(env) {
-	var req = new Jack.Request(env);
-	var name = req.GET("name");
-	
-	var resp = new Jack.Response();
-	resp.setHeader("Content-Type", "text/plain");
-	resp.write("hello "+name+"!");
-	return resp.finish(); // equivalent to returning [200, {"Content-Type" : "text/plain"}, "hello "+name+"!"]
-});
-
-// ...but they're given to you automagically as this.request and this.response. also, this.header and this.body are convienence methods.
+// Request and Response objects are given to you automagically as this.request and this.response. also, this.header and this.body are convienence methods.
 Roundabout.GET("/goodbye", function() {
 	var name = this.request.GET("name");
 	
