@@ -28,8 +28,13 @@ map["/"] = function(env) {
 
 // the "Lobster" sample app
 if (Jack.Lobster)
-    map["/lobster"] = new Jack.Lobster();
+    map["/lobster"] = Jack.Lobster;
+
+
+map["/jsontest"] = Jack.JSONP(function(env) {
+    return [200, { "Content-Type" : "application/json" }, "{ hello : 'world' }"];
+})
 
 // middleware:
 
-new Jack.URLMap(map);
+Jack.URLMap(map);

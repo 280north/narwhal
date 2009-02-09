@@ -71,10 +71,10 @@ function main() {
 
     switch (env) {
         case "development" :
-            app = new Jack.CommonLogger(new Jack.ShowExceptions(new Jack.Lint(innerApp)));
+            app = Jack.CommonLogger(Jack.ShowExceptions(Jack.Lint(innerApp)));
             break;
         case "deployment" :
-            app = new Jack.CommonLogger(innerApp);
+            app = Jack.CommonLogger(innerApp);
             break;
         case "none" :
             app = innerApp;

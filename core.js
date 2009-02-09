@@ -106,28 +106,20 @@ File.dirname = function(path) {
     else
         return "."
 }
+File.extname = function(path) {
+    var index = path.lastIndexOf(".");
+    return index < 0 ? "" : path.substring(index);
+}
 File.join = function() {
     return Array.prototype.join.apply(arguments, [File.SEPARATOR]);
 }
 File.canonicalize = function(path) {
-    return path.replace(/[^\/]+\/..\//g, "").replace(/([^.])\.\//, "$1");
+    return path.replace(/[^\/]+\/..\//g, "").replace(/([^.])\.\//, "$1").replace(/^\.\//, "");
 }
 
 Dir = {};
 Dir.pwd = function() { return "." }; // FIXME
 
-
-// Enumerable module
-
-Enumerable = {};
-Enumerable.map = function(block) {
-    var that = this,
-        result = [];
-    this.each(function() {
-        result.push(block.apply(that, arguments));
-    });
-    return result;
-}
 
 // Hash object
 
@@ -143,7 +135,7 @@ Hash.update = function(hash, other) {
         hash[key] = other[key];
     return hash;
 }
-Hash.each = function(hash, block) {
+Hash.forEach = function(hash, block) {
     for (var key in hash)
         block(key, hash[key]);
 }
@@ -154,7 +146,9 @@ Hash.map = function(hash, block) {
     return result;
 }
 
-// HashP : Case Preserving hash
+
+// HashP : Case Preserving hash, used for headers
+
 HashP = {};
 HashP.get = function(hash, key) {
     var ikey = HashP._findKey(hash, key);
@@ -185,7 +179,7 @@ HashP.update = function(hash, other) {
         HashP.set(hash, key, other[key]);
     return hash;
 }
-HashP.each = Hash.each;
+HashP.forEach = Hash.forEach;
 HashP.map = Hash.map;
 
 HashP._findKey = function(hash, key) {
@@ -200,37 +194,24 @@ HashP._findKey = function(hash, key) {
     return null;
 }
 
+
 // Array additions
 
-Array.prototype.reverse = function() {
-    var result = [],
-        i = this.length;
-    while(i--) result[i] = this[this.length-i-1];
-    return result;
-}
-
-Array.prototype.inject = function(block, initial) {
-    var memo = (initial === undefined) ? this[0] : initial;
-    for (var i = (initial === undefined) ? 1 : 0; i < this.length; i++)
-        memo = block(memo, this[i]);
-    return memo;
-}
-
-Array.prototype.any = function(block) {
-    return Boolean(this.inject(function(m,o) { return m || block(o); }, false));
-}
-
-Array.prototype.each = Array.prototype.forEach || function(block) { for (var i = 0; i < this.length; i++) block(this[i]); };
+if (typeof Array.prototype.forEach !== "function")
+    Array.prototype.forEach =  function(block) { for (var i = 0; i < this.length; i++) block(this[i]); };
 
 isArray = function(obj) { return obj && typeof obj === "object" && obj.constructor === Array; }
 
+
 // String additions
 
-String.prototype.each = function(block, separator) {
-    if (!separator)
-        separator = /\n+/;
+String.prototype.forEach = function(block, separator) {
+    block(String(this)); // RHINO bug: it things "this" is a Java string (?!)
     
-    this.split(separator).each(block);
+    //if (!separator)
+    //    separator = /\n+/;
+    //
+    //this.split(separator).forEach(block);
 }
 
 String.prototype.squeeze = function() {
@@ -245,11 +226,6 @@ String.prototype.chomp = function(separator) {
     return this.replace(new RegExp("("+extra+"\\r|\\n|\\r\\n)*$"), "");
 }
 
-// Function additions
-
-Function.prototype.invoke = function() {
-    return this.apply(this, arguments);
-}
 
 // IO
 
