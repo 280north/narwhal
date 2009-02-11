@@ -16,11 +16,16 @@ function main() {
     var env = "development",
         options = { port : 8080, host : "0.0.0.0" },
         server = null,
-        config = null;
+        config = null,
+        configFile = null;
 
     while (ARGV.length) {
         var arg = ARGV.shift();
         switch (arg) {
+            case "-e" :
+            case "--eval" :
+                configFile = ARGV.shift();
+                break;
             case "-s" :
             case "--server" :
                 server = ARGV.shift();
@@ -54,11 +59,13 @@ function main() {
         }
     }
 
-    config = config || "config.ju"
+    if (!configFile) {
+        config = config || "config.ju"
 
-    var configFile = readFile(config);
-    if (!configFile)
-        throw new Error("configuration " + config + " not found");
+        var configFile = readFile(config);
+        if (!configFile)
+            throw new Error("configuration " + config + " not found");
+    }
 
     var innerApp = eval(configFile),
         app;
