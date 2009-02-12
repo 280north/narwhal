@@ -242,6 +242,11 @@ String.prototype.chomp = function(separator) {
     return this.replace(new RegExp("("+extra+"\\r|\\n|\\r\\n)*$"), "");
 }
 
+// RegExp
+
+RegExp.escape = function(string) {
+    return string.replace(/([\/\\^$*+?.():=!|{},[\]])/g, "\\$1");
+}
 
 // IO
 
