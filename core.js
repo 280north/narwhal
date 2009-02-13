@@ -1,9 +1,18 @@
 // This file contains some basic features that *should* be provided by a standard library
 
-(function(__global__) {
+__global__ = this;
 
-$DEBUG = false;
+(function() {
+
+$DEBUG = true;
 $WARN = true;
+
+if (typeof Packages !== "undefined" && Packages && Packages.java)
+    __platform__ = "rhino";
+//else if (typeof File !== "undefined")
+// __platform__ = "v8cgi";
+else
+    __platform__ = "default";
 
 // Securable Modules compatible "require" method
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
@@ -12,12 +21,13 @@ require = function(name) {
     return _require(name, ".", true);
 }
 
-require.paths       = ["."];
+require.paths       = [".","lib"];
 require.loaded      = {};
 require.extensions  = [".js"];
 
 function _require(name, parentPath, loadOnce) {
-    //log.debug(" + _require: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
+    log.debug(" + _require: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
+    var name = name.replace("{platform}", "platforms/" + __platform__);
     
     if (name.charAt(0) === "/")
     {
@@ -27,7 +37,7 @@ function _require(name, parentPath, loadOnce) {
     }
     else
     {
-        var pwd = File.dirname(parentPath),
+        var pwd = dirname(parentPath),
             extensions = (/\.\w+$/).test(name) ? [""] : require.extensions;
         for (var j = 0; j < extensions.length; j++)
         {
@@ -60,7 +70,7 @@ function _requireFactory(path, loadOnce) {
 }
 
 function _attemptLoad(name, path, loadOnce) {
-    var path = File.canonicalize(path),
+    var path = canonicalize(path),
         moduleCode;
     
     //log.debug(" + attemptLoad: " + path +" ("+name+")");
@@ -109,11 +119,10 @@ function _attemptLoad(name, path, loadOnce) {
     return false;
 }
 
-if (typeof File === "undefined")
-    File = {};
 
-File.SEPARATOR = "/";
-File.dirname = function(path) {
+////////////////////////////////////////////////
+// Ugh, these are duplicated from the File object, since they're required for require, which is required for loading the File object.
+var dirname = function(path) {
     var raw = String(path),
         match = raw.match(/^(.*)\/[^\/]+\/?$/);
     if (match && match[1])
@@ -123,94 +132,14 @@ File.dirname = function(path) {
     else
         return "."
 }
-File.extname = function(path) {
-    var index = path.lastIndexOf(".");
-    return index < 0 ? "" : path.substring(index);
-}
-File.join = function() {
-    return Array.prototype.join.apply(arguments, [File.SEPARATOR]);
-}
-File.canonicalize = function(path) {
+var canonicalize = function(path) {
     return path.replace(/[^\/]+\/\.\.\//g, "").replace(/([^\.])\.\//g, "$1").replace(/^\.\//g, "").replace(/\/\/+/g, "/");
 }
+////////////////////////////////////////////////
 
-Dir = {};
-Dir.pwd = function() { return "." }; // FIXME
+// Built in object additions.
 
-
-// Hash object
-
-Hash = {};
-Hash.merge = function(hash, other) {
-    var merged = {};
-    if (hash) Hash.update(merged, hash);
-    if (other) Hash.update(merged, other);
-    return merged;
-}
-Hash.update = function(hash, other) {
-    for (var key in other)
-        hash[key] = other[key];
-    return hash;
-}
-Hash.forEach = function(hash, block) {
-    for (var key in hash)
-        block(key, hash[key]);
-}
-Hash.map = function(hash, block) {
-    var result = [];
-    for (var key in hash)
-        result.push(block(key, hash[key]));
-    return result;
-}
-
-
-// HashP : Case Preserving hash, used for headers
-
-HashP = {};
-HashP.get = function(hash, key) {
-    var ikey = HashP._findKey(hash, key);
-    if (ikey !== null)
-        return hash[ikey];
-    // not found
-    return undefined;
-}
-HashP.set = function(hash, key, value) {
-    // do case insensitive search, and delete if present
-    var ikey = HashP._findKey(hash, key);
-    if (ikey && ikey !== key)
-        delete hash[ikey];
-    // set it, preserving key case
-    hash[key] = value;
-}
-HashP.includes = function(hash, key) {
-    return HashP.get(hash, key) !== undefined
-}
-HashP.merge = function(hash, other) {
-    var merged = {};
-    if (hash) HashP.update(merged, hash);
-    if (other) HashP.update(merged, other);
-    return merged;
-}
-HashP.update = function(hash, other) {
-    for (var key in other)
-        HashP.set(hash, key, other[key]);
-    return hash;
-}
-HashP.forEach = Hash.forEach;
-HashP.map = Hash.map;
-
-HashP._findKey = function(hash, key) {
-    // optimization
-    if (hash[key] !== undefined)
-        return key;
-    // case insensitive search
-    var key = key.toLowerCase();
-    for (var i in hash)
-        if (i.toLowerCase() === key)
-            return i;
-    return null;
-}
-
+// TODO: move/remove these?
 
 // Array additions
 
@@ -223,7 +152,7 @@ isArray = function(obj) { return obj && typeof obj === "object" && obj.construct
 // String additions
 
 String.prototype.forEach = function(block, separator) {
-    block(String(this)); // RHINO bug: it things "this" is a Java string (?!)
+    block(String(this)); // RHINO bug: it thinks "this" is a Java string (?!)
     
     //if (!separator)
     //    separator = /\n+/;
@@ -249,23 +178,18 @@ RegExp.escape = function(string) {
     return string.replace(/([\/\\^$*+?.():=!|{},[\]])/g, "\\$1");
 }
 
-// IO
-
-IO = function() {}
-IO.prototype.puts = function() {
-    this.write(arguments.length === 0 ? "\n" : Array.prototype.join.apply(arguments, ["\n"]));
-}
-IO.prototype.write = function(object) {
-    this.writeStream(String(object));
-};
-IO.prototype.flush = function() {};
-
 
 // Logging
 
-var _logger = function(string, level) {
-    if (typeof print === "function")
-        print("[" + (level || "log") + "] " + string);
+// TODO: move this to a logger class?
+
+var _logger = function(object, level) {
+    var string = "[" + (level || "log") + "] " + object;
+    
+    if (typeof STDERR !== "undefined")
+        STDERR.puts(string);
+    else if (typeof print !== "undefined")
+        print(string);
 }
 
 log = {
@@ -280,27 +204,6 @@ log = {
 };
 
 // Interpreter specific code:
-
-// setup STDOUT and STDERR:
-STDOUT = new IO();
-STDERR = new IO();
-
-// Rhino
-if (typeof Packages !== "undefined")
-{
-    STDOUT.writeStream = function(string) { Packages.java.lang.System.out.print(string); };
-    STDERR.writeStream = function(string) { Packages.java.lang.System.err.print(string); };
-}
-// Other
-else
-{
-    STDERR.writeStream = function(){};
-    
-    if (typeof print === "function")
-        STDOUT.writeStream = function(string) { print(string); };
-    else
-        STDOUT.writeStream = function() {};
-}
 
 // readFile is used by require. Attempt to define it if it's not already.
 if (typeof readFile === "undefined") {
@@ -333,8 +236,20 @@ if (typeof readFile === "undefined") {
         }
     }
 }
-// TODO: implement a File object on top of readFile instead of vice versa
 
-ARGV = __global__.arguments ||  [];
+var platform = require("platform");
 
-})(this);
+ARGV    = platform.ARGV;
+ENV     = platform.ENV;
+STDOUT  = platform.STDOUT;
+STDERR  = platform.STDERR;
+STDIN   = platform.STDIN;
+
+// TODO: eventually remove some or all of these?
+
+IO      = require("io").IO;
+File    = require("file").File;
+Hash    = require("hash").Hash;
+HashP   = require("hashP").HashP;
+
+})();
