@@ -250,6 +250,6 @@ STDIN   = platform.STDIN;
 IO      = require("io").IO;
 File    = require("file").File;
 Hash    = require("hash").Hash;
-HashP   = require("hashP").HashP;
+HashP   = require("hashp").HashP;
 
 })();
