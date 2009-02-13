@@ -4,12 +4,7 @@ load("core.js");
 
 // this adds the relative path "lib" to the search paths.
 // you should change it to an absolute path so you can load libraries from anywhere
-require.paths.push("lib");
-
-var CommonLogger    = require("jack/commonlogger").CommonLogger,
-    ShowExceptions  = require("jack/showexceptions").ShowExceptions,
-    Lint            = require("jack/lint").Lint,
-    Handler         = require("jack/handler");
+//require.paths.unshift("lib");
 
 function main() {
     
@@ -25,6 +20,18 @@ function main() {
             case "-e" :
             case "--eval" :
                 configFile = ARGV.shift();
+                break;
+            case "-I" :
+            case "--include" :
+                Array.prototype.unshift.apply(require.paths, ARGV.shift().split(":"));
+                break;
+            case "-d" :
+            case "--debug" :
+                $DEBUG = true;
+                break;
+            case "-w" :
+            case "--warn" :
+                $WARN = true;
                 break;
             case "-s" :
             case "--server" :
@@ -72,10 +79,12 @@ function main() {
 
     switch (env) {
         case "development" :
-            app = CommonLogger(ShowExceptions(Lint(innerApp)));
+            app = require("jack/commonlogger").CommonLogger(
+                    require("jack/showexceptions").ShowExceptions(
+                        require("jack/lint").Lint(innerApp)));
             break;
         case "deployment" :
-            app = CommonLogger(innerApp);
+            app = require("jack/commonlogger").CommonLogger(innerApp);
             break;
         case "none" :
             app = innerApp;
@@ -84,7 +93,10 @@ function main() {
             throw new Error("Unknown environment");
     }
 
+    var Handler = require("jack/handler");
+
     if (!(server = Handler.get(server))) {
+        // TODO: more intelligent detection
         server = Handler.Jetty;
     }
     
@@ -100,6 +112,7 @@ function printUsage() {
       -p, --port PORT          use PORT (default: 9292)\n\
       -E, --env ENVIRONMENT    use ENVIRONMENT for defaults (default: development)\n\
       -r, --require LIBRARY    require the library, before executing your script\n\
+      -I, --include PATH       specify $LOAD_PATH (may be used more than once)\n\
 \n\
     Common options:\n\
       -h, --help               Show this message\n\

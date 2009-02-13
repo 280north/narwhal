@@ -2,7 +2,8 @@
 
 (function(__global__) {
 
-var debug = true;
+$DEBUG = false;
+$WARN = true;
 
 // Securable Modules compatible "require" method
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
@@ -43,9 +44,9 @@ function _require(name, parentPath, loadOnce) {
         }
     }
     
-    log.error("couldn't find " + name);
+    log.warn("couldn't find " + name);
     
-    if (debug)
+    if ($DEBUG)
         throw new Error("couldn't find " + name); // make this the default behavior pending Securable Modules decision
     
     return undefined;
@@ -82,7 +83,7 @@ function _attemptLoad(name, path, loadOnce) {
         require.loaded[path] = {};
         
         var globals = {};
-        if (debug) {
+        if ($DEBUG) {
             // record globals
             for (var name in __global__)
                 globals[name] = true;
@@ -96,11 +97,11 @@ function _attemptLoad(name, path, loadOnce) {
         
         module(_requireFactory(path, true), require.loaded[path]);
         
-        if (debug) {
+        if ($DEBUG) {
             // check for new globals
             for (var name in __global__)
                 if (!globals[name])
-                    log.error("NEW GLOBAL: " + name);
+                    log.warn("NEW GLOBAL: " + name);
         }
         
         return require.loaded[path];
@@ -130,7 +131,7 @@ File.join = function() {
     return Array.prototype.join.apply(arguments, [File.SEPARATOR]);
 }
 File.canonicalize = function(path) {
-    return path.replace(/[^\/]+\/\.\.\//g, "").replace(/([^\.])\.\//, "$1").replace(/^\.\//, "");
+    return path.replace(/[^\/]+\/\.\.\//g, "").replace(/([^\.])\.\//g, "$1").replace(/^\.\//g, "").replace(/\/\/+/g, "/");
 }
 
 Dir = {};
@@ -262,12 +263,21 @@ IO.prototype.flush = function() {};
 
 // Logging
 
-log = {};
-log.error = function(string) {
+var _logger = function(string, level) {
     if (typeof print === "function")
-        print(string);
+        print("[" + (level || "log") + "] " + string);
 }
-log.debug = debug ? log.error : function(){};
+
+log = {
+    warn : function(string) {
+        if ($WARN)
+            _logger(string, "warn");
+    },
+    debug : function(string) {
+        if ($DEBUG)
+            _logger(string, "debug");
+    }
+};
 
 // Interpreter specific code:
 
