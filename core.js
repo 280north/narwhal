@@ -121,7 +121,8 @@ function _attemptLoad(name, path, loadOnce) {
 
 
 ////////////////////////////////////////////////
-// Ugh, these are duplicated from the File object, since they're required for require, which is required for loading the File object.
+// Ugh, these are duplicated from the File object, since they're required for 
+// require, which is required for loading the File object.
 var dirname = function(path) {
     var raw = String(path),
         match = raw.match(/^(.*)\/[^\/]+\/?$/);
@@ -136,47 +137,6 @@ var canonicalize = function(path) {
     return path.replace(/[^\/]+\/\.\.\//g, "").replace(/([^\.])\.\//g, "$1").replace(/^\.\//g, "").replace(/\/\/+/g, "/");
 }
 ////////////////////////////////////////////////
-
-// Built in object additions.
-
-// TODO: move/remove these?
-
-// Array additions
-
-if (typeof Array.prototype.forEach !== "function")
-    Array.prototype.forEach =  function(block) { for (var i = 0; i < this.length; i++) block(this[i]); };
-
-isArray = function(obj) { return obj && typeof obj === "object" && obj.constructor === Array; }
-
-
-// String additions
-
-String.prototype.forEach = function(block, separator) {
-    block(String(this)); // RHINO bug: it thinks "this" is a Java string (?!)
-    
-    //if (!separator)
-    //    separator = /\n+/;
-    //
-    //this.split(separator).forEach(block);
-}
-
-String.prototype.squeeze = function() {
-    var set = arguments.length > 0 ? "["+Array.prototype.join.apply(arguments, ["]|["])+"]" : ".|\\n",
-        regex = new RegExp("("+set+")\\1+", "g");
-    
-    return this.replace(regex, "$1");
-}
-
-String.prototype.chomp = function(separator) {
-    var extra = separator ? separator + "|" : "";
-    return this.replace(new RegExp("("+extra+"\\r|\\n|\\r\\n)*$"), "");
-}
-
-// RegExp
-
-RegExp.escape = function(string) {
-    return string.replace(/([\/\\^$*+?.():=!|{},[\]])/g, "\\$1");
-}
 
 
 // Logging
@@ -236,6 +196,10 @@ if (typeof readFile === "undefined") {
         }
     }
 }
+
+require("array");
+require("string");
+require("regexp");
 
 var platform = require("platform");
 
