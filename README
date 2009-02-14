@@ -2,7 +2,6 @@ Jack: Rack for JavaScript
 
     "Rack provides an minimal interface between webservers supporting Ruby and Ruby frameworks".replace("Rack","Jack").replace("Ruby","JavaScript")
 
-
     Indeed, Jack is heavily inspired by Rack (http://rack.rubyforge.org/), as well as Python's WSGI (http://www.wsgi.org/), with adjustments to suit JavaScript where necessary.
     
     It provides a common interface between web servers and web applications or frameworks written in JavaScript. At it's core, Jack is simply a protocol that defines an interface, but it is also an implementation of a set of handlers (to connect to web servers), adapters (to connect to JavaScript frameworks and applications), middleware (to intercept and manipulate requests or responses), and utilities (to make using Jack easier) implemented in JavaScript.
@@ -61,7 +60,7 @@ Jack: Rack for JavaScript
     
     Be careful to ensure you application is threadsafe if you plan to use a multithreaded server.
         
-    The first (and only) argument to the invoke method is the "environment", which contains a number of properties. Many of the common CGI environment variables are included, as well as some Jack specific properties which are prefixed with "jack.".
+    The first (and only) argument to the application method is the "environment", which contains a number of properties. Many of the common CGI environment variables are included, as well as some Jack specific properties which are prefixed with "jack.".
 
     The Request and Response objects aren't required, but may be helpful in parsing request parameters, and building a valid response. They are used as follows:
     
