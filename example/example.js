@@ -17,12 +17,14 @@ map["/httproulette"] = function(env) {
     return [200, {"Content-Type":"text/html"}, 'whew!<br /><a href="httproulette">try again</a>'];
 }
 
+var form = '<form action="" method="get"><input type="text" name="name" value="" id="some_name"><input type="submit" value="go"></p></form>';
+
 // an index page demonstrating using a Response object
 map["/"] = function(env) {
     var request = new Jack.Request(env),
         response = new Jack.Response();
 
-    response.write('hello ' + request.GET("name")+"<br />");
+    response.write('hello ' + (request.GET("name") || form) +"<br />");
         
     response.write('<a href="hello">hello</a><br />');
     response.write('<a href="httproulette">httproulette</a><br />');
