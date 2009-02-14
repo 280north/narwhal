@@ -2,10 +2,6 @@
 
 load("core.js");
 
-// this adds the relative path "lib" to the search paths.
-// you should change it to an absolute path so you can load libraries from anywhere
-//require.paths.unshift("lib");
-
 function main() {
     
     var env = "development",
@@ -111,8 +107,12 @@ function printUsage() {
       -o, --host HOST          listen on HOST (default: 0.0.0.0)\n\
       -p, --port PORT          use PORT (default: 9292)\n\
       -E, --env ENVIRONMENT    use ENVIRONMENT for defaults (default: development)\n\
-      -r, --require LIBRARY    require the library, before executing your script\n\
+\n\
+      -e, --eval LINE          evaluate a LINE of code\n\
+      -d, --debug              set debugging flags (set $DEBUG to true)\n\
+      -w, --warn               turn warnings on for your script\n\
       -I, --include PATH       specify $LOAD_PATH (may be used more than once)\n\
+      -r, --require LIBRARY    require the library, before executing your script\n\
 \n\
     Common options:\n\
       -h, --help               Show this message\n\
