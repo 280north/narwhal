@@ -21,7 +21,7 @@ require = function(name) {
     return _require(name, ".", true);
 }
 
-require.paths       = [".","lib"];
+require.paths       = (typeof $LOAD_PATH === "string") ? $LOAD_PATH.split(":") : ["lib"];
 require.loaded      = {};
 require.extensions  = [".js"];
 
@@ -38,13 +38,14 @@ function _require(name, parentPath, loadOnce) {
     else
     {
         var pwd = dirname(parentPath),
-            extensions = (/\.\w+$/).test(name) ? [""] : require.extensions;
+            extensions = (/\.\w+$/).test(name) ? [""] : require.extensions,
+            paths = ["."].concat(require.paths);
         for (var j = 0; j < extensions.length; j++)
         {
             var ext = extensions[j];
-            for (var i = 0; i < require.paths.length; i++)
+            for (var i = 0; i < paths.length; i++)
             {
-                var searchDirectory = (require.paths[i] === ".") ? pwd : require.paths[i],
+                var searchDirectory = (paths[i] === ".") ? pwd : paths[i],
                     path = searchDirectory + "/" + name + ext;
                     
                 var result = _attemptLoad(name, path, loadOnce);
