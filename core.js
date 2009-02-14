@@ -1,21 +1,26 @@
-// This file contains some basic features that *should* be provided by a standard library
-
+// global reference
 __global__ = this;
 
-(function() {
+// debug flag
+if (typeof $DEBUG === "undefined")
+    $DEBUG = false;
 
-$DEBUG = true;
-$WARN = true;
-
+// determine platform
 if (typeof Packages !== "undefined" && Packages && Packages.java)
     __platform__ = "rhino";
-//else if (typeof File !== "undefined")
-// __platform__ = "v8cgi";
 else
     __platform__ = "default";
 
+// logger shim until it's loaded
+log = {};
+log.fatal = log.error = log.warn = log.info = log.debug = function() {
+    if ($DEBUG && typeof print === "function")
+        print(Array.prototype.join.apply(arguments, [" "]));
+};
+
 // Securable Modules compatible "require" method
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
+(function() {
 
 require = function(name) {
     return _require(name, ".", true);
@@ -55,14 +60,13 @@ function _require(name, parentPath, loadOnce) {
         }
     }
     
-    log.warn("couldn't find " + name);
+    log.debug("couldn't find " + name);
     
-    if ($DEBUG)
+    //if ($DEBUG)
         throw new Error("couldn't find " + name); // make this the default behavior pending Securable Modules decision
     
     return undefined;
 }
-
 
 function _requireFactory(path, loadOnce) {
     return function(name) {
@@ -73,19 +77,14 @@ function _requireFactory(path, loadOnce) {
 function _attemptLoad(name, path, loadOnce) {
     var path = canonicalize(path),
         moduleCode;
-    
-    //log.debug(" + attemptLoad: " + path +" ("+name+")");
-    
+        
     // see if the module is already loaded
     if (require.loaded[path] && loadOnce)
-    {
-        //log.debug(" + already loaded: " + name + " => " + path);
         return require.loaded[path];
-    }
     
     // FIXME: replace with the real File object
     // some interpreters throw exceptions.
-    try { moduleCode = readFile(path); } catch (e) {}
+    try { moduleCode = _readFile(path); } catch (e) {}
     
     if (moduleCode)
     {
@@ -139,50 +138,17 @@ var canonicalize = function(path) {
 }
 ////////////////////////////////////////////////
 
-
-// Logging
-
-// TODO: move this to a logger class?
-
-var _logger = function(object, level) {
-    var string = "[" + (level || "log") + "] " + object;
-    
-    if (typeof STDERR !== "undefined")
-        STDERR.puts(string);
-    else if (typeof print !== "undefined")
-        print(string);
+var _readFile;
+if (typeof readFile !== "undefined") {
+    _readFile = readFile;
 }
-
-log = {
-    warn : function(string) {
-        if ($WARN)
-            _logger(string, "warn");
-    },
-    debug : function(string) {
-        if ($DEBUG)
-            _logger(string, "debug");
-    }
-};
-
-// Interpreter specific code:
-
-// readFile is used by require. Attempt to define it if it's not already.
-if (typeof readFile === "undefined") {
-    // Ruby
-    if (typeof Ruby !== "undefined") {
-        readFile = function(path) {
-            try {
-                if (Ruby.File["readable?"](path))
-                    return String(Ruby.File.read(path));
-            } catch (e) {}
-            return "";
-        }
-    }
+else {
     // v8cgi
-    else if (typeof File !== "undefined") {
-        readFile = function(path) {
+    if (typeof File !== "undefined") {
+        var _File = File;
+        _readFile = function(path) {
             var result = "",
-                f = new File(path);
+                f = new _File(path);
             try {
                 if (!f.exists())
                     throw new Error();
@@ -196,25 +162,14 @@ if (typeof readFile === "undefined") {
             return result;
         }
     }
+    else
+        throw new Error("No readFile implementation.");
 }
 
-require("array");
-require("string");
-require("regexp");
-
-var platform = require("platform");
-
-ARGV    = platform.ARGV;
-ENV     = platform.ENV;
-STDOUT  = platform.STDOUT;
-STDERR  = platform.STDERR;
-STDIN   = platform.STDIN;
-
-// TODO: eventually remove some or all of these?
-
-IO      = require("io").IO;
-File    = require("file").File;
-Hash    = require("hash").Hash;
-HashP   = require("hashp").HashP;
-
 })();
+
+try {
+    require("environment");
+} catch(e) {
+    log.error("Couldn't load environment ("+e+")");
+}
