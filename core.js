@@ -6,10 +6,12 @@ if (typeof $DEBUG === "undefined")
     $DEBUG = false;
 
 // determine platform
-if (typeof Packages !== "undefined" && Packages && Packages.java)
+if (typeof Packages !== "undefined" && Packages && Packages.java) {
+    if ($DEBUG) Packages.org.mozilla.javascript.Context.getCurrentContext().setOptimizationLevel(-1);
     __platform__ = "rhino";
-else
+} else {
     __platform__ = "default";
+}
 
 // logger shim until it's loaded
 log = {};
@@ -26,7 +28,7 @@ require = function(name) {
     return _require(name, ".", true);
 }
 
-require2 = function(name) {
+requireForce = function(name) {
     return _require(name, ".", false);
 }
 
