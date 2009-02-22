@@ -92,7 +92,7 @@ Jack: Rack for JavaScript
 
     Jack middleware performs some sort of pre or post processing on requests, such as logging, authentication, etc. Most Jack middleware, by convention (and required for use with the Builder DSL, etc), is a function that takes in one argument, "app" (which will be a Jack application) and creates a Jack application (i.e. another function that takes in an "env" argument and returns a three element array). In the returned Jack application it will typically optionally do some preprocessing on the request, followed by calling the "app" that was provided, optionally followed by some post processing.
     
-    For example, the "Head" middleware call the "app", then checks to see if the request HTTP method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests shouldn't have a response body.
+    For example, the "Head" middleware calls the "app", then checks to see if the request HTTP method was "HEAD". If so, it clears the body of response before returning it, since HEAD requests shouldn't have a response body.
     
     A more complicated middleware might need to peform postprocessing on the body contents. A common pattern is to call the app, then store the body as a property of a "context" and return the context *as* the body instead. It also defines an "forEach" method on the context, which proxies to the stored body property. It is important to proxy the response body rather than buffer the entire response when dealing with streaming type applications. A good example of this pattern is the CommonLogger middleware, which does this in order to calculate the body length for logging.
 
