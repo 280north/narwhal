@@ -106,7 +106,7 @@ function _attemptLoad(name, path, loadOnce) {
         
         var module;
         if (typeof Packages !== "undefined" && Packages.java)
-            module = Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(__global__, "function(require,exports){"+moduleCode+"}", path, 0, null);
+            module = Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(__global__, "function(require,exports){"+moduleCode+"}", path, 1, null);
         else
             module = new Function("require", "exports", moduleCode)
         
