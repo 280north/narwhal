@@ -89,14 +89,10 @@ function main() {
             throw new Error("Unknown environment");
     }
 
-    var Handler = require("jack/handler");
-
-    if (!(server = Handler.get(server))) {
-        // TODO: more intelligent detection
-        server = Handler.Jetty;
-    }
+    // Load the required handler.
+    handler = require("jack/handler/" + (server || "jetty")).Handler;
     
-    server.run(app, options);
+    handler.run(app, options);
 }
 
 function printUsage() {

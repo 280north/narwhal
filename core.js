@@ -26,6 +26,10 @@ require = function(name) {
     return _require(name, ".", true);
 }
 
+require2 = function(name) {
+    return _require(name, ".", false);
+}
+
 require.paths       = (typeof $LOAD_PATH === "string") ? $LOAD_PATH.split(":") : ["lib"];
 require.loaded      = {};
 require.extensions  = [".js"];
@@ -52,7 +56,6 @@ function _require(name, parentPath, loadOnce) {
             {
                 var searchDirectory = (paths[i] === ".") ? pwd : paths[i],
                     path = searchDirectory + "/" + name + ext;
-                    
                 var result = _attemptLoad(name, path, loadOnce);
                 if (result)
                     return result;
