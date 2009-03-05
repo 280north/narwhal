@@ -1,9 +1,9 @@
 // global reference
+
 __global__ = this;
 
 // debug flag
-if (typeof $DEBUG === "undefined")
-    $DEBUG = false;
+$DEBUG = typeof $DEBUG !== "undefined" && $DEBUG;
 
 // determine platform
 if (typeof Packages !== "undefined" && Packages && Packages.java) {
@@ -25,107 +25,177 @@ log.fatal = log.error = log.warn = log.info = log.debug = function() {
 (function() {
 
 var environment = {};
+environment.print = print;
+environment.platform = __platform__;
 
-require = function(name) {
-    return _require(name, ".", true);
-}
+var Loader = function (options) {
+    var loader = {};
+    var factories = options.factories || {};
+    var paths = options.paths || (
+        typeof $LOAD_PATH === "string" ?
+        $LOAD_PATH.split(":") : ["lib"]
+    );
+    var extensions = options.extensions || ["js"];
 
-requireForce = function(name) {
-    return _require(name, ".", false);
-}
+    loader.resolve = function (id, baseId) {
+        if (typeof id != "string")
+            throw new Error("module id '" + id + "' is not a String");
+        if (id.charAt(0) == ".") {
+            id = dirname(baseId) + "/" + id;
+        }
+        return loader.normalize(id);
+    };
 
-require.paths       = (typeof $LOAD_PATH === "string") ? $LOAD_PATH.split(":") : ["lib"];
-require.loaded      = {};
-require.extensions  = [".js"];
+    loader.normalize = function (id) {
+        id = id.replace("{platform}", "platforms/" + environment.platform);
+        id = canonicalize(id);
+        return id;
+    };
 
-function _require(name, parentPath, loadOnce) {
-    log.debug(" + _require: " + name + " (parent="+parentPath+", loadOnce="+loadOnce+")");
-    var name = name.replace("{platform}", "platforms/" + __platform__);
-    
-    if (name.charAt(0) === "/")
-    {
-        var result = _attemptLoad(name, name, loadOnce);
-        if (result)
-            return result;
-    }
-    else
-    {
-        var pwd = dirname(parentPath),
-            extensions = (/\.\w+$/).test(name) ? [""] : require.extensions,
-            paths = ["."].concat(require.paths);
+    loader.fetch = function (canonical) {
+        var text;
+        // FIXME: replace with the real File object
+        // some interpreters throw exceptions.
         for (var j = 0; j < extensions.length; j++)
         {
             var ext = extensions[j];
             for (var i = 0; i < paths.length; i++)
             {
-                var searchDirectory = (paths[i] === ".") ? pwd : paths[i],
-                    path = searchDirectory + "/" + name + ext;
-                var result = _attemptLoad(name, path, loadOnce);
-                if (result)
-                    return result;
+                var fileName = paths[i] + "/" + canonical + "." + ext;
+                text = undefined;
+                try { text = _readFile(fileName); } catch (exception) {}
+                if (!!text)
+                    return text;
             }
         }
-    }
-    
-    log.debug("couldn't find " + name);
-    
-    //if ($DEBUG)
-        throw new Error("couldn't find " + name); // make this the default behavior pending Securable Modules decision
-    
-    return undefined;
-}
+        throw new Error("require error: couldn't find \"" + canonical + '"');
+    };
 
-function _requireFactory(path, loadOnce) {
-    return function(name) {
-        return _require(name, path, loadOnce || false);
-    }
-}
-
-function _attemptLoad(name, path, loadOnce) {
-    var path = canonicalize(path),
-        moduleCode;
-        
-    // see if the module is already loaded
-    if (require.loaded[path] && loadOnce)
-        return require.loaded[path];
-    
-    // FIXME: replace with the real File object
-    // some interpreters throw exceptions.
-    try { moduleCode = _readFile(path); } catch (e) {}
-    
-    if (moduleCode)
-    {
-        log.debug(" + loading: " + path + " (" + name + ")");
-        
-        require.loaded[path] = {};
-        
-        var globals = {};
-        if ($DEBUG) {
-            // record globals
-            for (var name in __global__)
-                globals[name] = true;
-        }
-        
-        var module;
+    loader.evaluate = function (text, canonical) {
         if (typeof Packages !== "undefined" && Packages.java)
-            module = Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(__global__, "function(require,exports,environment){"+moduleCode+"}", path, 1, null);
+            return Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(
+                __global__,
+                "function(require,exports,environment){"+text+"}",
+                canonical,
+                1,
+                null
+            );
         else
-            module = new Function("require", "exports", "environment", moduleCode)
-        
-        module(_requireFactory(path, true), require.loaded[path], environment);
-        
-        if ($DEBUG) {
-            // check for new globals
-            for (var name in __global__)
-                if (!globals[name])
-                    log.warn("NEW GLOBAL: " + name);
-        }
-        
-        return require.loaded[path];
-    }
-    return false;
-}
+            return new Function("require", "exports", "environment", text);
+    };
 
+    loader.load = function (canonical) {
+        if (!Object.prototype.hasOwnProperty.call(factories, canonical)) {
+            factories[canonical] = loader.evaluate(loader.fetch(canonical), canonical);
+        }
+        return factories[canonical];
+    };
+
+    loader.getPaths = function () {
+        return paths; // todo copy
+    };
+
+    loader.getExtensions = function () {
+        return extensions; // todo copy
+    };
+
+    return loader;
+};
+
+var Sandbox = function (options) {
+    options = options || {};
+    var loader = options.loader;
+    var sandboxEnvironment = options.environment || environment;
+    var modules = options.modules || {};
+    var debug = options.debug !== undefined ? options.debug === true : $DEBUG;
+
+    var debugDepth = 0;
+
+    var sandbox = function (id, baseId, loadOnce) {
+        loadOnce = loadOnce === undefined ? false : loadOnce;
+        id = loader.resolve(id, baseId);
+
+        log.debug("require: " + id + " (parent="+baseId+", loadOnce="+loadOnce+")");
+
+        /* populate memo with module instance */
+        if (!Object.prototype.hasOwnProperty.call(modules, id)) {
+
+            if (debug) {
+                debugDepth++;
+                var debugAcc = "";
+                for (var i = 0; i < debugDepth; i++) debugAcc += "+";
+                environment.print(debugAcc + " " + id, 'module');
+            }
+
+            var globals = {};
+            if (debug) {
+                // record globals
+                for (var name in __global__)
+                    globals[name] = true;
+            }
+            
+            try {
+                var exports = modules[id] = {};
+                var factory = loader.load(id);
+                var require = Require(id);
+                factory(require, exports, sandboxEnvironment);
+            } catch (exception) {
+                modules[id] = undefined;
+                delete modules[id];
+                throw exception;
+            }
+
+            if (debug) {
+                // check for new globals
+                for (var name in __global__)
+                    if (!globals[name])
+                        log.warn("NEW GLOBAL: " + name);
+            }
+        
+            if (debug) {
+                var debugAcc = "";
+                for (var i = 0; i < debugDepth; i++) debugAcc += "-";
+                environment.print(debugAcc + " " + id, 'module');
+                debugDepth--;
+            }
+
+        }
+
+        return modules[id];
+
+    };
+
+    var Require = function (baseId) {
+        var require = function (id) {
+            try {
+                return sandbox(id, baseId);
+            } catch (exception) {
+                if (exception.message)
+                    exception.message += ' in ' + baseId;
+                throw exception;
+            }
+        };
+        require.id = baseId;
+        require.loader = loader;
+        return require;
+    };
+
+    return sandbox;
+};
+
+var loader = Loader({
+});
+
+var _require = Sandbox({
+    loader: loader
+});
+
+require = function (name) {
+    return _require(name, ".", false);
+};
+requireForce = function(name) {
+    return _require(name, ".", false);
+};
 
 ////////////////////////////////////////////////
 // Ugh, these are duplicated from the File object, since they're required for 
@@ -139,10 +209,18 @@ var dirname = function(path) {
         return "/"
     else
         return "."
-}
+};
+
 var canonicalize = function(path) {
-    return path.replace(/[^\/]+\/\.\.\//g, "").replace(/([^\.])\.\//g, "$1").replace(/^\.\//g, "").replace(/\/\/+/g, "/");
-}
+    return (
+        path
+        .replace(/[^\/]+\/\.\.\//g, "")
+        .replace(/([^\.])\.\//g, "$1")
+        .replace(/^\.\//g, "")
+        .replace(/\/\/+/g, "/")
+    );
+};
+
 ////////////////////////////////////////////////
 
 var _readFile;
@@ -173,10 +251,11 @@ else {
         throw new Error("No readFile implementation.");
 }
 
-})();
-
 try {
     require("environment");
 } catch(e) {
     log.error("Couldn't load environment ("+e+")");
 }
+
+})();
+
