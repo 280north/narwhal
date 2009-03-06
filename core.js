@@ -177,6 +177,7 @@ var Sandbox = function (options) {
         };
         require.id = baseId;
         require.loader = loader;
+        require.xRackSandbox = Sandbox;
         return require;
     };
 
