@@ -40,6 +40,8 @@ map["/jsontest"] = Jack.JSONP(function(env) {
     return [200, { "Content-Type" : "application/json" }, "{ hello : 'world' }"];
 });
 
+map["/files"] = Jack.File(".");
+
 // middleware:
 
 // apply the URLMap
