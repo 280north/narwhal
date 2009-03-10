@@ -110,12 +110,15 @@ var Sandbox = function (options) {
     var debug = options.debug !== undefined ? options.debug === true : $DEBUG;
 
     var debugDepth = 0;
+    var mainId;
 
-    var sandbox = function (id, baseId, loadOnce) {
-        loadOnce = loadOnce === undefined ? false : loadOnce;
+    var sandbox = function (id, baseId) {
         id = loader.resolve(id, baseId);
 
-        log.debug("require: " + id + " (parent="+baseId+", loadOnce="+loadOnce+")");
+        log.debug("require: " + id + " (parent="+baseId+")");
+
+        if (baseId === undefined)
+            mainId = id;
 
         /* populate memo with module instance */
         if (!Object.prototype.hasOwnProperty.call(modules, id)) {
@@ -177,26 +180,15 @@ var Sandbox = function (options) {
         };
         require.id = baseId;
         require.loader = loader;
-        require.xRackSandbox = Sandbox;
+        require.main = mainId;
         return require;
     };
 
     return sandbox;
 };
 
-var loader = Loader({
-});
-
-var _require = Sandbox({
-    loader: loader
-});
-
-require = function (name) {
-    return _require(name, ".", false);
-};
-requireForce = function(name) {
-    return _require(name, ".", false);
-};
+var loader = Loader({});
+require = Sandbox({loader: loader});
 
 ////////////////////////////////////////////////
 // Ugh, these are duplicated from the File object, since they're required for 
