@@ -24,6 +24,8 @@ log.fatal = log.error = log.warn = log.info = log.debug = function() {
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
 (function() {
 
+var environment = {};
+
 require = function(name) {
     return _require(name, ".", true);
 }
@@ -106,11 +108,11 @@ function _attemptLoad(name, path, loadOnce) {
         
         var module;
         if (typeof Packages !== "undefined" && Packages.java)
-            module = Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(__global__, "function(require,exports){"+moduleCode+"}", path, 1, null);
+            module = Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(__global__, "function(require,exports,environment){"+moduleCode+"}", path, 1, null);
         else
-            module = new Function("require", "exports", moduleCode)
+            module = new Function("require", "exports", "environment", moduleCode)
         
-        module(_requireFactory(path, true), require.loaded[path]);
+        module(_requireFactory(path, true), require.loaded[path], environment);
         
         if ($DEBUG) {
             // check for new globals
