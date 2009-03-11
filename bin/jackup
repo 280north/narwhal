@@ -77,20 +77,28 @@ function main() {
     }
 
     /*
-    // arrange for modules to be loaded in a sandbox
-    // that reloads modules.  replace the global require function so that 
-    // its available inside eval for the config file
-    var sandboxing = require('chiron/sandbox');
-    require = sandboxing.Sandbox({
-        environment: require.environment,
-        loader: sandboxing.FileLoader({
-            paths: paths,
-            extensions: extensions
-        })
-    });
+    try {
+        // arrange for modules to be loaded in a sandbox
+        // that reloads modules.  replace the global require function so that 
+        // its available inside eval for the config file
+        var sandboxing = require('chiron/sandbox');
+        require = sandboxing.Sandbox({
+            environment: require.environment,
+            loader: sandboxing.FileLoader({
+                paths: paths,
+                extensions: extensions,
+                debug: $DEBUG
+            })
+        });
+    } catch (exception) {
+        // everything will still work when
+        // chiron is not installed.
+        require.loader.setPaths(paths);
+        require.loader.setExtensions(extensions);
+    }
     */
 
-    /* preload modules noted with --require options */
+    /* preload modules noted by --require options */
     for (var i = 0; i < preload.length; i++)
         require(preload[i], configFile);
 
