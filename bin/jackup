@@ -2,13 +2,19 @@
 
 load("core.js");
 
+(function (evalGlobal) {
+
+
 function main() {
     
     var env = "development",
         options = { port : 8080, host : "0.0.0.0" },
         server = null,
         config = null,
-        configFile = null;
+        configFile = null,
+        paths = require.loader.getPaths(),
+        extensions = require.loader.getExtensions(),
+        preload = [];
 
     while (ARGV.length) {
         var arg = ARGV.shift();
@@ -19,7 +25,7 @@ function main() {
                 break;
             case "-I" :
             case "--include" :
-                Array.prototype.unshift.apply(require.paths, ARGV.shift().split(":"));
+                paths.unshift.apply(paths, ARGV.shift().split(":"));
                 break;
             case "-d" :
             case "--debug" :
@@ -47,7 +53,7 @@ function main() {
                 break;
             case "-r" :
             case "--require" :
-                require(ARGV.shift());
+                preload.push.apply(preload, ARGV.shift());
                 break;
             case "-h" :
             case "--help" :
@@ -70,7 +76,25 @@ function main() {
             throw new Error("configuration " + config + " not found");
     }
 
-    var innerApp = eval(configFile),
+    /*
+    // arrange for modules to be loaded in a sandbox
+    // that reloads modules.  replace the global require function so that 
+    // its available inside eval for the config file
+    var sandboxing = require('chiron/sandbox');
+    require = sandboxing.Sandbox({
+        environment: require.environment,
+        loader: sandboxing.FileLoader({
+            paths: paths,
+            extensions: extensions
+        })
+    });
+    */
+
+    /* preload modules noted with --require options */
+    for (var i = 0; i < preload.length; i++)
+        require(preload[i], configFile);
+
+    var innerApp = evalGlobal(configFile),
         app;
 
     switch (env) {
@@ -120,3 +144,10 @@ try {
 } catch (e) {
     print(e.message);
 }
+
+
+/* return evalGlobal from global context */
+})(function () {
+    return eval(arguments[0]);
+});
+

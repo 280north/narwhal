@@ -95,8 +95,16 @@ var Loader = function (options) {
         return paths; // todo copy
     };
 
+    loader.setPaths = function (_paths) {
+        paths = _paths;
+    };
+
     loader.getExtensions = function () {
         return extensions; // todo copy
+    };
+
+    loader.setExtensions = function (_extensions) {
+        extensions = _extensions;
     };
 
     return loader;
@@ -183,6 +191,9 @@ var Sandbox = function (options) {
         require.main = mainId;
         return require;
     };
+
+    sandbox.loader = loader;
+    sandbox.environment = environment;
 
     return sandbox;
 };
