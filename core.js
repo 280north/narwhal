@@ -216,13 +216,17 @@ var dirname = function(path) {
 };
 
 var canonicalize = function(path) {
-    return (
-        path
-        .replace(/[^\/]+\/\.\.\//g, "")
-        .replace(/([^\.])\.\//g, "$1")
-        .replace(/^\.\//g, "")
-        .replace(/\/\/+/g, "/")
-    );
+    var original;
+    do {
+        original = path;
+        path = path
+            .replace(/[^\/]+\/\.\.\//g, "")
+            .replace(/([^\.])\.\//g, "$1")
+            .replace(/^\.\//g, "")
+            .replace(/\/\/+/g, "/");
+    } while (path !== original);
+        
+    return path;
 };
 
 ////////////////////////////////////////////////
