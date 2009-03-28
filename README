@@ -135,7 +135,7 @@ Utilities:
 Handlers:
     Servlet:        complete (?), for use with Jetty on Rhino, or other servlet container.
     Jetty:          complete (?), simple wrapper for Jetty using Servlet handler (http://www.mortbay.org/jetty/)
-    Simple:         complete (?), for use with the Simple webserver, version 4.1.3 (http://www.simpleframework.org/)
+    Simple:         complete (?), for use with the Simple webserver (http://www.simpleframework.org/)
     V8CGI:          complete (?), for use with the v8cgi project (http://code.google.com/p/v8cgi/)
 
 Middleware:
