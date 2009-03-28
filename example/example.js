@@ -29,6 +29,7 @@ map["/"] = function(env) {
     response.write('<a href="hello">hello</a><br />');
     response.write('<a href="httproulette">httproulette</a><br />');
     response.write('<a href="lobster">lobster</a><br />');
+    response.write('<a href="stream">stream</a><br />');
 
     return response.finish();
 }
@@ -41,6 +42,18 @@ map["/jsontest"] = Jack.JSONP(function(env) {
 });
 
 map["/files"] = Jack.File(".");
+
+map["/stream"] = function(env) {
+    return [200,
+        {"Content-Type":"text/html", "Transfer-Encoding":"chunked"},
+        { forEach : function(write) {
+            for (var i = 0; i < 50; i++) { 
+                java.lang.Thread.currentThread().sleep(100); 
+                write("hellohellohellohellohellohellohellohellohellohellohellohellohello<br />"); 
+            }
+        }
+    }];
+}
 
 // middleware:
 
