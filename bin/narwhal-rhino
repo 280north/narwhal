@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# get path of the executable
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
+
+# resolve symlinks
+if [ -h $SELF_PATH ]; then
+    SELF_PATH=`readlink $SELF_PATH`
+fi
+
+SELF_DIR=`dirname $SELF_PATH`
+
+NARWHAL_HOME=`dirname $SELF_DIR`
+NARWHAL="$NARWHAL_HOME/narwhal-rhino.js"
+
+CLASSPATH="$(find $NARWHAL_HOME/jars -name '*.jar' | tr '\n' ':'):$CLASSPATH"
+
+RLWRAP=`which rlwrap`
+
+# convert paths for Cygwin
+if [[ `uname` == CYGWIN* ]]; then
+    NARWHAL_HOME=`cygpath -wp "$NARWHAL_HOME"`
+    NARWHAL=`cygpath -wp "$NARWHAL"`
+fi
+
+export NARWHAL_HOME
+
+# drop into shell if there's no additional arguments
+if [ $# -lt 1 ]; then
+	SHELLMODE="-f -"
+fi
+
+$RLWRAP java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main -f $NARWHAL $SHELLMODE $@
