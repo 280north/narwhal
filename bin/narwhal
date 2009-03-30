@@ -11,7 +11,9 @@ fi
 SELF_DIR=`dirname $SELF_PATH`
 
 NARWHAL_HOME=`dirname $SELF_DIR`
-NARWHAL="$NARWHAL_HOME/narwhal.js"
+NARWHAL="$NARWHAL_HOME/narwhal-rhino.js"
+
+CLASSPATH="$(find $NARWHAL_HOME/jars -name '*.jar' | tr '\n' ':'):$CLASSPATH"
 
 RLWRAP=`which rlwrap`
 
