@@ -25,4 +25,9 @@ fi
 
 export NARWHAL_HOME
 
-$RLWRAP java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main -f $NARWHAL -f - $@
+# drop into shell if there's no additional arguments
+if [ $# -lt 1 ]; then
+	SHELLMODE="-f -"
+fi
+
+$RLWRAP java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main -f $NARWHAL $SHELLMODE $@
