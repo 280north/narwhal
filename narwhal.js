@@ -280,7 +280,8 @@ try {
 }
 
 // load the program module
-require(ARGV.shift());
+if (ARGV.length)
+    require(ARGV.shift());
 
 })();
 
