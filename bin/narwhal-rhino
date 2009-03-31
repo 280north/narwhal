@@ -15,7 +15,16 @@ SELF_DIR=`dirname $SELF_PATH`
 NARWHAL_HOME=`dirname $SELF_DIR`
 NARWHAL="$NARWHAL_HOME/narwhal-rhino.js"
 
-CLASSPATH="$(find $NARWHAL_HOME/jars -name '*.jar' | tr '\n' ':'):$CLASSPATH"
+export CLASSPATH=`find "$NARWHAL_HOME"/jars -name '*.jar' | (
+    while read JAR; do
+        if [ "$CLASSPATH" ]; then
+            CLASSPATH="$CLASSPATH":"$JAR"
+        else
+            CLASSPATH="$JAR"
+        fi
+    done
+    echo "$CLASSPATH"
+)`
 
 RLWRAP=`which rlwrap`
 
@@ -27,9 +36,14 @@ fi
 
 export NARWHAL_HOME
 
+RHINO="$RLWRAP java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main"
+
 # drop into shell if there's no additional arguments
 if [ $# -lt 1 ]; then
-	SHELLMODE="-f -"
+    $RHINO -f $NARWHAL -f -
+else
+    MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
+    MAIN=$MAIN/$(basename -- "$1" .js)
+    shift
+    $RHINO $NARWHAL $MAIN "$@"
 fi
-
-$RLWRAP java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main -f $NARWHAL $SHELLMODE $@

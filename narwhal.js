@@ -35,7 +35,7 @@ var Loader = function (options) {
         typeof $LOAD_PATH === "string" ?
         $LOAD_PATH.split(":") : ["lib"]
     );
-    var extensions = options.extensions || ["js"];
+    var extensions = options.extensions || ["", ".js"];
 
     loader.resolve = function (id, baseId) {
         if (typeof id != "string")
@@ -61,9 +61,11 @@ var Loader = function (options) {
             var ext = extensions[j];
             for (var i = 0; i < paths.length; i++)
             {
-                var fileName = paths[i] + "/" + canonical + "." + ext;
+                var fileName = join(paths[i], canonical + ext);
                 text = undefined;
                 try { text = _readFile(fileName); } catch (exception) {}
+                // remove the shebang, if there is one.
+                text = text.replace(/^#[^\n]+\n/, "\n");
                 if (!!text)
                     return text;
             }
@@ -229,6 +231,18 @@ var canonicalize = function(path) {
     return path;
 };
 
+var join = function (base) {
+    for (var i = 1; i < arguments.length; i++) {
+        var rel = arguments[i];
+        if (rel.match(/^\//)) {
+            base = rel;
+        } else {
+            base = base + '/' + rel;
+        }
+    }
+    return canonicalize(base);
+};
+
 ////////////////////////////////////////////////
 
 var _readFile;
@@ -264,6 +278,9 @@ try {
 } catch(e) {
     log.error("Couldn't load environment ("+e+")");
 }
+
+// load the program module
+require(ARGV.shift());
 
 })();
 
