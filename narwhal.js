@@ -24,9 +24,9 @@ log.fatal = log.error = log.warn = log.info = log.debug = function() {
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
 (function() {
 
-var environment = {};
-environment.print = print;
-environment.platform = __platform__;
+var sys = {};
+sys.print = print;
+sys.platform = __platform__;
 
 var Loader = function (options) {
     var loader = {};
@@ -47,7 +47,7 @@ var Loader = function (options) {
     };
 
     loader.normalize = function (id) {
-        id = id.replace("{platform}", "platforms/" + environment.platform);
+        id = id.replace("{platform}", "platforms/" + sys.platform);
         id = canonicalize(id);
         return id;
     };
@@ -65,9 +65,10 @@ var Loader = function (options) {
                 text = undefined;
                 try { text = _readFile(fileName); } catch (exception) {}
                 // remove the shebang, if there is one.
-                text = text.replace(/^#[^\n]+\n/, "\n");
-                if (!!text)
+                if (!!text) {
+                    text = text.replace(/^#[^\n]+\n/, "\n");
                     return text;
+                }
             }
         }
         throw new Error("require error: couldn't find \"" + canonical + '"');
@@ -77,13 +78,13 @@ var Loader = function (options) {
         if (typeof Packages !== "undefined" && Packages.java)
             return Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(
                 __global__,
-                "function(require,exports,environment){"+text+"}",
+                "function(require,exports,sys){"+text+"}",
                 canonical,
                 1,
                 null
             );
         else
-            return new Function("require", "exports", "environment", text);
+            return new Function("require", "exports", "sys", text);
     };
 
     loader.load = function (canonical) {
@@ -94,19 +95,19 @@ var Loader = function (options) {
     };
 
     loader.getPaths = function () {
-        return paths; // todo copy
+        return Array.prototype.slice.call(paths);
     };
 
     loader.setPaths = function (_paths) {
-        paths = _paths;
+        paths = Array.prototype.slice.call(_paths);
     };
 
     loader.getExtensions = function () {
-        return extensions; // todo copy
+        return Array.prototype.slice.call(extensions);
     };
 
     loader.setExtensions = function (_extensions) {
-        extensions = _extensions;
+        extensions = Array.prototype.slice.call(_extensions);
     };
 
     return loader;
@@ -115,7 +116,7 @@ var Loader = function (options) {
 var Sandbox = function (options) {
     options = options || {};
     var loader = options.loader;
-    var sandboxEnvironment = options.environment || environment;
+    var sandboxSys = options.sys || sys;
     var modules = options.modules || {};
     var debug = options.debug !== undefined ? options.debug === true : $DEBUG;
 
@@ -137,7 +138,7 @@ var Sandbox = function (options) {
                 debugDepth++;
                 var debugAcc = "";
                 for (var i = 0; i < debugDepth; i++) debugAcc += "+";
-                environment.print(debugAcc + " " + id, 'module');
+                sys.print(debugAcc + " " + id, 'module');
             }
 
             var globals = {};
@@ -151,7 +152,7 @@ var Sandbox = function (options) {
                 var exports = modules[id] = {};
                 var factory = loader.load(id);
                 var require = Require(id);
-                factory(require, exports, sandboxEnvironment);
+                factory(require, exports, sandboxSys);
             } catch (exception) {
                 modules[id] = undefined;
                 delete modules[id];
@@ -168,7 +169,7 @@ var Sandbox = function (options) {
             if (debug) {
                 var debugAcc = "";
                 for (var i = 0; i < debugDepth; i++) debugAcc += "-";
-                environment.print(debugAcc + " " + id, 'module');
+                sys.print(debugAcc + " " + id, 'module');
                 debugDepth--;
             }
 
@@ -195,7 +196,7 @@ var Sandbox = function (options) {
     };
 
     sandbox.loader = loader;
-    sandbox.environment = environment;
+    sandbox.sys = sys;
 
     return sandbox;
 };
@@ -219,6 +220,7 @@ var dirname = function(path) {
 
 var canonicalize = function(path) {
     var original;
+
     do {
         original = path;
         path = path
