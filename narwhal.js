@@ -175,7 +175,36 @@ var Sandbox = function (options) {
 
         }
 
-        return modules[id];
+        /* support curryId for modules in which it is requested */
+        var exports = modules[id];
+        var imports = {};
+        var importsUsed = false;
+        for (var name in exports) {
+            if (
+                exports[name] !== undefined &&
+                exports[name] !== null &&
+                exports[name].xNarwhalCurryId
+            ) {
+                importsUsed = true;
+                imports[name] = (function (callback) {
+                    var curried = function () {
+                        return callback.apply(
+                            this,
+                            [baseId].concat(Array.prototype.slice.call(arguments, 0))
+                        );
+                    };
+                    curried.xNarwhalCurryId = callback;
+                    return curried;
+                })(exports[name].xNarwhalCurryId);
+            } else {
+                imports[name] = exports[name];
+            }
+        }
+
+        if (!importsUsed)
+            imports = exports;
+
+        return imports;
 
     };
 
@@ -192,6 +221,18 @@ var Sandbox = function (options) {
         require.id = baseId;
         require.loader = loader;
         require.main = mainId;
+        /* offers a facility to request the module id
+         * in which a function was imported */
+        require.xNarwhalCurryId = function (callback) {
+            var curried = function () {
+                return callback.apply(
+                    this,
+                    [baseId].concat(Array.prototype.slice.call(arguments))
+                );
+            };
+            curried.curryId = callback;
+            return curried;
+        };
         return require;
     };
 
