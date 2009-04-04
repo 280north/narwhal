@@ -47,9 +47,7 @@ var Loader = function (options) {
     };
 
     loader.normalize = function (id) {
-        id = id.replace("{platform}", "platforms/" + sys.platform);
-        id = canonicalize(id);
-        return id;
+        return canonicalize(id);
     };
 
     loader.fetch = function (canonical) {
