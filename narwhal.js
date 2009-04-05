@@ -279,6 +279,12 @@ try {
     log.error("Couldn't load environment ("+e+")");
 }
 
+try {
+    require("packages");
+} catch(e) {
+    log.error("Couldn't load packages ("+e+")");
+}
+
 // load the program module
 if (ARGV.length)
     require(ARGV.shift());
