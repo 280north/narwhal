@@ -7,7 +7,9 @@ $DEBUG = typeof $DEBUG !== "undefined" && $DEBUG;
 
 // determine platform
 if (typeof Packages !== "undefined" && Packages && Packages.java) {
-    if ($DEBUG) Packages.org.mozilla.javascript.Context.getCurrentContext().setOptimizationLevel(-1);
+    var context = Packages.org.mozilla.javascript.Context.getCurrentContext()
+    if ($DEBUG)
+        context.setOptimizationLevel(-1);
     __platform__ = "rhino";
 } else {
     __platform__ = "default";
@@ -32,8 +34,8 @@ var Loader = function (options) {
     var loader = {};
     var factories = options.factories || {};
     var paths = options.paths || (
-        typeof $LOAD_PATH === "string" ?
-        $LOAD_PATH.split(":") : ["lib"]
+        typeof $NARWHAL_PATH === "string" ?
+        $NARWHAL_PATH.split(":") : ["lib"]
     );
     var extensions = options.extensions || ["", ".js"];
 
@@ -90,6 +92,10 @@ var Loader = function (options) {
             factories[canonical] = loader.evaluate(loader.fetch(canonical), canonical);
         }
         return factories[canonical];
+    };
+
+    loader.isLoaded = function (canonical) {
+        return Object.prototype.hasOwnProperty.call(factories, canonical);
     };
 
     loader.getPaths = function () {
@@ -288,6 +294,11 @@ try {
 // load the program module
 if (ARGV.length)
     require(ARGV.shift());
+
+/* send an unload event if that module has been required */
+if (require.loader.isLoaded('unload')) {
+    require('unload').send();
+}
 
 })();
 

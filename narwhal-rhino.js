@@ -1,14 +1,14 @@
 (function() {
-    var NARWHAL_HOME = Packages.java.lang.System.getenv("NARWHAL_HOME");
-    var JSPATH = Packages.java.lang.System.getenv("JSPATH");
-    var NARWHALPATH = Packages.java.lang.System.getenv("NARWHALPATH");
+    /*
+        this is a minimal platform-specific thunk for narwhal.js
+        that brings the NARWHAL_PATH environment variable into the global
+        scope using Rhino's special access to Java.
+     */
 
-    $LOAD_PATH = NARWHAL_HOME + "/lib/platforms/rhino:" + NARWHAL_HOME + "/lib";
-    if (JSPATH) $LOAD_PATH += ":" + JSPATH;
-    if (NARWHALPATH) $LOAD_PATH += ":" + NARWHALPATH;
+    var NARWHAL_HOME = String(Packages.java.lang.System.getenv("NARWHAL_HOME"));
+    var NARWHAL_PATH = String(Packages.java.lang.System.getenv("NARWHAL_PATH"));
 
-    $NARWHAL_HOME = NARWHAL_HOME;
+    $NARWHAL_PATH = NARWHAL_PATH;
 
     load(NARWHAL_HOME + "/narwhal.js");
-    
 })();
