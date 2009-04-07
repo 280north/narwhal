@@ -62,12 +62,13 @@ var Loader = function (options) {
             for (var i = 0; i < paths.length; i++)
             {
                 var fileName = join(paths[i], canonical + ext);
-                text = undefined;
-                try { text = _readFile(fileName); } catch (exception) {}
-                // remove the shebang, if there is one.
-                if (!!text) {
+                try {
+                    text = narwhalReadFile(fileName);
+                    // remove the shebang, if there is one.
                     text = text.replace(/^#[^\n]+\n/, "\n");
                     return text;
+                } catch (exception) {
+                    // next!
                 }
             }
         }
@@ -291,34 +292,6 @@ var join = function (base) {
 };
 
 ////////////////////////////////////////////////
-
-var _readFile;
-if (typeof readFile !== "undefined") {
-    _readFile = readFile;
-}
-else {
-    // v8cgi
-    if (typeof File !== "undefined") {
-        var _File = File;
-        _readFile = function(path) {
-            var result = "",
-                f = new _File(path);
-            try {
-                if (!f.exists())
-                    throw new Error();
-                    
-                f.open("r");
-                result = f.read();
-                
-            } finally {
-                f.close();
-            }
-            return result;
-        }
-    }
-    else
-        throw new Error("No readFile implementation.");
-}
 
 try {
     require("environment");
