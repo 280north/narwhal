@@ -1,2 +1,6 @@
 #!/usr/bin/env narwhal
+<<<<<<< HEAD:examples/hello
 sys.print("Hello, World!");
+=======
+print("Hello, World!");
+>>>>>>> 490835b6e380b3a54f7ebaa2d37de82d68a910b1:examples/hello
