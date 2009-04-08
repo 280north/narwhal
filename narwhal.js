@@ -62,7 +62,6 @@ var Loader = function (options) {
             for (var i = 0; i < paths.length; i++)
             {
                 var fileName = join(paths[i], canonical + ext);
-<<<<<<< HEAD:narwhal.js
                 try {
                     text = narwhalReadFile(fileName);
                     // remove the shebang, if there is one.
@@ -70,14 +69,6 @@ var Loader = function (options) {
                     return text;
                 } catch (exception) {
                     // next!
-=======
-                text = undefined;
-                try { text = _readFile(fileName); } catch (exception) {}
-                // remove the shebang, if there is one.
-                if (!!text) {
-                    text = text.replace(/^#[^\n]+\n/, "\n");
-                    return text;
->>>>>>> 490835b6e380b3a54f7ebaa2d37de82d68a910b1:narwhal.js
                 }
             }
         }
@@ -295,38 +286,6 @@ var join = function (base) {
             base = rel;
         } else {
             base = base + '/' + rel;
-<<<<<<< HEAD:narwhal.js
-=======
-        }
-    }
-    return canonicalize(base);
-};
-
-////////////////////////////////////////////////
-
-var _readFile;
-if (typeof readFile !== "undefined") {
-    _readFile = readFile;
-}
-else {
-    // v8cgi
-    if (typeof File !== "undefined") {
-        var _File = File;
-        _readFile = function(path) {
-            var result = "",
-                f = new _File(path);
-            try {
-                if (!f.exists())
-                    throw new Error();
-                    
-                f.open("r");
-                result = f.read();
-                
-            } finally {
-                f.close();
-            }
-            return result;
->>>>>>> 490835b6e380b3a54f7ebaa2d37de82d68a910b1:narwhal.js
         }
     }
     return canonicalize(base);
