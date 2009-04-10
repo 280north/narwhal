@@ -231,34 +231,6 @@ var canonicalize = function(path) {
 
 ////////////////////////////////////////////////
 
-var _readFile;
-if (typeof readFile !== "undefined") {
-    _readFile = readFile;
-}
-else {
-    // v8cgi
-    if (typeof File !== "undefined") {
-        var _File = File;
-        _readFile = function(path) {
-            var result = "",
-                f = new _File(path);
-            try {
-                if (!f.exists())
-                    throw new Error();
-                    
-                f.open("r");
-                result = f.read();
-                
-            } finally {
-                f.close();
-            }
-            return result;
-        }
-    }
-    else
-        throw new Error("No readFile implementation.");
-}
-
 try {
     require("environment");
 } catch(e) {
