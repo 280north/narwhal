@@ -34,8 +34,8 @@ var Loader = function (options) {
     var loader = {};
     var factories = options.factories || {};
     var paths = options.paths || (
-        typeof $NARWHAL_PATH === "string" ?
-        $NARWHAL_PATH.split(":") : ["lib"]
+        typeof NARWHAL_PATH === "string" ?
+        NARWHAL_PATH.split(":") : ["lib"]
     );
     var extensions = options.extensions || ["", ".js"];
 
