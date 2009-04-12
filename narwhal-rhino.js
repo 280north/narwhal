@@ -10,6 +10,10 @@
         NARWHAL_HOME = String(Packages.java.lang.System.getenv("NARWHAL_HOME"));
 
     NARWHAL_PATH = String(Packages.java.lang.System.getenv("NARWHAL_PATH"));
+    
+    // TODO: enable this via a command line switch
+    var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
+    context.setOptimizationLevel(-1);
 
     narwhalReadFile = function (path) {
         var path = new java.io.File(path);
