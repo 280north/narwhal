@@ -1,4 +1,4 @@
-(function() {
+(function(global) {
 
     /*
         this is a minimal platform-specific thunk for narwhal.js
@@ -89,6 +89,6 @@
 	 	return String(new Packages.java.lang.String(bytes));
 	}
     */
-    
-    eval(narwhalReadFile(NARWHAL_HOME + "/narwhal.js"));
-})();
+    Packages.org.mozilla.javascript.Context.getCurrentContext().evaluateReader(
+        global, new Packages.java.io.FileReader(NARWHAL_HOME + "/narwhal.js"), "narwhal.js", 1, null);
+})(this);
