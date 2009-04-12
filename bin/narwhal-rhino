@@ -19,16 +19,7 @@ if [ "$JS_PATH" ]; then
     NARWHAL_PATH="$NARWHAL_PATH:$JS_PATH"
 fi
 
-export CLASSPATH=`find "$NARWHAL_HOME"/jars -name '*.jar' | (
-    while read JAR; do
-        if [ "$CLASSPATH" ]; then
-            CLASSPATH="$CLASSPATH":"$JAR"
-        else
-            CLASSPATH="$JAR"
-        fi
-    done
-    echo "$CLASSPATH"
-)`
+export CLASSPATH=$(echo "$(find $NARWHAL_HOME/jars -name '*.jar' | tr '\n' ':'):$CLASSPATH" | sed -E 's/((:):+|^:+|:+$)/\2/g')
 
 RLWRAP=`which rlwrap`
 
