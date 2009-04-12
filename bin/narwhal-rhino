@@ -30,6 +30,22 @@ export CLASSPATH=`find "$NARWHAL_HOME"/jars -name '*.jar' | (
     echo "$CLASSPATH"
 )`
 
+# auto include jars in ./lib
+PWD=$(pwd -P)
+if [ -e "$PWD/lib" ] 
+then
+    export CLASSPATH=`find "$PWD"/lib -name '*.jar' | (
+        while read JAR; do
+            if [ "$CLASSPATH" ]; then
+                CLASSPATH="$CLASSPATH":"$JAR"
+            else
+                CLASSPATH="$JAR"
+            fi
+        done
+        echo "$CLASSPATH"
+    )`
+fi
+
 RLWRAP=`which rlwrap`
 
 # convert paths for Cygwin
