@@ -6,11 +6,11 @@ var IO = exports.IO = function(inputStream, outputStream) {
 }
 
 IO.prototype.read = function(length) {
-    return this.inputStream.read();
+    return this.inputStream(length);
 }
 
 IO.prototype.write = function(object) {
-    this.outputStream.write(object);
+    this.outputStream(object);
 }
 
 IO.prototype.flush = function() {

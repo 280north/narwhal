@@ -1,6 +1,7 @@
 
 var IO = require("./io").IO;
 
+exports.STDIN  = new IO(Packages.java.lang.System['in'], null);
 exports.STDOUT = new IO(null, Packages.java.lang.System.out);
 exports.STDERR = new IO(null, Packages.java.lang.System.err);
 
