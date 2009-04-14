@@ -1,19 +1,9 @@
 // global reference
 
-__global__ = this;
+global = this;
 
 // debug flag
 $DEBUG = typeof $DEBUG !== "undefined" && $DEBUG;
-
-// determine platform
-if (typeof Packages !== "undefined" && Packages && Packages.java) {
-    var context = Packages.org.mozilla.javascript.Context.getCurrentContext()
-    if ($DEBUG)
-        context.setOptimizationLevel(-1);
-    __platform__ = "rhino";
-} else {
-    __platform__ = "default";
-}
 
 // logger shim until it's loaded
 log = {};
@@ -28,7 +18,6 @@ log.fatal = log.error = log.warn = log.info = log.debug = function() {
 
 var sys = {};
 sys.print = print;
-sys.platform = __platform__;
 
 var Loader = function (options) {
     var loader = {};
@@ -78,7 +67,7 @@ var Loader = function (options) {
     loader.evaluate = function (text, canonical) {
         if (typeof Packages !== "undefined" && Packages.java)
             return Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(
-                __global__,
+                global,
                 "function(require,exports,sys){"+text+"}",
                 canonical,
                 1,
@@ -149,7 +138,7 @@ var Sandbox = function (options) {
             var globals = {};
             if (debug) {
                 // record globals
-                for (var name in __global__)
+                for (var name in global)
                     globals[name] = true;
             }
             
@@ -166,7 +155,7 @@ var Sandbox = function (options) {
 
             if (debug) {
                 // check for new globals
-                for (var name in __global__)
+                for (var name in global)
                     if (!globals[name])
                         log.warn("NEW GLOBAL: " + name);
             }

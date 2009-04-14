@@ -49,8 +49,8 @@ require.loader.setPaths(jsPaths.concat(require.loader.getPaths()));
 /* functions */
 
 function topo(graph) {
-    var sorted = [];
-    visited = {};
+    var sorted = [],
+        visited = {};
     for (var name in graph) {
         if (
             Object.prototype.hasOwnProperty.call(graph, name) &&

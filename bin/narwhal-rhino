@@ -14,7 +14,7 @@ SELF_DIR=`dirname $SELF_PATH`
 
 NARWHAL_HOME=`dirname $SELF_DIR`
 NARWHAL="$NARWHAL_HOME/narwhal-rhino.js"
-NARWHAL_PATH="$NARWHAL_HOME/lib/platforms/rhino:$NARWHAL_HOME/lib"
+NARWHAL_PATH="$NARWHAL_HOME/platforms/rhino:$NARWHAL_HOME/lib"
 if [ "$JS_PATH" ]; then
     NARWHAL_PATH="$NARWHAL_PATH:$JS_PATH"
 fi

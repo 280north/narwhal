@@ -1,4 +1,4 @@
-(function() {
+(function(global) {
 
     /*
         this is a minimal platform-specific thunk for narwhal.js
@@ -10,6 +10,10 @@
         NARWHAL_HOME = String(Packages.java.lang.System.getenv("NARWHAL_HOME"));
 
     NARWHAL_PATH = String(Packages.java.lang.System.getenv("NARWHAL_PATH"));
+    
+    // TODO: enable this via a command line switch
+    var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
+    context.setOptimizationLevel(-1);
 
     narwhalReadFile = function (path) {
         var path = new java.io.File(path);
@@ -85,6 +89,6 @@
 	 	return String(new Packages.java.lang.String(bytes));
 	}
     */
-    
-    eval(narwhalReadFile(NARWHAL_HOME + "/narwhal.js"));
-})();
+    Packages.org.mozilla.javascript.Context.getCurrentContext().evaluateReader(
+        global, new Packages.java.io.FileReader(NARWHAL_HOME + "/narwhal.js"), "narwhal.js", 1, null);
+})(this);
