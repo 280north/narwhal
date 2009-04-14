@@ -1,6 +1,6 @@
 // File: Rhino
 
-var IO = require("../io").IO;
+var IO = require("./io").IO;
 
 var File = exports.File = function(path, mode) {
     this.file = new java.io.File(path);

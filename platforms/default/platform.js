@@ -1,4 +1,4 @@
-var IO = require("../io").IO;
+var IO = require("./io").IO;
 
 exports.STDIN  = new IO(function(){}, null);
 exports.STDOUT = new IO(null, function(string) { print(String(string).replace(/\n$/,"")); });

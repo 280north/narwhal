@@ -291,7 +291,7 @@ try {
 try {
     require("packages");
 } catch(e) {
-    log.error("Couldn't load packages ("+e+")");
+    // this might be acceptable in some platforms
 }
 
 // load the program module
