@@ -1,9 +1,10 @@
 (function () {
 
-    NARWHAL_HOME = ENV["NARWHAL_HOME"];
-    NARWHAL_PATH = ENV["NARWHAL_PATH"];
+    var prefix = ENV["NARWHAL_HOME"];
+    var path = ENV["NARWHAL_PATH"];
+    var debug = false;
 
-    narwhalReadFile = function(path) {
+    var read = function(path) {
         var result = "",
             fd = system.posix.fopen(path, "r");
         if (!fd)
@@ -25,10 +26,18 @@
         return result;
     }
 
-    var _print = print;
-    print = function(string) {
-        _print(string + "\n");
-    }
+    var print = _print;
+    delete print;
 
-    eval(narwhalReadFile(NARWHAL_HOME + "/narwhal.js"));
-})();
+    eval(read(prefix + "/narwhal.js"))({
+        global: this,
+        debug: debug,
+        print: function (string) {
+            _print("" + string + "\n");
+        },
+        read: read,
+        prefix: prefix,
+        path: path
+    });
+
+}).call(this);

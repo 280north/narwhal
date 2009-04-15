@@ -1,2 +1,2 @@
 #!/usr/bin/env narwhal
-print("Hello, World!");
+system.print("Hello, World!");

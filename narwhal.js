@@ -1,30 +1,36 @@
+(function (fixtures) {
+
 // global reference
-
-global = this;
-
-// debug flag
-$DEBUG = typeof $DEBUG !== "undefined" && $DEBUG;
-
-// logger shim until it's loaded
-log = {};
-log.fatal = log.error = log.warn = log.info = log.debug = function() {
-    if ($DEBUG && typeof print === "function")
-        print(Array.prototype.join.apply(arguments, [" "]));
-};
+global = fixtures.global;
+print = fixtures.print; // this is non-standard as yet
 
 // Securable Modules compatible "require" method
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
-(function() {
 
-var sys = {};
-sys.print = print;
+var system = global.system = {};
+system.print = fixtures.print;
+system.debug = fixtures.debug;
+system.prefix = fixtures.prefix;
+
+// logger shim until it's loaded
+var shim = function () {
+    if (system.debug && system.print) {
+        system.print(Array.prototype.join.apply(arguments, [" "]));
+    }
+};
+var log = {};
+log.fatal = log.error = log.warn = log.info = log.debug = shim;
+system.log = log;
+
+/* the narwhal installation prefix */
+var prefix = fixtures.prefix;
 
 var Loader = function (options) {
     var loader = {};
     var factories = options.factories || {};
     var paths = options.paths || (
-        typeof NARWHAL_PATH === "string" ?
-        NARWHAL_PATH.split(":") : ["lib"]
+        typeof fixtures.path === "string" ?
+        fixtures.path.split(":") : ["lib"]
     );
     var extensions = options.extensions || ["", ".js"];
 
@@ -52,7 +58,7 @@ var Loader = function (options) {
             {
                 var fileName = join(paths[i], canonical + ext);
                 try {
-                    text = narwhalReadFile(fileName);
+                    text = fixtures.read(fileName);
                     // remove the shebang, if there is one.
                     text = text.replace(/^#[^\n]+\n/, "\n");
                     return text;
@@ -65,16 +71,11 @@ var Loader = function (options) {
     };
 
     loader.evaluate = function (text, canonical) {
-        if (typeof Packages !== "undefined" && Packages.java)
-            return Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(
-                global,
-                "function(require,exports,sys){"+text+"}",
-                canonical,
-                1,
-                null
-            );
-        else
-            return new Function("require", "exports", "sys", text);
+        if (fixtures.evaluate) {
+            return fixtures.evaluate(text, canonical, 1);
+        } else {
+            return new Function("require", "exports", "system", text);
+        }
     };
 
     loader.load = function (canonical) {
@@ -110,9 +111,9 @@ var Loader = function (options) {
 var Sandbox = function (options) {
     options = options || {};
     var loader = options.loader;
-    var sandboxSys = options.sys || sys;
+    var sandboxSystem = options.system || system;
     var modules = options.modules || {};
-    var debug = options.debug !== undefined ? options.debug === true : $DEBUG;
+    var debug = options.debug !== undefined ? options.debug === true : system.debug;
 
     var debugDepth = 0;
     var mainId;
@@ -120,7 +121,7 @@ var Sandbox = function (options) {
     var sandbox = function (id, baseId) {
         id = loader.resolve(id, baseId);
 
-        log.debug("require: " + id + " (parent="+baseId+")");
+        system.log.debug("require: " + id + " (parent="+baseId+")");
 
         if (baseId === undefined)
             mainId = id;
@@ -128,42 +129,36 @@ var Sandbox = function (options) {
         /* populate memo with module instance */
         if (!Object.prototype.hasOwnProperty.call(modules, id)) {
 
-            if (debug) {
+            if (system.debug) {
                 debugDepth++;
                 var debugAcc = "";
                 for (var i = 0; i < debugDepth; i++) debugAcc += "+";
-                sys.print(debugAcc + " " + id, 'module');
+                system.print(debugAcc + " " + id, 'module');
             }
 
             var globals = {};
-            if (debug) {
+            if (system.debug) {
                 // record globals
                 for (var name in global)
                     globals[name] = true;
             }
             
-            try {
-                var exports = modules[id] = {};
-                var factory = loader.load(id);
-                var require = Require(id);
-                factory(require, exports, sandboxSys);
-            } catch (exception) {
-                modules[id] = undefined;
-                delete modules[id];
-                throw exception;
-            }
+            var exports = modules[id] = {};
+            var factory = loader.load(id);
+            var require = Require(id);
+            factory(require, exports, sandboxSystem);
 
-            if (debug) {
+            if (system.debug) {
                 // check for new globals
                 for (var name in global)
                     if (!globals[name])
-                        log.warn("NEW GLOBAL: " + name);
+                        system.log.warn("NEW GLOBAL: " + name);
             }
         
-            if (debug) {
+            if (system.debug) {
                 var debugAcc = "";
                 for (var i = 0; i < debugDepth; i++) debugAcc += "-";
-                sys.print(debugAcc + " " + id, 'module');
+                system.print(debugAcc + " " + id, 'module');
                 debugDepth--;
             }
 
@@ -231,7 +226,7 @@ var Sandbox = function (options) {
     };
 
     sandbox.loader = loader;
-    sandbox.sys = sys;
+    sandbox.system = system;
 
     return sandbox;
 };
@@ -283,25 +278,29 @@ var join = function (base) {
 ////////////////////////////////////////////////
 
 try {
-    require("environment");
-} catch(e) {
-    log.error("Couldn't load environment ("+e+")");
+    require("global");
+} catch (e) {
+    system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
 
-try {
-    require("packages");
-} catch(e) {
-    log.error("Couldn't load packages ("+e+")");
+/* populate the system free variable from the system module */
+var systemModule = require('system');
+for (var name in systemModule) {
+    if (Object.prototype.hasOwnProperty.call(systemModule, name)) {
+        system[name] = systemModule[name];
+    }
 }
+
+// load packages
+require("packages");
 
 // load the program module
-if (ARGV.length)
-    require(ARGV.shift());
+if (system.args.length)
+    require(system.args.shift());
 
 /* send an unload event if that module has been required */
 if (require.loader.isLoaded('unload')) {
     require('unload').send();
 }
 
-})();
-
+})

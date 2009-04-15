@@ -1,6 +1,6 @@
 // File: default
 
-var IO = require("../io").IO;
+var IO = require("./io").IO;
 
 var File = exports.File = function(path) {
     this.path = path;

@@ -1,6 +1,6 @@
 // File: Rhino
 
-var IO = require("../io").IO;
+var IO = require("./io").IO;
 
 var File = exports.File = function(path, mode) {
     this.file = new java.io.File(path);
@@ -217,7 +217,7 @@ exports.open = function (path, mode, permissions, encoding, options) {
 exports.open = function (path) {
     return {
         'read': function () {
-            return new File.read(path);
+            return File.read(path);
         },
         'close': function () {
         }
