@@ -2,12 +2,6 @@
 var fs = require('./file');
 var system = require('./platform');
 
-/*** getPackagesDirectory
-*/
-exports.getPackagesDirectory = function () {
-    return fs.path(system.ENV.NARWHAL_HOME).join('packages');
-};
-
 /*** analyze
 */
 exports.analyze = function (analysis, sortedPackages) {
