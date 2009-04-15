@@ -62,6 +62,14 @@ exports.exists = function (path) {
     return Path(path).exists();
 };
 
+exports.mkdir = function (path) {
+    return Path(path).mkdir();
+}
+
+exports.mkdirs = function(path) {
+    return Path(path).mkdirs();
+}
+
 var mtime = function (path) {
     path = Path(path);
     var lastModified = path.lastModified();
