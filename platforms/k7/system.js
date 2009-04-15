@@ -13,3 +13,7 @@ for (var key in ENV)
         exports.env[key] = ENV[key];
 
 delete ENV;
+
+// default logger
+var Logger = require("logger").Logger;
+exports.log = new Logger(exports.stdout);
