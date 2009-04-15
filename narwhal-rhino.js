@@ -4,12 +4,16 @@
         this is a minimal platform-specific thunk for narwhal.js
         that brings the NARWHAL_PATH environment variable into the global
         scope using Rhino's special access to Java.
-     */
+    */
 
-    if (typeof NARWHAL_HOME == "undefined")
-        NARWHAL_HOME = String(Packages.java.lang.System.getenv("NARWHAL_HOME"));
+    if (typeof NARWHAL_HOME === "undefined")
+        NARWHAL_HOME = String(Packages.java.lang.System.getenv("NARWHAL_HOME")||"");
 
-    NARWHAL_PATH = String(Packages.java.lang.System.getenv("NARWHAL_PATH"));
+    if (typeof NARWHAL_PATH === "undefined") {
+        NARWHAL_PATH = String(Packages.java.lang.System.getenv("NARWHAL_PATH")||"");
+        if (!NARWHAL_PATH)
+            NARWHAL_PATH = [NARWHAL_HOME + "/platforms/rhino", NARWHAL_HOME + "/lib"].join(":");
+    }
     
     // TODO: enable this via a command line switch
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
@@ -80,15 +84,7 @@
         Packages.java.lang.System.out.println(String(string));
     }
     
-    /*
-    _readFile = function(filePath) {
-		var fis = new Packages.java.io.FileInputStream(new Packages.java.io.File(filePath)),
-		    bytes = Packages.java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, fis.available());
-		fis.read(bytes);
-		fis.close();
-	 	return String(new Packages.java.lang.String(bytes));
-	}
-    */
     Packages.org.mozilla.javascript.Context.getCurrentContext().evaluateReader(
         global, new Packages.java.io.FileReader(NARWHAL_HOME + "/narwhal.js"), "narwhal.js", 1, null);
+        
 })(this);
