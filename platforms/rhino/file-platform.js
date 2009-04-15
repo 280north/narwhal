@@ -70,6 +70,24 @@ exports.mkdirs = function(path) {
     return Path(path).mkdirs();
 }
 
+exports.rmdir = function(path) {
+    return Path(Path)['delete']();
+}
+
+exports.rmtree = function(path) {
+    if (!(path instanceof java.io.File)) {
+        path = Path(path);
+    }
+    var files = path.listFiles();
+    files.forEach(function(f) {
+        if (f.isDirectory()) {
+            exports.rmtree(f);
+        } else {
+            f['delete']();
+        }
+    });
+}
+
 var mtime = function (path) {
     path = Path(path);
     var lastModified = path.lastModified();
