@@ -7,7 +7,7 @@ $DEBUG = typeof $DEBUG !== "undefined" && $DEBUG;
 
 // logger shim until it's loaded
 log = {};
-log.fatal = log.error = log.warn = log.info = log.debug = function() {
+log.fatal = log.error = log.warn = log.info = log.debug = function () {
     if ($DEBUG && typeof print === "function")
         print(Array.prototype.join.apply(arguments, [" "]));
 };
@@ -16,7 +16,7 @@ log.fatal = log.error = log.warn = log.info = log.debug = function() {
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
 (function() {
 
-var system = {};
+var system = global.system = {};
 system.print = print;
 
 var Loader = function (options) {

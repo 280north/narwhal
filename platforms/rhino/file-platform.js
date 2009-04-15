@@ -217,7 +217,7 @@ exports.open = function (path, mode, permissions, encoding, options) {
 exports.open = function (path) {
     return {
         'read': function () {
-            return String(File.read(path));
+            return File.read(path);
         },
         'close': function () {
         }
