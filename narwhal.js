@@ -16,8 +16,8 @@ log.fatal = log.error = log.warn = log.info = log.debug = function() {
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
 (function() {
 
-var sys = {};
-sys.print = print;
+var system = {};
+system.print = print;
 
 var Loader = function (options) {
     var loader = {};
@@ -65,16 +65,17 @@ var Loader = function (options) {
     };
 
     loader.evaluate = function (text, canonical) {
-        if (typeof Packages !== "undefined" && Packages.java)
+        if (typeof Packages !== "undefined" && Packages.java) {
             return Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(
                 global,
-                "function(require,exports,sys){"+text+"}",
+                "function(require,exports,system){"+text+"}",
                 canonical,
                 1,
                 null
             );
-        else
-            return new Function("require", "exports", "sys", text);
+        } else {
+            return new Function("require", "exports", "system", text);
+        }
     };
 
     loader.load = function (canonical) {
@@ -110,7 +111,7 @@ var Loader = function (options) {
 var Sandbox = function (options) {
     options = options || {};
     var loader = options.loader;
-    var sandboxSys = options.sys || sys;
+    var sandboxSystem = options.system || system;
     var modules = options.modules || {};
     var debug = options.debug !== undefined ? options.debug === true : $DEBUG;
 
@@ -132,7 +133,7 @@ var Sandbox = function (options) {
                 debugDepth++;
                 var debugAcc = "";
                 for (var i = 0; i < debugDepth; i++) debugAcc += "+";
-                sys.print(debugAcc + " " + id, 'module');
+                system.print(debugAcc + " " + id, 'module');
             }
 
             var globals = {};
@@ -142,16 +143,10 @@ var Sandbox = function (options) {
                     globals[name] = true;
             }
             
-            try {
-                var exports = modules[id] = {};
-                var factory = loader.load(id);
-                var require = Require(id);
-                factory(require, exports, sandboxSys);
-            } catch (exception) {
-                modules[id] = undefined;
-                delete modules[id];
-                throw exception;
-            }
+            var exports = modules[id] = {};
+            var factory = loader.load(id);
+            var require = Require(id);
+            factory(require, exports, sandboxSystem);
 
             if (debug) {
                 // check for new globals
@@ -163,7 +158,7 @@ var Sandbox = function (options) {
             if (debug) {
                 var debugAcc = "";
                 for (var i = 0; i < debugDepth; i++) debugAcc += "-";
-                sys.print(debugAcc + " " + id, 'module');
+                system.print(debugAcc + " " + id, 'module');
                 debugDepth--;
             }
 
@@ -231,7 +226,7 @@ var Sandbox = function (options) {
     };
 
     sandbox.loader = loader;
-    sandbox.sys = sys;
+    sandbox.system = system;
 
     return sandbox;
 };
@@ -288,11 +283,15 @@ try {
     log.error("Couldn't load environment ("+e+")");
 }
 
-try {
-    require("packages");
-} catch(e) {
-    // this might be acceptable in some platforms
+/* populate the system free variable from the system module */
+var systemModule = require('system');
+for (var name in systemModule) {
+    if (Object.prototype.hasOwnProperty.call(systemModule, name)) {
+        system[name] = systemModule[name];
+    }
 }
+
+require("packages");
 
 // load the program module
 if (ARGV.length)
