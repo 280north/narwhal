@@ -47,36 +47,39 @@ var file = require('file');
 exports.SEPARATOR = '/';
 
 exports.cwd = function () {
-    return Packages.java.lang.System.getProperty("user.dir");
+    return String(Packages.java.lang.System.getProperty("user.dir"));
 };
 
-var Path = function (path) {
+var JavaPath = function (path) {
     return new java.io.File(String(path));
 };
 
 exports.canonical = function (path) {
-    return Path(path).getCanonicalPath();
+    return String(JavaPath(path).getCanonicalPath());
 };
 
 exports.exists = function (path) {
-    return Path(path).exists();
+    return JavaPath(path).exists();
 };
 
 exports.mkdir = function (path) {
-    return Path(path).mkdir();
+    if (!JavaPath(path).mkdir())
+        throw new Error("failed to make directory " + path);
 }
 
 exports.mkdirs = function(path) {
-    return Path(path).mkdirs();
+    if (!JavaPath(path).mkdirs())
+        throw new Error("failed to make directories leading to " + path);
 }
 
 exports.rmdir = function(path) {
-    return Path(Path)['delete']();
+    if (!JavaPath(Path)['delete']())
+        throw new Error("failed to remove the directory " + path);
 }
 
 exports.rmtree = function(path) {
     if (!(path instanceof java.io.File)) {
-        path = Path(path);
+        path = JavaPath(path);
     }
     var files = path.listFiles();
     files.forEach(function(f) {
@@ -88,22 +91,32 @@ exports.rmtree = function(path) {
     });
 }
 
-var mtime = function (path) {
-    path = Path(path);
+exports.mtime = function (path) {
+    path = JavaPath(path);
     var lastModified = path.lastModified();
     if (lastModified === 0) return undefined;
     else return new Date(lastModified);
 };
 
+exports.size = function (path) {
+    path = JavaPath(path);
+    return path.length();
+};
+
 exports.stat = function (path) {
-    path = Path(path);
+    path = JavaPath(path);
     return {
-        mtime: mtime(path)
+        mtime: exports.mtime(path),
+        size: exports.size(path)
     }
 };
 
 exports.isDirectory = function (path) {
-    return Path(path).isDirectory();
+    return JavaPath(path).isDirectory();
+};
+
+exports.isFile = function (path) {
+    return JavaPath(path).isFile();
 };
 
 /* java doesn't provide isLink, but File.getCanonical leaks
@@ -118,12 +131,43 @@ exports.isLink = function (path) {
     if (path.isDirectory()) {
         return container.toString() != canonical;
     } else {
-        return container.directory().resolve(path.basename()).toString() != canonical;
+        return container.join('').resolve(path.basename()).toString() != canonical;
     }
 };
 
+exports.isReadable = function (path) {
+    return JavaPath(path).canRead();
+};
+
+exports.isWritable = function (path) {
+    return JavaPath(path).canWrite();
+};
+
+exports.rename = function (source, target) {
+    source = file.path(source);
+    target = source.resolve(target);
+    source = JavaPath(source);
+    target = JavaPath(target);
+    if (!source.renameTo(target))
+        throw new Error("failed to rename " + source + " to " + target);
+};
+
+exports.move = function (source, target) {
+    source = file.path(source);
+    target = file.path(target);
+    source = JavaPath(source);
+    target = JavaPath(target);
+    if (!source.renameTo(target))
+        throw new Error("failed to rename " + source + " to " + target);
+};
+
+exports.remove = function (path) {
+    if (!JavaPath(path)['delete']())
+        throw new Error("failed to delete " + path);
+};
+
 exports.list = function (path) {
-    path = Path(path);
+    path = JavaPath(path);
     var listing = path.list();
 
     if (!(listing instanceof Array)) {
@@ -164,10 +208,19 @@ exports.list = function (path) {
     return paths;
 };
 
+exports.touch = function (path, mtime) {
+    if (mtime === undefined || mtime === null)
+        mtime = new Date();
+    path = JavaPath(path);
+    path.createNewFile();
+    if (!path.setLastModified(mtime.getTime()))
+        throw new Error("unable to set mtime of " + path + " to " + mtime);
+};
+
 exports.open = function (path, mode, permissions, encoding, options) {
     throw new Error("not yet implemented.");
 
-    path = Path(path);
+    path = JavaPath(path);
     if (mode === undefined || permissions == null)
         mode = "r";
     mode = String(mode);
