@@ -16,6 +16,26 @@ var File = exports.File = function(path, mode) {
     }
 }
 
+var File = exports.File = require("file-platform").File;
+File.read = function(path) {
+    var f = new File(path, "r");
+    try {
+        return f.read.apply(f, Array.prototype.slice.call(arguments, 1));
+    } finally {
+        f.close();
+    }
+}
+
+File.write = function(path) {
+    var f = new File(path, "w");
+    try {
+        return f.write.apply(f, Array.prototype.slice.call(arguments, 1));
+    } finally {
+        f.close();
+    }
+}
+
+
 File.prototype = new IO();
 
 File.prototype.size = function() {
@@ -167,7 +187,7 @@ exports.remove = function (path) {
 };
 
 exports.list = function (path) {
-    path = JavaPath(path);
+    path = JavaPath(String(path));
     var listing = path.list();
 
     if (!(listing instanceof Array)) {
@@ -217,6 +237,7 @@ exports.touch = function (path, mtime) {
         throw new Error("unable to set mtime of " + path + " to " + mtime);
 };
 
+/*
 exports.open = function (path, mode, permissions, encoding, options) {
     throw new Error("not yet implemented.");
 
@@ -292,14 +313,64 @@ exports.open = function (path, mode, permissions, encoding, options) {
     return TextIOWrapper(buffer, encoding, errors, newLine, lineBuffering);
 
 };
+*/
 
-exports.open = function (path) {
-    return {
-        'read': function () {
-            return File.read(path);
-        },
-        'close': function () {
-        }
+exports.open = function (path, mode, permissions, encoding, options) {
+
+    if (typeof path != 'string' && arguments.length == 1) {
+        options = path;
+        var {path: path} = options;
+    } else if (typeof path != 'string' && arguments.length == 2) {
+        options = mode;
+        var {path: path} = mode;
     }
+
+    if (!mode) {
+        mode = 'r';
+    }
+
+    var reading, writing, appending, updating, truncating = true, canonical, exclusive;
+    mode.split("").forEach(function (option) {
+        if (option == 'r') {
+            reading = true;
+        } else if (option == 'w') {
+            writing = true;
+        } else if (option == 'a') {
+            appending = true;
+        } else if (option == '+') {
+            truncating = false;
+        } else if (option == 'c') {
+            canonical = true;
+        } else if (option == 'x') {
+            exclusive = true;
+        } else {
+            throw new Error("unrecognized mode option in open: " + option);
+        }
+    });
+
+    if (updating) {
+        throw new Error("NYI");
+    } else if (writing || appending) {
+        return {
+            'write': function (data) {
+                return File.write(path, data);
+            },
+            'flush': function () {
+            },
+            'close': function () {
+            }
+        }
+    } else if (reading) {
+        return {
+            'read': function () {
+                return File.read(path);
+            },
+            'close': function () {
+            }
+        }
+    } else {
+        throw new Error("NYI");
+    }
+
 };
 
