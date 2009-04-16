@@ -1,4 +1,3 @@
-load("core.js");
 
 File = require("file.js").File;
 

@@ -1,11 +1,18 @@
 (function () {
 
-    NARWHAL_HOME = ENV["NARWHAL_HOME"];
-    NARWHAL_PATH = ENV["NARWHAL_PATH"];
+    var prefix = ENV["NARWHAL_HOME"];
+    var path = ENV["NARWHAL_PATH"];
+    var debug = false;
 
-    narwhalReadFile = function(path) {
+    _system = system;
+
+    var fopen = _system.posix.fopen,
+        fread = _system.posix.fread,
+        fclose = _system.posix.fclose;
+
+    var read = function(path) {
         var result = "",
-            fd = system.posix.fopen(path, "r");
+            fd = fopen(path, "r");
         if (!fd)
             throw new Error("File not found");
         try {
@@ -13,11 +20,11 @@
                 data;
             do {
                 length *= 2;
-                data = system.posix.fread(1, length, fd);
+                data = fread(1, length, fd);
                 result += data;
             } while (data.length === length);
         } finally {
-            system.posix.fclose(fd);
+            fclose(fd);
         }
         if (result.length === 0)
             throw new Error("File not found (length=0)");
@@ -26,9 +33,17 @@
     }
 
     var _print = print;
-    print = function(string) {
-        _print(string + "\n");
-    }
+    delete print;
 
-    eval(narwhalReadFile(NARWHAL_HOME + "/narwhal.js"));
-})();
+    eval(read(prefix + "/narwhal.js"))({
+        global: this,
+        debug: debug,
+        print: function (string) {
+            _print("" + string + "\n");
+        },
+        read: read,
+        prefix: prefix,
+        path: path
+    });
+
+}).call(this);

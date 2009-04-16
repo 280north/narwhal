@@ -1,4 +1,3 @@
-load("core.js");
 
 Binary = require("binary.js").Binary;
 

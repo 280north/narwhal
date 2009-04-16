@@ -6,20 +6,31 @@
         scope using Rhino's special access to Java.
     */
 
-    if (typeof NARWHAL_HOME === "undefined")
-        NARWHAL_HOME = String(Packages.java.lang.System.getenv("NARWHAL_HOME")||"");
-
-    if (typeof NARWHAL_PATH === "undefined") {
-        NARWHAL_PATH = String(Packages.java.lang.System.getenv("NARWHAL_PATH")||"");
-        if (!NARWHAL_PATH)
-            NARWHAL_PATH = [NARWHAL_HOME + "/platforms/rhino", NARWHAL_HOME + "/lib"].join(":");
-    }
-    
-    // TODO: enable this via a command line switch
+    /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
+
+    var prefix = "";
+    if (typeof NARWHAL_HOME != "undefined") {
+        prefix = NARWHAL_HOME;
+        delete NARWHAL_HOME;
+    } else {
+        prefix = String(Packages.java.lang.System.getenv("NARWHAL_HOME") || "");
+    }
+
+    var path = "";
+    if (typeof NARWHAL_PATH != "undefined") {
+        path = NARWHAL_PATH;
+        delete NARWHAL_PATH;
+    } else {
+        path = String(Packages.java.lang.System.getenv("NARWHAL_PATH") || "");
+        if (!path)
+            path = [prefix + "/platforms/rhino", prefix + "/lib"].join(":");
+    }
+
+    // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
 
-    narwhalReadFile = function (path) {
+    var read = function (path) {
         var path = new java.io.File(path);
 
         if (!path.exists() || !path.isFile())
@@ -80,11 +91,37 @@
         }
     };
     
-    print = function(string) {
+    var evaluate = function (text, name, lineNo) {
+        return context.compileFunction(
+            global,
+            "function(require,exports,system){"+text+"}",
+            name,
+            lineNo,
+            null
+        );
+    };
+
+    delete global.print;
+    var print = function (string) {
         Packages.java.lang.System.out.println(String(string));
-    }
-    
-    Packages.org.mozilla.javascript.Context.getCurrentContext().evaluateReader(
-        global, new Packages.java.io.FileReader(NARWHAL_HOME + "/narwhal.js"), "narwhal.js", 1, null);
+    };
+
+    var narwhal = context.evaluateReader(
+        global,
+        new Packages.java.io.FileReader(prefix + "/narwhal.js"),
+        "narwhal.js",
+        1,
+        null
+    );
+
+    narwhal({
+        global: global,
+        debug: typeof $DEBUG !== "undefined" && $DEBUG,
+        print: print,
+        read: read,
+        prefix: prefix,
+        path: path,
+        evaluate: evaluate
+    });
         
 })(this);

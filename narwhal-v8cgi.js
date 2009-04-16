@@ -1,9 +1,9 @@
 (function () {
 
-    NARWHAL_HOME = ".";
-    NARWHAL_PATH = NARWHAL_HOME + '/lib';
+    var prefix = ".";
+    var path = prefix + '/lib';
 
-    narwhalReadFile = function(path) {
+    var read = function(path) {
         var result = "",
             f = new File(path);
         try {
@@ -19,5 +19,13 @@
         return result;
     };
     
-    eval(narwhalReadFile(NARWHAL_HOME + "/narwhal.js"));
-})();
+    eval(read(prefix + "/narwhal.js"))({
+        global: this,
+        debug: false,
+        print: print,
+        read: read,
+        prefix: prefix,
+        path: path
+    });
+
+}).call(this);
