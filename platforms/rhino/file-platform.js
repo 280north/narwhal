@@ -97,18 +97,19 @@ exports.rmdir = function(path) {
         throw new Error("failed to remove the directory " + path);
 }
 
-exports.rmtree = function(path) {
+var rmtree = exports.rmtree = function(path) {
     if (!(path instanceof java.io.File)) {
         path = JavaPath(path);
     }
     var files = path.listFiles();
     files.forEach(function(f) {
         if (f.isDirectory()) {
-            exports.rmtree(f);
+            rmtree(f);
         } else {
             f['delete']();
         }
     });
+    path['delete']();
 }
 
 exports.mtime = function (path) {
