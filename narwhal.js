@@ -18,8 +18,7 @@ var shim = function () {
         system.print(Array.prototype.join.apply(arguments, [" "]));
     }
 };
-var log = {};
-log.fatal = log.error = log.warn = log.info = log.debug = shim;
+var log = { fatal:shim, error:shim, warn:shim, info:shim, debug:shim };
 system.log = log;
 
 /* the narwhal installation prefix */
@@ -48,9 +47,6 @@ var Loader = function (options) {
     };
 
     loader.fetch = function (canonical) {
-        var text;
-        // FIXME: replace with the real File object
-        // some interpreters throw exceptions.
         for (var j = 0; j < extensions.length; j++)
         {
             var ext = extensions[j];
@@ -58,7 +54,7 @@ var Loader = function (options) {
             {
                 var fileName = join(paths[i], canonical + ext);
                 try {
-                    text = fixtures.read(fileName);
+                    var text = fixtures.read(fileName);
                     // remove the shebang, if there is one.
                     text = text.replace(/^#[^\n]+\n/, "\n");
                     return text;
