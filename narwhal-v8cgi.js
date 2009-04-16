@@ -1,6 +1,7 @@
 (function () {
 
-    NARWHAL_PATH = 'lib';
+    NARWHAL_HOME = ".";
+    NARWHAL_PATH = NARWHAL_HOME + '/lib';
 
     narwhalReadFile = function(path) {
         var result = "",
@@ -17,5 +18,6 @@
         }
         return result;
     };
-
+    
+    eval(narwhalReadFile(NARWHAL_HOME + "/narwhal.js"));
 })();
