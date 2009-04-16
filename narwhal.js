@@ -7,7 +7,7 @@ print = fixtures.print; // this is non-standard as yet
 // Securable Modules compatible "require" method
 // https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
 
-var system = global.system = {};
+global.system = {};
 system.print = fixtures.print;
 system.debug = fixtures.debug;
 system.prefix = fixtures.prefix;
@@ -18,7 +18,7 @@ var shim = function () {
         system.print(Array.prototype.join.apply(arguments, [" "]));
     }
 };
-var log = { fatal:shim, error:shim, warn:shim, info:shim, debug:shim };
+var log = {fatal:shim, error:shim, warn:shim, info:shim, debug:shim};
 system.log = log;
 
 /* the narwhal installation prefix */
@@ -228,7 +228,7 @@ var Sandbox = function (options) {
 };
 
 var loader = Loader({});
-require = Sandbox({loader: loader});
+global.require = Sandbox({loader: loader});
 
 ////////////////////////////////////////////////
 // Ugh, these are duplicated from the File object, since they're required for 
