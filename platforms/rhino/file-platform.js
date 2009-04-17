@@ -102,6 +102,10 @@ exports.canonical = function (path) {
     return String(JavaPath(path).getCanonicalPath());
 };
 
+exports.exists = function (path) {
+    return JavaPath(path).exists();
+};
+
 exports.mtime = function (path) {
     path = JavaPath(path);
     var lastModified = path.lastModified();
@@ -208,7 +212,8 @@ exports.rmtree = function(path) {
             f['delete']();
         }
     });
-}
+    path['delete']();
+};
 
 exports.list = function (path) {
     path = JavaPath(String(path));
