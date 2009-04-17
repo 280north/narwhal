@@ -11,6 +11,9 @@ global.system = {};
 system.print = fixtures.print;
 system.debug = fixtures.debug;
 system.prefix = fixtures.prefix;
+system.platform = fixtures.platform;
+system.platforms = fixtures.platforms;
+system.evalGlobal = fixtures.evalGlobal;
 
 // logger shim until it's loaded
 var shim = function () {
@@ -279,13 +282,14 @@ try {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
 
-/* populate the system free variable from the system module */
+/* synchronize the system module and system free variable */
 var systemModule = require('system');
-for (var name in systemModule) {
-    if (Object.prototype.hasOwnProperty.call(systemModule, name)) {
-        system[name] = systemModule[name];
+for (var name in system) {
+    if (Object.prototype.hasOwnProperty.call(system, name)) {
+        systemModule[name] = system[name];
     }
 }
+global.system = systemModule;
 
 // load packages
 try {

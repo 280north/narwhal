@@ -1,4 +1,4 @@
-(function(global) {
+(function(global, evalGlobal) {
 
     /*
         this is a minimal platform-specific thunk for narwhal.js
@@ -33,7 +33,7 @@
     var read = function (path) {
         var path = new java.io.File(path);
 
-        if (!path.exists() || !path.isFile())
+        if (!path.isFile())
             throw new Error(path + ' does not exist.');
 
         var stream = new java.io.FileInputStream(path);
@@ -116,6 +116,9 @@
 
     narwhal({
         global: global,
+        evalGlobal: evalGlobal,
+        platform: 'rhino',
+        platforms: ['rhino', 'default'],
         debug: typeof $DEBUG !== "undefined" && $DEBUG,
         print: print,
         read: read,
@@ -124,4 +127,6 @@
         evaluate: evaluate
     });
         
-})(this);
+})(this, function () {
+    return eval(arguments[0]);
+});

@@ -1,4 +1,4 @@
-(function () {
+(function (evalGlobal) {
 
     var prefix = ENV["NARWHAL_HOME"];
     var path = ENV["NARWHAL_PATH"];
@@ -37,6 +37,9 @@
 
     eval(read(prefix + "/narwhal.js"))({
         global: this,
+        evalGlobal: evalGlobal,
+        platform: 'k7',
+        platforms: ['k7', 'v8', 'c', 'default'],
         debug: debug,
         print: function (string) {
             _print("" + string + "\n");
@@ -46,4 +49,6 @@
         path: path
     });
 
-}).call(this);
+}).call(this, function () {
+    return eval(arguments[0]);
+});
