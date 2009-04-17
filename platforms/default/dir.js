@@ -1,6 +1,6 @@
 // Dir: default
 
-var Dir = exports.Dir = {};
+var Dir = exports;
 
 Dir.pwd = function() {
     return ".";
