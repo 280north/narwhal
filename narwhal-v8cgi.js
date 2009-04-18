@@ -3,6 +3,10 @@
     var prefix = ".";
     var path = prefix + '/lib';
 
+    var isFile = function (path) {
+        return new File(path).exists();
+    };
+
     var read = function(path) {
         var result = "",
             f = new File(path);
@@ -27,6 +31,7 @@
         debug: false,
         print: print,
         read: read,
+        isFile: isFile,
         prefix: prefix,
         path: path
     });

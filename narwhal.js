@@ -49,29 +49,27 @@ var Loader = function (options) {
         return canonicalize(id);
     };
 
-    loader.fetch = function (canonical) {
-        for (var j = 0; j < extensions.length; j++)
-        {
+    loader.find = function (canonical) {
+        for (var j = 0; j < extensions.length; j++) {
             var ext = extensions[j];
-            for (var i = 0; i < paths.length; i++)
-            {
+            for (var i = 0; i < paths.length; i++) {
                 var fileName = join(paths[i], canonical + ext);
-                try {
-                    var text = fixtures.read(fileName);
-                    // remove the shebang, if there is one.
-                    text = text.replace(/^#[^\n]+\n/, "\n");
-                    return text;
-                } catch (exception) {
-                    // next!
-                }
+                if (fixtures.isFile(fileName))
+                    return fileName;
             }
         }
         throw new Error("require error: couldn't find \"" + canonical + '"');
     };
 
+    loader.fetch = function (canonical) {
+        return fixtures.read(loader.find(canonical));
+    };
+
     loader.evaluate = function (text, canonical) {
+        var fileName = loader.find(canonical);
+        var text = loader.fetch(canonical);
         if (fixtures.evaluate) {
-            return fixtures.evaluate(text, canonical, 1);
+            return fixtures.evaluate(text, fileName, 1);
         } else {
             return new Function("require", "exports", "system", text);
         }

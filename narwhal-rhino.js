@@ -30,6 +30,11 @@
     // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
 
+    var isFile = function (path) {
+        var path = new java.io.File(path);
+        return path.isFile();
+    };
+
     var read = function (path) {
         var path = new java.io.File(path);
 
@@ -122,6 +127,7 @@
         debug: typeof $DEBUG !== "undefined" && $DEBUG,
         print: print,
         read: read,
+        isFile: isFile,
         prefix: prefix,
         path: path,
         evaluate: evaluate

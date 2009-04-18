@@ -10,6 +10,13 @@
         fread = _system.posix.fread,
         fclose = _system.posix.fclose;
 
+    var isFile = function (path) {
+        var fd = fopen(path, "r");
+        if (!fd)
+            throw new Error("File not found");
+        fd.close();
+    };
+
     var read = function(path) {
         var result = "",
             fd = fopen(path, "r");
@@ -45,6 +52,7 @@
             _print("" + string + "\n");
         },
         read: read,
+        isFile: file,
         prefix: prefix,
         path: path
     });
