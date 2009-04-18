@@ -79,9 +79,13 @@ var Loader = function (options) {
 
     loader.load = function (canonical) {
         if (!Object.prototype.hasOwnProperty.call(factories, canonical)) {
-            factories[canonical] = loader.evaluate(loader.fetch(canonical), canonical);
+            loader.reload(canonical);
         }
         return factories[canonical];
+    };
+
+    loader.reload = function (canonical) {
+        factories[canonical] = loader.evaluate(loader.fetch(canonical), canonical);
     };
 
     loader.isLoaded = function (canonical) {
@@ -117,7 +121,7 @@ var Sandbox = function (options) {
     var debugDepth = 0;
     var mainId;
 
-    var sandbox = function (id, baseId) {
+    var sandbox = function (id, baseId, force, reload) {
         id = loader.resolve(id, baseId);
 
         system.log.debug("require: " + id + " (parent="+baseId+")");
@@ -126,7 +130,7 @@ var Sandbox = function (options) {
             mainId = id;
 
         /* populate memo with module instance */
-        if (!Object.prototype.hasOwnProperty.call(modules, id)) {
+        if (!Object.prototype.hasOwnProperty.call(modules, id) || force) {
 
             if (system.debug) {
                 debugDepth++;
@@ -142,7 +146,11 @@ var Sandbox = function (options) {
                     globals[name] = true;
             }
             
-            var exports = modules[id] = {};
+            if (!Object.prototype.hasOwnProperty.call(modules, id) || reload)
+                modules[id] = {};
+            var exports = modules[id];
+            if (reload)
+                loader.reload(id);
             var factory = loader.load(id);
             var require = Require(id);
             factory(require, exports, sandboxSystem);
@@ -224,6 +232,10 @@ var Sandbox = function (options) {
         return require;
     };
 
+    sandbox.force = function (id) {
+        return sandbox(id, '', true);
+    };
+
     sandbox.loader = loader;
     sandbox.system = system;
 
@@ -231,7 +243,7 @@ var Sandbox = function (options) {
 };
 
 var loader = Loader({});
-global.require = Sandbox({loader: loader});
+global.require = Sandbox({loader: loader, modules: {system: system}});
 
 ////////////////////////////////////////////////
 // Ugh, these are duplicated from the File object, since they're required for 
@@ -282,14 +294,7 @@ try {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
 
-/* synchronize the system module and system free variable */
-var systemModule = require('system');
-for (var name in system) {
-    if (Object.prototype.hasOwnProperty.call(system, name)) {
-        systemModule[name] = system[name];
-    }
-}
-global.system = systemModule;
+require.force("system");
 
 // load packages
 try {

@@ -16,7 +16,7 @@ exports.analyze = function (analysis, sortedPackages) {
         if (!packageData.java)
             packageData.java = [];
         for (var i = 0; i < packageData.java.length; i++)
-            packageData.java[i] = packageData.dir.resolve(packageData.java[i]);
+            packageData.java[i] = packageData.directory.resolve(packageData.java[i]);
         javaPaths.unshift.apply(javaPaths, packageData.java);
     });
 };
