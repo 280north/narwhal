@@ -288,7 +288,11 @@ for (var name in systemModule) {
 }
 
 // load packages
-require("packages");
+try {
+    require("packages");
+} catch (e) {
+    system.log.error("Couldn't load packages ("+e+")");
+}
 
 // load the program module
 if (system.args.length)
