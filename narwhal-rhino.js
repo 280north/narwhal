@@ -6,6 +6,8 @@
         scope using Rhino's special access to Java.
     */
 
+    $DEBUG = true;
+
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
 
@@ -99,7 +101,7 @@
     var evaluate = function (text, name, lineNo) {
         return context.compileFunction(
             global,
-            "function(require,exports,system){"+text+"}",
+            "function(require,exports,system){"+text+"\n// */\n}",
             name,
             lineNo,
             null
