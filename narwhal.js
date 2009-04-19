@@ -62,6 +62,8 @@ try {
 // load the program module
 if (system.args.length)
     require(system.args.shift());
+else
+    require("repl").repl();
 
 /* send an unload event if that module has been required */
 if (require.loader.isLoaded('unload')) {
