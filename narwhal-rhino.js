@@ -99,8 +99,18 @@
     };
     
     var evaluate = function (text, name, lineNo) {
+        var scope;
+        
+        if (true) {
+            scope = global;
+        } else {
+            scope = new Object();
+            scope.__parent__ = null;
+            scope.__proto__ = global;
+        }
+        
         return context.compileFunction(
-            global,
+            scope,
             "function(require,exports,system){"+text+"\n// */\n}",
             name,
             lineNo,
