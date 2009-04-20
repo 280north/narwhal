@@ -62,7 +62,9 @@ var Loader = function (options) {
     };
 
     loader.fetch = function (canonical) {
-        return fixtures.read(loader.find(canonical));
+        var text = fixtures.read(loader.find(canonical));
+        text = text.replace(/^#![^\n]+\n/, "\n");
+        return text;
     };
 
     loader.evaluate = function (text, canonical) {
