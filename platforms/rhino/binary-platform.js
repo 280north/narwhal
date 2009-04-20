@@ -30,9 +30,8 @@ Binary.prototype.charCodeAt = function (i) {
 };
 
 Binary.prototype.toString = function(encoding) {
-    return String(new java.lang.String(this.bytes, encoding || "UTF-8"));
-}
-
-String.prototype.toBinary = function(encoding) {
-    return new Binary(new java.lang.String(this).getBytes(encoding || "UTF-8"));
+    var jstr = encoding ?
+               new java.lang.String(this.bytes, encoding) :
+               new java.lang.String(this.bytes);
+    return String(jstr);
 }
