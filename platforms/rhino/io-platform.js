@@ -7,7 +7,7 @@ var IO = exports.IO = function(inputStream, outputStream) {
     this.outputStream = outputStream;
 };
 
-IO.prototype.read = function(length, encoding) {
+IO.prototype.read = function (length) {
     var readAll = false,
         buffers = [],
         buffer  = null,
@@ -94,7 +94,6 @@ IO.prototype.isatty = function () {
     return false;
 };
 
-
 exports.TextIOWrapper = function (buffer, encoding, options) {
     throw new Error("TextIOWrapper not implemented.");
     var errors = options.errors;
@@ -103,19 +102,63 @@ exports.TextIOWrapper = function (buffer, encoding, options) {
     var lineBuffering = options.lineBuffering;
 };
 
-exports.BufferedReader = function (raw, buffering) {
-    throw new Error("BufferedReader not implemented.");
+exports.TextInputStream = function (raw, lineBuffering, buffering, encoding, options) {
+    print('encoding ' + encoding);
+    var stream = new Packages.java.io.InputStreamReader(raw.inputStream, encoding);
+    if (buffering === undefined)
+        stream = new Packages.java.io.BufferedReader(stream);
+    else
+        stream = new Packages.java.io.BufferedReader(stream, buffering);
+    var self = this;
+
+    self.readLine = function () {
+        var line = stream.readLine();
+        if (line === null)
+            return '';
+        return String(line) + "\n";
+    };
+
+    self.iter = function () {
+        return self;
+    };
+
+    self.next = function () {
+        var line = stream.readLine();
+        if (line === null)
+            throw new Error("StopIteration");
+        return line;
+    };
+
+    self.readLines = function () {
+        var lines = [];
+        try {
+            while (true) {
+                lines.push(self.next());
+            }
+        } catch (exception) {
+        }
+        return lines;
+    };
+
+    self.read = function () {
+        return self.readLines().join('');
+    };
+
+    self.close = function () {
+        stream.close();
+    };
+
 };
 
-exports.BufferedWriter = function (raw, buffering) {
-    throw new Error("BufferedWriter not implemented.");
-};
-
-exports.BufferedRWPair = function (raw, buffering) {
-    throw new Error("BufferedRWPair not implemented.");
-};
-
-exports.BufferedRandom = function (raw, buffering) {
-    throw new Error("BufferedRandom not implemented");
-};
+exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, encoding, options) {
+    if (mode.update) {
+        return new exports.TextIOStream(raw, lineBuffering, buffering, encoding, options);
+    } else if (mode.write || mode.append) {
+        return new exports.TextOutputStream(raw, lineBuffering, buffering, encoding, options);
+    } else if (mode.read) {
+        return new exports.TextInputStream(raw, lineBuffering, buffering, encoding, options);
+    } else {
+        throw new Error("file must be opened for read, write, or append mode.");
+    }
+}; 
 
