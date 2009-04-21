@@ -6,7 +6,7 @@
         scope using Rhino's special access to Java.
     */
 
-    var debug = true;
+    var debug = false;
     var moduleScopingEnabled = false;
 
     /* this gets used for several fixtures */
