@@ -8,22 +8,23 @@ var IO = exports.IO = function(inputStream, outputStream) {
 }
 
 IO.prototype.read = function(length, encoding) {
-    var readAll = false,
+    var readAll = true,
         buffer  = null,
         bytes   = null,
+        read    = 0,
         index   = 0,
         total   = 0;
 
-    if (typeof length !== "number") {
-        readAll = true;
+    if (typeof length === "number") {
+        readAll = false;
+        buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
+    } else {
         bytes = new java.io.ByteArrayOutputStream();
         buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
-    } else {
-        buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
     }
 
     do {
-        var read = this.inputStream.read(buffer, index, buffer.length - index);
+        read = this.inputStream.read(buffer, index, buffer.length - index);
 
         if (read < 0)
             break;
