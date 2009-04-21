@@ -27,15 +27,15 @@
     } else {
         path = String(Packages.java.lang.System.getenv("NARWHAL_PATH") || "");
         if (!path)
-            path = [prefix + "/platforms/rhino", prefix + "/lib"].join(":");
+            path = [prefix + "/platforms/rhino", prefix + "/platforms/default", prefix + "/lib"].join(":");
     }
 
     // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
 
     var isFile = function (path) {
-        var path = new java.io.File(path);
-        return path.isFile();
+        try { return new java.io.File(path).isFile(); } catch (e) {}
+        return false;
     };
 
     var read = function (path) {
