@@ -11,17 +11,21 @@
         fclose = _system.posix.fclose;
 
     var isFile = function (path) {
-        var fd = fopen(path, "r");
-        if (!fd)
-            throw new Error("File not found");
-        fd.close();
+        var fd = null;
+        try {
+            fd = fopen(path, "r");
+        } finally {
+            if (fd)
+                fclose(fd);
+        }
+        return !!fd;
     };
 
     var read = function(path) {
         var result = "",
             fd = fopen(path, "r");
         if (!fd)
-            throw new Error("File not found");
+            throw new Error("File not found: " + path);
         try {
             var length = 1024,
                 data;
@@ -34,7 +38,7 @@
             fclose(fd);
         }
         if (result.length === 0)
-            throw new Error("File not found (length=0)");
+            throw new Error("File not found (length=0): " + path);
         
         return result;
     }
@@ -52,9 +56,12 @@
             _print("" + string + "\n");
         },
         read: read,
-        isFile: file,
+        isFile: isFile,
         prefix: prefix,
-        path: path
+        path: path,
+        evaluate : function(text, name, line) {
+            return new Function("require", "exports", "system", text);
+        }
     });
 
 }).call(this, function () {
