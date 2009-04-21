@@ -1,10 +1,13 @@
-(function(global) {
+(function(global, evalGlobal) {
 
     /*
         this is a minimal platform-specific thunk for narwhal.js
         that brings the NARWHAL_PATH environment variable into the global
         scope using Rhino's special access to Java.
     */
+
+    var debug = false;
+    var moduleScopingEnabled = false;
 
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
@@ -24,16 +27,21 @@
     } else {
         path = String(Packages.java.lang.System.getenv("NARWHAL_PATH") || "");
         if (!path)
-            path = [prefix + "/platforms/rhino", prefix + "/lib"].join(":");
+            path = [prefix + "/platforms/rhino", prefix + "/platforms/default", prefix + "/lib"].join(":");
     }
 
     // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
 
+    var isFile = function (path) {
+        try { return new java.io.File(path).isFile(); } catch (e) {}
+        return false;
+    };
+
     var read = function (path) {
         var path = new java.io.File(path);
 
-        if (!path.exists() || !path.isFile())
+        if (!path.isFile())
             throw new Error(path + ' does not exist.');
 
         var stream = new java.io.FileInputStream(path);
@@ -92,9 +100,19 @@
     };
     
     var evaluate = function (text, name, lineNo) {
+        var scope;
+        
+        if (moduleScopingEnabled) {
+            scope = global;
+        } else {
+            scope = new Object();
+            scope.__parent__ = null;
+            scope.__proto__ = global;
+        }
+        
         return context.compileFunction(
-            global,
-            "function(require,exports,system){"+text+"}",
+            scope,
+            "function(require,exports,system){"+text+"\n// */\n}",
             name,
             lineNo,
             null
@@ -116,12 +134,18 @@
 
     narwhal({
         global: global,
-        debug: typeof $DEBUG !== "undefined" && $DEBUG,
+        evalGlobal: evalGlobal,
+        platform: 'rhino',
+        platforms: ['rhino', 'default'],
+        debug: debug,
         print: print,
         read: read,
+        isFile: isFile,
         prefix: prefix,
         path: path,
         evaluate: evaluate
     });
         
-})(this);
+})(this, function () {
+    return eval(arguments[0]);
+});

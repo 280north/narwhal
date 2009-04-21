@@ -13,3 +13,5 @@ File.prototype.read = function() {
         throw new Error("Couldn't read file " + path);
     return result;
 }
+
+exports.SEPARATOR = '/';

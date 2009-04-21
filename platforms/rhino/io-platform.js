@@ -5,7 +5,7 @@ var Binary = require("./binary").Binary;
 var IO = exports.IO = function(inputStream, outputStream) {
     this.inputStream = inputStream;
     this.outputStream = outputStream;
-}
+};
 
 IO.prototype.read = function(length, encoding) {
     var readAll = false,
@@ -69,7 +69,7 @@ IO.prototype.read = function(length, encoding) {
         throw new Error("IO.read sanity check failed: total="+total+" resultLength="+resultLength+" resultBuffer.length="+resultBuffer.length);
         
     return new Binary(resultBuffer);
-}
+};
 
 IO.prototype.write = function(object, encoding) {
     if (object === null || object === undefined || typeof object.toBinary !== "function")
@@ -77,15 +77,45 @@ IO.prototype.write = function(object, encoding) {
     
     var binary = object.toBinary(encoding);
     this.outputStream.write(binary.bytes);
-}
+};
 
 IO.prototype.flush = function() {
     this.outputStream.flush();
-}
+};
 
 IO.prototype.close = function() {
     if (this.inputStream)
         this.inputStream.close();
     if (this.outputStream)
         this.outputStream.close();
-}
+};
+
+IO.prototype.isatty = function () {
+    return false;
+};
+
+
+exports.TextIOWrapper = function (buffer, encoding, options) {
+    throw new Error("TextIOWrapper not implemented.");
+    var errors = options.errors;
+    var recordSeparator = options.recordSeparator;
+    var fieldSeparator = options.fieldSeparator;
+    var lineBuffering = options.lineBuffering;
+};
+
+exports.BufferedReader = function (raw, buffering) {
+    throw new Error("BufferedReader not implemented.");
+};
+
+exports.BufferedWriter = function (raw, buffering) {
+    throw new Error("BufferedWriter not implemented.");
+};
+
+exports.BufferedRWPair = function (raw, buffering) {
+    throw new Error("BufferedRWPair not implemented.");
+};
+
+exports.BufferedRandom = function (raw, buffering) {
+    throw new Error("BufferedRandom not implemented");
+};
+

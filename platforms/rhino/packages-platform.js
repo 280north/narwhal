@@ -1,6 +1,6 @@
 
 var fs = require('./file');
-var system = require('./platform');
+var system = require('./system');
 
 /*** analyze
 */
@@ -16,7 +16,7 @@ exports.analyze = function (analysis, sortedPackages) {
         if (!packageData.java)
             packageData.java = [];
         for (var i = 0; i < packageData.java.length; i++)
-            packageData.java[i] = packageData.dir.resolve(packageData.java[i]);
+            packageData.java[i] = packageData.directory.resolve(packageData.java[i]);
         javaPaths.unshift.apply(javaPaths, packageData.java);
     });
 };
@@ -44,6 +44,7 @@ exports.addJavaPaths = function addJavaPaths(javaPaths) {
     //Packages.java.lang.Thread.currentThread().setContextClassLoader(loader);
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
     context.setApplicationClassLoader(loader);
-    Packages = new PackageType(loader);
+    // must explicitly be made global when each module has it's own scope
+    global.Packages = new PackageType(loader);
 };
 

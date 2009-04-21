@@ -1,6 +1,9 @@
 // File: Rhino
 
 var IO = require("./io").IO;
+var file = require('file');
+
+/* deprecated File object */
 
 var File = exports.File = function(path, mode) {
     this.file = new java.io.File(path);
@@ -15,6 +18,26 @@ var File = exports.File = function(path, mode) {
             this.outputStream = new Packages.java.io.FileOutputStream(this.file, false);
     }
 }
+
+var File = exports.File = require("file-platform").File;
+File.read = function(path) {
+    var f = new File(path, "r");
+    try {
+        return f.read.apply(f, Array.prototype.slice.call(arguments, 1));
+    } finally {
+        f.close();
+    }
+}
+
+File.write = function(path) {
+    var f = new File(path, "w");
+    try {
+        return f.write.apply(f, Array.prototype.slice.call(arguments, 1));
+    } finally {
+        f.close();
+    }
+}
+
 
 File.prototype = new IO();
 
@@ -42,42 +65,78 @@ File.prototype.exists = function () {
     return this.file.exists();
 };
 
-var file = require('file');
+/* streams */
+
+exports.FileIO = function (path, mode, permissions) {
+    var {
+        read: read,
+        write: write,
+        append: append,
+        update: update
+    } = file.mode(mode);
+
+    if (update) {
+        throw new Error("Updating IO not yet implemented.");
+    } else if (write || append) {
+        return new IO(null, new Packages.java.io.FileOutputStream(path, append));
+    } else if (read) {
+        return new IO(new Packages.java.io.FileInputStream(path), null);
+    } else {
+        throw new Error("Files must be opened either for read, write, or update mode.");
+    }
+};
+
+/* paths */
 
 exports.SEPARATOR = '/';
 
 exports.cwd = function () {
-    return Packages.java.lang.System.getProperty("user.dir");
+    return String(Packages.java.lang.System.getProperty("user.dir"));
 };
 
-var Path = function (path) {
+var JavaPath = function (path) {
     return new java.io.File(String(path));
 };
 
 exports.canonical = function (path) {
-    return Path(path).getCanonicalPath();
+    return String(JavaPath(path).getCanonicalPath());
 };
 
 exports.exists = function (path) {
-    return Path(path).exists();
+    return JavaPath(path).exists();
 };
 
-var mtime = function (path) {
-    path = Path(path);
+exports.mtime = function (path) {
+    path = JavaPath(path);
     var lastModified = path.lastModified();
     if (lastModified === 0) return undefined;
     else return new Date(lastModified);
 };
 
+exports.size = function (path) {
+    path = JavaPath(path);
+    return path.length();
+};
+
 exports.stat = function (path) {
-    path = Path(path);
+    path = JavaPath(path);
     return {
-        mtime: mtime(path)
+        mtime: exports.mtime(path),
+        size: exports.size(path)
     }
 };
 
+exports.exists = function (path) {
+    return JavaPath(path).exists();
+};
+
 exports.isDirectory = function (path) {
-    return Path(path).isDirectory();
+    return JavaPath(path).isDirectory();
+};
+
+exports.isFile = function (path) {
+    try { return JavaPath(path).isFile(); } catch (e) {}
+    return false;
 };
 
 /* java doesn't provide isLink, but File.getCanonical leaks
@@ -92,12 +151,73 @@ exports.isLink = function (path) {
     if (path.isDirectory()) {
         return container.toString() != canonical;
     } else {
-        return container.directory().resolve(path.basename()).toString() != canonical;
+        return container.join('').resolve(path.basename()).toString() != canonical;
     }
 };
 
+exports.isReadable = function (path) {
+    return JavaPath(path).canRead();
+};
+
+exports.isWritable = function (path) {
+    return JavaPath(path).canWrite();
+};
+
+exports.rename = function (source, target) {
+    source = file.path(source);
+    target = source.resolve(target);
+    source = JavaPath(source);
+    target = JavaPath(target);
+    if (!source.renameTo(target))
+        throw new Error("failed to rename " + source + " to " + target);
+};
+
+exports.move = function (source, target) {
+    source = file.path(source);
+    target = file.path(target);
+    source = JavaPath(source);
+    target = JavaPath(target);
+    if (!source.renameTo(target))
+        throw new Error("failed to rename " + source + " to " + target);
+};
+
+exports.remove = function (path) {
+    if (!JavaPath(path)['delete']())
+        throw new Error("failed to delete " + path);
+};
+
+exports.mkdir = function (path) {
+    if (!JavaPath(path).mkdir())
+        throw new Error("failed to make directory " + path);
+}
+
+exports.mkdirs = function(path) {
+    if (!JavaPath(path).mkdirs())
+        throw new Error("failed to make directories leading to " + path);
+}
+
+exports.rmdir = function(path) {
+    if (!JavaPath(Path)['delete']())
+        throw new Error("failed to remove the directory " + path);
+}
+
+exports.rmtree = function(path) {
+    if (!(path instanceof java.io.File)) {
+        path = JavaPath(path);
+    }
+    var files = path.listFiles();
+    files.forEach(function(f) {
+        if (f.isDirectory()) {
+            exports.rmtree(f);
+        } else {
+            f['delete']();
+        }
+    });
+    path['delete']();
+};
+
 exports.list = function (path) {
-    path = Path(path);
+    path = JavaPath(String(path));
     var listing = path.list();
 
     if (!(listing instanceof Array)) {
@@ -109,118 +229,16 @@ exports.list = function (path) {
         paths[i] = String(listing[i]);
     }
 
-    var i = -1;
-
-    paths.next = function () {
-        i++;
-        if (i >= paths.length)
-            throw new Error("StopIteration");
-        return paths[i];
-    };
-
-    paths.prev = function () {
-        i--;
-        if (i < 0)
-            throw new Error("StopIteration");
-        return paths[i];
-    };
-
-    paths.iter = function () {
-        return paths;
-    };
-
-    paths.forEach = function (relation) {
-        for (var i = 0; i < paths.length; i++) {
-            relation(paths[i]);
-        }
-    };
-
     return paths;
 };
 
-exports.open = function (path, mode, permissions, encoding, options) {
-    throw new Error("not yet implemented.");
-
-    path = Path(path);
-    if (mode === undefined || permissions == null)
-        mode = "r";
-    mode = String(mode);
-    if (permissions == undefined || permissions == null)
-        permissions = 0777;
-    if (encoding === undefined || encoding === null)
-        encoding = 'binary';
-    options = options || {};
-
-    var read, write, append, noTruncate;
-    mode.split("").forEach(function (option) {
-        if (option == 'r') {
-            read = true;
-        } else if (option == 'w') {
-            write = true;
-        } else if (option == 'a') {
-            append = true;
-        } else if (option == '+') {
-            noTruncate = true;
-        } else {
-            throw new Error("unrecognized mode option in open: " + option);
-        }
-    });
-
-    var buffering = options.buffering;
-    var errors = options.errors;
-
-    if (read + write + append > 1) {
-        throw new Error("files can be opened for only one of read, write, or append modes.");
-    }
-    if (!(read || write || append)) {
-        throw new Error("file must be opened for read, write, or append mode.");
-    }
-    if (encoding == 'binary' && errors) {
-        throw new Error("binary encodingdoes not support error lists.");
-    }
-
-    var raw = FileIO(path, mode, permissions);
-    var lineBuffering = buffering == 1 || buffering === undefined && raw.isatty();
-
-    if (lineBuffering || buffering === undefined) {
-        buffering = 8 * 1024; // international standard buffer size
-        // try to set it to stat(path).blockSize
-    }
-    if (buffering < 0) {
-        throw new Error("invalid buffering size");
-    }
-    if (buffering === 0) {
-        if (encoding == "binary") {
-            return raw;
-        }
-        throw new Error("can't have unbuffered text IO");
-    }
-    if (encoding == "binary") {
-        throw new Error("encoding must not be binary to buffer.");
-    }
-
-    var buffer;
-    if (update) {
-        buffer = BufferedRandom(raw, buffering);
-    } else if (write || append) {
-        buffer = BufferedWriter(raw, buffering);
-    } else if (reading) {
-        buffer = BufferedReader(raw, buffering);
-    } else {
-        throw new Error("file must be opened for read, write, or append mode.");
-    }
-
-    return TextIOWrapper(buffer, encoding, errors, newLine, lineBuffering);
-
+exports.touch = function (path, mtime) {
+    if (mtime === undefined || mtime === null)
+        mtime = new Date();
+    path = JavaPath(path);
+    path.createNewFile();
+    if (!path.setLastModified(mtime.getTime()))
+        throw new Error("unable to set mtime of " + path + " to " + mtime);
 };
 
-exports.open = function (path) {
-    return {
-        'read': function () {
-            return File.read(path);
-        },
-        'close': function () {
-        }
-    }
-};
 
