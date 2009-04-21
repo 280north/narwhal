@@ -8,11 +8,11 @@ var Binary = exports.Binary = function(bytes) {
         bytes = cast;
     }
     this.bytes = bytes;
-}
+};
 
 Binary.prototype.getLength = function() {
     return this.bytes.length;
-}
+};
 
 Binary.prototype.charAt = function (i) {
     return String.fromCharCode(this.bytes[i]);
@@ -27,9 +27,15 @@ Binary.prototype.charCodeAt = function (i) {
 };
 
 Binary.prototype.toString = function(encoding) {
-    return String(new java.lang.String(this.bytes, encoding || "UTF-8"));
-}
+    var jstr = encoding ?
+               new java.lang.String(this.bytes, encoding) :
+               new java.lang.String(this.bytes);
+    return String(jstr);
+};
 
 String.prototype.toBinary = function(encoding) {
-    return new Binary(new java.lang.String(this).getBytes(encoding || "UTF-8"));
-}
+    var bytes = encoding ?
+                new java.lang.String(this).getBytes(encoding) :
+                new java.lang.String(this).getBytes();
+    return new Binary(bytes);
+};
