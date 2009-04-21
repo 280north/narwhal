@@ -47,8 +47,7 @@ RHINO="$RLWRAP java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main"
 if [ $# -lt 1 ]; then
     $RHINO -f $NARWHAL -f -
 else
-    MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
-    MAIN=$MAIN/$(basename -- "$1" .js)
+    MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
     if [[ `uname` == CYGWIN* ]]; then
         MAIN=`cygpath -wp "$MAIN"`
     fi

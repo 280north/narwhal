@@ -135,7 +135,8 @@ exports.isDirectory = function (path) {
 };
 
 exports.isFile = function (path) {
-    return JavaPath(path).isFile();
+    try { return JavaPath(path).isFile(); } catch (e) {}
+    return false;
 };
 
 /* java doesn't provide isLink, but File.getCanonical leaks

@@ -6,6 +6,9 @@
         scope using Rhino's special access to Java.
     */
 
+    var debug = false;
+    var moduleScopingEnabled = false;
+
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
 
@@ -24,15 +27,15 @@
     } else {
         path = String(Packages.java.lang.System.getenv("NARWHAL_PATH") || "");
         if (!path)
-            path = [prefix + "/platforms/rhino", prefix + "/lib"].join(":");
+            path = [prefix + "/platforms/rhino", prefix + "/platforms/default", prefix + "/lib"].join(":");
     }
 
     // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
 
     var isFile = function (path) {
-        var path = new java.io.File(path);
-        return path.isFile();
+        try { return new java.io.File(path).isFile(); } catch (e) {}
+        return false;
     };
 
     var read = function (path) {
@@ -97,9 +100,19 @@
     };
     
     var evaluate = function (text, name, lineNo) {
+        var scope;
+        
+        if (moduleScopingEnabled) {
+            scope = global;
+        } else {
+            scope = new Object();
+            scope.__parent__ = null;
+            scope.__proto__ = global;
+        }
+        
         return context.compileFunction(
-            global,
-            "function(require,exports,system){"+text+"}",
+            scope,
+            "function(require,exports,system){"+text+"\n// */\n}",
             name,
             lineNo,
             null
@@ -124,7 +137,7 @@
         evalGlobal: evalGlobal,
         platform: 'rhino',
         platforms: ['rhino', 'default'],
-        debug: typeof $DEBUG !== "undefined" && $DEBUG,
+        debug: debug,
         print: print,
         read: read,
         isFile: isFile,
