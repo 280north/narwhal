@@ -6,7 +6,8 @@
         scope using Rhino's special access to Java.
     */
 
-    $DEBUG = true;
+    var debug = true;
+    var moduleScopingEnabled = false;
 
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
@@ -101,7 +102,7 @@
     var evaluate = function (text, name, lineNo) {
         var scope;
         
-        if (true) {
+        if (moduleScopingEnabled) {
             scope = global;
         } else {
             scope = new Object();
@@ -136,7 +137,7 @@
         evalGlobal: evalGlobal,
         platform: 'rhino',
         platforms: ['rhino', 'default'],
-        debug: typeof $DEBUG !== "undefined" && $DEBUG,
+        debug: debug,
         print: print,
         read: read,
         isFile: isFile,
