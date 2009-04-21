@@ -1,19 +1,14 @@
 (function (fixtures) {
 
-// global reference
-global = fixtures.global;
-print = fixtures.print; // this is non-standard as yet
-
-// Securable Modules compatible "require" method
-// https://wiki.mozilla.org/ServerJS/Modules/SecurableModules
-
-global.system = {};
+var system = {};
 system.print = fixtures.print;
 system.debug = fixtures.debug;
 system.prefix = fixtures.prefix;
 system.platform = fixtures.platform;
 system.platforms = fixtures.platforms;
 system.evalGlobal = fixtures.evalGlobal;
+
+system.evaluate = fixtures.evaluate;
 
 // logger shim
 var shim = function () {
@@ -31,18 +26,19 @@ var fs = {
 }
 system.fs = fs;
 
-/* the narwhal installation prefix */
-var prefix = fixtures.prefix;
+// global reference
+global = fixtures.global;
+global.print = fixtures.print;
+global.system = system;
 
-var sandboxFactory = fixtures.evaluate(fixtures.read(prefix + "/lib/sandbox.js"), "sandbox.js", 1);
+// equivalent to "var sandbox = require('sandbox');"
+var sandboxFactory = fixtures.evaluate(fixtures.read(fixtures.prefix + "/lib/sandbox.js"), "sandbox.js", 1);
 var sandbox = {};
-
 sandboxFactory(null, sandbox, system);
 
-
+// create the primary Loader and Sandbox:
 var loader = sandbox.Loader({ paths : fixtures.path.split(":") });
-global.require = sandbox.Sandbox({loader: loader, modules: {system: system}});
-
+global.require = sandbox.Sandbox({loader: loader, modules: { system: system }});
 
 try {
     require("global");
@@ -62,8 +58,8 @@ try {
 // load the program module
 if (system.args.length)
     require(system.args.shift());
-else
-    require("repl").repl();
+//else
+//    require("repl").repl();
 
 /* send an unload event if that module has been required */
 if (require.loader.isLoaded('unload')) {
