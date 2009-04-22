@@ -1,10 +1,24 @@
 // Array additions.
 
-if (typeof Array.prototype.forEach !== "function")
-    Array.prototype.forEach =  function(block) { for (var i = 0; i < this.length; i++) block(this[i]); };
+// ES5 draft:
+// http://www.ecma-international.org/publications/files/drafts/tc39-2009-025.pdf
 
-Array.isArray = function(obj) { return obj && typeof obj === "object" && obj.constructor === Array; }
+// ES5 15.4.3.2 
+if (!Array.isArray) {
+    Array.isArray = function(obj) {
+        return obj && typeof obj === "object" && obj.constructor === Array;
+    }
+}
 
+// ES5 15.4.4.18
+if (!Array.prototype.forEach) {
+    Array.prototype.forEach =  function(block) {
+        for (var i = 0; i < this.length; i++)
+            block(this[i]);
+    }
+}
+
+// ES5 15.4.4.19
 // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
 if (!Array.prototype.map) {
     Array.prototype.map = function(fun /*, thisp*/) {
