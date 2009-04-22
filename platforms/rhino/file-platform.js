@@ -131,7 +131,8 @@ exports.exists = function (path) {
 };
 
 exports.isDirectory = function (path) {
-    return JavaPath(path).isDirectory();
+    try { return JavaPath(path).isDirectory(); } catch (e) {}
+    return false;
 };
 
 exports.isFile = function (path) {
