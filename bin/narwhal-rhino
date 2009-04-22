@@ -13,8 +13,8 @@ done
 SELF_DIR=`dirname $SELF_PATH`
 
 NARWHAL_HOME=`dirname $SELF_DIR`
-NARWHAL="$NARWHAL_HOME/narwhal-rhino.js"
-NARWHAL_PATH="$NARWHAL_HOME/platforms/rhino:$NARWHAL_HOME/platforms/default:$NARWHAL_HOME/lib"
+NARWHAL="$NARWHAL_HOME/platforms/rhino/bootstrap.js"
+NARWHAL_PATH="$NARWHAL_HOME/platforms/rhino/lib:$NARWHAL_HOME/platforms/default/lib:$NARWHAL_HOME/lib"
 if [ "$JS_PATH" ]; then
     NARWHAL_PATH="$NARWHAL_PATH:$JS_PATH"
 fi
