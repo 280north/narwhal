@@ -1,9 +1,12 @@
 
 var Binary = exports.Binary = function(bytes) {
-    if (bytes instanceof Array) {
+    // FIXME: a Java byte array is also an Array. Find a better way to distinguish them.
+    if (bytes instanceof Array && !bytes.toString().match(/^\[B@/)) {
         var cast = Packages.java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, bytes.length);
         for (var i = 0; i < bytes.length; i++) {
-            cast[i] = bytes[i] & 0xFF;
+            // Java "bytes" are 2's complement
+            var b = bytes[i] & 0xFF;
+            cast[i] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
         }
         bytes = cast;
     }
