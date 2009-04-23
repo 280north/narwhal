@@ -52,7 +52,7 @@ require.force("system");
 try {
     require("packages");
 } catch (e) {
-    system.log.error("Couldn't load packages ("+e+")");
+    system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
 }
 
 // load the program module
