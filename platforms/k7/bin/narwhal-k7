@@ -22,10 +22,11 @@ if [ "$JS_PATH" ]; then
 	NARWHAL_PATH="$NARWHAL_PATH:$JS_PATH"
 fi
 
-export NARWHAL_HOME
 export NARWHAL_PATH
+export NARWHAL_HOME
+export NARWHAL_PLATFORM_HOME
 
-# uses rlwrap (realine wrapper) if present
+# uses rlwrap (readline wrapper) if present
 K7="$(which rlwrap) k7"
 
 # drop into shell if there are no additional arguments
