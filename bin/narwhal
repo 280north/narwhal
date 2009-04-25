@@ -1,6 +1,18 @@
 #!/bin/bash
 
-DEFAULT_PLATFORM="rhino"
+# get the absolute path of the executable
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
+
+# resolve symlinks
+while [ -h $SELF_PATH ]; do
+	DIR=$(dirname -- "$SELF_PATH")
+	SYM=$(readlink $SELF_PATH)
+	SELF_PATH=$(cd $DIR && cd $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+done
+
+NARWHAL_HOME=$(dirname $(dirname $SELF_PATH))
+
+source $NARWHAL_HOME/narwhal.conf
 
 # get the absolute path of the executable
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
@@ -17,13 +29,22 @@ NARWHAL_HOME=`dirname $SELF_DIR`
 export NARWHAL_HOME;
 
 if [ ! $NARWHAL_PLATFORM ]; then
-	NARWHAL_PLATFORM=$DEFAULT_PLATFORM
+	NARWHAL_PLATFORM=$NARWHAL_DEFAULT_PLATFORM
 fi
 
-# convert paths for Cygwin
-if [[ `uname` == CYGWIN* ]]; then
-    NARWHAL_HOME=`cygpath -wp "$NARWHAL_HOME"`
+export NARWHAL_HOME
+
+EXECUTABLE_NAME="narwhal-$NARWHAL_PLATFORM"
+
+# try narwhal.conf setting
+if [ $NARWHAL_PLATFORM_HOME ]; then
+	$NARWHAL_PLATFORM_HOME/bin/$EXECUTABLE_NAME $@
+# try relative
+elif [ -f $NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME ]; then
+	$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME $@
+# try $PATH
+elif which -s $EXECUTABLE_NAME; then
+	$EXECUTABLE_NAME $@
+else
+	echo "Can't find executable for $NARWHAL_PLATFORM"
 fi
-
-"$NARWHAL_HOME/bin/narwhal-$NARWHAL_PLATFORM" $@
-

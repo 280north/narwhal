@@ -9,8 +9,8 @@ var IO = exports.IO = function(inputStream, outputStream) {
 
 IO.prototype.read = function(length, encoding) {
     var readAll = false,
+        buffers = [],
         buffer  = null,
-        bytes   = null,
         total   = 0,
         index   = 0,
         read    = 0;
@@ -19,46 +19,55 @@ IO.prototype.read = function(length, encoding) {
         readAll = true;
         length = 1024;
     }
-
-    buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
-
+        
     do {
-        read = this.inputStream.read(buffer, index, length - index);
+        if (!buffer)
+            buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
+        
+        read = this.inputStream.read(buffer, index, buffer.length - index);
         
         if (read < 0)
             break;
         
-        if (bytes) {
-            bytes.write(buffer, index, read);
-            index = 0;
-        } else {
-            index += read;
-            if (index === buffer.length && readAll) {
-                bytes = new java.io.ByteArrayOutputStream(length * 2);
-                bytes.write(buffer, 0, length);
-                index = 0;
-            }
-        }	
+        index += read;
         total += read;
+        
+        if (index >= buffer.length) {
+            buffers.push(buffer);
+            buffer = null;
+            index = 0;
+            length *= 2;
+        }
         
         //print("read="+read+" index="+index+" total="+total+" length="+length+" buffers.length="+buffers.length);
         
-    } while ((readAll || total < length) && read > -1);
+    } while (readAll && read > 0);
     
     var resultBuffer, resultLength;
     
-    if (bytes)
-        resultBuffer = bytes.toByteArray();
-    else if (total < buffer.length)
-        resultBuffer = java.util.Arrays.copyOf(buffer, total);
-    else
-        resultBuffer = buffer;
-    
-    resultLength = resultBuffer.length;
+    if (buffers.length === 1 && index === 0) {
+        resultBuffer = buffers[0]
+        resultLength = resultBuffer.length;
+    }
+    else {
+        resultBuffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, total),
+        resultLength = 0;
+            
+        for (var i = 0; i < buffers.length; i++) {
+            var buf = buffers[i];
+            java.lang.System.arraycopy(buf, 0, resultBuffer, resultLength, buf.length);
+            resultLength += buf.length;
+        }
+        
+        if (index > 0) {
+            java.lang.System.arraycopy(buffer, 0, resultBuffer, resultLength, index);
+            resultLength += index;
+        }
+    }
     
     if (total != resultLength || total !== resultBuffer.length)
         throw new Error("IO.read sanity check failed: total="+total+" resultLength="+resultLength+" resultBuffer.length="+resultBuffer.length);
-
+        
     return new Binary(resultBuffer);
 };
 
