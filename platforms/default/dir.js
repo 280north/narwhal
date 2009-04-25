@@ -3,5 +3,7 @@
 var Dir = exports;
 
 Dir.pwd = function() {
-    return ".";
+    if (system.env["PWD"] === undefined)
+        throw new Error("Couldn't get pwd");
+    return system.env["PWD"];
 }

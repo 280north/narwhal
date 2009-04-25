@@ -47,6 +47,7 @@ Contributors
 * Kris Kowal
 * George Moschovitis
 * Kevin Dangoor
+* Hannes Wallnöfer
 
 
 License

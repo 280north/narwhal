@@ -33,6 +33,9 @@ var PackageType = Packages;
 /*** addJavaPaths
 */
 exports.addJavaPaths = function addJavaPaths(javaPaths) {
+    if (!javaPaths || javaPaths.length === 0)
+        return;
+        
     /* set up jar loader */
     var urls = Packages.java.lang.reflect.Array.newInstance(java.net.URL, javaPaths.length);
     for (var i = 0; i < javaPaths.length; i++) {
@@ -40,11 +43,15 @@ exports.addJavaPaths = function addJavaPaths(javaPaths) {
     };
     loader = new Packages.java.net.URLClassLoader(urls, loader);
 
-    /* intall jar loader */
-    //Packages.java.lang.Thread.currentThread().setContextClassLoader(loader);
-    var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
-    context.setApplicationClassLoader(loader);
-    // must explicitly be made global when each module has it's own scope
-    global.Packages = new PackageType(loader);
+    try {
+        /* intall jar loader */
+        //Packages.java.lang.Thread.currentThread().setContextClassLoader(loader);
+        var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
+        context.setApplicationClassLoader(loader);
+        // must explicitly be made global when each module has it's own scope
+        global.Packages = new PackageType(loader);
+    } catch (e) {
+        print("warning: couldn't install jar loader: " + e);
+    }
 };
 
