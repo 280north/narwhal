@@ -11,14 +11,8 @@
         fclose = _system.posix.fclose;
 
     var isFile = function (path) {
-        var fd = null;
-        try {
-            fd = fopen(path, "r");
-        } finally {
-            if (fd)
-                fclose(fd);
-        }
-        return !!fd;
+        try { read(path); } catch(e) { return false; }
+        return true;
     };
 
     var read = function(path) {
@@ -39,7 +33,6 @@
         }
         if (result.length === 0)
             throw new Error("File not found (length=0): " + path);
-        
         return result;
     }
 
