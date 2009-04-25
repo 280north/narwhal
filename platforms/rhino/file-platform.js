@@ -68,6 +68,8 @@ File.prototype.exists = function () {
 /* streams */
 
 exports.FileIO = function (path, mode, permissions) {
+    path = JavaPath(path);
+
     var {
         read: read,
         write: write,
