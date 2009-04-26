@@ -7,7 +7,7 @@ var IO = exports.IO = function(inputStream, outputStream) {
     this.outputStream = outputStream;
 };
 
-IO.prototype.read = function(length, encoding) {
+IO.prototype.read = function(length) {
     var readAll = false,
         buffers = [],
         buffer  = null,
@@ -71,11 +71,11 @@ IO.prototype.read = function(length, encoding) {
     return new Binary(resultBuffer);
 };
 
-IO.prototype.write = function(object, encoding) {
+IO.prototype.write = function(object, charset) {
     if (object === null || object === undefined || typeof object.toBinary !== "function")
         throw new Error("Argument to IO.write must have toBinary() method");
 
-    var binary = object.toBinary(encoding);
+    var binary = object.toBinary(charset);
     this.outputStream.write(binary.bytes);
 };
 
@@ -94,21 +94,19 @@ IO.prototype.isatty = function () {
     return false;
 };
 
-exports.TextIOWrapper = function (buffer, encoding, options) {
-    throw new Error("TextIOWrapper not implemented.");
-    var errors = options.errors;
-    var recordSeparator = options.recordSeparator;
-    var fieldSeparator = options.fieldSeparator;
-    var lineBuffering = options.lineBuffering;
-};
+exports.TextInputStream = function (raw, lineBuffering, buffering, charset, options) {
+    var stream;
 
-exports.TextInputStream = function (raw, lineBuffering, buffering, encoding, options) {
-    print('encoding ' + encoding);
-    var stream = new Packages.java.io.InputStreamReader(raw.inputStream, encoding);
+    if (charset === undefined)
+        stream = new Packages.java.io.InputStreamReader(raw.inputStream);
+    else
+        stream = new Packages.java.io.InputStreamReader(raw.inputStream, charset);
+
     if (buffering === undefined)
         stream = new Packages.java.io.BufferedReader(stream);
     else
         stream = new Packages.java.io.BufferedReader(stream, buffering);
+
     var self = this;
 
     self.readLine = function () {
@@ -129,6 +127,10 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, encoding, opt
         return line;
     };
 
+    self.input = function () {
+        throw "NYI";
+    };
+
     self.readLines = function () {
         var lines = [];
         try {
@@ -144,19 +146,65 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, encoding, opt
         return self.readLines().join('');
     };
 
+    self.readInto = function (buffer) {
+        throw "NYI";
+    };
+
     self.close = function () {
         stream.close();
     };
 
 };
 
-exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, encoding, options) {
+exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, options) {
+    var stream;
+
+    if (charset === undefined)
+        stream = new Packages.java.io.OutputStreamWriter(raw.outputStream);
+    else
+        stream = new Packages.java.io.OutputStreamWriter(raw.outputStream, charset);
+
+    if (buffering === undefined)
+        stream = new Packages.java.io.BufferedWriter(stream);
+    else
+        stream = new Packages.java.io.BufferedWriter(stream, buffering);
+
+    var self = this;
+
+    self.write = function () {
+        stream.write.apply(stream, arguments);
+    };
+
+    self.writeLine = function (line) {
+        self.write(line + "\n"); // todo recordSeparator
+    };
+
+    self.writeLines = function (lines) {
+        lines.forEach(self.writeLine);
+    };
+
+    self.print = function () {
+        self.write(Array.prototype.join.call(arguments, " ") + "\n");
+        // todo recordSeparator, fieldSeparator
+    };
+
+    self.flush = function () {
+        stream.flush();
+    };
+
+    self.close = function () {
+        stream.close();
+    };
+
+};
+
+exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, charset, options) {
     if (mode.update) {
-        return new exports.TextIOStream(raw, lineBuffering, buffering, encoding, options);
+        return new exports.TextIOStream(raw, lineBuffering, buffering, charset, options);
     } else if (mode.write || mode.append) {
-        return new exports.TextOutputStream(raw, lineBuffering, buffering, encoding, options);
+        return new exports.TextOutputStream(raw, lineBuffering, buffering, charset, options);
     } else if (mode.read) {
-        return new exports.TextInputStream(raw, lineBuffering, buffering, encoding, options);
+        return new exports.TextInputStream(raw, lineBuffering, buffering, charset, options);
     } else {
         throw new Error("file must be opened for read, write, or append mode.");
     }
