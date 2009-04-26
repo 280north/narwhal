@@ -20,11 +20,10 @@ var log = {fatal:shim, error:shim, warn:shim, info:shim, debug:shim};
 system.log = log;
 
 // fs shim
-var fs = {
+system.fs = {
     read : fixtures.read,
     isFile : fixtures.isFile
-}
-system.fs = fs;
+};
 
 // global reference
 global = fixtures.global;
@@ -32,7 +31,11 @@ global.print = fixtures.print;
 global.system = system;
 
 // equivalent to "var sandbox = require('sandbox');"
-var sandboxFactory = fixtures.evaluate(fixtures.read(fixtures.prefix + "/lib/sandbox.js"), "sandbox.js", 1);
+var sandboxFactory = fixtures.evaluate(
+    fixtures.read(fixtures.prefix + "/lib/sandbox.js"),
+    "sandbox.js",
+    1
+);
 var sandbox = {};
 sandboxFactory(null, sandbox, system);
 
