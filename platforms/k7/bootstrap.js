@@ -51,10 +51,7 @@
         read: read,
         isFile: isFile,
         prefix: prefix,
-        path: path,
-        evaluate : function(text, name, line) {
-            return new Function("require", "exports", "system", text);
-        }
+        path: path
     });
 
 }).call(this, function () {

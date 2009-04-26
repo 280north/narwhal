@@ -16,7 +16,7 @@ var fs = require('file');
     'transitive',
     'determinism'
 ].forEach(function (testName) {
-    system.print('BEGIN: ' + testName);
+    print('BEGIN: ' + testName);
     try {
         var prefix = fs.path(require.id).resolve(testName).join('');
         sandbox(
@@ -28,9 +28,9 @@ var fs = require('file');
             }
         );
     } catch (exception) {
-        system.print('ERROR ' + (exception.message || exception));
+        print('ERROR ' + (exception.message || exception));
     }
-    system.print('END: ' + testName);
-    system.print('');
+    print('END: ' + testName);
+    print('');
 });
 

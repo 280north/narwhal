@@ -1,5 +1,4 @@
 var test = require('test');
-var print = system.print;
 try {
     require('bogus');
     print('FAIL require throws error when module missing', 'fail');
