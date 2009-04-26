@@ -48,16 +48,32 @@ try {
 
 require.force("system");
 
-// load packages
-try {
-    require("packages");
-} catch (e) {
-    system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
-}
-
 // load the program module
-if (system.args.length)
-    require(system.args.shift());
+if (system.args.length) {
+
+    var program = system.fs.path(system.args.shift());
+
+    if (program.isDirectory()) {
+        if (!program.join('package.json').isFile())
+            throw new Error("Program directory does not contain a package.json");
+        system.prefix = program.join('').toString();
+    }
+
+    // load packages
+    var packages;
+    try {
+        packages = require("packages");
+    } catch (e) {
+        system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
+    }
+
+    if (program.isDirectory()) {
+        require(packages.root.directory.resolve(packages.root.main || 'main').toString());
+    } else {
+        require(program.toString());
+    }
+
+}
 //else
 //    require("repl").repl();
 
