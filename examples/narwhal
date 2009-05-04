@@ -1,0 +1,3 @@
+#!/usr/bin/env narwhal
+var narwhal = require('narwhal');
+system.print(narwhal.LEFT);

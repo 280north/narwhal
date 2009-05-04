@@ -14,7 +14,7 @@ SELF_DIR=`dirname $SELF_PATH`
 
 NARWHAL_HOME=`dirname $SELF_DIR`
 NARWHAL="$NARWHAL_HOME/narwhal-rhino.js"
-NARWHAL_PATH="$NARWHAL_HOME/platforms/rhino:$NARWHAL_HOME/lib"
+NARWHAL_PATH="$NARWHAL_HOME/platforms/rhino:$NARWHAL_HOME/platforms/default:$NARWHAL_HOME/lib"
 if [ "$JS_PATH" ]; then
     NARWHAL_PATH="$NARWHAL_PATH:$JS_PATH"
 fi
@@ -47,8 +47,7 @@ RHINO="$RLWRAP java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main"
 if [ $# -lt 1 ]; then
     $RHINO -f $NARWHAL -f -
 else
-    MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
-    MAIN=$MAIN/$(basename -- "$1" .js)
+    MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
     if [[ `uname` == CYGWIN* ]]; then
         MAIN=`cygpath -wp "$MAIN"`
     fi

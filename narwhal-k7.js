@@ -1,4 +1,4 @@
-(function () {
+(function (evalGlobal) {
 
     var prefix = ENV["NARWHAL_HOME"];
     var path = ENV["NARWHAL_PATH"];
@@ -10,11 +10,16 @@
         fread = _system.posix.fread,
         fclose = _system.posix.fclose;
 
+    var isFile = function (path) {
+        try { read(path); } catch(e) { return false; }
+        return true;
+    };
+
     var read = function(path) {
         var result = "",
             fd = fopen(path, "r");
         if (!fd)
-            throw new Error("File not found");
+            throw new Error("File not found: " + path);
         try {
             var length = 1024,
                 data;
@@ -27,8 +32,7 @@
             fclose(fd);
         }
         if (result.length === 0)
-            throw new Error("File not found (length=0)");
-        
+            throw new Error("File not found (length=0): " + path);
         return result;
     }
 
@@ -37,13 +41,22 @@
 
     eval(read(prefix + "/narwhal.js"))({
         global: this,
+        evalGlobal: evalGlobal,
+        platform: 'k7',
+        platforms: ['k7', 'v8', 'c', 'default'],
         debug: debug,
         print: function (string) {
             _print("" + string + "\n");
         },
         read: read,
+        isFile: isFile,
         prefix: prefix,
-        path: path
+        path: path,
+        evaluate : function(text, name, line) {
+            return new Function("require", "exports", "system", text);
+        }
     });
 
-}).call(this);
+}).call(this, function () {
+    return eval(arguments[0]);
+});

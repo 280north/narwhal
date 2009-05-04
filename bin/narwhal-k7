@@ -30,12 +30,16 @@ fi
 export NARWHAL_HOME
 export NARWHAL_PATH
 
-K7="$RLWRAP $HOME/git/k7/k7"
+K7="$RLWRAP k7"
 
-MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
-MAIN=$MAIN/$(basename -- "$1" .js)
-if [[ `uname` == CYGWIN* ]]; then
-    MAIN=`cygpath -wp "$MAIN"`
+if [ $# -lt 1 ]; then
+	# FIXME: no way to explicitly drop into shell
+	$K7 $NARWHAL "$@"
+else
+	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
+	if [[ `uname` == CYGWIN* ]]; then
+	    MAIN=`cygpath -wp "$MAIN"`
+	fi
+	shift
+	$K7 $NARWHAL $MAIN "$@"
 fi
-shift
-$K7 $NARWHAL $MAIN "$@"

@@ -1,1 +1,9 @@
-narwhal-rhino
+#!/bin/bash
+
+DEFAULT_PLATFORM="rhino"
+
+if [ ! $NARWHAL_PLATFORM ]; then
+	NARWHAL_PLATFORM=$DEFAULT_PLATFORM
+fi
+
+"narwhal-$NARWHAL_PLATFORM" $@
