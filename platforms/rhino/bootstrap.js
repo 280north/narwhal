@@ -112,7 +112,7 @@
         
         return context.compileFunction(
             scope,
-            "function(require,exports,system){"+text+"\n// */\n}",
+            "function(require,exports,system,print){"+text+"\n// */\n}",
             name,
             lineNo,
             null

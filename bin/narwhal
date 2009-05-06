@@ -14,6 +14,20 @@ NARWHAL_HOME=$(dirname $(dirname $SELF_PATH))
 
 source $NARWHAL_HOME/narwhal.conf
 
+# get the absolute path of the executable
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
+
+# resolve symlinks
+while [ -h $SELF_PATH ]; do
+	DIR=$(dirname -- "$SELF_PATH")
+	SYM=$(readlink $SELF_PATH)
+	SELF_PATH=$(cd $DIR && cd $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+done
+
+SELF_DIR=`dirname $SELF_PATH`
+NARWHAL_HOME=`dirname $SELF_DIR`
+export NARWHAL_HOME;
+
 if [ ! $NARWHAL_PLATFORM ]; then
 	NARWHAL_PLATFORM=$NARWHAL_DEFAULT_PLATFORM
 fi
