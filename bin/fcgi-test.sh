@@ -1,1 +1,1 @@
-../packages/jack/bin/fcgi-test.sh
+../../jack/bin/fcgi-test.sh
