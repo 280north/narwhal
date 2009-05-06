@@ -60,3 +60,5 @@
 }).call(this, function () {
     return eval(arguments[0]);
 });
+
+throw "Exiting. (FIXME: this exception does not mean an actual error occurred, we just need a better way to exit)";

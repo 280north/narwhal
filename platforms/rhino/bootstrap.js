@@ -27,7 +27,7 @@
     } else {
         path = String(Packages.java.lang.System.getenv("NARWHAL_PATH") || "");
         if (!path)
-            path = [prefix + "/platforms/rhino", prefix + "/platforms/default", prefix + "/lib"].join(":");
+            path = [prefix + "/platforms/rhino/lib", prefix + "/platforms/default/lib", prefix + "/lib"].join(":");
     }
 
     // TODO: enable this via a command line switch
@@ -103,11 +103,11 @@
         var scope;
         
         if (moduleScopingEnabled) {
-            scope = global;
-        } else {
             scope = new Object();
             scope.__parent__ = null;
             scope.__proto__ = global;
+        } else {
+            scope = global;
         }
         
         return context.compileFunction(
