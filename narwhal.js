@@ -52,30 +52,30 @@ try {
 require.force("system");
 
 // load the program module
+var program;
 if (system.args.length) {
-
-    var program = system.fs.path(system.args.shift());
-
+    program = system.fs.path(system.args.shift());
     if (program.isDirectory()) {
         if (!program.join('package.json').isFile())
             throw new Error("Program directory does not contain a package.json");
         system.prefix = program.join('').toString();
     }
+}
 
-    // load packages
-    var packages;
-    try {
-        packages = require("packages");
-    } catch (e) {
-        system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
-    }
+// load packages
+var packages;
+try {
+    packages = require("packages");
+} catch (e) {
+    system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
+}
 
+if (program) {
     if (program.isDirectory()) {
         require(packages.root.directory.resolve(packages.root.main || 'main').toString());
     } else {
         require(program.toString());
     }
-
 }
 //else
 //    require("repl").repl();
