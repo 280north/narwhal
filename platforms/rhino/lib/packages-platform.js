@@ -7,22 +7,17 @@ var system = require('./system');
 exports.analyze = function (analysis, sortedPackages) {
     var javaPaths = analysis.javaPaths = []
     sortedPackages.forEach(function (packageData) {
-        var jars = packageData.jars;
-        if (typeof jars == "string")
-            jars = [jars];
-        if (jars === undefined)
-            jars = ["jars"];
-        jars.forEach(function (jars) {
-            jars = packageData.directory.resolve(jars);
-            if (jars.isDirectory()) {
-                jars.list().forEach(function (jar) {
-                    jar = jars.join(jar);
-                    if (jar.search(/\.jar$/)) {
-                        javaPaths.push(jar);
-                    }
-                });
-            }
-        });
+        /* migration */
+        if (packageData.jars)
+            packageData.java = packageData.jars;
+        /* /migration */
+        if (typeof packageData.java == 'string')
+            packageData.java = [packageData.java];
+        if (!packageData.java)
+            packageData.java = [];
+        for (var i = 0; i < packageData.java.length; i++)
+            packageData.java[i] = packageData.directory.resolve(packageData.java[i]);
+        javaPaths.unshift.apply(javaPaths, packageData.java);
     });
 };
 
@@ -33,9 +28,6 @@ exports.synthesize = function (analysis) {
 };
 
 var loader = Packages.java.lang.ClassLoader.getSystemClassLoader();
-
-// so that replacing Packages does not implicitly dispose of the
-//  only means of creating new Packages objects.
 var PackageType = Packages;
 
 /*** addJavaPaths
@@ -57,6 +49,7 @@ exports.addJavaPaths = function addJavaPaths(javaPaths) {
         var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
         context.setApplicationClassLoader(loader);
         // must explicitly be made global when each module has it's own scope
+        global.Packages = new PackageType(loader);
     } catch (e) {
         print("warning: couldn't install jar loader: " + e);
     }

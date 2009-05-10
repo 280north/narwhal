@@ -66,7 +66,6 @@ if (system.args.length) {
 var packages;
 try {
     packages = require("packages");
-    packages.main();
 } catch (e) {
     system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
 }
