@@ -37,6 +37,7 @@ exports.stat = function (path) {
     }
 };
 
+// TODO necessary for package loading
 exports.isDirectory = function (path) {
     throw Error("Not yet implemented.");
 };
