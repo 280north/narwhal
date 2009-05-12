@@ -42,7 +42,7 @@
         if (result.length === 0)
             throw new Error("File not found (length=0): " + path);
         return result;
-    }
+    };
 
     var _print = print;
     delete print;
@@ -57,7 +57,7 @@
             _print("" + string);
         },
         evaluate: function (text) {
-             return eval(text);
+             return eval("(function(require,exports,system,print){" + text + "/**/\n})");
         },
         read: read,
         isFile: isFile,

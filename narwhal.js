@@ -1,7 +1,6 @@
 (function (fixtures) {
 
 var system = {};
-system.exports = {}; // FIXME: Look in lib/sandbox.js for explanation
 system.print = fixtures.print;
 system.debug = fixtures.debug;
 system.prefix = fixtures.prefix;
