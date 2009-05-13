@@ -34,7 +34,7 @@ RHINO="$(which rlwrap) java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Ma
 if [ $# -lt 1 ]; then
 	$RHINO -f $BOOTSTRAP -f -
 else
-	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
+	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1")
 	shift
 	$RHINO $BOOTSTRAP $MAIN "$@"
 fi
