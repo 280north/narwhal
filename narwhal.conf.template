@@ -1,0 +1,12 @@
+
+# Copy this file to narwhal.conf and edit
+# for your local configuration.
+
+# Rhino (default)
+NARWHAL_DEFAULT_PLATFORM="rhino"
+
+# k7
+#NARWHAL_PLATFORM="k7"
+
+#NARWHAL_PLATFORM_HOME=""
+

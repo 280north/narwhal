@@ -4,30 +4,30 @@ var file = require('./file');
 exports.SEPARATOR = '/';
 
 exports.cwd = function () {
-    throw Error("Not yet implemented.");
+    throw Error("cwd not yet implemented.");
 };
 
 // TODO necessary for package loading
 exports.list = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("list not yet implemented.");
 };
 
 // TODO necessary for package loading
 exports.canonical = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("canonical not yet implemented.");
 };
 
 exports.exists = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("exists not yet implemented.");
 };
 
 // TODO necessary for lazy module reloading in sandboxes
 exports.mtime = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("mtime not yet implemented.");
 };
 
 exports.size = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("size not yet implemented.");
 };
 
 exports.stat = function (path) {
@@ -39,50 +39,50 @@ exports.stat = function (path) {
 
 // TODO necessary for package loading
 exports.isDirectory = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("isDirectory not yet implemented.");
 };
 
 // TODO necessary for module loading
 exports.isFile = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("isFile not yet implemented.");
 };
 
 exports.isFile = system.fs.isFile; // TEMPORARY HACK
 
 exports.isLink = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("isLink not yet implemented.");
 };
 
 exports.isReadable = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("isReadable not yet implemented.");
 };
 
 exports.isWritable = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("isWritable not yet implemented.");
 };
 
 exports.rename = function (source, target) {
-    throw Error("Not yet implemented.");
+    throw Error("rename not yet implemented.");
 };
 
 exports.move = function (source, target) {
-    throw Error("Not yet implemented.");
+    throw Error("move not yet implemented.");
 };
 
 exports.remove = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("remove not yet implemented.");
 };
 
 exports.mkdir = function (path) {
-    throw Error("Not yet implemented.");
+    throw Error("mkdir not yet implemented.");
 };
 
 exports.rmdir = function(path) {
-    throw Error("Not yet implemented.");
+    throw Error("rmdir not yet implemented.");
 };
 
 exports.touch = function (path, mtime) {
-    throw Error("Not yet implemented.");
+    throw Error("touch not yet implemented.");
 };
 
 // FIXME temporary hack
