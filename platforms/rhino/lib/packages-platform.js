@@ -28,6 +28,8 @@ exports.synthesize = function (analysis) {
 };
 
 var loader = Packages.java.lang.ClassLoader.getSystemClassLoader();
+// so that replacing Packages does not implicitly dispose of the
+//  only means of creating new Packages objects.
 var PackageType = Packages;
 
 /*** addJavaPaths
