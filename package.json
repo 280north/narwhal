@@ -1,4 +1,12 @@
 {
+    "name": "narwhal",
     "author": "Tom Robinson",
-    "js": "lib"
+    "contributors": [
+        "Kris Kowal",
+        "George Mosochovitis",
+        "Kevin Dangoor",
+        "Hannes Wallnöfer"
+    ],
+    "js": "lib",
+    "main": "examples/narwhal"
 }
