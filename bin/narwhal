@@ -55,3 +55,4 @@ elif which -s "$EXECUTABLE_NAME"; then
 else
 	echo "Can't find executable for $NARWHAL_PLATFORM"
 fi
+

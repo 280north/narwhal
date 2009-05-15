@@ -41,7 +41,8 @@ if [ $# -lt 1 ]; then
     RLWRAP=$(which rlwrap 2>/dev/null)
 	$RLWRAP java -cp "$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
-	JS_MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1")
+	JS_MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
+        JS_MAIN=$JS_MAIN/$(basename -- "$1")
 	shift
 	java -cp "$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" "$JS_MAIN" "$@"
 fi
