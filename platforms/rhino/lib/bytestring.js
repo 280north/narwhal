@@ -13,6 +13,9 @@ var ByteString = exports.ByteString = function() {
         else if (arguments[0] instanceof ByteArray) {
             throw "NYI";
         }
+        else if (arguments[0] instanceof String) {
+            throw "NYI";
+        }
         else if (Array.isArray(arguments[0])) {
             var bytes = arguments[0];
             this._bytes = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, bytes.length);
@@ -47,7 +50,7 @@ var ByteString = exports.ByteString = function() {
         throw new Error("Illegal arguments to ByteString constructor");
         
     seal(this);
-}
+};
 
 ByteString.prototype.toByteArray = function(sourceCodec, targetCodec) {
     throw "NYI";
@@ -58,7 +61,7 @@ ByteString.prototype.toByteArray = function(sourceCodec, targetCodec) {
     }
     
     throw new Error("Illegal arguments to ByteString toByteArray");
-}
+};
 
 ByteString.prototype.toByteString = function(sourceCodec, targetCodec) {
     if (arguments.length === 0) {
@@ -70,7 +73,7 @@ ByteString.prototype.toByteString = function(sourceCodec, targetCodec) {
     } 
     
     throw new Error("Illegal arguments to ByteString toByteString");
-}
+};
 
 ByteString.prototype.toArray = function(codec) {
     if (arguments.length === 0) {
@@ -96,7 +99,7 @@ ByteString.prototype.toArray = function(codec) {
     }
     else
         throw new Error("Illegal arguments to ByteString toArray()");
-}
+};
 
 ByteString.prototype.toString = function() {
     return "[ByteString "+this.length+"]";
@@ -104,22 +107,22 @@ ByteString.prototype.toString = function() {
 
 ByteString.prototype.decodeToString = function(codec) {
     return String(new java.lang.String(this._bytes, this._offset, this.length, codec));
-}
+};
 
 ByteString.prototype.indexOf = function(byteValue, start, stop) {
     throw "NYI";
-}
+};
 
 ByteString.prototype.lastIndexOf = function(byteValue, start, stop) {
     throw "NYI";
-}
+};
 
 ByteString.prototype.byteAt = ByteString.prototype.charCodeAt = function(offset) {
     if (offset < 0 || offset >= this.length)
         return NaN;
         
     return this._bytes[this._offset + offset];
-}
+};
 
 ByteString.prototype.charAt = function(offset) {
     var byteValue = this.byteAt(offset);
@@ -128,11 +131,11 @@ ByteString.prototype.charAt = function(offset) {
         return new ByteString();
         
     return new ByteString([byteValue]);
-}
+};
 
 ByteString.prototype.split = function(delimiter, options) {
     throw "NYI";
-}
+};
 
 ByteString.prototype.slice = function(begin, end) {
     if (begin < 0)
@@ -147,18 +150,22 @@ ByteString.prototype.slice = function(begin, end) {
     end = Math.min(this.length, Math.max(0, end));
     
     return new ByteString(this._bytes, this._offset + begin, end - begin);
-}
+};
 
+/* String */
 
 String.prototype.toByteString = function(charset) {
     // RHINO bug: it thinks "this" is a Java string (?!)
     return new ByteString(String(this), charset);
-}
+};
 
 String.prototype.charCodes = function() {
     throw "NYI";
-}
+};
+
+/* Array */
 
 Array.prototype.toByteString = function(charset) {
-    throw "NYI";
-}
+    return new ByteString(this);
+};
+

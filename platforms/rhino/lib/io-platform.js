@@ -1,6 +1,6 @@
 // IO: Rhino
 
-var Binary = require("./binary").Binary;
+var ByteString = require("./bytestring").ByteString;
 
 var IO = exports.IO = function(inputStream, outputStream) {
     this.inputStream = inputStream;
@@ -69,15 +69,15 @@ IO.prototype.read = function(length) {
     
     if (total != resultLength || total !== resultBuffer.length)
         throw new Error("IO.read sanity check failed: total="+total+" resultLength="+resultLength+" resultBuffer.length="+resultBuffer.length);
-        
-    return new Binary(resultBuffer);
+
+    return new ByteString(resultBuffer, 0, resultBuffer.length);
 };
 
 IO.prototype.write = function(object, charset) {
-    if (object === null || object === undefined || typeof object.toBinary !== "function")
-        throw new Error("Argument to IO.write must have toBinary() method");
+    if (object === null || object === undefined || typeof object.toByteString !== "function")
+        throw new Error("Argument to IO.write must have toByteString() method");
 
-    var binary = object.toBinary(charset);
+    var binary = object.toByteString(charset);
     this.outputStream.write(binary.bytes);
 };
 
