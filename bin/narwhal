@@ -13,7 +13,6 @@ done
 NARWHAL_HOME=$(dirname "$(dirname "$SELF_PATH")")
 
 NARWHAL_DEFAULT_PLATFORM="rhino"
-
 if [ -f "$NARWHAL_HOME/narwhal.conf" ]; then
     source "$NARWHAL_HOME"/narwhal.conf
 fi
