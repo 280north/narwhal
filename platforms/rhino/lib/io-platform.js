@@ -36,8 +36,10 @@ IO.prototype.read = function(length) {
             buffers.push(buffer);
             buffer = null;
             index = 0;
-            length *= 2;
         }
+
+        if (read == buffer.length)
+            length *= 2;
         
         //print("read="+read+" index="+index+" total="+total+" length="+length+" buffers.length="+buffers.length);
         
@@ -133,12 +135,10 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
 
     self.readLines = function () {
         var lines = [];
-        try {
-            while (true) {
-                lines.push(self.next());
-            }
-        } catch (exception) {
-        }
+        do {
+            var line = self.readLine();
+            lines.push(line);
+        } while (line.length);
         return lines;
     };
 

@@ -44,6 +44,6 @@ else
 	JS_MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
         JS_MAIN=$JS_MAIN/$(basename -- "$1")
 	shift
-	java -cp "$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" "$JS_MAIN" "$@"
+	java -cp "$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$JS_MAIN" "$@"
 fi
 
