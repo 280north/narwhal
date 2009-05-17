@@ -118,6 +118,42 @@ exports.testDecodeToString = function() {
     assert.equal("\u10ABCD", new ByteString("\u10ABCD", "UTF-16").decodeToString("UTF-16"));
 }
 
+exports.testIndexOf = function() {
+    var b1 = new ByteString([0,1,2,3,4,5,0,1,2,3,4,5]);
+    
+    assert.equal(-1, b1.indexOf(-1));
+    
+    assert.equal(0,  b1.indexOf(0));
+    assert.equal(5,  b1.indexOf(5));
+    assert.equal(-1, b1.indexOf(12));
+    
+    assert.equal(6,  b1.indexOf(0, 6));
+    assert.equal(11,  b1.indexOf(5, 6));
+    assert.equal(-1, b1.indexOf(12, 6));
+    
+    assert.equal(0,  b1.indexOf(0, 0, 3));
+    assert.equal(-1,  b1.indexOf(5, 0, 3));
+    assert.equal(-1, b1.indexOf(12, 0, 3));
+}
+
+exports.testLastIndexOf = function() {
+    var b1 = new ByteString([0,1,2,3,4,5,0,1,2,3,4,5]);
+
+    assert.equal(-1, b1.lastIndexOf(-1));
+
+    assert.equal(6,  b1.lastIndexOf(0));
+    assert.equal(11,  b1.lastIndexOf(5));
+    assert.equal(-1, b1.lastIndexOf(12));
+
+    assert.equal(0,  b1.lastIndexOf(0, 0, 6));
+    assert.equal(5,  b1.lastIndexOf(5, 0, 6));
+    assert.equal(-1, b1.lastIndexOf(12, 0, 6));
+
+    assert.equal(6,  b1.lastIndexOf(0, 6, 9));
+    assert.equal(-1,  b1.lastIndexOf(5, 6, 9));
+    assert.equal(-1, b1.lastIndexOf(12, 6, 9));
+}
+
 exports.testByteAt = function() {
     var b1 = new ByteString([0,1,2,3,4,5]);
     
@@ -154,6 +190,11 @@ exports.testCharCodeAt = function() {
 
 exports.testSlice = function() {
     var b1 = new ByteString([0,1,2,3,4,5]), b2;
+    
+    b2 = b1.slice();
+    assert.equal(6, b2.length);
+    assert.equal(0, b2.byteAt(0));
+    assert.equal(5, b2.byteAt(5));
     
     b2 = b1.slice(0);
     assert.equal(6, b2.length);

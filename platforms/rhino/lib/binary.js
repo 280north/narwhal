@@ -108,7 +108,7 @@ ByteString.prototype.toArray = function(codec) {
         throw new Error("Illegal arguments to ByteString toArray()");
 };
 
-ByteString.prototype.toString = function() {
+ByteString.prototype.toString = function(charset) {
     if (charset)
         return this.decodeToString(charset);
         
@@ -120,13 +120,15 @@ ByteString.prototype.decodeToString = function(codec) {
 };
 
 ByteString.prototype.indexOf = function(byteValue, start, stop) {
-    var array = this.toArray();
-    return array.indexOf.apply(array, arguments);
+    var array = this.slice(start, stop).toArray(),
+        result = array.indexOf(byteValue);
+    return (result < 0) ? -1 : result + (start || 0);
 };
 
 ByteString.prototype.lastIndexOf = function(byteValue, start, stop) {
-    var array = this.toArray();
-    return array.lastIndexOf.apply(array, arguments);
+    var array = this.slice(start, stop).toArray(),
+        result = array.lastIndexOf(byteValue);
+    return (result < 0) ? -1 : result + (start || 0);
 };
 
 ByteString.prototype.byteAt = ByteString.prototype.charCodeAt = function(offset) {
@@ -150,7 +152,9 @@ ByteString.prototype.split = function(delimiter, options) {
 };
 
 ByteString.prototype.slice = function(begin, end) {
-    if (begin < 0)
+    if (begin === undefined)
+        begin = 0;
+    else if (begin < 0)
         begin = this._length + begin;
         
     if (end === undefined)
