@@ -5,7 +5,7 @@ var ByteString = exports.ByteString = function() {
     if (arguments.length === 0) {
         this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 0); // null;
         this._offset    = 0;
-        this.length     = 0;
+        this._length    = 0;
     }
     // ByteString(byteString) - Copies byteString.
     else if (arguments.length === 1 && arguments[0] instanceof ByteString) {
@@ -28,24 +28,24 @@ var ByteString = exports.ByteString = function() {
             this._bytes[i] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
         }
         this._offset = 0;
-        this.length = this._bytes.length;
+        this._length = this._bytes.length;
     }
     // ByteString(string, charset) - Convert a string. The ByteString will contain string encoded with charset.
     else if ((arguments.length === 1 || (arguments.length === 2 && arguments[1] === undefined)) && typeof arguments[0] === "string") {
         this._bytes     = new java.lang.String(arguments[0]).getBytes();
         this._offset    = 0;
-        this.length     = this._bytes.length;
+        this._length    = this._bytes.length;
     }
     else if (arguments.length === 2 && typeof arguments[0] === "string" && typeof arguments[1] === "string") {
         this._bytes     = new java.lang.String(arguments[0]).getBytes(arguments[1]);
         this._offset    = 0;
-        this.length     = this._bytes.length;
+        this._length    = this._bytes.length;
     }
     // private: ByteString(bytes, offset, length)
     else if (arguments.length === 3 && Array.isArray(arguments[0]) && typeof arguments[1] === "number" && typeof arguments[2] === "number") {
         this._bytes     = arguments[0];
         this._offset    = arguments[1];
-        this.length     = arguments[2];
+        this._length    = arguments[2];
     }
     else
         throw new Error("Illegal arguments to ByteString constructor: [" +
@@ -54,6 +54,9 @@ var ByteString = exports.ByteString = function() {
     // FIXME: Setting .length shouldn't throw an exception
     seal(this);
 };
+
+ByteString.prototype.__defineGetter__("length", function() { return this._length; });
+ByteString.prototype.__defineSetter__("length", function() {});
 
 ByteString.prototype.toByteArray = function(sourceCodec, targetCodec) {
     throw "NYI";
@@ -71,7 +74,7 @@ ByteString.prototype.toByteString = function(sourceCodec, targetCodec) {
         return this;
     }
     else if (arguments.length === 2 && typeof sourceCodec === "string" && typeof targetCodec === "string") {
-        var bytes = new java.lang.String(this._bytes, this._offset, this.length, sourceCodec).getBytes(targetCodec);
+        var bytes = new java.lang.String(this._bytes, this._offset, this._length, sourceCodec).getBytes(targetCodec);
         return new ByteString(bytes, 0, bytes.length);
     } 
     
@@ -80,9 +83,9 @@ ByteString.prototype.toByteString = function(sourceCodec, targetCodec) {
 
 ByteString.prototype.toArray = function(codec) {
     if (arguments.length === 0) {
-        var bytes = new Array(this.length);
+        var bytes = new Array(this._length);
         
-        for (var i = 0; i < this.length; i++) {
+        for (var i = 0; i < this._length; i++) {
             var b = this._bytes[i + this._offset];
             // Java "bytes" are interpreted as 2's complement
             bytes[i] = (b >= 0) ? b : -1 * ((b ^ 0xFF) + 1);
@@ -91,7 +94,7 @@ ByteString.prototype.toArray = function(codec) {
         return bytes;
     }
     else if (arguments.length === 1) {
-        var string = new java.lang.String(this._bytes, this._offset, this.length, codec),
+        var string = new java.lang.String(this._bytes, this._offset, this._length, codec),
             length = string.length(),
             array = new Array(length);
         
@@ -105,11 +108,11 @@ ByteString.prototype.toArray = function(codec) {
 };
 
 ByteString.prototype.toString = function() {
-    return "[ByteString "+this.length+"]";
+    return "[ByteString "+this._length+"]";
 }
 
 ByteString.prototype.decodeToString = function(codec) {
-    return String(new java.lang.String(this._bytes, this._offset, this.length, codec));
+    return String(new java.lang.String(this._bytes, this._offset, this._length, codec));
 };
 
 ByteString.prototype.indexOf = function(byteValue, start, stop) {
@@ -121,7 +124,7 @@ ByteString.prototype.lastIndexOf = function(byteValue, start, stop) {
 };
 
 ByteString.prototype.byteAt = ByteString.prototype.charCodeAt = function(offset) {
-    if (offset < 0 || offset >= this.length)
+    if (offset < 0 || offset >= this._length)
         return NaN;
         
     return this._bytes[this._offset + offset];
@@ -142,15 +145,15 @@ ByteString.prototype.split = function(delimiter, options) {
 
 ByteString.prototype.slice = function(begin, end) {
     if (begin < 0)
-        begin = this.length + begin;
+        begin = this._length + begin;
         
     if (end === undefined)
-        end = this.length;
+        end = this._length;
     else if (end < 0)
-        end = this.length + end;
+        end = this._length + end;
     
-    begin = Math.min(this.length, Math.max(0, begin));
-    end = Math.min(this.length, Math.max(0, end));
+    begin = Math.min(this._length, Math.max(0, begin));
+    end = Math.min(this._length, Math.max(0, end));
     
     return new ByteString(this._bytes, this._offset + begin, end - begin);
 };

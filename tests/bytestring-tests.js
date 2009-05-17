@@ -10,14 +10,14 @@ exports.testByteStringConstructor = function() {
     // Construct an empty byte string.
     var b1 = new ByteString();
     assert.equal(0, b1.length);
-    assert.throwsError(function() { b1.length = 1234; });
+    b1.length = 1234;
     assert.equal(0, b1.length);
     
     // ByteString(byteString)
     // Copies byteString.
     var b2 = new ByteString(testArray);
     assert.equal(testArray.length, b2.length);
-    assert.throwsError(function() { b2.length = 1234; });
+    b2.length = 1234;
     assert.equal(testArray.length, b2.length);
     assert.equal(1, b2.byteAt(0));
     assert.equal(4, b2.byteAt(3));
@@ -26,7 +26,7 @@ exports.testByteStringConstructor = function() {
     // Use the contents of byteArray.
     //var b2 = new ByteString(new ByteArray(testArray));
     //assert.equal(testArray.length, b2.length);
-    //assert.throwsError(function() { b2.length = 1234; });
+    //b2.length = 1234;
     //assert.equal(testArray.length, b2.length);
     //assert.equal(1, b2.byteAt(0));
     //assert.equal(4, b2.byteAt(3));
@@ -36,7 +36,7 @@ exports.testByteStringConstructor = function() {
     // If any element is outside the range 0...255, an exception (TODO) is thrown.
     var b3 = new ByteString(b2);
     assert.equal(b2.length, b3.length);
-    assert.throwsError(function() { b3.length = 1234; });
+    b3.length = 1234;
     assert.equal(b2.length, b3.length);
     assert.equal(1, b3.byteAt(0));
     assert.equal(4, b3.byteAt(3));
@@ -46,7 +46,7 @@ exports.testByteStringConstructor = function() {
     var testString = "hello world";
     var b4 = new ByteString(testString, "US-ASCII");
     assert.equal(testString.length, b4.length);
-    assert.throwsError(function() { b4.length = 1234; });
+    b4.length = 1234;
     assert.equal(testString.length, b4.length);
     assert.equal(testString.charCodeAt(0), b4.byteAt(0));
     assert.equal(testString.charCodeAt(testString.length-1), b4.byteAt(testString.length-1));
