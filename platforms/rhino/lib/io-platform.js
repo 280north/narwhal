@@ -32,17 +32,12 @@ IO.prototype.read = function(length) {
         index += read;
         total += read;
         
-        if (read == buffer.length)
-            length *= 2;
-            
         if (index >= buffer.length) {
             buffers.push(buffer);
             buffer = null;
             index = 0;
+            length *= 2;
         }
-
-        
-        //print("read="+read+" index="+index+" total="+total+" length="+length+" buffers.length="+buffers.length);
         
     } while (readAll && read > 0);
     

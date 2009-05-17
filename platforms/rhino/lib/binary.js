@@ -109,6 +109,9 @@ ByteString.prototype.toArray = function(codec) {
 };
 
 ByteString.prototype.toString = function() {
+    if (charset)
+        return this.decodeToString(charset);
+        
     return "[ByteString "+this._length+"]";
 }
 
@@ -117,11 +120,13 @@ ByteString.prototype.decodeToString = function(codec) {
 };
 
 ByteString.prototype.indexOf = function(byteValue, start, stop) {
-    throw "NYI";
+    var array = this.toArray();
+    return array.indexOf.apply(array, arguments);
 };
 
 ByteString.prototype.lastIndexOf = function(byteValue, start, stop) {
-    throw "NYI";
+    var array = this.toArray();
+    return array.lastIndexOf.apply(array, arguments);
 };
 
 ByteString.prototype.byteAt = ByteString.prototype.charCodeAt = function(offset) {
@@ -167,7 +172,13 @@ String.prototype.toByteString = function(charset) {
 };
 
 String.prototype.charCodes = function() {
-    throw "NYI";
+    return Array.prototype.map.call(this, function (c) {
+        return c.charCodeAt();
+    });
+};
+
+String.fromCharCodes = function (codes) {
+    return codes.map(String.fromCharCode).join('');
 };
 
 /* Array */
