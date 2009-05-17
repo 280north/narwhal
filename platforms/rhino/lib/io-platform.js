@@ -23,7 +23,7 @@ IO.prototype.read = function(length) {
     do {
         if (!buffer)
             buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
-        
+            
         read = this.inputStream.read(buffer, index, buffer.length - index);
         
         if (read < 0)
@@ -32,14 +32,15 @@ IO.prototype.read = function(length) {
         index += read;
         total += read;
         
+        if (read == buffer.length)
+            length *= 2;
+            
         if (index >= buffer.length) {
             buffers.push(buffer);
             buffer = null;
             index = 0;
         }
 
-        if (read == buffer.length)
-            length *= 2;
         
         //print("read="+read+" index="+index+" total="+total+" length="+length+" buffers.length="+buffers.length);
         
@@ -78,7 +79,7 @@ IO.prototype.write = function(object, charset) {
         throw new Error("Argument to IO.write must have toByteString() method");
 
     var binary = object.toByteString(charset);
-    this.outputStream.write(binary.bytes);
+    this.outputStream.write(binary._bytes, binary._offset, binary.length);
 };
 
 IO.prototype.flush = function() {
