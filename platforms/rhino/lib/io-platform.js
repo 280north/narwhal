@@ -78,7 +78,7 @@ IO.prototype.write = function(object, charset) {
         throw new Error("Argument to IO.write must have toByteString() method");
 
     var binary = object.toByteString(charset);
-    this.outputStream.write(binary.bytes);
+    this.outputStream.write(binary._bytes);
 };
 
 IO.prototype.flush = function() {

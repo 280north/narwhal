@@ -30,13 +30,27 @@ var ByteString = exports.ByteString = function() {
             this.length = this._bytes.length;
         }
         else
-            throw new Error("Illegal arguments to ByteString constructor");
+            throw new Error(
+                "Illegal arguments to ByteString constructor: " +
+                arguments[0]
+            );
     }
     else if (arguments.length === 2) {
-        if (typeof arguments[0] !== "string" || typeof arguments[1] !== "string")
-            throw new Error("Illegal arguments to ByteString constructor");
-            
-        this._bytes = (new java.lang.String(arguments[0])).getBytes(arguments[1]);
+        if (
+            typeof arguments[0] !== "string" || (
+                typeof arguments[1] !== "string" &&
+                typeof arguments[1] !== "undefined"
+            )
+        )
+            throw new Error(
+                "Illegal arguments to ByteString constructor: " +
+                arguments[0] + ' ' + arguments[1]
+            );
+
+        var string = new java.lang.String(arguments[0]);
+        this._bytes = arguments[1] ?
+            string.getBytes(arguments[1]) :
+            string.getBytes()
         this._offset = 0;
         this.length = this._bytes.length;
     }
@@ -47,35 +61,45 @@ var ByteString = exports.ByteString = function() {
         this.length = arguments[2];
     }
     else
-        throw new Error("Illegal arguments to ByteString constructor");
-        
+        throw new Error(
+            "Illegal arguments to ByteString constructor: " +
+            arguments[0] + ' ' + arguments[1] + ' ' + arguments[2]
+        );
+
     seal(this);
 };
 
-ByteString.prototype.toByteArray = function(sourceCodec, targetCodec) {
+ByteString.prototype.toByteArray = function(sourceCharset, targetCharset) {
     throw "NYI";
     
     if (arguments.length === 0) {
     }
-    else if (arguments.length === 2 && typeof sourceCodec === "string" && typeof targetCodec === "string") {
+    else if (arguments.length === 2 && typeof sourceCharset === "string" && typeof targetCharset === "string") {
     }
     
     throw new Error("Illegal arguments to ByteString toByteArray");
 };
 
-ByteString.prototype.toByteString = function(sourceCodec, targetCodec) {
-    if (arguments.length === 0) {
+ByteString.prototype.toByteString = function(sourceCharset, targetCharset) {
+    if (arguments.length < 2) {
+        // toByteString() is obvious
+        // toByteString(charset) is not as obvious, but 
+        // it is necessary to pass this form through too
+        // so that you can coerce either a String or ByteString
+        // to a ByteString with the same expression, simply
+        // assuming that the charset is proper if it's a
+        // ByteString.  This behavior is dubious and may be
+        // redacted.
         return this;
-    }
-    else if (arguments.length === 2 && typeof sourceCodec === "string" && typeof targetCodec === "string") {
-        var bytes = new java.lang.String(this._bytes, this._offset, this.length, sourceCodec).getBytes(targetCodec);
+    } else if (arguments.length === 2 && typeof sourceCharset === "string" && typeof targetCharset === "string") {
+        var bytes = new java.lang.String(this._bytes, this._offset, this.length, sourceCharset).getBytes(targetCharset);
         return new ByteString(bytes, 0, bytes.length);
     } 
     
-    throw new Error("Illegal arguments to ByteString toByteString");
+    throw new Error("Illegal arguments to ByteString toByteString " + arguments.length + ' ' + arguments[0]);
 };
 
-ByteString.prototype.toArray = function(codec) {
+ByteString.prototype.toArray = function(charset) {
     if (arguments.length === 0) {
         var bytes = new Array(this.length);
         
@@ -88,7 +112,7 @@ ByteString.prototype.toArray = function(codec) {
         return bytes;
     }
     else if (arguments.length === 1) {
-        var string = new java.lang.String(this._bytes, this._offset, this.length, codec),
+        var string = new java.lang.String(this._bytes, this._offset, this.length, charset),
             length = string.length(),
             array = new Array(length);
         
@@ -105,8 +129,8 @@ ByteString.prototype.toString = function() {
     return "[ByteString "+this.length+"]";
 }
 
-ByteString.prototype.decodeToString = function(codec) {
-    return String(new java.lang.String(this._bytes, this._offset, this.length, codec));
+ByteString.prototype.decodeToString = function(charset) {
+    return String(new java.lang.String(this._bytes, this._offset, this.length, charset));
 };
 
 ByteString.prototype.indexOf = function(byteValue, start, stop) {
