@@ -1,6 +1,6 @@
 // IO: Rhino
 
-var ByteString = require("./bytestring").ByteString;
+var ByteString = require("./binary").ByteString;
 
 var IO = exports.IO = function(inputStream, outputStream) {
     this.inputStream = inputStream;

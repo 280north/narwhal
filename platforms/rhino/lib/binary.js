@@ -1,4 +1,5 @@
-var ByteArray = require("bytearray").ByteArray;
+var ByteArray = exports.ByteArray = function() {
+}
 
 var ByteString = exports.ByteString = function() {
     // ByteString() - Construct an empty byte string.
