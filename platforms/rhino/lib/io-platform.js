@@ -1,6 +1,6 @@
 // IO: Rhino
 
-var ByteString = require("./bytestring").ByteString;
+var ByteString = require("./binary").ByteString;
 
 var IO = exports.IO = function(inputStream, outputStream) {
     this.inputStream = inputStream;
@@ -23,7 +23,7 @@ IO.prototype.read = function(length) {
     do {
         if (!buffer)
             buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
-        
+            
         read = this.inputStream.read(buffer, index, buffer.length - index);
         
         if (read < 0)
@@ -38,8 +38,6 @@ IO.prototype.read = function(length) {
             index = 0;
             length *= 2;
         }
-
-        //print("read="+read+" index="+index+" total="+total+" length="+length+" buffers.length="+buffers.length);
         
     } while (readAll && read > 0);
     
@@ -76,7 +74,7 @@ IO.prototype.write = function(object, charset) {
         throw new Error("Argument to IO.write must have toByteString() method");
 
     var binary = object.toByteString(charset);
-    this.outputStream.write(binary._bytes);
+    this.outputStream.write(binary._bytes, binary._offset, binary.length);
 };
 
 IO.prototype.flush = function() {
