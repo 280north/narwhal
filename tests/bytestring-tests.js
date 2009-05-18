@@ -1,6 +1,7 @@
 var assert = require("test/assert");
 
-var ByteString = require("binary").ByteString,
+var Binary = require("binary").Binary,
+    ByteString = require("binary").ByteString,
     ByteArray = require("binary").ByteArray;
 
 exports.testByteStringConstructor = function() {
@@ -9,6 +10,8 @@ exports.testByteStringConstructor = function() {
     // ByteString()
     // Construct an empty byte string.
     var b1 = new ByteString();
+    //assert.isTrue(b1 instanceof Binary, "not instanceof Binary");
+    assert.isTrue(b1 instanceof ByteString, "not instanceof ByteString");
     assert.equal(0, b1.length);
     b1.length = 1234;
     assert.equal(0, b1.length);
@@ -17,26 +20,26 @@ exports.testByteStringConstructor = function() {
     // Copies byteString.
     var b2 = new ByteString(testArray);
     assert.equal(testArray.length, b2.length);
-    b2.length = 1234;
+    b2.length = 2345;
     assert.equal(testArray.length, b2.length);
     assert.equal(1, b2.byteAt(0));
     assert.equal(4, b2.byteAt(3));
     
     // ByteString(byteArray)
     // Use the contents of byteArray.
-    //var b2 = new ByteString(new ByteArray(testArray));
-    //assert.equal(testArray.length, b2.length);
-    //b2.length = 1234;
-    //assert.equal(testArray.length, b2.length);
-    //assert.equal(1, b2.byteAt(0));
-    //assert.equal(4, b2.byteAt(3));
+    var b2 = new ByteString(new ByteArray(testArray));
+    assert.equal(testArray.length, b2.length);
+    b2.length = 1234;
+    assert.equal(testArray.length, b2.length);
+    assert.equal(1, b2.byteAt(0));
+    assert.equal(4, b2.byteAt(3));
     
     // ByteString(arrayOfNumbers)
     // Use the numbers in arrayOfNumbers as the bytes.
     // If any element is outside the range 0...255, an exception (TODO) is thrown.
     var b3 = new ByteString(b2);
     assert.equal(b2.length, b3.length);
-    b3.length = 1234;
+    b3.length = 3456;
     assert.equal(b2.length, b3.length);
     assert.equal(1, b3.byteAt(0));
     assert.equal(4, b3.byteAt(3));
@@ -46,7 +49,7 @@ exports.testByteStringConstructor = function() {
     var testString = "hello world";
     var b4 = new ByteString(testString, "US-ASCII");
     assert.equal(testString.length, b4.length);
-    b4.length = 1234;
+    b4.length = 4567;
     assert.equal(testString.length, b4.length);
     assert.equal(testString.charCodeAt(0), b4.byteAt(0));
     assert.equal(testString.charCodeAt(testString.length-1), b4.byteAt(testString.length-1));
