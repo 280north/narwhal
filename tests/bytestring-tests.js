@@ -9,47 +9,47 @@ exports.testByteStringConstructor = function() {
     // ByteString()
     // Construct an empty byte string.
     var b1 = new ByteString();
-    assert.equal(0, b1.length);
+    assert.isEqual(0, b1.length);
     assert.throwsError(function() { b1.length = 1234; });
-    assert.equal(0, b1.length);
+    assert.isEqual(0, b1.length);
     
     // ByteString(byteString)
     // Copies byteString.
     var b2 = new ByteString(testArray);
-    assert.equal(testArray.length, b2.length);
+    assert.isEqual(testArray.length, b2.length);
     assert.throwsError(function() { b2.length = 1234; });
-    assert.equal(testArray.length, b2.length);
-    assert.equal(1, b2.byteAt(0));
-    assert.equal(4, b2.byteAt(3));
+    assert.isEqual(testArray.length, b2.length);
+    assert.isEqual(1, b2.byteAt(0));
+    assert.isEqual(4, b2.byteAt(3));
     
     // ByteString(byteArray)
     // Use the contents of byteArray.
     //var b2 = new ByteString(new ByteArray(testArray));
-    //assert.equal(testArray.length, b2.length);
+    //assert.isEqual(testArray.length, b2.length);
     //assert.throwsError(function() { b2.length = 1234; });
-    //assert.equal(testArray.length, b2.length);
-    //assert.equal(1, b2.byteAt(0));
-    //assert.equal(4, b2.byteAt(3));
+    //assert.isEqual(testArray.length, b2.length);
+    //assert.isEqual(1, b2.byteAt(0));
+    //assert.isEqual(4, b2.byteAt(3));
     
     // ByteString(arrayOfNumbers)
     // Use the numbers in arrayOfNumbers as the bytes.
     // If any element is outside the range 0...255, an exception (TODO) is thrown.
     var b3 = new ByteString(b2);
-    assert.equal(b2.length, b3.length);
+    assert.isEqual(b2.length, b3.length);
     assert.throwsError(function() { b3.length = 1234; });
-    assert.equal(b2.length, b3.length);
-    assert.equal(1, b3.byteAt(0));
-    assert.equal(4, b3.byteAt(3));
+    assert.isEqual(b2.length, b3.length);
+    assert.isEqual(1, b3.byteAt(0));
+    assert.isEqual(4, b3.byteAt(3));
     
     // ByteString(string, charset)
     // Convert a string. The ByteString will contain string encoded with charset.
     var testString = "hello world";
     var b4 = new ByteString(testString, "US-ASCII");
-    assert.equal(testString.length, b4.length);
+    assert.isEqual(testString.length, b4.length);
     assert.throwsError(function() { b4.length = 1234; });
-    assert.equal(testString.length, b4.length);
-    assert.equal(testString.charCodeAt(0), b4.byteAt(0));
-    assert.equal(testString.charCodeAt(testString.length-1), b4.byteAt(testString.length-1));
+    assert.isEqual(testString.length, b4.length);
+    assert.isEqual(testString.charCodeAt(0), b4.byteAt(0));
+    assert.isEqual(testString.charCodeAt(testString.length-1), b4.byteAt(testString.length-1));
     
 }
 
@@ -60,12 +60,12 @@ exports.testToByteString = function() {
     var b1 = new ByteString([1,2,3]),
         b2 = b1.toByteString();
         
-    assert.equal(b1.length, b2.length);
-    assert.equal(b1.byteAt(0), b2.byteAt(0));
-    assert.equal(b1.byteAt(2), b2.byteAt(2));
+    assert.isEqual(b1.length, b2.length);
+    assert.isEqual(b1.byteAt(0), b2.byteAt(0));
+    assert.isEqual(b1.byteAt(2), b2.byteAt(2));
     
     var testString = "I ♥ JS";
-    assert.equal(testString, new ByteString(testString, "UTF-8").toByteString("UTF-8", "UTF-16").decodeToString("UTF-16"));
+    assert.isEqual(testString, new ByteString(testString, "UTF-8").toByteString("UTF-8", "UTF-16").decodeToString("UTF-16"));
 }
 
 exports.testToArray = function() {
@@ -73,57 +73,57 @@ exports.testToArray = function() {
         b1 = new ByteString(testArray),
         a1 = b1.toArray();
         
-    assert.equal(testArray[0], a1[0]);    
-    assert.equal(testArray[1], a1[1]);
-    assert.equal(testArray[2], a1[2]);
-    assert.equal(testArray[3], a1[3]);
+    assert.isEqual(testArray[0], a1[0]);    
+    assert.isEqual(testArray[1], a1[1]);
+    assert.isEqual(testArray[2], a1[2]);
+    assert.isEqual(testArray[3], a1[3]);
     
     a1 = new ByteString("\u0024\u00A2\u20AC", "UTF-8").toArray("UTF-8");
-    assert.equal(3, a1.length);
-    assert.equal(0x24, a1[0]);
-    assert.equal(0xA2, a1[1]);
-    assert.equal(0x20AC, a1[2]);
+    assert.isEqual(3, a1.length);
+    assert.isEqual(0x24, a1[0]);
+    assert.isEqual(0xA2, a1[1]);
+    assert.isEqual(0x20AC, a1[2]);
     
     a1 = new ByteString("\u0024\u00A2\u20AC", "UTF-16").toArray("UTF-16");
-    assert.equal(3, a1.length);
-    assert.equal(0x24, a1[0]);
-    assert.equal(0xA2, a1[1]);
-    assert.equal(0x20AC, a1[2]);
+    assert.isEqual(3, a1.length);
+    assert.isEqual(0x24, a1[0]);
+    assert.isEqual(0xA2, a1[1]);
+    assert.isEqual(0x20AC, a1[2]);
 }
 
 exports.testToString = function() {
-    assert.equal("[ByteString 0]", new ByteString().toString());
-    assert.equal("[ByteString 3]", new ByteString([1,2,3]).toString());
+    assert.isEqual("[ByteString 0]", new ByteString().toString());
+    assert.isEqual("[ByteString 3]", new ByteString([1,2,3]).toString());
 }
 
 exports.testDecodeToString = function() {
-    assert.equal("hello world", new ByteString("hello world", "US-ASCII").decodeToString("US-ASCII"));
+    assert.isEqual("hello world", new ByteString("hello world", "US-ASCII").decodeToString("US-ASCII"));
     
-    assert.equal("I ♥ JS", new ByteString("I ♥ JS", "UTF-8").decodeToString("UTF-8"));
+    assert.isEqual("I ♥ JS", new ByteString("I ♥ JS", "UTF-8").decodeToString("UTF-8"));
     
-    assert.equal("\u0024", new ByteString([0x24]).decodeToString("UTF-8"));
-    assert.equal("\u00A2", new ByteString([0xC2,0xA2]).decodeToString("UTF-8"));
-    assert.equal("\u20AC", new ByteString([0xE2,0x82,0xAC]).decodeToString("UTF-8"));
+    assert.isEqual("\u0024", new ByteString([0x24]).decodeToString("UTF-8"));
+    assert.isEqual("\u00A2", new ByteString([0xC2,0xA2]).decodeToString("UTF-8"));
+    assert.isEqual("\u20AC", new ByteString([0xE2,0x82,0xAC]).decodeToString("UTF-8"));
     // FIXME:
-    //assert.equal("\u10ABCD", (new ByteString([0xF4,0x8A,0xAF,0x8D])).decodeToString("UTF-8"));
+    //assert.isEqual("\u10ABCD", (new ByteString([0xF4,0x8A,0xAF,0x8D])).decodeToString("UTF-8"));
     
-    assert.equal("\u0024", new ByteString("\u0024", "UTF-8").decodeToString("UTF-8"));
-    assert.equal("\u00A2", new ByteString("\u00A2", "UTF-8").decodeToString("UTF-8"));
-    assert.equal("\u20AC", new ByteString("\u20AC", "UTF-8").decodeToString("UTF-8"));
-    assert.equal("\u10ABCD", new ByteString("\u10ABCD", "UTF-8").decodeToString("UTF-8"));
+    assert.isEqual("\u0024", new ByteString("\u0024", "UTF-8").decodeToString("UTF-8"));
+    assert.isEqual("\u00A2", new ByteString("\u00A2", "UTF-8").decodeToString("UTF-8"));
+    assert.isEqual("\u20AC", new ByteString("\u20AC", "UTF-8").decodeToString("UTF-8"));
+    assert.isEqual("\u10ABCD", new ByteString("\u10ABCD", "UTF-8").decodeToString("UTF-8"));
     
-    assert.equal("\u0024", new ByteString("\u0024", "UTF-16").decodeToString("UTF-16"));
-    assert.equal("\u00A2", new ByteString("\u00A2", "UTF-16").decodeToString("UTF-16"));
-    assert.equal("\u20AC", new ByteString("\u20AC", "UTF-16").decodeToString("UTF-16"));
-    assert.equal("\u10ABCD", new ByteString("\u10ABCD", "UTF-16").decodeToString("UTF-16"));
+    assert.isEqual("\u0024", new ByteString("\u0024", "UTF-16").decodeToString("UTF-16"));
+    assert.isEqual("\u00A2", new ByteString("\u00A2", "UTF-16").decodeToString("UTF-16"));
+    assert.isEqual("\u20AC", new ByteString("\u20AC", "UTF-16").decodeToString("UTF-16"));
+    assert.isEqual("\u10ABCD", new ByteString("\u10ABCD", "UTF-16").decodeToString("UTF-16"));
 }
 
 exports.testByteAt = function() {
     var b1 = new ByteString([0,1,2,3,4,5]);
     
     assert.isTrue(isNaN(b1.byteAt(-1)));
-    assert.equal(0, b1.byteAt(0));
-    assert.equal(5, b1.byteAt(5));
+    assert.isEqual(0, b1.byteAt(0));
+    assert.isEqual(5, b1.byteAt(5));
     assert.isTrue(isNaN(b1.byteAt(6)));
 }
 
@@ -132,8 +132,8 @@ exports.testCharCodeAt = function() {
     var b1 = new ByteString([0,1,2,3,4,5]);
     
     assert.isTrue(isNaN(b1.charCodeAt(-1)));
-    assert.equal(0, b1.charCodeAt(0));
-    assert.equal(5, b1.charCodeAt(5));
+    assert.isEqual(0, b1.charCodeAt(0));
+    assert.isEqual(5, b1.charCodeAt(5));
     assert.isTrue(isNaN(b1.charCodeAt(6)));
 }
 
@@ -141,45 +141,45 @@ exports.testCharCodeAt = function() {
     var b1 = new ByteString([0,1,2,3,4,5]), b2;
 
     b2 = b1.charAt(-1);
-    assert.equal(0, b2.length);
+    assert.isEqual(0, b2.length);
     b2 = b1.charAt(0);
-    assert.equal(1, b2.length);
-    assert.equal(0, b2.byteAt(0));
+    assert.isEqual(1, b2.length);
+    assert.isEqual(0, b2.byteAt(0));
     b2 = b1.charAt(5);
-    assert.equal(1, b2.length);
-    assert.equal(5, b2.byteAt(0));
+    assert.isEqual(1, b2.length);
+    assert.isEqual(5, b2.byteAt(0));
     b2 = b1.charAt(6);
-    assert.equal(0, b2.length);
+    assert.isEqual(0, b2.length);
 }
 
 exports.testSlice = function() {
     var b1 = new ByteString([0,1,2,3,4,5]), b2;
     
     b2 = b1.slice(0);
-    assert.equal(6, b2.length);
-    assert.equal(0, b2.byteAt(0));
-    assert.equal(5, b2.byteAt(5));
+    assert.isEqual(6, b2.length);
+    assert.isEqual(0, b2.byteAt(0));
+    assert.isEqual(5, b2.byteAt(5));
     
     b2 = b1.slice(1, 4);
-    assert.equal(3, b2.length);
-    assert.equal(1, b2.byteAt(0));
-    assert.equal(3, b2.byteAt(2));
+    assert.isEqual(3, b2.length);
+    assert.isEqual(1, b2.byteAt(0));
+    assert.isEqual(3, b2.byteAt(2));
     
     b2 = b1.slice(0, -1);
-    assert.equal(5, b2.length);
-    assert.equal(0, b2.byteAt(0));
-    assert.equal(4, b2.byteAt(4));
+    assert.isEqual(5, b2.length);
+    assert.isEqual(0, b2.byteAt(0));
+    assert.isEqual(4, b2.byteAt(4));
     
     b2 = b1.slice(-3, -1);
-    assert.equal(2, b2.length);
-    assert.equal(3, b2.byteAt(0));
-    assert.equal(4, b2.byteAt(1));
+    assert.isEqual(2, b2.length);
+    assert.isEqual(3, b2.byteAt(0));
+    assert.isEqual(4, b2.byteAt(1));
     
     b2 = b1.slice(9, 10);
-    assert.equal(0, b2.length);
+    assert.isEqual(0, b2.length);
 }
 
 exports.testStringToByteString = function() {
-    assert.equal("hello world", "hello world".toByteString("US-ASCII").decodeToString("US-ASCII"));
-    assert.equal("I ♥ JS", "I ♥ JS".toByteString("UTF-8").decodeToString("UTF-8"));
+    assert.isEqual("hello world", "hello world".toByteString("US-ASCII").decodeToString("US-ASCII"));
+    assert.isEqual("I ♥ JS", "I ♥ JS".toByteString("UTF-8").decodeToString("UTF-8"));
 }
