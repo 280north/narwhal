@@ -1,7 +1,8 @@
 var assert = require("test/assert");
 
-var ByteString = require("bytestring").ByteString,
-    ByteArray = require("bytearray").ByteArray;
+var Binary = require("binary").Binary,
+    ByteString = require("binary").ByteString,
+    ByteArray = require("binary").ByteArray;
 
 exports.testByteStringConstructor = function() {
     var testArray = [1,2,3,4];
@@ -9,34 +10,36 @@ exports.testByteStringConstructor = function() {
     // ByteString()
     // Construct an empty byte string.
     var b1 = new ByteString();
+    //assert.isTrue(b1 instanceof Binary, "not instanceof Binary");
+    assert.isTrue(b1 instanceof ByteString, "not instanceof ByteString");
     assert.isEqual(0, b1.length);
-    assert.throwsError(function() { b1.length = 1234; });
+    b1.length = 1234;
     assert.isEqual(0, b1.length);
     
     // ByteString(byteString)
     // Copies byteString.
     var b2 = new ByteString(testArray);
     assert.isEqual(testArray.length, b2.length);
-    assert.throwsError(function() { b2.length = 1234; });
+    b2.length = 2345;
     assert.isEqual(testArray.length, b2.length);
     assert.isEqual(1, b2.byteAt(0));
     assert.isEqual(4, b2.byteAt(3));
     
     // ByteString(byteArray)
     // Use the contents of byteArray.
-    //var b2 = new ByteString(new ByteArray(testArray));
-    //assert.isEqual(testArray.length, b2.length);
-    //assert.throwsError(function() { b2.length = 1234; });
-    //assert.isEqual(testArray.length, b2.length);
-    //assert.isEqual(1, b2.byteAt(0));
-    //assert.isEqual(4, b2.byteAt(3));
+    var b2 = new ByteString(new ByteArray(testArray));
+    assert.isEqual(testArray.length, b2.length);
+    b2.length = 1234;
+    assert.isEqual(testArray.length, b2.length);
+    assert.isEqual(1, b2.byteAt(0));
+    assert.isEqual(4, b2.byteAt(3));
     
     // ByteString(arrayOfNumbers)
     // Use the numbers in arrayOfNumbers as the bytes.
     // If any element is outside the range 0...255, an exception (TODO) is thrown.
     var b3 = new ByteString(b2);
     assert.isEqual(b2.length, b3.length);
-    assert.throwsError(function() { b3.length = 1234; });
+    b3.length = 3456;
     assert.isEqual(b2.length, b3.length);
     assert.isEqual(1, b3.byteAt(0));
     assert.isEqual(4, b3.byteAt(3));
@@ -46,7 +49,7 @@ exports.testByteStringConstructor = function() {
     var testString = "hello world";
     var b4 = new ByteString(testString, "US-ASCII");
     assert.isEqual(testString.length, b4.length);
-    assert.throwsError(function() { b4.length = 1234; });
+    b4.length = 4567;
     assert.isEqual(testString.length, b4.length);
     assert.isEqual(testString.charCodeAt(0), b4.byteAt(0));
     assert.isEqual(testString.charCodeAt(testString.length-1), b4.byteAt(testString.length-1));
@@ -118,6 +121,42 @@ exports.testDecodeToString = function() {
     assert.isEqual("\u10ABCD", new ByteString("\u10ABCD", "UTF-16").decodeToString("UTF-16"));
 }
 
+exports.testIndexOf = function() {
+    var b1 = new ByteString([0,1,2,3,4,5,0,1,2,3,4,5]);
+    
+    assert.isEqual(-1, b1.indexOf(-1));
+    
+    assert.isEqual(0,  b1.indexOf(0));
+    assert.isEqual(5,  b1.indexOf(5));
+    assert.isEqual(-1, b1.indexOf(12));
+    
+    assert.isEqual(6,  b1.indexOf(0, 6));
+    assert.isEqual(11,  b1.indexOf(5, 6));
+    assert.isEqual(-1, b1.indexOf(12, 6));
+    
+    assert.isEqual(0,  b1.indexOf(0, 0, 3));
+    assert.isEqual(-1,  b1.indexOf(5, 0, 3));
+    assert.isEqual(-1, b1.indexOf(12, 0, 3));
+}
+
+exports.testLastIndexOf = function() {
+    var b1 = new ByteString([0,1,2,3,4,5,0,1,2,3,4,5]);
+
+    assert.isEqual(-1, b1.lastIndexOf(-1));
+
+    assert.isEqual(6,  b1.lastIndexOf(0));
+    assert.isEqual(11,  b1.lastIndexOf(5));
+    assert.isEqual(-1, b1.lastIndexOf(12));
+
+    assert.isEqual(0,  b1.lastIndexOf(0, 0, 6));
+    assert.isEqual(5,  b1.lastIndexOf(5, 0, 6));
+    assert.isEqual(-1, b1.lastIndexOf(12, 0, 6));
+
+    assert.isEqual(6,  b1.lastIndexOf(0, 6, 9));
+    assert.isEqual(-1,  b1.lastIndexOf(5, 6, 9));
+    assert.isEqual(-1, b1.lastIndexOf(12, 6, 9));
+}
+
 exports.testByteAt = function() {
     var b1 = new ByteString([0,1,2,3,4,5]);
     
@@ -154,6 +193,11 @@ exports.testCharCodeAt = function() {
 
 exports.testSlice = function() {
     var b1 = new ByteString([0,1,2,3,4,5]), b2;
+    
+    b2 = b1.slice();
+    assert.isEqual(6, b2.length);
+    assert.isEqual(0, b2.byteAt(0));
+    assert.isEqual(5, b2.byteAt(5));
     
     b2 = b1.slice(0);
     assert.isEqual(6, b2.length);

@@ -1,5 +1,13 @@
 (function (evalGlobal) {
 
+    // NOTE: Newer version of K7 (>May 2009) does not but anything
+    // else than modules in the global namespace
+    if (typeof(ENV) == "undefined") {
+        GLOBAL     = system.k7.GLOBAL
+        ENV        = system.k7.ENV;
+        print      = system.k7.shell.print;
+    }
+
     var prefix = ENV["NARWHAL_HOME"];
     var path = ENV["NARWHAL_PATH"];
     var debug = false;
@@ -34,19 +42,22 @@
         if (result.length === 0)
             throw new Error("File not found (length=0): " + path);
         return result;
-    }
+    };
 
     var _print = print;
     delete print;
 
     eval(read(prefix + "/narwhal.js"))({
-        global: this,
+        global: GLOBAL,
         evalGlobal: evalGlobal,
         platform: 'k7',
         platforms: ['k7', 'v8', 'c', 'default'],
         debug: debug,
         print: function (string) {
-            _print("" + string + "\n");
+            _print("" + string);
+        },
+        evaluate: function (text) {
+             return eval("(function(require,exports,system,print){" + text + "/**/\n})");
         },
         read: read,
         isFile: isFile,
@@ -59,3 +70,4 @@
 });
 
 throw "Exiting. (FIXME: this exception does not mean an actual error occurred, we just need a better way to exit)";
+// EOF - vim: ts=4 sw=4 et
