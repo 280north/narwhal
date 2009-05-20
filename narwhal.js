@@ -52,13 +52,23 @@ try {
 require.force("system");
 
 // load the program module
+system.packagePrefix = system.prefix;
 var program;
 if (system.args.length) {
     program = system.fs.path(system.args.shift());
+    var path = system.fs.resolve(program, './');
+    var parts = system.fs.split(path);
+    for (var i = 1; i < parts.length; i++) {
+        var path = system.fs.join.apply(null, parts.slice(0, i));
+        var packageJson = system.fs.join(path, 'package.json');
+        if (system.fs.isFile(packageJson)) {
+            system.packagePrefix = path;
+            break;
+        }
+    }
     if (program.isDirectory()) {
         if (!program.join('package.json').isFile())
             throw new Error("Program directory does not contain a package.json");
-        system.prefix = program.join('').toString();
     }
 }
 
