@@ -9,7 +9,7 @@ exports.testWriteRead = function() {
     
     var read = File.read("foobarbaz");
     
-    assert.equal(contents, read);
+    assert.isEqual(contents, read);
     
     File.remove("foobarbaz");
 }

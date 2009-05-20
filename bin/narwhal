@@ -42,15 +42,15 @@ EXECUTABLE_NAME="narwhal-$NARWHAL_PLATFORM"
 # try narwhal.conf setting
 if [ "$NARWHAL_PLATFORM_HOME" ]; then
 	export NARWHAL_PLATFORM_HOME
-	"$NARWHAL_PLATFORM_HOME"/bin/"$EXECUTABLE_NAME" $@
+	"$NARWHAL_PLATFORM_HOME"/bin/"$EXECUTABLE_NAME" "$@"
 # try relative
 elif [ -f "$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME" ]; then
 	export NARWHAL_PLATFORM_HOME="$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM"
-	"$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME" $@
+	"$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME" "$@"
 # try $PATH
 elif which -s "$EXECUTABLE_NAME"; then
 	export NARWHAL_PLATFORM_HOME=$(dirname "$(dirname "$EXECUTABLE_NAME")")
-	$EXECUTABLE_NAME $@
+	$EXECUTABLE_NAME "$@"
 else
 	echo "Can't find executable for $NARWHAL_PLATFORM"
 fi
