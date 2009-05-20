@@ -29,6 +29,8 @@ exports.FileIO = function (path, mode, permissions) {
 /* paths */
 
 exports.SEPARATOR = '/';
+exports.ALT_SEPARATOR = undefined;
+exports.ROOT = '/';
 
 exports.cwd = function () {
     return String(Packages.java.lang.System.getProperty("user.dir"));
