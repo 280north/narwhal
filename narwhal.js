@@ -51,11 +51,32 @@ try {
 
 require.force("system");
 
-// load the program module
+var parser = require("narwhal").parser;
+var options = parser.parse(system.args);
+
 system.packagePrefixes = [system.prefix];
+system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefies);
+system.debug = options.debug;
+if (options.verbose)
+    require.setDebug(true);
+
+// run -r, --require, -e, -c , --command CLI options
+options.todo.forEach(function (item) {
+    var action = item[0];
+    var value = item[1];
+    if (action == "require") {
+        require(value);
+    } else if (action == "eval") {
+        system.evalGlobal(value);
+    }
+});
+
+// load the program module
+
 var program;
-if (system.args.length) {
-    program = system.fs.path(system.args.shift());
+if (system.args.length && !options.interactive && !options.main) {
+    if (!program)
+        program = system.fs.path(system.args[0]).canonical();
 
     // add package prefixes for all of the packages
     // containing the program, from specific to general
@@ -76,22 +97,24 @@ if (system.args.length) {
 
 // load packages
 var packages;
-try {
-    packages = require("packages");
-    packages.main();
-} catch (e) {
-    system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
+if (!options.noPackages) {
+    try {
+        packages = require("packages");
+        packages.main();
+    } catch (e) {
+        system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
+    }
 }
 
-if (program) {
+if (options.main) {
+    require(options.main);
+} else if (program) {
     if (program.isDirectory()) {
         require(packages.root.directory.resolve(packages.root.main || 'main').toString());
     } else {
         require(program.toString());
     }
 }
-//else
-//    require("repl").repl();
 
 /* send an unload event if that module has been required */
 if (require.loader.isLoaded('unload')) {

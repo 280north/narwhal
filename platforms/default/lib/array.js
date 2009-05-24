@@ -7,7 +7,7 @@
 if (!Array.isArray) {
     Array.isArray = function(obj) {
         return obj && typeof obj === "object" && obj.constructor === Array;
-    }
+    };
 }
 
 // ES5 15.4.4.18
@@ -15,7 +15,7 @@ if (!Array.prototype.forEach) {
     Array.prototype.forEach =  function(block) {
         for (var i = 0; i < this.length; i++)
             block(this[i]);
-    }
+    };
 }
 
 // ES5 15.4.4.19
@@ -34,5 +34,48 @@ if (!Array.prototype.map) {
         }
 
         return res;
-    }
+    };
 }
+
+// filter
+if (!Array.prototype.filter) {
+    Array.prototype.filter = function (block /*, thisp */) {
+        var values = [];
+        var thisp = arguments[1];
+        for (var i = 0; i < this.length; i++)
+            if (block.call(thisp, this[i]))
+                values.push(this[i]);
+        return values;
+    };
+}
+
+// every
+if (!Array.prototype.every) {
+    Array.prototype.every = function (block /*, thisp */) {
+        var thisp = arguments[1];
+        for (var i = 0; i < this.length; i++)
+            if (!block.call(thisp, this[i]))
+                return false;
+        return true;
+    };
+}
+
+// some
+if (!Array.prototype.some) {
+    Array.prototype.some = function (block /*, thisp */) {
+        var thisp = arguments[1];
+        for (var i = 0; i < this.length; i++)
+            if (block.call(thisp, this[i]))
+                return true;
+        return false;
+    };
+}
+
+// reduce
+if (!Array.prototype.reduce) {
+}
+
+// reduceRight
+if (!Array.prototype.reduceRight) {
+}
+

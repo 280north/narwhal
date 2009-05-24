@@ -35,6 +35,5 @@ if [ $# -lt 1 ]; then
 	$K7 $BOOTSTRAP "$@"
 else
 	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
-	shift
-	$K7 $BOOTSTRAP $MAIN "$@"
+	$K7 $BOOTSTRAP $MAIN "$0" "$@"
 fi
