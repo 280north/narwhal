@@ -11,3 +11,11 @@ if (!Object.keys) {
     };
 }
 
+if (!Object.create) {
+    Object.create = function (prototype) {
+        var Type = function () {};
+        Type.prototype = prototype;
+        return new Type();
+    };
+}
+
