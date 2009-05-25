@@ -69,6 +69,10 @@ IO.prototype.read = function(length) {
     return new ByteString(resultBuffer, 0, resultBuffer.length);
 };
 
+IO.prototype.copy = function (output, mode, options) {
+    // TODO buffered copy of an input stream to an output stream
+};
+
 IO.prototype.write = function(object, charset) {
     if (object === null || object === undefined || typeof object.toByteString !== "function")
         throw new Error("Argument to IO.write must have toByteString() method");
