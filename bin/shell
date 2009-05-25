@@ -13,11 +13,10 @@ done
 NARWHAL_HOME=$(dirname "$(dirname "$SELF_PATH")")
 
 if [ $# -lt 1 ]; then
-    _C=
+    echo "$NARWHAL_HOME" >&2
+    PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL"
 else
-    _C=-c
+    PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL" -c "$*"
 fi
 
-echo "$NARWHAL_HOME" >&2
-PS1="$PS1"' $ ' PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL" $_C "$*"
 
