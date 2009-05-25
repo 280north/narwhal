@@ -131,7 +131,8 @@ exports.mkdir = function (path) {
 };
 
 exports.mkdirs = function(path) {
-    if (!JavaPath(path).mkdirs())
+    JavaPath(path).mkdirs();
+    if (!exports.isDirectory(path))
         throw new Error("failed to make directories leading to " + path);
 };
 
