@@ -18,6 +18,6 @@ else
     _C=-c
 fi
 
-echo "$NARWHAL_HOME"
+echo "$NARWHAL_HOME" >&2
 PS1="$PS1"' $ ' PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL" $_C "$*"
 
