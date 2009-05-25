@@ -3,68 +3,6 @@
 var IO = require("./io").IO;
 var file = require('file');
 
-/* deprecated File object */
-
-var File = exports.File = function(path, mode) {
-    this.file = new java.io.File(path);
-    
-    if (mode) {
-        if (mode.indexOf("+") >= 0 || mode.indexOf("r") >= 0)
-            this.inputStream = new Packages.java.io.FileInputStream(this.file);
-
-        if (mode.indexOf("a") >= 0)
-            this.outputStream = new Packages.java.io.FileOutputStream(this.file, true); 
-        else if (mode.indexOf("+") >= 0 || mode.indexOf("w") >= 0)
-            this.outputStream = new Packages.java.io.FileOutputStream(this.file, false);
-    }
-}
-
-var File = exports.File = require("file-platform").File;
-File.read = function(path) {
-    var f = new File(path, "r");
-    try {
-        return f.read.apply(f, Array.prototype.slice.call(arguments, 1));
-    } finally {
-        f.close();
-    }
-}
-
-File.write = function(path) {
-    var f = new File(path, "w");
-    try {
-        return f.write.apply(f, Array.prototype.slice.call(arguments, 1));
-    } finally {
-        f.close();
-    }
-}
-
-
-File.prototype = new IO();
-
-File.prototype.size = function() {
-    return Number(this.file.length());
-}
-
-File.prototype.isReadable = function() {
-    return Boolean(this.file.canRead());
-}
-
-File.prototype.isWritable = function() {
-    return Boolean(this.file.canWrite());
-}
-
-File.prototype.mtime = function() {
-    var lastModified = this.file.lastModified();
-    if (lastModified === 0)
-        return undefined;
-    else
-        return new Date(lastModified);
-}
-
-File.prototype.exists = function () {
-    return this.file.exists();
-};
-
 /* streams */
 
 exports.FileIO = function (path, mode, permissions) {
@@ -91,6 +29,8 @@ exports.FileIO = function (path, mode, permissions) {
 /* paths */
 
 exports.SEPARATOR = '/';
+exports.ALT_SEPARATOR = undefined;
+exports.ROOT = '/';
 
 exports.cwd = function () {
     return String(Packages.java.lang.System.getProperty("user.dir"));
@@ -102,10 +42,6 @@ var JavaPath = function (path) {
 
 exports.canonical = function (path) {
     return String(JavaPath(path).getCanonicalPath());
-};
-
-exports.exists = function (path) {
-    return JavaPath(path).exists();
 };
 
 exports.mtime = function (path) {
@@ -192,17 +128,17 @@ exports.remove = function (path) {
 exports.mkdir = function (path) {
     if (!JavaPath(path).mkdir())
         throw new Error("failed to make directory " + path);
-}
+};
 
 exports.mkdirs = function(path) {
     if (!JavaPath(path).mkdirs())
         throw new Error("failed to make directories leading to " + path);
-}
+};
 
 exports.rmdir = function(path) {
     if (!JavaPath(Path)['delete']())
         throw new Error("failed to remove the directory " + path);
-}
+};
 
 exports.rmtree = function(path) {
     if (!(path instanceof java.io.File)) {
@@ -243,5 +179,4 @@ exports.touch = function (path, mtime) {
     if (!path.setLastModified(mtime.getTime()))
         throw new Error("unable to set mtime of " + path + " to " + mtime);
 };
-
 
