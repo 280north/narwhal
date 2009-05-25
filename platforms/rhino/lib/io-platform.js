@@ -121,7 +121,7 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
     self.next = function () {
         var line = stream.readLine();
         if (line === null)
-            throw new Error("StopIteration");
+            throw new StopIteration();
         return String(line);
     };
 
