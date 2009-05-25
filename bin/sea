@@ -11,12 +11,14 @@ while [ -h "$SELF_PATH" ]; do
 done
 
 NARWHAL_HOME=$(dirname "$(dirname "$SELF_PATH")")
+export PATH=$("$NARWHAL_HOME"/bin/narwhal --path :) 
+export SEA_LEVEL="$((SEA_LEVEL + 1))" 
 
 if [ $# -lt 1 ]; then
-    echo "$NARWHAL_HOME" >&2
-    PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL"
+    echo PATH="$PATH" >&2
+    "$SHELL"
 else
-    PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL" -c "$*"
+    "$SHELL" -c "$*"
 fi
-
+echo SEA_LEVEL="$((SEA_LEVEL - 1))" >&2
 

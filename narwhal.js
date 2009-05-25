@@ -41,7 +41,8 @@ sandboxFactory(null, sandbox, system);
 
 // create the primary Loader and Sandbox:
 var loader = sandbox.Loader({ paths : fixtures.path.split(":") });
-global.require = sandbox.Sandbox({loader: loader, modules: { system: system }});
+var modules = {system: system};
+global.require = sandbox.Sandbox({loader: loader, modules: modules});
 
 try {
     require("global");
@@ -49,7 +50,7 @@ try {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
 
-require.force("system");
+global.require.force("system");
 
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);
@@ -57,8 +58,17 @@ var options = parser.parse(system.args);
 system.packagePrefixes = [system.prefix];
 system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefies);
 system.debug = options.debug;
-if (options.verbose)
-    require.setDebug(true);
+
+// enable loader tracing
+global.require.debug = options.verbose;
+
+// in verbose mode, list all the modules that are 
+// already loaded
+if (options.verbose) {
+    Object.keys(modules).forEach(function (name) {
+        print('@ ' + name);
+    });
+}
 
 // find the program module and its prefix
 var program;
@@ -92,16 +102,36 @@ if (!options.noPackages) {
     } catch (e) {
         system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
     }
+} else {
+    packages = {
+        catalog: {},
+        packageOrder: []
+    }
 }
 
 // run -r, --require, -e, -c , --command CLI options
 options.todo.forEach(function (item) {
     var action = item[0];
     var value = item[1];
-    if (action == "require") {
+    if (action == "include") {
+        require.paths.unshift(value);
+    } else if (action == "require") {
         require(value);
     } else if (action == "eval") {
         system.evalGlobal(value);
+    } else if (action == "path") {
+        var paths = packages.packageOrder.map(function (pkg) {
+            return pkg.directory.join('bin');
+        }).filter(function (path) {
+            return path.isDirectory();
+        });
+        var oldPaths = system.env.PATH.split(value);
+        while (oldPaths.length) {
+            var path = oldPaths.shift();
+            if (paths.indexOf(path) < 0)
+                paths.push(path);
+        }
+        print(paths.join(value));
     }
 });
 
