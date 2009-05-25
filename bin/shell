@@ -19,5 +19,5 @@ else
 fi
 
 echo "$NARWHAL_HOME"
-PS1="$PS1"' $ ' PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL" $_C "$@"
+PS1="$PS1"' $ ' PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL" $_C "$*"
 
