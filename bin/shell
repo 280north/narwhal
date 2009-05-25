@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# get the absolute path of the executable
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
+
+# resolve symlinks
+while [ -h "$SELF_PATH" ]; do
+	DIR=$(dirname -- "$SELF_PATH")
+	SYM=$(readlink -- "$SELF_PATH")
+	SELF_PATH=$(cd "$DIR" && cd $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+done
+
+NARWHAL_HOME=$(dirname "$(dirname "$SELF_PATH")")
+
+if [ $# -lt 1 ]; then
+    _C=
+else
+    _C=-c
+fi
+
+echo "$NARWHAL_HOME"
+PS1="$PS1"' $ ' PATH="$NARWHAL_HOME"/bin:"$PATH" "$SHELL" $_C "$@"
+
