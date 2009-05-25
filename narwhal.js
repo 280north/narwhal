@@ -60,19 +60,7 @@ system.debug = options.debug;
 if (options.verbose)
     require.setDebug(true);
 
-// run -r, --require, -e, -c , --command CLI options
-options.todo.forEach(function (item) {
-    var action = item[0];
-    var value = item[1];
-    if (action == "require") {
-        require(value);
-    } else if (action == "eval") {
-        system.evalGlobal(value);
-    }
-});
-
-// load the program module
-
+// find the program module and its prefix
 var program;
 if (system.args.length && !options.interactive && !options.main) {
     if (!program)
@@ -106,6 +94,18 @@ if (!options.noPackages) {
     }
 }
 
+// run -r, --require, -e, -c , --command CLI options
+options.todo.forEach(function (item) {
+    var action = item[0];
+    var value = item[1];
+    if (action == "require") {
+        require(value);
+    } else if (action == "eval") {
+        system.evalGlobal(value);
+    }
+});
+
+// load the program module
 if (options.main) {
     require(options.main);
 } else if (program) {
