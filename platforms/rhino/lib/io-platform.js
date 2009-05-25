@@ -114,7 +114,7 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         return String(line) + "\n";
     };
 
-    self.iter = function () {
+    self.itertor = function () {
         return self;
     };
 
@@ -122,7 +122,19 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         var line = stream.readLine();
         if (line === null)
             throw new Error("StopIteration");
-        return line;
+        return String(line);
+    };
+
+    self.forEach = function (block, context) {
+        var line;
+        while (true) {
+            try {
+                line = self.next();
+            } catch (exception) {
+                break;
+            }
+            block.call(context, line);
+        }
     };
 
     self.input = function () {
