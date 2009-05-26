@@ -137,7 +137,9 @@ options.todo.forEach(function (item) {
 });
 
 // load the program module
-if (options.main) {
+if (options.interactive) {
+    require('repl');
+} else if (options.main) {
     require(options.main);
 } else if (program) {
     if (program.isDirectory()) {
