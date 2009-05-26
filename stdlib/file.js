@@ -314,8 +314,8 @@ exports.extname = function(path) {
 
 /* path wrapper, for chaining */
 
-exports.path = function (path) {
-    return exports.Path(path);
+exports.path = function (/*path*/) {
+    return exports.Path(exports.join.apply(exports, arguments));
 };
 
 var Path = exports.Path = function (path) {
@@ -379,6 +379,9 @@ for (var i = 0; i < pathed.length; i++) {
 }
 
 var trivia = [
+    'chmod',
+    'chown',
+    'copy',
     'exists',
     'extname',
     'isDirectory',
@@ -408,10 +411,13 @@ for (var i = 0; i < trivia.length; i++) {
     var name = trivia[i];
     Path.prototype[name] = (function (name) {
         return function () {
-            return exports[name].apply(
+            var result = exports[name].apply(
                 this,
                 [this.toString()].concat(Array.prototype.slice.call(arguments))
             );
+            if (result === undefined)
+                result = this;
+            return result;
         };
     })(name);
 }

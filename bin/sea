@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# this script is intended to work both in narwhal/bin and in
+# any project's bin dir; it's copied by tusk --init.
+
 # get the absolute path of the executable
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
 
@@ -10,8 +13,15 @@ while [ -h "$SELF_PATH" ]; do
 	SELF_PATH=$(cd "$DIR" && cd $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
 done
 
-NARWHAL_HOME=$(dirname "$(dirname "$SELF_PATH")")
-export PATH=$("$NARWHAL_HOME"/bin/narwhal --path :) 
+PACKAGE_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
+
+if which -s narwhal >/dev/null; then
+    NARWHAL="$PACKAGE_HOME"/bin/narwhal
+else
+    NARWHAL=narwhal
+fi
+
+export PATH=$("$NARWHAL" --package  "$PACKAGE_HOME" --path :) 
 export SEA_LEVEL="$((SEA_LEVEL + 1))" 
 
 if [ $# -lt 1 ]; then

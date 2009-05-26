@@ -102,6 +102,14 @@ exports.isWritable = function (path) {
     return JavaPath(path).canWrite();
 };
 
+exports.chmod = function (path, mode) {
+    // TODO
+};
+
+exports.chown = function (path, owner, group) {
+    // TODO
+};
+
 exports.rename = function (source, target) {
     source = file.path(source);
     target = source.resolve(target);
