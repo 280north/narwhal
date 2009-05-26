@@ -1,14 +1,4 @@
-(function (fixtures) {
-
-var system = {};
-system.print = fixtures.print;
-system.debug = fixtures.debug;
-system.prefix = fixtures.prefix;
-system.platform = fixtures.platform;
-system.platforms = fixtures.platforms;
-system.evalGlobal = fixtures.evalGlobal;
-
-system.evaluate = fixtures.evaluate;
+(function (system) {
 
 // logger shim
 var shim = function () {
@@ -19,49 +9,56 @@ var shim = function () {
 var log = {fatal:shim, error:shim, warn:shim, info:shim, debug:shim};
 system.log = log;
 
-// fs shim
-system.fs = {
-    read : fixtures.read,
-    isFile : fixtures.isFile
-};
-
 // global reference
-global = fixtures.global;
-global.print = fixtures.print;
+global = system.global;
 global.system = system;
+global.print = system.print;
 
 // equivalent to "var sandbox = require('sandbox');"
-var sandboxFactory = fixtures.evaluate(
-    fixtures.read(fixtures.prefix + "/lib/sandbox.js"),
+var sandboxFactory = system.evaluate(
+    system.fs.read(system.prefix + "/lib/sandbox.js"),
     "sandbox.js",
     1
 );
 var sandbox = {};
-sandboxFactory(null, sandbox, system);
+sandboxFactory(null, sandbox, system, system.print);
+
+// construct the initial paths
+var paths = [
+    system.prefix + '/stdlib',
+    system.prefix + '/lib'
+];
+for (var i = 0; i < system.platforms.length; i++) {
+    var platform = system.platforms[i];
+    paths.push(system.prefix + '/platforms/' + platform + '/stdlib');
+    paths.push(system.prefix + '/platforms/' + platform + '/lib');
+}
 
 // create the primary Loader and Sandbox:
-var loader = sandbox.Loader({ paths : fixtures.path.split(":") });
-var modules = {system: system};
+var loader = sandbox.Loader({paths: paths});
+var modules = {system: system, sandbox: sandbox};
 global.require = sandbox.Sandbox({loader: loader, modules: modules});
 
+// patch the primordials (or: save the whales)
+// to bring them up to at least the neighborhood of ES5 compliance.
 try {
     require("global");
 } catch (e) {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
 
+// load the complete system module
 global.require.force("system");
 
+// parse command line options
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);
-
 system.packagePrefixes = [system.prefix];
 system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefies);
 system.debug = options.debug;
 
 // enable loader tracing
 global.require.debug = options.verbose;
-
 // in verbose mode, list all the modules that are 
 // already loaded
 if (options.verbose) {
@@ -109,7 +106,11 @@ if (!options.noPackages) {
     }
 }
 
-// run -r, --require, -e, -c , --command CLI options
+// run command options
+//  -I, --include lib
+//  -r, --require module
+//  -e, -c , --command command
+//  -:, --path delimiter
 options.todo.forEach(function (item) {
     var action = item[0];
     var value = item[1];
@@ -146,7 +147,7 @@ if (options.main) {
     }
 }
 
-/* send an unload event if that module has been required */
+// send an unload event if that module has been required
 if (require.loader.isLoaded('unload')) {
     require('unload').send();
 }
