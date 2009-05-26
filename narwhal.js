@@ -138,7 +138,7 @@ options.todo.forEach(function (item) {
 
 // load the program module
 if (options.interactive) {
-    require('repl');
+    require('narwhal/repl');
 } else if (options.main) {
     require(options.main);
 } else if (program) {

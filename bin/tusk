@@ -1,2 +1,2 @@
 #!/usr/bin/env narwhal
-require('tusk').main(system.args);
+require('narwhal/tusk').main(system.args);
