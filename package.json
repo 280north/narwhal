@@ -1,4 +1,5 @@
 {
+    "name": "narwhal",
     "dependency": [],
     "contributors": [],
     "main": "examples/narwhal",
