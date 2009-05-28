@@ -1,0 +1,1 @@
+../../jack/bin/fcgi-test.sh

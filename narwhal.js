@@ -20,11 +20,10 @@ var log = {fatal:shim, error:shim, warn:shim, info:shim, debug:shim};
 system.log = log;
 
 // fs shim
-var fs = {
+system.fs = {
     read : fixtures.read,
     isFile : fixtures.isFile
-}
-system.fs = fs;
+};
 
 // global reference
 global = fixtures.global;
@@ -32,7 +31,11 @@ global.print = fixtures.print;
 global.system = system;
 
 // equivalent to "var sandbox = require('sandbox');"
-var sandboxFactory = fixtures.evaluate(fixtures.read(fixtures.prefix + "/lib/sandbox.js"), "sandbox.js", 1);
+var sandboxFactory = fixtures.evaluate(
+    fixtures.read(fixtures.prefix + "/lib/sandbox.js"),
+    "sandbox.js",
+    1
+);
 var sandbox = {};
 sandboxFactory(null, sandbox, system);
 
@@ -48,16 +51,45 @@ try {
 
 require.force("system");
 
+// load the program module
+system.packagePrefixes = [system.prefix];
+var program;
+if (system.args.length) {
+    program = system.fs.path(system.args.shift());
+
+    // add package prefixes for all of the packages
+    // containing the program, from specific to general
+    var parts = system.fs.split(program);
+    for (var i = 0; i < parts.length; i++) {
+        var path = system.fs.join.apply(null, parts.slice(0, i));
+        var packageJson = system.fs.join(path, 'package.json');
+        if (system.fs.isFile(packageJson))
+            system.packagePrefixes.unshift(path);
+    }
+
+    if (program.isDirectory()) {
+        if (!program.join('package.json').isFile())
+            throw new Error("Program directory does not contain a package.json");
+        system.packagePrefixes.unshift(program);
+    }
+}
+
 // load packages
+var packages;
 try {
-    require("packages");
+    packages = require("packages");
+    packages.main();
 } catch (e) {
     system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
 }
 
-// load the program module
-if (system.args.length)
-    require(system.args.shift());
+if (program) {
+    if (program.isDirectory()) {
+        require(packages.root.directory.resolve(packages.root.main || 'main').toString());
+    } else {
+        require(program.toString());
+    }
+}
 //else
 //    require("repl").repl();
 
