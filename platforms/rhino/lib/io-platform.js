@@ -1,6 +1,6 @@
 // IO: Rhino
 
-var Binary = require("./binary").Binary;
+var ByteString = require("./binary").ByteString;
 
 var IO = exports.IO = function(inputStream, outputStream) {
     this.inputStream = inputStream;
@@ -23,7 +23,7 @@ IO.prototype.read = function(length) {
     do {
         if (!buffer)
             buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
-        
+            
         read = this.inputStream.read(buffer, index, buffer.length - index);
         
         if (read < 0)
@@ -38,8 +38,6 @@ IO.prototype.read = function(length) {
             index = 0;
             length *= 2;
         }
-        
-        //print("read="+read+" index="+index+" total="+total+" length="+length+" buffers.length="+buffers.length);
         
     } while (readAll && read > 0);
     
@@ -67,16 +65,16 @@ IO.prototype.read = function(length) {
     
     if (total != resultLength || total !== resultBuffer.length)
         throw new Error("IO.read sanity check failed: total="+total+" resultLength="+resultLength+" resultBuffer.length="+resultBuffer.length);
-        
-    return new Binary(resultBuffer);
+
+    return new ByteString(resultBuffer, 0, resultBuffer.length);
 };
 
 IO.prototype.write = function(object, charset) {
-    if (object === null || object === undefined || typeof object.toBinary !== "function")
-        throw new Error("Argument to IO.write must have toBinary() method");
+    if (object === null || object === undefined || typeof object.toByteString !== "function")
+        throw new Error("Argument to IO.write must have toByteString() method");
 
-    var binary = object.toBinary(charset);
-    this.outputStream.write(binary.bytes);
+    var binary = object.toByteString(charset);
+    this.outputStream.write(binary._bytes, binary._offset, binary.length);
 };
 
 IO.prototype.flush = function() {
@@ -133,12 +131,10 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
 
     self.readLines = function () {
         var lines = [];
-        try {
-            while (true) {
-                lines.push(self.next());
-            }
-        } catch (exception) {
-        }
+        do {
+            var line = self.readLine();
+            lines.push(line);
+        } while (line.length);
         return lines;
     };
 

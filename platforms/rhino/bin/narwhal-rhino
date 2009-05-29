@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # get the absolute path of the executable
-SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH="$SELF_PATH/$(basename -- "$0")"
 
 # resolve symlinks
-while [ -h $SELF_PATH ]; do
+while [ -h "$SELF_PATH" ]; do
 	DIR=$(dirname -- "$SELF_PATH")
-	SYM=$(readlink $SELF_PATH)
-	SELF_PATH=$(cd $DIR && cd $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+	SYM=$(readlink -- "$SELF_PATH")
+	SELF_PATH=$(cd "$DIR" && cd $"(dirname -- "$SYM")" && pwd)/$(basename -- "$SYM")
 done
 
-NARWHAL_PLATFORM_HOME=$(dirname $(dirname $SELF_PATH))
-BOOTSTRAP="$NARWHAL_PLATFORM_HOME/bootstrap.js"
+NARWHAL_PLATFORM_HOME=$(dirname "$(dirname -- "$SELF_PATH")")
+BOOTSTRAP=$NARWHAL_PLATFORM_HOME/bootstrap.js
 
 if [ ! "$NARWHAL_HOME" ]; then
-	NARWHAL_HOME=$(dirname $(dirname $NARWHAL_PLATFORM_HOME))
+	NARWHAL_HOME=$(dirname -- "$(dirname -- "$NARWHAL_PLATFORM_HOME")")
 fi
 
 NARWHAL_PATH="$NARWHAL_PLATFORM_HOME/lib:$NARWHAL_HOME/platforms/default/lib:$NARWHAL_HOME/lib"
@@ -26,32 +26,24 @@ export NARWHAL_PATH
 export NARWHAL_HOME
 export NARWHAL_PLATFORM_HOME
 
-# uses rlwrap (readline wrapper) if present
-CLASSPATH="$NARWHAL_PLATFORM_HOME/jars/js.jar:$NARWHAL_PLATFORM_HOME/jars/jline.jar:$CLASSPATH"
+CLASSPATH=$NARWHAL_PLATFORM_HOME/jars/js.jar:$NARWHAL_PLATFORM_HOME/jars/jline.jar:$CLASSPATH
 
-# auto include jars in ./lib
-PWD=$(pwd -P)
-if [ -e "$PWD/lib" ]
-then
-export CLASSPATH=`find "$PWD"/lib -name '*.jar' | (
-        while read JAR; do
-if [ "$CLASSPATH" ]; then
-CLASSPATH="$CLASSPATH":"$JAR"
-            else
-CLASSPATH="$JAR"
-            fi
-done
-echo "$CLASSPATH"
-    )`
+if [ "$(which cygpath 2>/dev/null)" ]; then
+    CLASSPATH=$(cygpath -wp -- "$CLASSPATH")
+    BOOTSTRAP=$(cygpath -wa -- "$BOOTSTRAP")
 fi
 
-RHINO="$(which rlwrap) java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main"
+JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
 
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
-	$RHINO -f $BOOTSTRAP -f -
+    # uses rlwrap (readline wrapper) if present
+    RLWRAP=$(which rlwrap 2>/dev/null)
+	$RLWRAP java -cp "$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
-	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
+	JS_MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
+        JS_MAIN=$JS_MAIN/$(basename -- "$1")
 	shift
-	$RHINO $BOOTSTRAP $MAIN "$@"
+	java -cp "$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$JS_MAIN" "$@"
 fi
+
