@@ -9,7 +9,6 @@
     }
 
     var prefix = ENV["NARWHAL_HOME"];
-    var path = ENV["NARWHAL_PATH"];
     var debug = false;
 
     _system = system;
@@ -59,13 +58,14 @@
         evaluate: function (text) {
              return eval("(function(require,exports,system,print){" + text + "/**/\n})");
         },
-        read: read,
-        isFile: isFile,
-        prefix: prefix,
-        path: path
+        fs: {
+            read: read,
+            isFile: isFile
+        },
+        prefix: prefix
     });
 
-}).call(this, function () {
+})(function () {
     return eval(arguments[0]);
 });
 

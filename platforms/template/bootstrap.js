@@ -1,36 +1,33 @@
 (function (evalGlobal) {
 
-    var global = /*TODO*/; // object
-
-    var debug = false; /*TODO*/ // boolean
-
     var read = /*TODO*/; // function(path:string):string
 
     var isFile = /*TODO*/; // function(path:string):boolean
 
-    var path = [/*TODO*/]; // array of path strings
-
     var prefix = "/path/to/narwhal"; /*TODO*/
 
     eval(read(prefix + "/narwhal.js"))({
-        global: global,
+        global: this,
         evalGlobal: evalGlobal,
         platform: '<<<name>>>', /*TODO*/
-        platforms: ['<<<name>>>'], /*TODO*/
-        debug: debug,
+        platforms: ['<<<name>>>', 'default'], /*TODO*/
+        // XXX platforms may include any number of
+        // prioritized generic platforms like:
+        // rhino, java, c, v8, default
         print: print,
         evaluate: function (text) {
-            // or something better here:
+            // TODO maybe something better here:
             return eval(
                 "(function(require,exports,system,print){" +
                 text +
                 "/**/\n})"
             );
         },
-        read: read,
-        isFile: isFile,
+        fs: {
+            read: read,
+            isFile: isFile
+        },
         prefix: prefix,
-        path: path
     });
 
 }).call(this, function () {

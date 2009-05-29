@@ -1,0 +1,74 @@
+{
+    "narwhal": {
+        "name": "narwhal",
+        "author": "Tom Robinson",
+        "contributors": [
+            "Kris Kowal",
+            "George Mosochovitis",
+            "Kevin Dangoor",
+            "Hannes Wallnöfer"
+        ],
+        "main": "examples/narwhal",
+        "githubName": "tlrobinson/narwhal",
+        "location": "http://github.com/tlrobinson/narwhal/raw/master/package.json"
+    },
+    "jack": {
+        "author": "Tom Robinson",
+        "dependencies": [
+            "narwhal"
+        ],
+        "js": "lib",
+        "jars": [
+            "jars/simple.jar"
+        ],
+        "githubName": "tlrobinson/jack",
+        "location": "http://github.com/tlrobinson/jack/raw/master/package.json"
+    },
+    "nitro": {
+        "name": "nitro",
+        "author": "George Moschovitis",
+        "email": "george-moschovitis@gmosx.com",
+        "dependencies": [
+            "jack"
+        ],
+        "js": "lib",
+        "main": "examples/simple/jackconfig",
+        "githubName": "gmosx/nitro",
+        "location": "http://github.com/gmosx/nitro/raw/master/package.json"
+    },
+    "chiron": {
+        "author": "Kris Kowal",
+        "dependencies": [],
+        "lib": "src",
+        "githubName": "kriskowal/chiron",
+        "location": "http://github.com/kriskowal/chiron/raw/master/package.json"
+    },
+    "narcissus": {
+        "author": "Brendan Eich <brendan@mozilla.org>",
+        "contributors": [
+            "Kris Kowal <kris@cixar.com>"
+        ],
+        "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
+        "js": "src",
+        "githubName": "kriskowal/narcissus",
+        "location": "http://github.com/kriskowal/narcissus/raw/master/package.json"
+    },
+    "creolejs": {
+        "author": "Ivan Fomichev",
+        "contributors": [
+            "Chris Purcell",
+            "Kris Kowal"
+        ],
+        "js": "src",
+        "githubName": "kriskowal/creolejs",
+        "location": "http://github.com/kriskowal/creolejs/raw/master/package.json"
+    },
+    "browser": {
+        "name": "browser",
+        "author": "Tom Robinson",
+        "dependencies": [],
+        "js": "lib",
+        "githubName": "tlrobinson/browserjs",
+        "location": "http://github.com/tlrobinson/browserjs/raw/master/package.json"
+    }
+}

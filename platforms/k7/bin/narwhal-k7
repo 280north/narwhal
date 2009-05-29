@@ -17,14 +17,7 @@ if [ ! "$NARWHAL_HOME" ]; then
 	NARWHAL_HOME=$(dirname $(dirname $NARWHAL_PLATFORM_HOME))
 fi
 
-NARWHAL_PATH="$NARWHAL_PLATFORM_HOME/lib:$NARWHAL_HOME/platforms/default/lib:$NARWHAL_HOME/lib"
-if [ "$JS_PATH" ]; then
-	NARWHAL_PATH="$NARWHAL_PATH:$JS_PATH"
-fi
-
-export NARWHAL_PATH
 export NARWHAL_HOME
-export NARWHAL_PLATFORM_HOME
 
 # uses rlwrap (readline wrapper) if present
 K7="$(which rlwrap) k7"
@@ -35,6 +28,5 @@ if [ $# -lt 1 ]; then
 	$K7 $BOOTSTRAP "$@"
 else
 	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
-	shift
-	$K7 $BOOTSTRAP $MAIN "$@"
+	$K7 $BOOTSTRAP $MAIN "$0" "$@"
 fi

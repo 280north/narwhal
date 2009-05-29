@@ -1,11 +1,10 @@
 {
     "name": "narwhal",
-    "author": "Tom Robinson",
-    "contributors": [
-        "Kris Kowal",
-        "George Mosochovitis",
-        "Kevin Dangoor",
-        "Hannes Wallnöfer"
-    ],
-    "main": "examples/narwhal"
+    "dependency": [],
+    "contributors": [],
+    "main": "examples/narwhal",
+    "lib": [
+        "stdlib",
+        "lib"
+    ]
 }

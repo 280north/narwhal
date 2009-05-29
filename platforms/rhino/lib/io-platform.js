@@ -69,6 +69,10 @@ IO.prototype.read = function(length) {
     return new ByteString(resultBuffer, 0, resultBuffer.length);
 };
 
+IO.prototype.copy = function (output, mode, options) {
+    // TODO buffered copy of an input stream to an output stream
+};
+
 IO.prototype.write = function(object, charset) {
     if (object === null || object === undefined || typeof object.toByteString !== "function")
         throw new Error("Argument to IO.write must have toByteString() method");
@@ -114,15 +118,27 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         return String(line) + "\n";
     };
 
-    self.iter = function () {
+    self.itertor = function () {
         return self;
     };
 
     self.next = function () {
         var line = stream.readLine();
         if (line === null)
-            throw new Error("StopIteration");
-        return line;
+            throw new StopIteration();
+        return String(line);
+    };
+
+    self.forEach = function (block, context) {
+        var line;
+        while (true) {
+            try {
+                line = self.next();
+            } catch (exception) {
+                break;
+            }
+            block.call(context, line);
+        }
     };
 
     self.input = function () {
@@ -181,6 +197,7 @@ exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, opt
 
     self.print = function () {
         self.write(Array.prototype.join.call(arguments, " ") + "\n");
+        self.flush();
         // todo recordSeparator, fieldSeparator
     };
 

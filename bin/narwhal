@@ -7,10 +7,10 @@ SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(b
 while [ -h "$SELF_PATH" ]; do
 	DIR=$(dirname -- "$SELF_PATH")
 	SYM=$(readlink -- "$SELF_PATH")
-	SELF_PATH=$(cd "$DIR" && cd $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+	SELF_PATH=$(cd -- "$DIR" && cd -- $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
 done
 
-NARWHAL_HOME=$(dirname "$(dirname "$SELF_PATH")")
+NARWHAL_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
 
 NARWHAL_DEFAULT_PLATFORM="rhino"
 if [ -f "$NARWHAL_HOME/narwhal.conf" ]; then
@@ -24,11 +24,11 @@ SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH="$SELF_PATH/$(
 while [ -h "$SELF_PATH" ]; do
 	DIR=$(dirname -- "$SELF_PATH")
 	SYM=$(readlink -- "$SELF_PATH")
-	SELF_PATH=$(cd "$DIR" && cd "$(dirname -- "$SYM")" && pwd)/$(basename -- "$SYM")
+	SELF_PATH=$(cd -- "$DIR" && cd "$(dirname -- "$SYM")" && pwd)/$(basename -- "$SYM")
 done
 
-SELF_DIR=`dirname "$SELF_PATH"`
-NARWHAL_HOME=`dirname "$SELF_DIR"`
+SELF_DIR=`dirname -- "$SELF_PATH"`
+NARWHAL_HOME=`dirname -- "$SELF_DIR"`
 export NARWHAL_HOME;
 
 if [ ! "$NARWHAL_PLATFORM" ]; then
@@ -49,7 +49,7 @@ elif [ -f "$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME" ]; th
 	"$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME" "$@"
 # try $PATH
 elif which -s "$EXECUTABLE_NAME"; then
-	export NARWHAL_PLATFORM_HOME=$(dirname "$(dirname "$EXECUTABLE_NAME")")
+	export NARWHAL_PLATFORM_HOME=$(dirname -- "$(dirname -- "$EXECUTABLE_NAME")")
 	$EXECUTABLE_NAME "$@"
 else
 	echo "Can't find executable for $NARWHAL_PLATFORM"
