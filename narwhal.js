@@ -2,9 +2,9 @@
 
 // logger shim
 var shim = function () {
-    if (system.debug && system.print) {
+    //if (system.debug && system.print) {
         system.print(Array.prototype.join.apply(arguments, [" "]));
-    }
+    //}
 };
 var log = {fatal:shim, error:shim, warn:shim, info:shim, debug:shim};
 system.log = log;
@@ -24,15 +24,14 @@ var sandbox = {};
 sandboxFactory(null, sandbox, system, system.print);
 
 // construct the initial paths
-var paths = [
-    system.prefix + '/stdlib',
-    system.prefix + '/lib'
-];
+var paths = [];
 for (var i = 0; i < system.platforms.length; i++) {
     var platform = system.platforms[i];
     paths.push(system.prefix + '/platforms/' + platform + '/stdlib');
     paths.push(system.prefix + '/platforms/' + platform + '/lib');
 }
+paths.push(system.prefix + '/stdlib');
+paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:
 var loader = sandbox.Loader({paths: paths});

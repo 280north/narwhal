@@ -201,6 +201,7 @@ exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, opt
 
     self.print = function () {
         self.write(Array.prototype.join.call(arguments, " ") + "\n");
+        self.flush();
         // todo recordSeparator, fieldSeparator
         return self;
     };
