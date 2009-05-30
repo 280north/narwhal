@@ -31,15 +31,21 @@ if [ -f "$PACKAGE_HOME"/narwhal.conf ]; then
     export NARWHAL_DEFAULT_PLATFORM
 fi
 
-export PATH="$("$NARWHAL" --package  "$PACKAGE_HOME" --path :)"
-export SEA_LEVEL="$((SEA_LEVEL + 1))" 
+export OLDSEA="$SEA"
+export SEA="$PACKAGE_HOME"
+export SEALVL="$((SEALVL + 1))" 
+export PATH="$("$NARWHAL" --package "$PACKAGE_HOME" --path :)"
 
 if [ "$#" -lt 1 ]; then
     echo PATH="$PATH" >&2
-    echo SEA_LEVEL="$SEA_LEVEL" >&2
+    echo SEA="$SEA" >&2
+    echo SEALVL="$SEALVL" >&2
     "$SHELL"
 else
     "$SHELL" -c "$*"
 fi
-echo SEA_LEVEL="$((SEA_LEVEL - 1))" >&2
+if [ "$OLDSEA" != "" ]; then
+    echo SEA="$OLDSEA" >&2
+fi
+echo SEALVL="$((SEALVL - 1))" >&2
 
