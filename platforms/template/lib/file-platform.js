@@ -46,6 +46,9 @@ exports.isDirectory = function (path) {
 exports.isFile = function (path) {
     throw Error("isFile not yet implemented.");
 };
+// XXX remove this if you implement isFile here
+// from bootstrap system object:
+exports.isFile = system.fs.isFile;
 
 exports.isFile = system.fs.isFile; // TEMPORARY HACK
 
@@ -86,7 +89,7 @@ exports.touch = function (path, mtime) {
 };
 
 // FIXME temporary hack
-var read = system.fs.read; // from bootstrap fixtures
+var read = system.fs.read; // from bootstrap system object
 
 exports.FileIO = function (path, mode, permissions) {
     mode = file.mode(mode);
