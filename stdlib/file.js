@@ -390,6 +390,7 @@ var trivia = [
     'isReadable',
     'isWritable',
     'link',
+    'linkExists',
     'list',
     'mkdir', 
     'mkdirs',

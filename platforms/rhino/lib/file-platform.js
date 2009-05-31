@@ -77,6 +77,10 @@ exports.exists = function (path) {
     return JavaPath(path).exists();
 };
 
+exports.linkExists = function (path) {
+    return exports.isLink(path) || exports.exists(path);
+};
+
 exports.isDirectory = function (path) {
     try { return JavaPath(path).isDirectory(); } catch (e) {}
     return false;
@@ -95,7 +99,7 @@ exports.isFile = function (path) {
 exports.isLink = function (path) {
     path = file.path(path);
     var canonical = path.canonical().toString();
-    var container = path.dirname().canonical();
+    var container = path.resolve('.').canonical();
     if (path.isDirectory()) {
         return container.toString() != canonical;
     } else {
