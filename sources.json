@@ -27,4 +27,12 @@
         "type": "github",
         "user": "tlrobinson"
     },
+    "inspec": {
+        "type": "github",
+        "user": "aq1018"
+    },
+    "kupo": {
+        "type": "github",
+        "user": "janv"
+    }
 }

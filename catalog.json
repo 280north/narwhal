@@ -70,5 +70,24 @@
         "js": "lib",
         "githubName": "tlrobinson/browserjs",
         "location": "http://github.com/tlrobinson/browserjs/raw/master/package.json"
+    },
+    "inspec": {
+        "name": "inspec",
+        "version": {
+            "label": "0.1",
+            "numeric": [
+                0,
+                1
+            ],
+            "status": "development"
+        },
+        "githubName": "aq1018/inspec",
+        "location": "http://github.com/aq1018/inspec/raw/master/package.json"
+    },
+    "kupo_site": {
+        "name": "kupo_site",
+        "author": "Jan Varwig",
+        "githubName": "janv/kupo",
+        "location": "http://github.com/janv/kupo/raw/master/package.json"
     }
 }

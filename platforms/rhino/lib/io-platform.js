@@ -79,6 +79,7 @@ IO.prototype.write = function(object, charset) {
 
     var binary = object.toByteString(charset);
     this.outputStream.write(binary._bytes, binary._offset, binary.length);
+    return this;
 };
 
 IO.prototype.flush = function() {
@@ -185,28 +186,34 @@ exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, opt
 
     self.write = function () {
         stream.write.apply(stream, arguments);
+        return self;
     };
 
     self.writeLine = function (line) {
         self.write(line + "\n"); // todo recordSeparator
+        return self;
     };
 
     self.writeLines = function (lines) {
         lines.forEach(self.writeLine);
+        return self;
     };
 
     self.print = function () {
         self.write(Array.prototype.join.call(arguments, " ") + "\n");
         self.flush();
         // todo recordSeparator, fieldSeparator
+        return self;
     };
 
     self.flush = function () {
         stream.flush();
+        return self;
     };
 
     self.close = function () {
         stream.close();
+        return self;
     };
 
 };
