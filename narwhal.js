@@ -41,7 +41,7 @@ global.require = sandbox.Sandbox({loader: loader, modules: modules});
 // patch the primordials (or: save the whales)
 // to bring them up to at least the neighborhood of ES5 compliance.
 try {
-    require("global");
+    require("global", undefined, undefined, undefined, true);
 } catch (e) {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
@@ -53,7 +53,6 @@ global.require.force("system");
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);
 system.packagePrefixes = [system.prefix];
-system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefixes);
 system.debug = options.debug;
 
 // enable loader tracing
@@ -88,6 +87,11 @@ if (system.args.length && !options.interactive && !options.main) {
         system.packagePrefixes.unshift(program);
     }
 }
+
+// user package prefixes
+if (system.env.SEA)
+    system.packagePrefixes.unshift(system.env.SEA);
+system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefixes);
 
 // load packages
 var packages;
@@ -139,12 +143,12 @@ options.todo.forEach(function (item) {
 if (options.interactive) {
     require('narwhal/repl');
 } else if (options.main) {
-    require(options.main);
+    require.main(options.main);
 } else if (program) {
     if (program.isDirectory()) {
-        require(packages.root.directory.resolve(packages.root.main || 'main').toString());
+        require.main(packages.root.directory.resolve(packages.root.main || 'main').toString());
     } else {
-        require(program.toString());
+        require.main(program.toString());
     }
 }
 
