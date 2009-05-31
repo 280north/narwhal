@@ -27,10 +27,7 @@
     "nitro": {
         "name": "nitro",
         "author": "George Moschovitis",
-        "contributors": [
-            "Kris Kowal <kris@cixar.com>"
-        ],
-        "email": "george.moschovitis@gmail.com",
+        "email": "george-moschovitis@gmosx.com",
         "dependencies": [
             "jack"
         ],
@@ -52,7 +49,6 @@
             "Kris Kowal <kris@cixar.com>"
         ],
         "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
-        "js": "src",
         "githubName": "kriskowal/narcissus",
         "location": "http://github.com/kriskowal/narcissus/raw/master/package.json"
     },
@@ -93,9 +89,12 @@
         "githubName": "janv/kupo",
         "location": "http://github.com/janv/kupo/raw/master/package.json"
     },
-    "appenginejs": {
-        "name": "appenginejs",
-        "author": "George Moschovitis <george.moschovitis@gmail.com>",
+    "appengine-js": {
+        "name": "appengine-js",
+        "author": "George Moschovitis",
+        "email": "george.moschovitis@gmail.com",
+        "contributors": [],
+        "js": "lib",
         "githubName": "gmosx/appenginejs",
         "location": "http://github.com/gmosx/appenginejs/raw/master/package.json"
     }
