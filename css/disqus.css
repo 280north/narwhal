@@ -1,0 +1,24 @@
+/* @override http://localhost:4000/css/disqus.css */
+
+#disqus_thread {
+	margin-top: 50px;
+}
+
+#dsq-post-add {
+	margin-bottom: -20px;
+}
+
+.dsq-by {
+	display: none;
+}
+
+.dsq-item-feed img {
+	display: none;
+}
+
+.dsq-login-icon {
+	display: inline;
+}
+
+.dsq-comment-header {
+}
