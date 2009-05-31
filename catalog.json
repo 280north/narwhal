@@ -27,7 +27,10 @@
     "nitro": {
         "name": "nitro",
         "author": "George Moschovitis",
-        "email": "george-moschovitis@gmosx.com",
+        "contributors": [
+            "Kris Kowal <kris@cixar.com>"
+        ],
+        "email": "george.moschovitis@gmail.com",
         "dependencies": [
             "jack"
         ],
@@ -89,5 +92,11 @@
         "author": "Jan Varwig",
         "githubName": "janv/kupo",
         "location": "http://github.com/janv/kupo/raw/master/package.json"
+    },
+    "appenginejs": {
+        "name": "appenginejs",
+        "author": "George Moschovitis <george.moschovitis@gmail.com>",
+        "githubName": "gmosx/appenginejs",
+        "location": "http://github.com/gmosx/appenginejs/raw/master/package.json"
     }
 }
