@@ -1,8 +1,9 @@
+#!/usr/bin/env narwhal
 
-var base = require('chiron/base');
-var sandbox = require('chiron/sandbox').sandbox;
+var sandbox = require('sandbox').sandbox;
+var fs = require('file');
 
-base.forEach([
+[
     'absolute',
     'cyclic',
     'exactExports',
@@ -14,21 +15,24 @@ base.forEach([
     'relative',
     'transitive',
     'determinism'
-], function (testName) {
-    base.print('BEGIN: ' + testName);
+].forEach(function (testName) {
+    print('BEGIN: ' + testName);
     try {
+        var prefix = fs.path(require.id).resolve(testName).join('');
         sandbox(
             'program',
-            environment,
+            system,
             {
-                prefix: 'test/iojs/' + testName + '/',
+                prefix: prefix,
+                loader: require.loader,
+                print: print,
                 debug: true
             }
         );
     } catch (exception) {
-        base.print('ERROR ' + (exception.message || exception));
+        print('ERROR ' + (exception.message || exception));
     }
-    base.print('END: ' + testName);
-    base.print('');
+    print('END: ' + testName);
+    print('');
 });
 
