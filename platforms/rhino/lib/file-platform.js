@@ -112,14 +112,36 @@ exports.isWritable = function (path) {
 };
 
 exports.chmod = function (path, mode) {
-    var process = os.popen(['chmod', mode.toString(8), path]);
-    var code = process.wait();
-    if (code !== 0)
-        throw new Error("os.chmod: " + code + " " + process.stderr.read());
+    os.command(['chmod', mode.toString(8), path]);
 };
 
 exports.chown = function (path, owner, group) {
-    // TODO
+
+    if (!owner)
+        owner = "";
+    else
+        owner = String(owner);
+
+    if (group)
+        group = String(group);
+
+    if (/:/.test(owner))
+        throw new Error("Invalid owner name");
+    if (/:/.test(group))
+        throw new Error("Invalid group name");
+
+    if (group)
+        owner = owner + ":" + String(group);
+
+    os.command(['chown', owner, path]);
+};
+
+exports.link = function (source, target) {
+    os.command(['ln', source, target]);
+};
+
+exports.symlink = function (source, target) {
+    os.command(['ln', '-s', source, target]);
 };
 
 exports.rename = function (source, target) {

@@ -389,6 +389,7 @@ var trivia = [
     'isLink',
     'isReadable',
     'isWritable',
+    'link',
     'list',
     'mkdir', 
     'mkdirs',
@@ -403,6 +404,7 @@ var trivia = [
     'size',
     'split',
     'stat',
+    'symlink',
     'touch',
     'write'
 ];

@@ -64,6 +64,16 @@ exports.system = function (command) {
     return process.wait();
 };
 
+exports.command = function (command) {
+    var process = exports.popen(command);
+    /// TODO should communicate on all streams
+    var result = process.stdout.read();
+    var code = process.wait();
+    if (code !== 0)
+        throw new Error(process.stderr.read());
+    return result;
+};
+
 exports.enquote = function (word) {
     return "'" + String(word).replace(/'/g, "'\"'\"'") + "'";
 };
