@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
     s.name = %q{Narwhal}
-    s.version = "0.0.0"
+    s.version = "0.0.1"
     s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
     s.authors = ["Tom Robinson", "Kris Kowal", "George Moschovitis", "Kevin Dangoor", "Hannes Wallnöfer"]
     s.date = %q{2009-05-30}
