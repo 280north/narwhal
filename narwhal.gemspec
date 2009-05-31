@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
     s.executables = ["narwhal"]
     s.files = [
         "bin",
-        "bin/fcgi-test.sh",
-        "bin/jackup",
         "bin/js",
         "bin/narwhal",
         "bin/sea",
