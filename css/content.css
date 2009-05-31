@@ -1,14 +1,14 @@
 /* @override http://localhost:4000/css/content.css */
 
 html {
-	background-color: #000;
+	background-color: #111;
 }
 
 body {
 	font-family: "Myriad Pro","Segoe UI",Helvetica, Arial, sans-serif;
-	color: #989898;
+	color: #CCC;
 	font-size: larger;
-	background-color: #000;
+	background-color: #111;
 }
 
 /* **************** CONTENT OBJECTS ***************** */
@@ -297,6 +297,12 @@ cite {
 
 .main ul li {
 	list-style-type: disc;
+	list-style-position: outside;
+	margin-left: 20px;
+}
+
+.main ol li {
+	list-style-type: decimal;
 	list-style-position: outside;
 	margin-left: 20px;
 }

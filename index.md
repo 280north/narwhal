@@ -75,10 +75,10 @@ Available Packages
 Contributors
 ------------
 
-* Tom Robinson
-* Kris Kowal
+* [Tom Robinson](http://tlrobinson.net/)
+* [Kris Kowal](http://askawizard.blogspot.com/)
 * George Moschovitis
-* Kevin Dangoor
+* [Kevin Dangoor](http://www.blueskyonmars.com/)
 * Hannes Wallnöfer
 
 
