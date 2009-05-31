@@ -1,7 +1,16 @@
 // File: Rhino
 
 var IO = require("./io").IO;
-var file = require('file');
+var file = require('./file');
+var os = require('./os');
+
+var javaRuntime = function () {
+    return Packages.java.lang.Runtime.getRuntime();
+};
+
+var javaPopen = function (command) {
+    return javaRuntime().exec(command);
+};
 
 /* streams */
 
@@ -103,7 +112,10 @@ exports.isWritable = function (path) {
 };
 
 exports.chmod = function (path, mode) {
-    // TODO
+    var process = os.popen(['chmod', mode.toString(8), path]);
+    var code = process.wait();
+    if (code !== 0)
+        throw new Error("os.chmod: " + code + " " + process.stderr.read());
 };
 
 exports.chown = function (path, owner, group) {
