@@ -8,5 +8,5 @@
         "Hannes Wallnöfer"
     ],
     "main": "examples/narwhal",
-    "lib": ["stdlib", "lib"]
+    "lib": ["lib"]
 }
