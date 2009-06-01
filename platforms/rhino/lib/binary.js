@@ -141,7 +141,7 @@ var ByteString = exports.ByteString = function() {
         throw new Error("Illegal arguments to ByteString constructor: [" +
             Array.prototype.join.apply(arguments, [","]) + "] ("+arguments.length+")");
     
-    seal(this);
+    //seal(this);
 };
 
 ByteString.prototype = new Binary();
