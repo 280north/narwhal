@@ -141,7 +141,7 @@ var ByteString = exports.ByteString = function() {
         throw new Error("Illegal arguments to ByteString constructor: [" +
             Array.prototype.join.apply(arguments, [","]) + "] ("+arguments.length+")");
     
-    seal(this);
+    //seal(this);
 };
 
 ByteString.prototype = new Binary();
@@ -426,3 +426,13 @@ Array.prototype.toByteArray = function(charset) {
     return new ByteArray(this);
 };
 
+/* BinaryIO */
+
+exports.BinaryIO = function(binary) {
+    if (!binary)
+        throw "NYI";
+    
+    var stream = new (require("io").IO)(new java.io.ByteArrayInputStream(binary._bytes, binary._offset, binary._length), null);
+    stream.length = binary.length;
+    return stream;
+}

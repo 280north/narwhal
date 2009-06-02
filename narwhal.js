@@ -27,10 +27,8 @@ sandboxFactory(null, sandbox, system, system.print);
 var paths = [];
 for (var i = 0; i < system.platforms.length; i++) {
     var platform = system.platforms[i];
-    paths.push(system.prefix + '/platforms/' + platform + '/stdlib');
     paths.push(system.prefix + '/platforms/' + platform + '/lib');
 }
-paths.push(system.prefix + '/stdlib');
 paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:

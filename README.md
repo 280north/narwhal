@@ -43,7 +43,7 @@ We have a template for new platforms at "platforms/template" that you can copy t
 
 2. A "thunk", at "platforms/{name}/bootstrap.js" that evaluates "narwhal.js" and passes the returned function a preliminary "system" object with a few required properties ("global", "evalGlobal", "platform", "platforms", "print", "evaluate", "prefix", "fs.read", and "fs.isFile").
 
-2. Platform implemenations for core modules, such as "file" and "system" located in "platforms/{name}/lib/".  You can implement "file-platform" instead of "file" if you implement the subset of the ServerJS file API used by "stdlib/file.js".  To get things running, you must implement the file module's "list", "canonical", "mtime", "isDirectory", "isFile".
+2. Platform implemenations for core modules, such as "file" and "system" located in "platforms/{name}/lib/".  You can implement "file-platform" instead of "file" if you implement the subset of the ServerJS file API used by "lib/file.js".  To get things running, you must implement the file module's "list", "canonical", "mtime", "isDirectory", "isFile".
 
 
 Available Packages
