@@ -112,6 +112,8 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
 
     var self = this;
 
+    self.raw = raw;
+
     self.readLine = function () {
         var line = stream.readLine();
         if (line === null)
@@ -183,6 +185,8 @@ exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, opt
         stream = new Packages.java.io.BufferedWriter(stream, buffering);
 
     var self = this;
+
+    self.raw = raw;
 
     self.write = function () {
         stream.write.apply(stream, arguments);

@@ -40,41 +40,64 @@ exports.popen = function (command, options) {
     if (typeof command == "string")
         command = ["sh", "-c", command];
     var process = javaPopen(command);
+
     var stdin = new io.TextOutputStream(new io.IO(null, process.getOutputStream()));
     var stdout = new io.TextInputStream(new io.IO(process.getInputStream()));
     var stderr = new io.TextInputStream(new io.IO(process.getErrorStream()));
+
     return {
         wait: function () {
             return process.waitFor();
         },
         stdin: stdin,
         stdout: stdout,
-        stderr: stderr
-        // todo: communicate([input])
+        stderr: stderr,
+        communicate: function (stdin) {
+            if (stdin === undefined)
+                stdin = "";
+
+            var out;
+            var err;
+
+            var outThread = new JavaAdapter(Packages.java.lang.Thread, {
+                "run": function () {
+                    out = stdout.read();
+                }
+            });
+
+            var errThread = new JavaAdapter(Packages.java.lang.Thread, {
+                "run": function () {
+                    err = stderr.read();
+                }
+            });
+
+            errThread.setDaemon(true);
+            errThread.start();
+            outThread.setDaemon(true);
+            outThread.start();
+
+            outThread.join();
+            errThread.join();
+
+            var code = process.waitFor();
+
+            return {
+                code: code,
+                stdout: out,
+                stderr: err
+            };
+        }
     }
 };
 
 exports.system = function (command) {
-    if (typeof command == "string")
-        command = ["sh", "-c", command];
     var process = exports.popen(command);
     process.stdout.close();
     process.stdin.close();
-    /// TODO should communicate on all streams
+    // TODO should communicate on all streams
+    // without managing all streams simultaneously,
+    // if stderr's buffer fills while reading
+    // from stdout, the process will deadlock.
     return process.wait();
-};
-
-exports.command = function (command) {
-    var process = exports.popen(command);
-    /// TODO should communicate on all streams
-    var result = process.stdout.read();
-    var code = process.wait();
-    if (code !== 0)
-        throw new Error(process.stderr.read());
-    return result;
-};
-
-exports.enquote = function (word) {
-    return "'" + String(word).replace(/'/g, "'\"'\"'") + "'";
 };
 
