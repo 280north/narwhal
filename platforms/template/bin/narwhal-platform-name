@@ -20,13 +20,13 @@ fi
 export NARWHAL_HOME
 
 # uses rlwrap (readline wrapper) if present
-K7="$(which rlwrap) k7"
+NARWHAL="$(which rlwrap) narwhal-platform" # TODO replace narwhal-platform with js bin
 
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
 	# FIXME: no way to explicitly drop into shell
-	$K7 $BOOTSTRAP "$@"
+	$NARWHAL $BOOTSTRAP "$@"
 else
 	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
-	$K7 $BOOTSTRAP $MAIN "$0" "$@"
+	$NARWHAL $BOOTSTRAP $MAIN "$0" "$@"
 fi
