@@ -15,11 +15,13 @@ IO.prototype.read = function(length) {
         index   = 0,
         read    = 0;
     
-    if (typeof length !== "number") {
+    if (arguments.length == 0) {
         readAll = true;
+    }
+    if (typeof length !== "number") {
         length = 1024;
     }
-        
+
     do {
         if (!buffer)
             buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
@@ -70,7 +72,12 @@ IO.prototype.read = function(length) {
 };
 
 IO.prototype.copy = function (output, mode, options) {
-    // TODO buffered copy of an input stream to an output stream
+    while (true) {
+        var buffer = this.read(null);
+        if (!buffer.length)
+            break;
+        output.write(buffer);
+    }
 };
 
 IO.prototype.write = function(object, charset) {
@@ -163,6 +170,13 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
 
     self.readInto = function (buffer) {
         throw "NYI";
+    };
+
+    self.copy = function (output, mode, options) {
+        do {
+            var line = self.readLine();
+            output.write(line);
+        } while (line.length);
     };
 
     self.close = function () {
