@@ -37,8 +37,11 @@ var javaPopen = function (command) {
 
 exports.popen = function (command, options) {
     // todo options: "b", {charset, shell}
+    if (!options)
+        options = {};
     if (typeof command == "string")
         command = ["sh", "-c", command];
+
     var process = javaPopen(command);
 
     var stdin = new io.TextOutputStream(new io.IO(null, process.getOutputStream()));
@@ -52,30 +55,42 @@ exports.popen = function (command, options) {
         stdin: stdin,
         stdout: stdout,
         stderr: stderr,
-        communicate: function (stdin) {
+        communicate: function (input) {
             if (stdin === undefined)
                 stdin = "";
 
-            var out;
-            var err;
+            var output;
+            var errput;
+
+            var inThread = new JavaAdapter(Packages.java.lang.Thread, {
+                "run": function () {
+                    if (input)
+                        stdin.write(input);
+                    stdin.flush();
+                    stdin.close();
+                }
+            });
 
             var outThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
-                    out = stdout.read();
+                    output = stdout.read();
                 }
             });
 
             var errThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
-                    err = stderr.read();
+                    errput = stderr.read();
                 }
             });
 
+            inThread.setDaemon(true);
+            inThread.start();
             errThread.setDaemon(true);
             errThread.start();
             outThread.setDaemon(true);
             outThread.start();
 
+            inThread.join();
             outThread.join();
             errThread.join();
 
@@ -83,8 +98,8 @@ exports.popen = function (command, options) {
 
             return {
                 code: code,
-                stdout: out,
-                stderr: err
+                stdout: output,
+                stderr: errput
             };
         }
     }
