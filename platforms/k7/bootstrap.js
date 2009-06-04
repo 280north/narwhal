@@ -43,6 +43,10 @@
         return result;
     };
 
+    var isFile = function(path) {
+        return _system.posix.isFile(path);
+    }
+
     var _print = print;
     delete print;
 
