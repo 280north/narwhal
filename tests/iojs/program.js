@@ -24,6 +24,8 @@ var fs = require('file');
             system,
             {
                 prefix: prefix,
+                loader: require.loader,
+                print: print,
                 debug: true
             }
         );

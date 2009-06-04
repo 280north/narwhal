@@ -23,7 +23,7 @@ exports.exists = function (path) {
 
 // TODO necessary for lazy module reloading in sandboxes
 exports.mtime = function (path) {
-    throw Error("mtime not yet implemented.");
+    return exports.stat(path).mtime;
 };
 
 exports.size = function (path) {
@@ -31,10 +31,7 @@ exports.size = function (path) {
 };
 
 exports.stat = function (path) {
-    return {
-        mtime: exports.mtime(path),
-        size: exports.size(path)
-    }
+    return _system.posix.stat(path);
 };
 
 // TODO necessary for package loading
@@ -113,3 +110,4 @@ exports.FileIO = function (path, mode, permissions) {
     }
 };
 
+// vim: ts=4 sw=4 et

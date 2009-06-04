@@ -7,5 +7,6 @@
         "Kevin Dangoor",
         "Hannes Wallnöfer"
     ],
-    "main": "examples/narwhal"
+    "main": "examples/narwhal",
+    "lib": ["lib"]
 }
