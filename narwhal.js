@@ -15,13 +15,21 @@ global.system = system;
 global.print = system.print;
 
 // equivalent to "var sandbox = require('sandbox');"
+var sandboxPath = system.prefix + "/lib/sandbox.js";
 var sandboxFactory = system.evaluate(
-    system.fs.read(system.prefix + "/lib/sandbox.js"),
+    system.fs.read(sandboxPath),
     "sandbox.js",
     1
 );
 var sandbox = {};
-sandboxFactory(null, sandbox, system, system.print);
+var sandboxModule = {id: 'sandbox', path: sandboxPath};
+sandboxFactory(
+    null, // require
+    sandbox, // exports
+    sandboxModule, // module
+    system, // system
+    system.print // print
+);
 
 // construct the initial paths
 var paths = [];

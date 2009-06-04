@@ -3,5 +3,5 @@ exports.testURI = require("./uri-tests");
 
 exports.testServerJS = require("./serverjs/all-tests");
 
-if (require.main === require.id)
+if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
