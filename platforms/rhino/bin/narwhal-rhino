@@ -17,13 +17,6 @@ if [ ! "$NARWHAL_HOME" ]; then
 	NARWHAL_HOME=$(dirname -- "$(dirname -- "$NARWHAL_PLATFORM_HOME")")
 fi
 
-NARWHAL_PATH="$NARWHAL_PLATFORM_HOME/lib:$NARWHAL_HOME/platforms/default/lib:$NARWHAL_HOME/lib"
-if [ "$JS_PATH" ]; then
-	NARWHAL_PATH="$NARWHAL_PATH:$JS_PATH"
-fi
-
-export NARWHAL_PATH
-export NARWHAL_HOME
 export NARWHAL_PLATFORM_HOME
 
 CLASSPATH=$NARWHAL_PLATFORM_HOME/jars/js.jar:$NARWHAL_PLATFORM_HOME/jars/jline.jar:$CLASSPATH
@@ -41,9 +34,6 @@ if [ $# -lt 1 ]; then
     RLWRAP=$(which rlwrap 2>/dev/null)
 	$RLWRAP java -cp "$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
-	JS_MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && \
-        JS_MAIN=$JS_MAIN/$(basename -- "$1")
-	shift
-	java -cp "$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$JS_MAIN" "$@"
+	java -cp "$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$0" "$@"
 fi
 

@@ -1,61 +1,73 @@
-(function (fixtures) {
-
-var system = {};
-system.print = fixtures.print;
-system.debug = fixtures.debug;
-system.prefix = fixtures.prefix;
-system.platform = fixtures.platform;
-system.platforms = fixtures.platforms;
-system.evalGlobal = fixtures.evalGlobal;
-
-system.evaluate = fixtures.evaluate;
+(function (system) {
 
 // logger shim
 var shim = function () {
-    if (system.debug && system.print) {
+    //if (system.debug && system.print) {
         system.print(Array.prototype.join.apply(arguments, [" "]));
-    }
+    //}
 };
 var log = {fatal:shim, error:shim, warn:shim, info:shim, debug:shim};
 system.log = log;
 
-// fs shim
-system.fs = {
-    read : fixtures.read,
-    isFile : fixtures.isFile
-};
-
 // global reference
-global = fixtures.global;
-global.print = fixtures.print;
+global = system.global;
 global.system = system;
+global.print = system.print;
 
 // equivalent to "var sandbox = require('sandbox');"
-var sandboxFactory = fixtures.evaluate(
-    fixtures.read(fixtures.prefix + "/lib/sandbox.js"),
+var sandboxFactory = system.evaluate(
+    system.fs.read(system.prefix + "/lib/sandbox.js"),
     "sandbox.js",
     1
 );
 var sandbox = {};
-sandboxFactory(null, sandbox, system);
+sandboxFactory(null, sandbox, system, system.print);
+
+// construct the initial paths
+var paths = [];
+for (var i = 0; i < system.platforms.length; i++) {
+    var platform = system.platforms[i];
+    paths.push(system.prefix + '/platforms/' + platform + '/lib');
+}
+paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:
-var loader = sandbox.Loader({ paths : fixtures.path.split(":") });
-global.require = sandbox.Sandbox({loader: loader, modules: { system: system }});
+var loader = sandbox.Loader({paths: paths});
+var modules = {system: system, sandbox: sandbox};
+global.require = sandbox.Sandbox({loader: loader, modules: modules});
 
+// patch the primordials (or: save the whales)
+// to bring them up to at least the neighborhood of ES5 compliance.
 try {
-    require("global");
+    require("global", undefined, undefined, undefined, true);
 } catch (e) {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
 
-require.force("system");
+// load the complete system module
+global.require.force("system");
 
-// load the program module
+// parse command line options
+var parser = require("narwhal").parser;
+var options = parser.parse(system.args);
 system.packagePrefixes = [system.prefix];
+system.debug = options.debug;
+
+// enable loader tracing
+global.require.debug = options.verbose;
+// in verbose mode, list all the modules that are 
+// already loaded
+if (options.verbose) {
+    Object.keys(modules).forEach(function (name) {
+        print('@ ' + name);
+    });
+}
+
+// find the program module and its prefix
 var program;
-if (system.args.length) {
-    program = system.fs.path(system.args.shift());
+if (system.args.length && !options.interactive && !options.main) {
+    if (!program)
+        program = system.fs.path(system.args[0]).canonical();
 
     // add package prefixes for all of the packages
     // containing the program, from specific to general
@@ -74,26 +86,71 @@ if (system.args.length) {
     }
 }
 
+// user package prefixes
+if (system.env.SEA)
+    system.packagePrefixes.unshift(system.env.SEA);
+system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefixes);
+
 // load packages
 var packages;
-try {
-    packages = require("packages");
-    packages.main();
-} catch (e) {
-    system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
-}
-
-if (program) {
-    if (program.isDirectory()) {
-        require(packages.root.directory.resolve(packages.root.main || 'main').toString());
-    } else {
-        require(program.toString());
+if (!options.noPackages) {
+    try {
+        packages = require("packages");
+        packages.main();
+    } catch (e) {
+        system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
+    }
+} else {
+    packages = {
+        catalog: {},
+        packageOrder: []
     }
 }
-//else
-//    require("repl").repl();
 
-/* send an unload event if that module has been required */
+// run command options
+//  -I, --include lib
+//  -r, --require module
+//  -e, -c , --command command
+//  -:, --path delimiter
+options.todo.forEach(function (item) {
+    var action = item[0];
+    var value = item[1];
+    if (action == "include") {
+        require.paths.unshift(value);
+    } else if (action == "require") {
+        require(value);
+    } else if (action == "eval") {
+        system.evalGlobal(value);
+    } else if (action == "path") {
+        var paths = packages.packageOrder.map(function (pkg) {
+            return pkg.directory.join('bin');
+        }).filter(function (path) {
+            return path.isDirectory();
+        });
+        var oldPaths = system.env.PATH.split(value);
+        while (oldPaths.length) {
+            var path = oldPaths.shift();
+            if (paths.indexOf(path) < 0)
+                paths.push(path);
+        }
+        print(paths.join(value));
+    }
+});
+
+// load the program module
+if (options.interactive) {
+    require('narwhal/repl');
+} else if (options.main) {
+    require.main(options.main);
+} else if (program) {
+    if (program.isDirectory()) {
+        require.main(packages.root.directory.resolve(packages.root.main || 'main').toString());
+    } else {
+        require.main(program.toString());
+    }
+}
+
+// send an unload event if that module has been required
 if (require.loader.isLoaded('unload')) {
     require('unload').send();
 }
