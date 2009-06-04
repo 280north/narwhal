@@ -40,7 +40,7 @@ for (var i = 0; i < system.platforms.length; i++) {
 paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:
-var loader = sandbox.Loader({paths: paths});
+var loader = sandbox.MultiLoader({paths: paths});
 var modules = {system: system, sandbox: sandbox};
 global.require = sandbox.Sandbox({loader: loader, modules: modules});
 
