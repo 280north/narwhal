@@ -1,11 +1,11 @@
-var file = require('./file');
+var FILE = require('./file');
+var IO = require("./io").IO;
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 const DirService = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties)
 
 function getMozFile(path) {
-    print(path);
     var file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
     file.initWithPath(path);
     for (var i=1; i < arguments.length; i++) file.append(arguments[i])
@@ -15,14 +15,14 @@ function getMozFile(path) {
 exports.SEPARATOR = '/';
 exports.ROOT = '/';
 
-exports.cwd = function () DirService.get("CurWorkD", Components.interfaces.nsIFile).path;
+exports.cwd = function () DirService.get("CurWorkD", Ci.nsIFile).path;
 
 exports.list = function (path) {
     var entries = getMozFile(path).directoryEntries;
     var entryNames = [];
     while(entries.hasMoreElements()) {
         var entry = entries.getNext();
-        entry.QueryInterface(Components.interfaces.nsIFile);
+        entry.QueryInterface(Ci.nsIFile);
         entryNames.push(entry.leafName);
     }
     return entryNames;
@@ -54,9 +54,15 @@ exports.stat = function (path) {
     }
 };
 
-exports.isDirectory = function (path) getMozFile(path).isDirectory();
+exports.isDirectory = function (path) {
+    var file = getMozFile(path);
+    return file.exists() && file.isDirectory();
+}
 
-exports.isFile = function (path) getMozFile(path).isFile();
+exports.isFile = function (path) {
+    var file = getMozFile(path);
+    return file.exists() && file.isFile();
+}
 
 exports.isLink = function (path) getMozFile(path).isSymlink();
 
@@ -122,30 +128,27 @@ exports.touch = function (path, mtime) {
     else file.lastModifiedTime = new Date().getTime().toString();
 };
 
-var read = system.fs.read; // from bootstrap fixtures
-
 exports.FileIO = function (path, mode, permissions) {
-    mode = file.mode(mode);
-    var read = mode.read,
-        write = mode.write,
-        append = mode.append,
-        update = mode.update;
+    file = getMozFile(path);
+
+    var {
+        read: read,
+        write: write,
+        append: append,
+        update: update
+    } = FILE.mode(mode);
 
     if (update) {
         throw new Error("Updating IO not yet implemented.");
     } else if (write || append) {
-        throw new Error("Writing IO not yet implemented.");
+        var stream = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileOutputStream);
+        stream.init(file, -1, -1, 0);
+        return new IO(stream, null);
     } else if (read) {
-        // FIXME temporary hack
-        return {
-            'read': function () {
-                return read(path);
-            },
-            'close': function () {
-            }
-        };
+        var stream = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
+        stream.init(file, -1, 0, 0);
+        return new IO(stream, null);
     } else {
         throw new Error("Files must be opened either for read, write, or update mode.");
     }
 };
-

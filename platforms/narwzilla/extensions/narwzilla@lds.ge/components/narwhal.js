@@ -13,7 +13,9 @@ function filePathToUri(path) {
         .getURLSpecFromFile(file);
 }
 
-function Handler() {}
+function Handler() {
+    this.wrappedJSObject = this;
+}
 Handler.prototype = {
     classDescription: "narwhal command line argument handler",
     classID:          Components.ID("{24e704fe-615d-7440-bcea-847795368b9e}"),
@@ -33,7 +35,8 @@ Handler.prototype = {
             try {
                 var sandbox = {};
                 Loader.loadSubScript(filePathToUri(params), sandbox);
-                dump('narwzilla>' + typeof sandbox.system);
+                this.sandbox = sandbox;
+                dump('narwzilla> ' + typeof sandbox.require);
             } catch(e) {
                 dump('narwzilla> Error:' + e.message + '\n');
                 dump('narwzilla> Stack:' + e.stack + '\n');

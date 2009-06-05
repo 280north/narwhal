@@ -32,7 +32,7 @@ narwzilla="$(which rlwrap) firefox -no-remote -P Development -narwhal"
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
     # FIXME: no way to explicitly drop into shell
-    $narwzilla $BOOTSTRAP " '$@'"
+    $narwzilla $BOOTSTRAP $@
 else
     MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
     shift
