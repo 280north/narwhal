@@ -60,7 +60,7 @@
             _print("" + string);
         },
         evaluate: function (text) {
-             return eval("(function(require,exports,system,print){" + text + "/**/\n})");
+             return eval("(function(require,exports,module,system,print){" + text + "/**/\n})");
         },
         fs: {
             read: read,
