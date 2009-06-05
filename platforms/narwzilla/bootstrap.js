@@ -2,7 +2,7 @@
  * Bootstrap file for the mozilla platform.
  */
 
-(function(global, evalGlobal) {
+(function(evalGlobal) {
   
     const Cc = Components.classes;
     const Ci = Components.interfaces;
@@ -63,10 +63,10 @@
         }
     };
 
-    var narwhal = Loader.loadSubScript(getFileUri(getFile(NARWHAL_HOME, 'narwhal.js')));
-
+    var narwhal = Loader.loadSubScript(getFileUri(getFile(NARWHAL_HOME, 'narwhal.js')), this);
+    //eval(read(NARWHAL_HOME + "/narwhal.js"))
     narwhal({
-        global: global,
+        global: this,
         evalGlobal: evalGlobal,
         platform: 'narwzilla',
         platforms: ['narwzilla', 'default'],
@@ -80,7 +80,7 @@
         prefix: NARWHAL_HOME,
         path: NARWHAL_PATH
     });
-})(this, function () {
+}).call(this, function() {
     return eval(arguments[0]);
 });
 

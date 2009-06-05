@@ -13,13 +13,11 @@ function filePathToUri(path) {
         .getURLSpecFromFile(file);
 }
 
-function Handler() {
-    this.wrappedJSObject = this;
-}
+function Handler() {}
 Handler.prototype = {
-    classDescription: "narwhal command line argument handler",
+    classDescription: "Narwhal",
     classID:          Components.ID("{24e704fe-615d-7440-bcea-847795368b9e}"),
-    contractID:       "@mozilla.org/commandlinehandler/general-startup;1?type=narwhal",
+    contractID:       "@narwhaljs.org/Narwzilla/loader;1",
     QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsICommandLineHandler, Ci.nsIFactory, Ci.nsISupports]),
 
     _xpcom_categories: [{ category: "command-line-handler" }],
@@ -35,7 +33,7 @@ Handler.prototype = {
             try {
                 var sandbox = {};
                 Loader.loadSubScript(filePathToUri(params), sandbox);
-                this.sandbox = sandbox;
+                this.wrappedJSObject = sandbox;
                 dump('narwzilla> ' + typeof sandbox.require);
             } catch(e) {
                 dump('narwzilla> Error:' + e.message + '\n');
