@@ -47,7 +47,7 @@ global.require = sandbox.Sandbox({loader: loader, modules: modules});
 // patch the primordials (or: save the whales)
 // to bring them up to at least the neighborhood of ES5 compliance.
 try {
-    require("global", undefined, undefined, undefined, true);
+    require("global");
 } catch (e) {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
