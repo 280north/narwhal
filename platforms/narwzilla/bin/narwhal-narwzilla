@@ -27,13 +27,15 @@ export NARWHAL_HOME
 export NARWHAL_PLATFORM_HOME
 
 # uses rlwrap (readline wrapper) if present
-narwzilla="$(which rlwrap) firefox -no-remote -P Development -narwhal"
+#narwzilla="$(which rlwrap) firefox -no-remote -P Development"
+narwzilla="firefox -no-remote -P Development"
 
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
     # FIXME: no way to explicitly drop into shell
-    $narwzilla $BOOTSTRAP $@
+    $narwzilla '-narwhal' $BOOTSTRAP
 else
+    # TODO
     MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
     shift
     $narwzilla $BOOTSTRAP $MAIN
