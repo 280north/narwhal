@@ -1,0 +1,4 @@
+content narwhal chrome/content/
+resource narwhal modules/
+
+skin narwhal classic/1.0 chrome/skin/
