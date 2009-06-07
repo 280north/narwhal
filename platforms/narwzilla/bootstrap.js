@@ -11,8 +11,7 @@
 
     var debug = true;
     var NARWHAL_PATH = Env.exists('NARWHAL_PATH') ? Env.get('NARWHAL_PATH') : null,
-        NARWHAL_HOME = Env.exists('NARWHAL_HOME') ? Env.get('NARWHAL_HOME') : null,
-        NARWHAL_PLATFORM_HOME = Env.exists('NARWHAL_PLATFORM_HOME') ? Env.get('NARWHAL_PLATFORM_HOME') : null;
+        NARWHAL_HOME = Env.exists('NARWHAL_HOME') ? Env.get('NARWHAL_HOME') : null;
 
     function print (message) {
         dump(message + '\n')
