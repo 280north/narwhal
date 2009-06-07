@@ -82,7 +82,6 @@ AppStartupBoot.prototype = {
         if (topic == APP_STARTUP) this.boot();
     },
     boot: function() {
-        dump('startup')
         try {
             bootstrapNarwhal(getResourceFile("resource://narwhal/platforms/narwzilla/bootstrap.js"));
         } catch(e) {}
