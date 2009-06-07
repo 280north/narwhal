@@ -5,20 +5,26 @@ const Cc = Components.classes;
 const Ci = Components.interfaces;
 const DirService = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties)
 
-function getMozFile(path) {
+function MozFile(path) {
     var file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
-    file.initWithPath(path);
-    for (var i=1; i < arguments.length; i++) file.append(arguments[i])
+    try {
+        file.initWithPath(path);
+    } catch(e) {
+        file.initWithPath(exports.cwd());
+        path.split(exports.SEPARATOR).filter(function(part) part != '').
+            forEach(function(part) file.append(part));
+    }
     return file;
 }
 
-exports.SEPARATOR = '/';
-exports.ROOT = '/';
-
 exports.cwd = function () DirService.get("CurWorkD", Ci.nsIFile).path;
 
+exports.SEPARATOR = (function() (exports.cwd().search(/\\/) != -1) ? "\\" : "/")();
+exports.ROOT = '/';
+
+
 exports.list = function (path) {
-    var entries = getMozFile(path).directoryEntries;
+    var entries = MozFile(path).directoryEntries;
     var entryNames = [];
     while(entries.hasMoreElements()) {
         var entry = entries.getNext();
@@ -29,23 +35,18 @@ exports.list = function (path) {
 };
 
 exports.canonical = function (path) {
-    var file;
-    try {
-        file = getMozFile(exports.cwd, path);
-    } catch(e) {
-        file = getMozFile(path);
-    }
+    var file = MozFile(path);
     try {
         file.normalize();
     } catch(e) {}
     return file.path;
 }
 
-exports.exists = function (path) getMozFile(path).exists();
+exports.exists = function (path) MozFile(path).exists();
 
-exports.mtime = function (path) new Date(getMozFile(path).lastModifiedTime);
+exports.mtime = function (path) new Date(MozFile(path).lastModifiedTime);
 
-exports.size = function (path) getMozFile(path).fileSize;
+exports.size = function (path) MozFile(path).fileSize;
 
 exports.stat = function (path) {
     return {
@@ -55,26 +56,26 @@ exports.stat = function (path) {
 };
 
 exports.isDirectory = function (path) {
-    var file = getMozFile(path);
+    var file = MozFile(path);
     return file.exists() && file.isDirectory();
 }
 
 exports.isFile = function (path) {
-    var file = getMozFile(path);
+    var file = MozFile(path);
     return file.exists() && file.isFile();
 }
 
-exports.isLink = function (path) getMozFile(path).isSymlink();
+exports.isLink = function (path) MozFile(path).isSymlink();
 
-exports.isReadable = function (path) getMozFile(path).isReadable();
+exports.isReadable = function (path) MozFile(path).isReadable();
 
-exports.isWritable = function (path) getMozFile(path).isWritable();
+exports.isWritable = function (path) MozFile(path).isWritable();
 
 exports.rename = function (source, target) {
     source = file.path(source);
     target = source.resolve(target);
-    source = getMozFile(source);
-    target = getMozFile(target);
+    source = MozFile(source);
+    target = MozFile(target);
     try {
         source.moveTo(target.parent, target.leafName);
     } catch(e) {
@@ -85,8 +86,8 @@ exports.rename = function (source, target) {
 exports.move = function (source, target) {
     source = file.path(source);
     target = source.resolve(target);
-    source = getMozFile(source);
-    target = getMozFile(target);
+    source = MozFile(source);
+    target = MozFile(target);
     try {
         source.moveTo(target.parent, target.leafName);
     } catch(e) {
@@ -96,19 +97,19 @@ exports.move = function (source, target) {
 
 exports.remove = function (path) {
     try {
-        getMozFile(path).remove(false)
+        MozFile(path).remove(false)
     } catch(e) {
         throw new Error("failed to delete " + path);
     }
 };
 
-exports.mkdir = function (path) getMozFile(path).create(Ci.nsIFile.NORMAL_FILE_TYPE, 0777);
+exports.mkdir = function (path) MozFile(path).create(Ci.nsIFile.NORMAL_FILE_TYPE, 0777);
 
-exports.mkdirs = function (path) getMozFile(path).create(Ci.nsIFile.NORMAL_FILE_TYPE, 0777);
+exports.mkdirs = function (path) MozFile(path).create(Ci.nsIFile.NORMAL_FILE_TYPE, 0777);
 
 exports.rmdir = function(path) {
     try {
-        getMozFile(path).remove(false)
+        MozFile(path).remove(false)
     } catch(e) {
         throw new Error("failed to delete " + path);
     }
@@ -116,20 +117,20 @@ exports.rmdir = function(path) {
 
 exports.rmtree = function(path) {
     try {
-        getMozFile(path).remove(true)
+        MozFile(path).remove(true)
     } catch(e) {
         throw new Error("failed to delete " + path);
     }
 };
 
 exports.touch = function (path, mtime) {
-    var file = getMozFile(path);
+    var file = MozFile(path);
     if (!file.exists()) file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
     else file.lastModifiedTime = new Date().getTime().toString();
 };
 
 exports.FileIO = function (path, mode, permissions) {
-    file = getMozFile(path);
+    file = MozFile(path);
 
     var {
         read: read,
