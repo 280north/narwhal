@@ -1,4 +1,8 @@
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+
 const Env = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
+const MozConsole = Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService);
 
 var IO = require("./io").IO;
 exports.stdin  = null;/*TODO*/
@@ -30,4 +34,7 @@ exports.fs = require('./file');
 
 // default logger
 var Logger = require("logger").Logger;
-exports.log = new Logger(exports.stdout);
+exports.log = new Logger({ print: function(message) {
+    print(message);
+    MozConsole.logStringMessage(message);
+}});
