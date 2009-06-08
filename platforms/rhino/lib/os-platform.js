@@ -55,31 +55,37 @@ exports.popen = function (command, options) {
         stdin: stdin,
         stdout: stdout,
         stderr: stderr,
-        communicate: function (input) {
-            if (stdin === undefined)
-                stdin = "";
+        communicate: function (input, output, errput) {
 
-            var output;
-            var errput;
+            if (typeof stdin == "string")
+                stdin = new io.StringIO(input);
+            else if (!stdin)
+                stdin = new io.StringIO();
+
+            if (!output)
+                output = new io.StringIO();
+
+            if (!input)
+                input = new io.StringIO();
 
             var inThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
-                    if (input)
-                        stdin.write(input);
-                    stdin.flush();
+                    input.copy(stdin);
                     stdin.close();
                 }
             });
 
             var outThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
-                    output = stdout.read();
+                    stdout.copy(output);
+                    stdout.close();
                 }
             });
 
             var errThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
-                    errput = stderr.read();
+                    stderr.copy(errput);
+                    stderr.close();
                 }
             });
 
@@ -103,16 +109,5 @@ exports.popen = function (command, options) {
             };
         }
     }
-};
-
-exports.system = function (command) {
-    var process = exports.popen(command);
-    process.stdout.close();
-    process.stdin.close();
-    // TODO should communicate on all streams
-    // without managing all streams simultaneously,
-    // if stderr's buffer fills while reading
-    // from stdout, the process will deadlock.
-    return process.wait();
 };
 

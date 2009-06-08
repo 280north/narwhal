@@ -78,6 +78,8 @@ IO.prototype.copy = function (output, mode, options) {
             break;
         output.write(buffer);
     }
+    output.flush();
+    return this;
 };
 
 IO.prototype.write = function(object, charset) {
@@ -177,6 +179,8 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
             var line = self.readLine();
             output.write(line);
         } while (line.length);
+        output.flush();
+        return self;
     };
 
     self.close = function () {
@@ -247,4 +251,51 @@ exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, charset, 
         throw new Error("file must be opened for read, write, or append mode.");
     }
 }; 
+
+var ByteIO = exports.ByteIO = function (initial) {
+};
+
+var StringIO = exports.StringIO = function (initial) {
+    var buffer = new java.lang.StringBuffer();
+    if (initial)
+        buffer.append(initial);
+
+    function read(length) {
+        if (arguments.length == 0) { 
+            var result = String(buffer);
+            buffer['delete'](0, buffer.length());
+            return result;
+        } else {
+            if (!length || length < 1)
+                length = 1024;
+            length = Math.min(buffer.length(), length);
+            var result = String(buffer.substring(0, length));
+            buffer['delete'](0, length);
+            return result;
+        }
+    };
+
+    var self = {
+        read: read,
+        write: function (text) {
+            buffer.append(text);
+            return self;
+        },
+        copy: function (output) {
+            output.write(read()).flush();
+            return self;
+        },
+        close: function () {
+            return self;
+        },
+        flush: function () {
+            return self;
+        }
+    };
+    self.__defineGetter__("length", function () {
+        return buffer.length();
+    });
+    return self;
+};
+
 
