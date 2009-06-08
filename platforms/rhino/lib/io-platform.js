@@ -137,7 +137,7 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
     self.next = function () {
         var line = stream.readLine();
         if (line === null)
-            throw new StopIteration();
+            throw StopIteration;
         return String(line);
     };
 
@@ -273,23 +273,62 @@ var StringIO = exports.StringIO = function (initial) {
             buffer['delete'](0, length);
             return result;
         }
-    };
+    }
+
+    function write(text) {
+        buffer.append(text);
+        return self;
+    }
+
+    function copy(output) {
+        output.write(read()).flush();
+        return self;
+    }
+
+    function next() {
+        if (buffer.length() == 0)
+            throw StopIteration;
+        var pos = buffer.indexOf("\n");
+        if (pos == -1)
+            pos = buffer.length();
+        var result = read(pos);
+        read(1);
+        return result;
+    }
 
     var self = {
         read: read,
-        write: function (text) {
-            buffer.append(text);
-            return self;
-        },
-        copy: function (output) {
-            output.write(read()).flush();
-            return self;
-        },
+        write: write,
+        copy: copy,
         close: function () {
             return self;
         },
         flush: function () {
             return self;
+        },
+        iterator: function () {
+            return self;
+        },
+        forEach: function (block) {
+            while (true) {
+                try {
+                    block.call(this, next());
+                } catch (exception) {
+                    if (exception instanceof StopIteration)
+                        break;
+                    throw exception;
+                }
+            }
+        },
+        readLine: function () {
+            var pos = buffer.indexOf("\n");
+            if (pos == -1)
+                pos = buffer.length();
+            return read(pos + 1);
+        },
+        next: next,
+        print: function (line) {
+            return write(line + "\n").flush();
         }
     };
     self.__defineGetter__("length", function () {
