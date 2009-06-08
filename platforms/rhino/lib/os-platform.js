@@ -62,11 +62,12 @@ exports.popen = function (command, options) {
             else if (!stdin)
                 stdin = new io.StringIO();
 
-            if (!output)
-                output = new io.StringIO();
-
             if (!input)
                 input = new io.StringIO();
+            if (!output)
+                output = new io.StringIO();
+            if (!errput)
+                errput = new io.StringIO();
 
             var inThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
