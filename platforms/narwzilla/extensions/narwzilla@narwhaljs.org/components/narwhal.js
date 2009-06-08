@@ -157,6 +157,7 @@ Narwhal.prototype = {
         return Narwhal.Interfaces;
     }
 };
+Narwhal.prototype.__proto__ = {};
 
 function System() {};
 System.Interfaces = [Ci.nsISupports, Ci.nsIClassInfo, Ci.nsIVariant];
