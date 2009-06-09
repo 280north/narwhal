@@ -113,7 +113,10 @@ function bootstrapNarwhal(bootstrap) {
                 if (Env.exists(JS_PATH)) path.push(Env.get(JS_PATH))
                 Env.set(PATH, path.join(":"))
             }
-            Loader.loadSubScript(getFileUri(bootstrap), Narwhal.prototype.__proto__);
+            var global = {};
+            Loader.loadSubScript(getFileUri(bootstrap), global);
+            Narwhal.prototype.__proto__ = global;
+            Narwhal.prototype.__proto__.global = global;
         } catch(e) {
             dump("narwzilla> Error:" + e.message + "\nStack:" + e.stack + "\n");
         }
@@ -157,7 +160,6 @@ Narwhal.prototype = {
         return Narwhal.Interfaces;
     }
 };
-Narwhal.prototype.__proto__ = {};
 
 function System() {};
 System.Interfaces = [Ci.nsISupports, Ci.nsIClassInfo, Ci.nsIVariant];

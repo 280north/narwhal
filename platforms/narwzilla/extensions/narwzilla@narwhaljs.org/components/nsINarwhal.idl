@@ -8,6 +8,7 @@ interface nsIVariant;
 [scriptable, uuid(9898aaec-6c5e-894b-8881-079ad5a243f8)]
 interface nsINarwhal: nsISupports {
     // attributes, constants, methods, ...
+    attribute nsIVariant global;
     attribute nsIVariant system;
     void print(in nsIVariant message);
     nsIVariant require(in nsIVariant path);
