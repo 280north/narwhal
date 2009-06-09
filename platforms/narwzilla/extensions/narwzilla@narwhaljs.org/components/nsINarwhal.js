@@ -1,5 +1,6 @@
 const Cc = Components.classes;
 const Ci = Components.interfaces;
+const Cu = Components.utils;
 
 const Loader = Cc["@mozilla.org/moz/jssubscript-loader;1"].getService(Ci.mozIJSSubScriptLoader);
 const Env = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
@@ -34,6 +35,29 @@ function getFile(path) {
  * @param String            corresponding file uri (file:///foo/bar)
  */
 function getFileUri(file) FileService.getURLSpecFromFile(file);
+function readFile(file) {
+    const MODE_RDONLY = 0x01;
+    const PERMS_FILE = 0644;
+    var result = [];
+    try {
+        var fis = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
+        fis.init(file, MODE_RDONLY, PERMS_FILE, false);
+        var lis = fis.QueryInterface(Ci.nsILineInputStream);
+        var line = { value: null };
+        var haveMore;
+        do {
+            haveMore = lis.readLine(line)
+            result.push(line.value);
+        } while (haveMore)
+    } catch(e) {
+        print('Error:' + e.message);
+        print('Stack:' + e.stack);
+    } finally {
+        fis.close();
+    }
+    return result.join('\n');
+}
+
 /**
  * Utility function which returns file for a correspoding resource file.
  * @param {String}          resource uri
@@ -114,10 +138,9 @@ function bootstrapNarwhal(bootstrap) {
                 if (Env.exists(JS_PATH)) path.push(Env.get(JS_PATH))
                 Env.set(PATH, path.join(":"))
             }
-            var global = {};
-            Loader.loadSubScript(getFileUri(bootstrap), global);
-            Narwhal.prototype.__proto__ = global;
-            Narwhal.prototype.__proto__.global = global;
+            var sandbox = Cu.Sandbox(Cc["@mozilla.org/systemprincipal;1"].createInstance(Ci.nsIPrincipal));
+            Cu.evalInSandbox(readFile(bootstrap), sandbox, "1.8", bootstrap.path, 0);
+            Narwhal.prototype.__proto__ = sandbox;
         } catch(e) {
             dump("narwzilla> Error:" + e.message + "\nStack:" + e.stack + "\n");
         }

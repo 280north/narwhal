@@ -8,7 +8,6 @@
     const Ci = Components.interfaces;
     const Cu = Components.utils;
     const Env = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
-    const Loader = Cc['@mozilla.org/moz/jssubscript-loader;1'].getService(Ci.mozIJSSubScriptLoader);
 
     var moduleScopingEnabled = false;
     var debug = true;
@@ -69,38 +68,21 @@
         path = path || "anonymus";
         var scope;
         if (moduleScopingEnabled) {
-            scope = new Object();
-            scope.__parent__ = null;
+            scope = Cu.Sandbox(Cc["@mozilla.org/systemprincipal;1"].createInstance(Ci.nsIPrincipal));
             scope.__proto__ = global;
         } else {
             scope = global;
         }
-        var sandbox = Cu.Sandbox(Cc["@mozilla.org/systemprincipal;1"].createInstance(Ci.nsIPrincipal));
-        sandbox.global = global;
-        sandbox.scope = scope;
-        sandbox.code = code;
-        var source = 'with (scope) new Function(["require", "exports", "module", "system", "print"], code);';
-        return Cu.evalInSandbox(source, sandbox, "1.8", path, lineNo);
-    }
-    function evaluate(code, path, lineNo) {
-        lineNo = lineNo || 0;
-        path = path || "anonymus";
-        var scope;
-        if (moduleScopingEnabled) {
-            scope = new Object();
-            scope.__parent__ = null;
-            scope.__proto__ = global;
-        } else {
-            scope = global;
-        }
-        with (scope) return new Function(["require", "exports", "module", "system", "print"], code);
+        var source = "(function(require,exports,module,system,print){" + code +"/**/\n})";
+        return Cu.evalInSandbox(source, scope, "1.8", path, lineNo);
     }
 
-    var narwhal = Loader.loadSubScript(getFileUri(getFile(NARWHAL_HOME, 'narwhal.js')), global);
+    var path = getFile(NARWHAL_HOME, 'narwhal.js').path;
+    var narwhal = Cu.evalInSandbox(read(path), global, "1.8", path, 0)
     narwhal({
         global: global,
         evalGlobal: evalGlobal,
-        evaluate: evaluate,
+        evaluate: evaluateInSandbox,
         platform: 'narwzilla',
         platforms: ['narwzilla', 'default'],
         debug: debug,
@@ -112,7 +94,5 @@
         prefix: NARWHAL_HOME,
         path: NARWHAL_PATH
     });
-})(this, function(code) {
-    return (new Function([], code))();
-});
+})(this, function(code) eval(code));
 

@@ -8,12 +8,7 @@
 EXPORTED_SYMBOLS = ["global", "require", "print", "system"];
 const Cc = Components.classes;
 const Ci = Components.interfaces;
-var global = Cc["@narwhaljs.org/narwzilla/global;1"].createInstance(Ci.nsINarwhal);
-function require(module) {
-    return global.require(module);
-}
-function print(message) {
-    return global.print(message);
-}
+var global = Cc["@narwhaljs.org/narwzilla/global;1"].createInstance(Ci.nsINarwhal).system.global;
+var require = global.require;
+var print = global.print;
 var system = global.system;
-var global = global.global;
