@@ -2,13 +2,15 @@
  * Bootstrap file for the mozilla platform.
  */
 
-(function(evalGlobal) {
+(function(global, evalGlobal) {
   
     const Cc = Components.classes;
     const Ci = Components.interfaces;
+    const Cu = Components.utils;
     const Env = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
     const Loader = Cc['@mozilla.org/moz/jssubscript-loader;1'].getService(Ci.mozIJSSubScriptLoader);
 
+    var moduleScopingEnabled = false;
     var debug = true;
     var NARWHAL_PATH = Env.exists('NARWHAL_PATH') ? Env.get('NARWHAL_PATH') : null,
         NARWHAL_HOME = Env.exists('NARWHAL_HOME') ? Env.get('NARWHAL_HOME') : null;
@@ -60,17 +62,49 @@
         } catch (e) {
             return false;
         }
-    };
+    }
 
-    var narwhal = Loader.loadSubScript(getFileUri(getFile(NARWHAL_HOME, 'narwhal.js')), this);
+    function evaluateInSandbox(code, path, lineNo) {
+        lineNo = lineNo || 0;
+        path = path || "anonymus";
+        var scope;
+        if (moduleScopingEnabled) {
+            scope = new Object();
+            scope.__parent__ = null;
+            scope.__proto__ = global;
+        } else {
+            scope = global;
+        }
+        var sandbox = Cu.Sandbox(Cc["@mozilla.org/systemprincipal;1"].createInstance(Ci.nsIPrincipal));
+        sandbox.global = global;
+        sandbox.scope = scope;
+        sandbox.code = code;
+        var source = 'with (scope) new Function(["require", "exports", "module", "system", "print"], code);';
+        return Cu.evalInSandbox(source, sandbox, "1.8", path, lineNo);
+    }
+    function evaluate(code, path, lineNo) {
+        lineNo = lineNo || 0;
+        path = path || "anonymus";
+        var scope;
+        if (moduleScopingEnabled) {
+            scope = new Object();
+            scope.__parent__ = null;
+            scope.__proto__ = global;
+        } else {
+            scope = global;
+        }
+        with (scope) return new Function(["require", "exports", "module", "system", "print"], code);
+    }
+
+    var narwhal = Loader.loadSubScript(getFileUri(getFile(NARWHAL_HOME, 'narwhal.js')), global);
     narwhal({
-        global: this,
+        global: global,
         evalGlobal: evalGlobal,
+        evaluate: evaluate,
         platform: 'narwzilla',
         platforms: ['narwzilla', 'default'],
         debug: debug,
         print: print,
-        evaluate: function (text) eval("(function(require,exports,module,system,print){" + text + "/**/\n})"),
         fs: {
             read: read,
             isFile: isFile
@@ -80,6 +114,7 @@
     });
 
 }).call(this, function() {
-    return eval(arguments[0]);
+    //return eval(arguments[0]);
+    return (new Function([], code))();
 });
 

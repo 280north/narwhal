@@ -82,7 +82,6 @@ AppStartupBoot.prototype = {
         if (topic == APP_STARTUP) this.boot();
     },
     boot: function() {
-        dump('startup')
         try {
             bootstrapNarwhal(getResourceFile("resource://narwhal/platforms/narwzilla/bootstrap.js"));
         } catch(e) {}
@@ -158,6 +157,7 @@ Narwhal.prototype = {
         return Narwhal.Interfaces;
     }
 };
+Narwhal.prototype.__proto__ = {};
 
 function System() {};
 System.Interfaces = [Ci.nsISupports, Ci.nsIClassInfo, Ci.nsIVariant];
