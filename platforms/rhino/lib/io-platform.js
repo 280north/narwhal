@@ -260,6 +260,10 @@ var StringIO = exports.StringIO = function (initial) {
     if (initial)
         buffer.append(initial);
 
+    function length() {
+        return buffer.length();
+    }
+
     function read(length) {
         if (arguments.length == 0) { 
             var result = String(buffer);
@@ -297,6 +301,9 @@ var StringIO = exports.StringIO = function (initial) {
     }
 
     var self = {
+        get length() {
+            return length();
+        },
         read: read,
         write: write,
         copy: copy,
@@ -329,12 +336,23 @@ var StringIO = exports.StringIO = function (initial) {
         next: next,
         print: function (line) {
             return write(line + "\n").flush();
+        },
+        toString: function() {
+            return String(buffer);
+        },
+        substring: function () {
+            var string = String(buffer);
+            return string.substring.apply(string, arguments);
+        },
+        slice: function () {
+            var string = String(buffer);
+            return string.slice.apply(string, arguments);
+        },
+        substr: function () {
+            var string = String(buffer);
+            return string.substr.apply(string, arguments);
         }
     };
-    self.__defineGetter__("length", function () {
-        return buffer.length();
-    });
     return self;
 };
-
 
