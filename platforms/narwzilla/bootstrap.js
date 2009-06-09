@@ -79,7 +79,7 @@
         sandbox.global = global;
         sandbox.scope = scope;
         sandbox.code = code;
-        var source = 'with (scope) new Function(["require", "exports", "system", "print"], code);';
+        var source = 'with (scope) new Function(["require", "exports", "module", "system", "print"], code);';
         return Cu.evalInSandbox(source, sandbox, "1.8", path, lineNo);
     }
     function evaluate(code, path, lineNo) {
@@ -93,18 +93,18 @@
         } else {
             scope = global;
         }
-        with (scope) return new Function(["require", "exports", "system", "print"], code);
+        with (scope) return new Function(["require", "exports", "module", "system", "print"], code);
     }
 
     var narwhal = Loader.loadSubScript(getFileUri(getFile(NARWHAL_HOME, 'narwhal.js')), global);
     narwhal({
         global: global,
         evalGlobal: evalGlobal,
+        evaluate: evaluate,
         platform: 'narwzilla',
         platforms: ['narwzilla', 'default'],
         debug: debug,
         print: print,
-        evaluate: evaluate,
         fs: {
             read: read,
             isFile: isFile
