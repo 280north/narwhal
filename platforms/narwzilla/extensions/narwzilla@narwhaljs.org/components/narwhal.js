@@ -4,7 +4,8 @@ const Ci = Components.interfaces;
 const Loader = Cc["@mozilla.org/moz/jssubscript-loader;1"].getService(Ci.mozIJSSubScriptLoader);
 const Env = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
 const ResourceHandler = Cc['@mozilla.org/network/protocol;1?name=resource'].getService(Ci.nsIResProtocolHandler);
-const FileService = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService).getProtocolHandler("file").QueryInterface(Ci.nsIFileProtocolHandler);
+const IOService = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService)
+const FileService = IOService.getProtocolHandler("file").QueryInterface(Ci.nsIFileProtocolHandler);
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
@@ -38,7 +39,7 @@ function getFileUri(file) FileService.getURLSpecFromFile(file);
  * @param {String}          resource uri
  * @param nsIFile           corresponding file
  */
-function getResourceFile(uri) FileService.getFileFromURLSpec(ResourceHandler.resolveURI(FileService.newURI(uri, null, null)));
+function getResourceFile(uri) FileService.getFileFromURLSpec(ResourceHandler.resolveURI(IOService.newURI(uri, null, null)));
 /**
  * XPCOM handles command line argument -narwhal. If argument is followed by
  * value it will be used as a path to the bootstarp.js, Otherwise looks for
@@ -158,38 +159,6 @@ Narwhal.prototype = {
     getInterfaces: function(number) {
         number.value = Narwhal.Interfaces.length;
         return Narwhal.Interfaces;
-    }
-};
-
-function System() {};
-System.Interfaces = [Ci.nsISupports, Ci.nsIClassInfo, Ci.nsIVariant];
-System.prototype = {
-    classDescription: "ServerJS system",
-    classID: Components.ID("{24e704fe-615d-7440-bcea-847795368b9e}"),
-    contractID: "@narwhaljs.org/narwzilla/system;1",
-    QueryInterface: XPCOMUtils.generateQI(System.Interfaces),
-    _xpcom_categories: [
-        {
-        // http://mxr.mozilla.org/seamonkey/source/dom/public/nsIScriptNameSpaceManager.h
-        category: "JavaScript global privileged property",
-        entry: "system"
-        }
-    ],
-    implementationLanguage: Ci.nsIProgrammingLanguage.JAVASCRIPT,
-    getHelperForLanguage: function(number) null,
-    _xpcom_factory: {
-        createInstance: function(outer, iid) {
-            if (outer != null) throw Components.results.NS_ERROR_NO_AGGREGATION;
-            var system = {test: "success"};
-            system.__proto__ = System.prototype;
-            system.QueryInterface(iid);
-            dump(system.test);
-            return system;
-        }
-    },
-    getInterfaces: function(number) {
-        number.value = System.Interfaces.length;
-        return System.Interfaces;
     }
 };
 
