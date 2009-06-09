@@ -63,7 +63,6 @@
     };
 
     var narwhal = Loader.loadSubScript(getFileUri(getFile(NARWHAL_HOME, 'narwhal.js')), this);
-    //eval(read(NARWHAL_HOME + "/narwhal.js"))
     narwhal({
         global: this,
         evalGlobal: evalGlobal,
@@ -71,7 +70,7 @@
         platforms: ['narwzilla', 'default'],
         debug: debug,
         print: print,
-        evaluate: function (text) eval("(function(require,exports,system,print){" + text + "/**/\n})"),
+        evaluate: function (text) eval("(function(require,exports,module,system,print){" + text + "/**/\n})"),
         fs: {
             read: read,
             isFile: isFile
@@ -79,6 +78,7 @@
         prefix: NARWHAL_HOME,
         path: NARWHAL_PATH
     });
+
 }).call(this, function() {
     return eval(arguments[0]);
 });
