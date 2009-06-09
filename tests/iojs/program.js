@@ -18,7 +18,7 @@ var fs = require('file');
 ].forEach(function (testName) {
     print('BEGIN: ' + testName);
     try {
-        var prefix = fs.path(require.id).resolve(testName).join('');
+        var prefix = fs.path(module.id).resolve(testName).join('');
         sandbox(
             'program',
             system,

@@ -15,13 +15,21 @@ global.system = system;
 global.print = system.print;
 
 // equivalent to "var sandbox = require('sandbox');"
+var sandboxPath = system.prefix + "/lib/sandbox.js";
 var sandboxFactory = system.evaluate(
-    system.fs.read(system.prefix + "/lib/sandbox.js"),
+    system.fs.read(sandboxPath),
     "sandbox.js",
     1
 );
 var sandbox = {};
-sandboxFactory(null, sandbox, system, system.print);
+var sandboxModule = {id: 'sandbox', path: sandboxPath};
+sandboxFactory(
+    null, // require
+    sandbox, // exports
+    sandboxModule, // module
+    system, // system
+    system.print // print
+);
 
 // construct the initial paths
 var paths = [];
@@ -32,14 +40,14 @@ for (var i = 0; i < system.platforms.length; i++) {
 paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:
-var loader = sandbox.Loader({paths: paths});
+var loader = sandbox.MultiLoader({paths: paths});
 var modules = {system: system, sandbox: sandbox};
 global.require = sandbox.Sandbox({loader: loader, modules: modules});
 
 // patch the primordials (or: save the whales)
 // to bring them up to at least the neighborhood of ES5 compliance.
 try {
-    require("global", undefined, undefined, undefined, true);
+    require("global");
 } catch (e) {
     system.log.error("Couldn't load global/primordial patches ("+e+")");
 }
