@@ -1,0 +1,42 @@
+{
+    "narwhal": {
+        "type": "github",
+        "user": "tlrobinson"
+    },
+    "jack": {
+        "type": "github",
+        "user": "tlrobinson"
+    },
+    "nitro": {
+        "type": "github",
+        "user": "gmosx"
+    },
+    "chiron": {
+        "type": "github",
+        "user": "kriskowal"
+    },
+    "narcissus": {
+        "type": "github",
+        "user": "kriskowal"
+    },
+    "creolejs": {
+        "type": "github",
+        "user": "kriskowal"
+    },
+    "browserjs": {
+        "type": "github",
+        "user": "tlrobinson"
+    },
+    "inspec": {
+        "type": "github",
+        "user": "aq1018"
+    },
+    "kupo": {
+        "type": "github",
+        "user": "janv"
+    },
+    "appenginejs": {
+        "type": "github",
+        "user": "gmosx"
+    }
+}

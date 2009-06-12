@@ -6,7 +6,6 @@
         scope using Rhino's special access to Java.
     */
 
-    var debug = false;
     var moduleScopingEnabled = false;
 
     /* this gets used for several fixtures */
@@ -18,16 +17,6 @@
         delete NARWHAL_HOME;
     } else {
         prefix = String(Packages.java.lang.System.getenv("NARWHAL_HOME") || "");
-    }
-
-    var path = "";
-    if (typeof NARWHAL_PATH != "undefined") {
-        path = NARWHAL_PATH;
-        delete NARWHAL_PATH;
-    } else {
-        path = String(Packages.java.lang.System.getenv("NARWHAL_PATH") || "");
-        if (!path)
-            path = [prefix + "/platforms/rhino/lib", prefix + "/platforms/default/lib", prefix + "/lib"].join(":");
     }
 
     // TODO: enable this via a command line switch
@@ -112,7 +101,7 @@
         
         return context.compileFunction(
             scope,
-            "function(require,exports,system,print){"+text+"\n// */\n}",
+            "function(require,exports,module,system,print){"+text+"\n// */\n}",
             name,
             lineNo,
             null
@@ -137,12 +126,12 @@
         evalGlobal: evalGlobal,
         platform: 'rhino',
         platforms: ['rhino', 'default'],
-        debug: debug,
         print: print,
-        read: read,
-        isFile: isFile,
+        fs: {
+            read: read,
+            isFile: isFile
+        },
         prefix: prefix,
-        path: path,
         evaluate: evaluate
     });
         

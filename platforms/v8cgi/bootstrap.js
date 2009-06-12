@@ -1,7 +1,6 @@
 (function (evalGlobal) {
 
     var prefix = ".";
-    var path = prefix + '/lib';
 
     var isFile = function (path) {
         return new File(path).exists();
@@ -30,10 +29,11 @@
         platforms: ['v8cgi', 'v8', 'c', 'default'],
         debug: false,
         print: print,
-        read: read,
-        isFile: isFile,
-        prefix: prefix,
-        path: path
+        fs: {
+            read: read,
+            isFile: isFile
+        },
+        prefix: prefix
     });
 
 }).call(this, function () {

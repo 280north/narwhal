@@ -1,9 +1,9 @@
 
-var IO = require("./io").IO;
+var io = require("./io");
 
-exports.stdin  = new IO(Packages.java.lang.System['in'], null);
-exports.stdout = new IO(null, Packages.java.lang.System.out);
-exports.stderr = new IO(null, Packages.java.lang.System.err);
+exports.stdin  = new io.TextInputStream(new io.IO(Packages.java.lang.System['in'], null));
+exports.stdout = new io.TextOutputStream(new io.IO(null, Packages.java.lang.System.out));
+exports.stderr = new io.TextOutputStream(new io.IO(null, Packages.java.lang.System.err));
 
 exports.args = global.arguments || [];
 

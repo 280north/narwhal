@@ -15,11 +15,13 @@ IO.prototype.read = function(length) {
         index   = 0,
         read    = 0;
     
-    if (typeof length !== "number") {
+    if (arguments.length == 0) {
         readAll = true;
+    }
+    if (typeof length !== "number") {
         length = 1024;
     }
-        
+
     do {
         if (!buffer)
             buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
@@ -69,12 +71,22 @@ IO.prototype.read = function(length) {
     return new ByteString(resultBuffer, 0, resultBuffer.length);
 };
 
+IO.prototype.copy = function (output, mode, options) {
+    while (true) {
+        var buffer = this.read(null);
+        if (!buffer.length)
+            break;
+        output.write(buffer);
+    }
+};
+
 IO.prototype.write = function(object, charset) {
     if (object === null || object === undefined || typeof object.toByteString !== "function")
         throw new Error("Argument to IO.write must have toByteString() method");
 
     var binary = object.toByteString(charset);
     this.outputStream.write(binary._bytes, binary._offset, binary.length);
+    return this;
 };
 
 IO.prototype.flush = function() {
@@ -107,6 +119,8 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
 
     var self = this;
 
+    self.raw = raw;
+
     self.readLine = function () {
         var line = stream.readLine();
         if (line === null)
@@ -114,15 +128,27 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         return String(line) + "\n";
     };
 
-    self.iter = function () {
+    self.itertor = function () {
         return self;
     };
 
     self.next = function () {
         var line = stream.readLine();
         if (line === null)
-            throw new Error("StopIteration");
-        return line;
+            throw new StopIteration();
+        return String(line);
+    };
+
+    self.forEach = function (block, context) {
+        var line;
+        while (true) {
+            try {
+                line = self.next();
+            } catch (exception) {
+                break;
+            }
+            block.call(context, line);
+        }
     };
 
     self.input = function () {
@@ -146,6 +172,13 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         throw "NYI";
     };
 
+    self.copy = function (output, mode, options) {
+        do {
+            var line = self.readLine();
+            output.write(line);
+        } while (line.length);
+    };
+
     self.close = function () {
         stream.close();
     };
@@ -167,29 +200,38 @@ exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, opt
 
     var self = this;
 
+    self.raw = raw;
+
     self.write = function () {
         stream.write.apply(stream, arguments);
+        return self;
     };
 
     self.writeLine = function (line) {
         self.write(line + "\n"); // todo recordSeparator
+        return self;
     };
 
     self.writeLines = function (lines) {
         lines.forEach(self.writeLine);
+        return self;
     };
 
     self.print = function () {
         self.write(Array.prototype.join.call(arguments, " ") + "\n");
+        self.flush();
         // todo recordSeparator, fieldSeparator
+        return self;
     };
 
     self.flush = function () {
         stream.flush();
+        return self;
     };
 
     self.close = function () {
         stream.close();
+        return self;
     };
 
 };
