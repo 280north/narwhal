@@ -58,7 +58,8 @@ global.require.force("system");
 // parse command line options
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);
-system.packagePrefixes = [system.prefix];
+system.packagePrefixes = system.packagePrefixes ||
+    [system.prefix];
 system.debug = options.debug;
 
 // enable loader tracing
