@@ -1,7 +1,8 @@
 #include "nsISupports.idl"
 
 /**
- * @author Irakli Gozalishvili <rfobic@gmail.com>
+ * Copyright (c) 2006 Irakli Gozalishvili <rfobic@gmail.com>
+ * See the file LICENSE for licensing information.
  */
 interface nsIVariant;
 

@@ -1,3 +1,6 @@
+/* Copyright (c) 2006 Irakli Gozalishvili <rfobic@gmail.com>
+   See the file LICENSE for licensing information. */
+
 /**
  * Module exposes narwhals global, system, require, print to the scope it is being loaded
  * Simple import this module as in example.

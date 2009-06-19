@@ -1,3 +1,6 @@
+/* Copyright (c) 2006 Irakli Gozalishvili <rfobic@gmail.com>
+   See the file LICENSE for licensing information. */
+
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 const Cu = Components.utils;
@@ -15,6 +18,7 @@ var NARWHAL_HOME = "NARWHAL_HOME",
     PATH = "NARWHAL_PATH",
     JS_PATH = "JS_PATH";
 var APP_STARTUP = "app-startup";
+var ARGUMENTS = [];
 
 /**
  * Utility function which returns file for a correspoding path.
@@ -67,25 +71,34 @@ function getResourceFile(uri) FileService.getFileFromURLSpec(ResourceHandler.res
 /**
  * XPCOM handles command line argument -narwhal. If argument is followed by
  * value it will be used as a path to the bootstarp.js, Otherwise looks for
- * ENV variable NARWHAL_HOME and if" its defined looks for narwzilla platform
+ * ENV variable NARWHAL_HOME and if" its defined looks for xulrunner platform
  * and uses it"s bootstrap.js to load.
  */
 function CommandLineBoot() {}
 CommandLineBoot.prototype = {
     classDescription: "Narwhal boot from command line",
     classID: Components.ID("{8082de70-034e-444f-907f-a79543016e7c}"),
-    contractID: "@narwhaljs.org/narwzilla/boot/command-line;1",
+    contractID: "@narwhaljs.org/xulrunner/boot/command-line;1",
     QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports, Ci.nsICommandLineHandler]),
     _xpcom_categories: [{ category: "command-line-handler" }],
     handle: function(cmdLine) {
+        try {
+            var flag = false;
+            for (var i=0; i < cmdLine.length; i++) {
+                var arg = cmdLine.getArgument(i);
+                if (flag) ARGUMENTS.push(arg.charAt(0) == "-" ? "-" + arg : arg);
+                var flag = (flag || arg == "-narwhal-args")
+            }
+            ARGUMENTS.shift();
+        } catch (e) {}
+        // trying to get file for passed bootstrap.js (narwhal-xulrunner will pass it)
         var bootstrap;
-        // trying to get passed bootstrap.js (narwhal-narwzilla will pass it)
         try { bootstrap = getFile(cmdLine.handleFlagWithParam("narwhal", false)); } catch (e) {}
         // trying to read NARWHAL_HOME env variable
         if (!bootstrap && cmdLine.handleFlag("narwhal", false)) {
             try {
                 var path = Env.get(NARWHAL_HOME);
-                bootstrap = getFile(path, "platforms", "narwzilla", "bootstrap.js");
+                bootstrap = getFile(path, "platforms", "xulrunner", "bootstrap.js");
             } catch(e) {}
         }
         bootstrapNarwhal(bootstrap);
@@ -100,7 +113,7 @@ function AppStartupBoot() {}
 AppStartupBoot.prototype = {
     classDescription: "Narwhal boot on app startup",
     classID: Components.ID("{8f0feebb-4fdc-9946-bd17-445a2e7d6557}"),
-    contractID: "@narwhaljs.org/narwzilla/boot/start-up;1",
+    contractID: "@narwhaljs.org/xulrunner/boot/start-up;1",
     QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports, Ci.nsIObserver]),
     _xpcom_categories: [{ category: APP_STARTUP, service: true }],
     observe: function(subject, topic, data) {
@@ -108,7 +121,7 @@ AppStartupBoot.prototype = {
     },
     boot: function() {
         try {
-            bootstrapNarwhal(getResourceFile("resource://narwhal/platforms/narwzilla/bootstrap.js"));
+            bootstrapNarwhal(getResourceFile("resource://narwhal/platforms/xulrunner/bootstrap.js"));
         } catch(e) {}
     }
 };
@@ -127,9 +140,8 @@ function bootstrapNarwhal(bootstrap) {
             if (!Env.exists(PATH)) {
                 var path = [];
                 var narwhalHome = Env.get(NARWHAL_HOME);
-                var narwzillaHome = Env.get(PLATFORM_HOME);
 
-                var platformLib = getFile(narwzillaHome, "lib");
+                var platformLib = getFile(Env.get(PLATFORM_HOME), "lib");
                 var defaultLib = getFile(narwhalHome, "platforms", "default", "lib");
                 var narwhalLib = getFile(narwhalHome, "lib");
                 if (platformLib.exists()) path.push(platformLib.path);
@@ -139,6 +151,7 @@ function bootstrapNarwhal(bootstrap) {
                 Env.set(PATH, path.join(":"))
             }
             var sandbox = Cu.Sandbox(Cc["@mozilla.org/systemprincipal;1"].createInstance(Ci.nsIPrincipal));
+            sandbox.__narwhal_args__ = ARGUMENTS;
             Cu.evalInSandbox(readFile(bootstrap), sandbox, "1.8", bootstrap.path, 0);
             Narwhal.prototype.__proto__ = sandbox;
         } catch(e) {
@@ -161,7 +174,7 @@ Narwhal.Interfaces = [Ci.nsISupports, Ci.nsIClassInfo, Ci.nsINarwhal];
 Narwhal.prototype = {
     classDescription: "Narwhal",
     classID: Components.ID("{d438150e-51a2-4f45-9de9-619f5ab01a90}"),
-    contractID: "@narwhaljs.org/narwzilla/global;1",
+    contractID: "@narwhaljs.org/xulrunner/global;1",
     QueryInterface: XPCOMUtils.generateQI(Narwhal.Interfaces),
     _xpcom_categories: [{
         // http://mxr.mozilla.org/seamonkey/source/dom/public/nsIScriptNameSpaceManager.h

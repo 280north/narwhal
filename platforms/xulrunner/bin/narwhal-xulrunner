@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Copyright (c) 2006 Irakli Gozalishvili <rfobic@gmail.com>
+# See the file LICENSE for licensing information.
+
 # get the absolute path of the executable
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
 
@@ -27,19 +30,19 @@ export NARWHAL_HOME
 export NARWHAL_PLATFORM_HOME
 
 # uses rlwrap (readline wrapper) if present
-#narwzilla="$(which rlwrap) firefox -no-remote -P Development"
 RLWRAP=$(which rlwrap 2>/dev/null)
-narwzilla="firefox -no-remote -P Development"
+NARWHAL="$NARWHAL_PLATFORM_HOME/apps/firenarwhal/firenarwhal -narwhal"
+REPL="telnet localhost 4242"
 
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
     # FIXME: no way to explicitly drop into shell
-    $narwzilla '-narwhal' $BOOTSTRAP &
+    $NARWHAL $BOOTSTRAP "-narwhal-args $@" &
     sleep 2;
-    RLWRAP telnet localhost 4242
+    $RLWRAP $REPL
 else
     # TODO
     MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
-    shift
-    $narwzilla $BOOTSTRAP $MAIN
+    echo $NARWHAL $BOOTSTRAP "-narwhal-args $MAIN $0 $@"
+    $NARWHAL $BOOTSTRAP "-narwhal-args $MAIN $0 $@"
 fi

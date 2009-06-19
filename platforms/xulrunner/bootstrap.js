@@ -1,9 +1,11 @@
+/* Copyright (c) 2006 Irakli Gozalishvili <rfobic@gmail.com>
+   See the file LICENSE for licensing information. */
+
 /**
  * Bootstrap file for the mozilla platform.
  */
-
 (function(global, evalGlobal) {
-  
+    global.arguments = __narwhal_args__;
     const Cc = Components.classes;
     const Ci = Components.interfaces;
     const Cu = Components.utils;
@@ -76,15 +78,20 @@
         var source = "(function(require,exports,module,system,print){" + code +"/**/\n})";
         return Cu.evalInSandbox(source, scope, "1.8", path, lineNo);
     }
-
+    function evaluateInGlobal(code, path, lineNo) {
+        lineNo = lineNo || 0;
+        path = path || "anonymus";
+        var source = "(function(require,exports,module,system,print){" + code +"/**/\n})";
+        return Cu.evalInSandbox(source, global, "1.8", path, lineNo);
+    }
     var path = getFile(NARWHAL_HOME, 'narwhal.js').path;
     var narwhal = Cu.evalInSandbox(read(path), global, "1.8", path, 0)
     narwhal({
         global: global,
-        evalGlobal: evalGlobal,
+        evalGlobal: evalGlobal, //evaluateInGlobal,
         evaluate: evaluateInSandbox,
-        platform: 'narwzilla',
-        platforms: ['narwzilla', 'default'],
+        platform: 'xulrunner',
+        platforms: ['xulrunner', 'default'],
         debug: debug,
         print: print,
         fs: {
@@ -95,4 +102,3 @@
         path: NARWHAL_PATH
     });
 })(this, function(code) eval(code));
-
