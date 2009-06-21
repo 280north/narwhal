@@ -1,10 +1,15 @@
+/* Copyright (c) 2006 Irakli Gozalishvili <rfobic@gmail.com>
+   See the file LICENSE for licensing information. */
+
 const Cc = Components.classes;
 const Ci = Components.interfaces;
+const Cu = Components.utils;
 
 const Loader = Cc["@mozilla.org/moz/jssubscript-loader;1"].getService(Ci.mozIJSSubScriptLoader);
 const Env = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
 const ResourceHandler = Cc['@mozilla.org/network/protocol;1?name=resource'].getService(Ci.nsIResProtocolHandler);
-const FileService = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService).getProtocolHandler("file").QueryInterface(Ci.nsIFileProtocolHandler);
+const IOService = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService)
+const FileService = IOService.getProtocolHandler("file").QueryInterface(Ci.nsIFileProtocolHandler);
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
@@ -13,6 +18,7 @@ var NARWHAL_HOME = "NARWHAL_HOME",
     PATH = "NARWHAL_PATH",
     JS_PATH = "JS_PATH";
 var APP_STARTUP = "app-startup";
+var ARGUMENTS = [];
 
 /**
  * Utility function which returns file for a correspoding path.
@@ -33,34 +39,66 @@ function getFile(path) {
  * @param String            corresponding file uri (file:///foo/bar)
  */
 function getFileUri(file) FileService.getURLSpecFromFile(file);
+function readFile(file) {
+    const MODE_RDONLY = 0x01;
+    const PERMS_FILE = 0644;
+    var result = [];
+    try {
+        var fis = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
+        fis.init(file, MODE_RDONLY, PERMS_FILE, false);
+        var lis = fis.QueryInterface(Ci.nsILineInputStream);
+        var line = { value: null };
+        var haveMore;
+        do {
+            haveMore = lis.readLine(line)
+            result.push(line.value);
+        } while (haveMore)
+    } catch(e) {
+        print('Error:' + e.message);
+        print('Stack:' + e.stack);
+    } finally {
+        fis.close();
+    }
+    return result.join('\n');
+}
+
 /**
  * Utility function which returns file for a correspoding resource file.
  * @param {String}          resource uri
  * @param nsIFile           corresponding file
  */
-function getResourceFile(uri) FileService.getFileFromURLSpec(ResourceHandler.resolveURI(FileService.newURI(uri, null, null)));
+function getResourceFile(uri) FileService.getFileFromURLSpec(ResourceHandler.resolveURI(IOService.newURI(uri, null, null)));
 /**
  * XPCOM handles command line argument -narwhal. If argument is followed by
  * value it will be used as a path to the bootstarp.js, Otherwise looks for
- * ENV variable NARWHAL_HOME and if" its defined looks for narwzilla platform
+ * ENV variable NARWHAL_HOME and if" its defined looks for xulrunner platform
  * and uses it"s bootstrap.js to load.
  */
 function CommandLineBoot() {}
 CommandLineBoot.prototype = {
     classDescription: "Narwhal boot from command line",
     classID: Components.ID("{8082de70-034e-444f-907f-a79543016e7c}"),
-    contractID: "@narwhaljs.org/narwzilla/boot/command-line;1",
+    contractID: "@narwhaljs.org/xulrunner/boot/command-line;1",
     QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports, Ci.nsICommandLineHandler]),
     _xpcom_categories: [{ category: "command-line-handler" }],
     handle: function(cmdLine) {
+        try {
+            var flag = false;
+            for (var i=0; i < cmdLine.length; i++) {
+                var arg = cmdLine.getArgument(i);
+                if (flag) ARGUMENTS.push(arg.charAt(0) == "-" ? "-" + arg : arg);
+                var flag = (flag || arg == "-narwhal-args")
+            }
+            ARGUMENTS.shift();
+        } catch (e) {}
+        // trying to get file for passed bootstrap.js (narwhal-xulrunner will pass it)
         var bootstrap;
-        // trying to get passed bootstrap.js (narwhal-narwzilla will pass it)
         try { bootstrap = getFile(cmdLine.handleFlagWithParam("narwhal", false)); } catch (e) {}
         // trying to read NARWHAL_HOME env variable
         if (!bootstrap && cmdLine.handleFlag("narwhal", false)) {
             try {
                 var path = Env.get(NARWHAL_HOME);
-                bootstrap = getFile(path, "platforms", "narwzilla", "bootstrap.js");
+                bootstrap = getFile(path, "platforms", "xulrunner", "bootstrap.js");
             } catch(e) {}
         }
         bootstrapNarwhal(bootstrap);
@@ -75,7 +113,7 @@ function AppStartupBoot() {}
 AppStartupBoot.prototype = {
     classDescription: "Narwhal boot on app startup",
     classID: Components.ID("{8f0feebb-4fdc-9946-bd17-445a2e7d6557}"),
-    contractID: "@narwhaljs.org/narwzilla/boot/start-up;1",
+    contractID: "@narwhaljs.org/xulrunner/boot/start-up;1",
     QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports, Ci.nsIObserver]),
     _xpcom_categories: [{ category: APP_STARTUP, service: true }],
     observe: function(subject, topic, data) {
@@ -83,7 +121,7 @@ AppStartupBoot.prototype = {
     },
     boot: function() {
         try {
-            bootstrapNarwhal(getResourceFile("resource://narwhal/platforms/narwzilla/bootstrap.js"));
+            bootstrapNarwhal(getResourceFile("resource://narwhal/platforms/xulrunner/bootstrap.js"));
         } catch(e) {}
     }
 };
@@ -102,9 +140,8 @@ function bootstrapNarwhal(bootstrap) {
             if (!Env.exists(PATH)) {
                 var path = [];
                 var narwhalHome = Env.get(NARWHAL_HOME);
-                var narwzillaHome = Env.get(PLATFORM_HOME);
 
-                var platformLib = getFile(narwzillaHome, "lib");
+                var platformLib = getFile(Env.get(PLATFORM_HOME), "lib");
                 var defaultLib = getFile(narwhalHome, "platforms", "default", "lib");
                 var narwhalLib = getFile(narwhalHome, "lib");
                 if (platformLib.exists()) path.push(platformLib.path);
@@ -113,7 +150,10 @@ function bootstrapNarwhal(bootstrap) {
                 if (Env.exists(JS_PATH)) path.push(Env.get(JS_PATH))
                 Env.set(PATH, path.join(":"))
             }
-            Loader.loadSubScript(getFileUri(bootstrap), Narwhal.prototype.__proto__);
+            var sandbox = Cu.Sandbox(Cc["@mozilla.org/systemprincipal;1"].createInstance(Ci.nsIPrincipal));
+            sandbox.__narwhal_args__ = ARGUMENTS;
+            Cu.evalInSandbox(readFile(bootstrap), sandbox, "1.8", bootstrap.path, 0);
+            Narwhal.prototype.__proto__ = sandbox;
         } catch(e) {
             dump("narwzilla> Error:" + e.message + "\nStack:" + e.stack + "\n");
         }
@@ -134,7 +174,7 @@ Narwhal.Interfaces = [Ci.nsISupports, Ci.nsIClassInfo, Ci.nsINarwhal];
 Narwhal.prototype = {
     classDescription: "Narwhal",
     classID: Components.ID("{d438150e-51a2-4f45-9de9-619f5ab01a90}"),
-    contractID: "@narwhaljs.org/narwzilla/global;1",
+    contractID: "@narwhaljs.org/xulrunner/global;1",
     QueryInterface: XPCOMUtils.generateQI(Narwhal.Interfaces),
     _xpcom_categories: [{
         // http://mxr.mozilla.org/seamonkey/source/dom/public/nsIScriptNameSpaceManager.h
@@ -155,39 +195,6 @@ Narwhal.prototype = {
     getInterfaces: function(number) {
         number.value = Narwhal.Interfaces.length;
         return Narwhal.Interfaces;
-    }
-};
-Narwhal.prototype.__proto__ = {};
-
-function System() {};
-System.Interfaces = [Ci.nsISupports, Ci.nsIClassInfo, Ci.nsIVariant];
-System.prototype = {
-    classDescription: "ServerJS system",
-    classID: Components.ID("{24e704fe-615d-7440-bcea-847795368b9e}"),
-    contractID: "@narwhaljs.org/narwzilla/system;1",
-    QueryInterface: XPCOMUtils.generateQI(System.Interfaces),
-    _xpcom_categories: [
-        {
-        // http://mxr.mozilla.org/seamonkey/source/dom/public/nsIScriptNameSpaceManager.h
-        category: "JavaScript global privileged property",
-        entry: "system"
-        }
-    ],
-    implementationLanguage: Ci.nsIProgrammingLanguage.JAVASCRIPT,
-    getHelperForLanguage: function(number) null,
-    _xpcom_factory: {
-        createInstance: function(outer, iid) {
-            if (outer != null) throw Components.results.NS_ERROR_NO_AGGREGATION;
-            var system = {test: "success"};
-            system.__proto__ = System.prototype;
-            system.QueryInterface(iid);
-            dump(system.test);
-            return system;
-        }
-    },
-    getInterfaces: function(number) {
-        number.value = System.Interfaces.length;
-        return System.Interfaces;
     }
 };
 

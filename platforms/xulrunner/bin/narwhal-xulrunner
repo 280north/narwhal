@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Copyright (c) 2006 Irakli Gozalishvili <rfobic@gmail.com>
+# See the file LICENSE for licensing information.
+
 # get the absolute path of the executable
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
 
@@ -31,21 +34,20 @@ if [ -e /Applications/Firefox.app ]; then
     FIREFOX="/Applications/Firefox.app/Contents/MacOS/firefox"
 fi
 
+# uses rlwrap (readline wrapper) if present
+RLWRAP=$(which rlwrap 2>/dev/null)
+NARWHAL="$NARWHAL_PLATFORM_HOME/apps/firenarwhal/firenarwhal -narwhal"
+REPL="telnet localhost 4242"
+
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
     # FIXME: no way to explicitly drop into shell
-    FAIL_FILE=$(mktemp -t narwhal) || exit -1
-    ("$FIREFOX" -P Development -narwhal "$BOOTSTRAP" || touch "$FAIL_FILE.X") &
-    while true; do
-        [ -f "$FAIL_FILE.X" ] && break
-        telnet localhost 4242 && break
-        sleep 0;
-    done
-    [ -f "$FAIL_FILE" ] && rm "$FAIL_FILE"
-    [ -f "$FAIL_FILE.X" ] && rm "$FAIL_FILE.X"
+    $NARWHAL $BOOTSTRAP "-narwhal-args $@" &
+    sleep 2;
+    $RLWRAP $REPL
 else
     # TODO
-    MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1")
-    shift
-    "$FIREFOX" "$BOOTSTRAP" "$MAIN"
+    MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
+    echo $NARWHAL $BOOTSTRAP "-narwhal-args $MAIN $0 $@"
+    $NARWHAL $BOOTSTRAP "-narwhal-args $MAIN $0 $@"
 fi
