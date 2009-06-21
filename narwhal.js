@@ -41,6 +41,10 @@ paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:
 var loader = sandbox.MultiLoader({paths: paths});
+if (system.loaders) {
+    loader.loaders.unshift.apply(loader.loaders, system.loaders);
+    delete system.loaders;
+}
 var modules = {system: system, sandbox: sandbox};
 global.require = sandbox.Sandbox({loader: loader, modules: modules});
 
