@@ -20,8 +20,8 @@ exports.analyze = function (analysis, sortedPackages) {
         /* new approach */
         var jarsDirectory = packageData.directory.join('jars');
         if (jarsDirectory.isDirectory()) {
-            jarsDirectory.list().forEach(function (name) {
-                packageData.java.push(jarsDirectory.join(name));
+            jarsDirectory.listPaths().forEach(function (jarDirectory) {
+                packageData.java.push(jarDirectory);
             });
         }
         javaPaths.unshift.apply(javaPaths, packageData.java);
