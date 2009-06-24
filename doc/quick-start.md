@@ -18,7 +18,7 @@ Run "narwhal" or "js".
 
 Look at the options
 
-* narwhal help
+* narwhal --help
 * tusk help
 
 
