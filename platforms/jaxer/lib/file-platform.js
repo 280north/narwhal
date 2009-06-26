@@ -21,10 +21,7 @@ exports.exists = function (path) {
     throw Error("exists not yet implemented.");
 };
 
-// TODO necessary for lazy module reloading in sandboxes
-exports.mtime = function (path) {
-    throw Error("mtime not yet implemented.");
-};
+exports.mtime = Jaxer.File.dateModified;
 
 exports.size = function (path) {
     throw Error("size not yet implemented.");
@@ -109,7 +106,8 @@ exports.FileIO = function (path, mode, permissions) {
                 return read(path);
             },
             'close': function () {
-            }
+            },
+            isatty : function () { return false; }
         };
     } else {
         throw new Error("Files must be opened either for read, write, or update mode.");
