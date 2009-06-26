@@ -18,7 +18,7 @@
         evaluate: function (text) {
             // TODO maybe something better here:
             return eval(
-                "(function(require,exports,system,print){" +
+                "(function(require,exports,module,system,print){" +
                 text +
                 "/**/\n})"
             );
