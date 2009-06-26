@@ -15,8 +15,10 @@ IO.prototype.read = function(length) {
         index   = 0,
         read    = 0;
     
-    if (typeof length !== "number") {
+    if (arguments.length == 0) {
         readAll = true;
+    }
+    if (typeof length !== "number") {
         length = 1024;
     }
 
@@ -64,7 +66,14 @@ IO.prototype.read = function(length) {
 };
 
 IO.prototype.copy = function (output, mode, options) {
-    // TODO buffered copy of an input stream to an output stream
+    while (true) {
+        var buffer = this.read(null);
+        if (!buffer.length)
+            break;
+        output.write(buffer);
+    }
+    output.flush();
+    return this;
 };
 
 IO.prototype.write = function(object, charset) {
@@ -122,7 +131,7 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
     self.next = function () {
         var line = stream.readLine();
         if (line === null)
-            throw new StopIteration();
+            throw StopIteration;
         return String(line);
     };
 
@@ -157,6 +166,15 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
 
     self.readInto = function (buffer) {
         throw "NYI";
+    };
+
+    self.copy = function (output, mode, options) {
+        do {
+            var line = self.readLine();
+            output.write(line);
+        } while (line.length);
+        output.flush();
+        return self;
     };
 
     self.close = function () {
@@ -227,4 +245,108 @@ exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, charset, 
         throw new Error("file must be opened for read, write, or append mode.");
     }
 }; 
+
+var ByteIO = exports.ByteIO = function (initial) {
+};
+
+var StringIO = exports.StringIO = function (initial) {
+    var buffer = new java.lang.StringBuffer();
+    if (initial)
+        buffer.append(initial);
+
+    function length() {
+        return buffer.length();
+    }
+
+    function read(length) {
+        if (arguments.length == 0) { 
+            var result = String(buffer);
+            buffer['delete'](0, buffer.length());
+            return result;
+        } else {
+            if (!length || length < 1)
+                length = 1024;
+            length = Math.min(buffer.length(), length);
+            var result = String(buffer.substring(0, length));
+            buffer['delete'](0, length);
+            return result;
+        }
+    }
+
+    function write(text) {
+        buffer.append(text);
+        return self;
+    }
+
+    function copy(output) {
+        output.write(read()).flush();
+        return self;
+    }
+
+    function next() {
+        if (buffer.length() == 0)
+            throw StopIteration;
+        var pos = buffer.indexOf("\n");
+        if (pos == -1)
+            pos = buffer.length();
+        var result = read(pos);
+        read(1);
+        return result;
+    }
+
+    var self = {
+        get length() {
+            return length();
+        },
+        read: read,
+        write: write,
+        copy: copy,
+        close: function () {
+            return self;
+        },
+        flush: function () {
+            return self;
+        },
+        iterator: function () {
+            return self;
+        },
+        forEach: function (block) {
+            while (true) {
+                try {
+                    block.call(this, next());
+                } catch (exception) {
+                    if (exception instanceof StopIteration)
+                        break;
+                    throw exception;
+                }
+            }
+        },
+        readLine: function () {
+            var pos = buffer.indexOf("\n");
+            if (pos == -1)
+                pos = buffer.length();
+            return read(pos + 1);
+        },
+        next: next,
+        print: function (line) {
+            return write(line + "\n").flush();
+        },
+        toString: function() {
+            return String(buffer);
+        },
+        substring: function () {
+            var string = String(buffer);
+            return string.substring.apply(string, arguments);
+        },
+        slice: function () {
+            var string = String(buffer);
+            return string.slice.apply(string, arguments);
+        },
+        substr: function () {
+            var string = String(buffer);
+            return string.substr.apply(string, arguments);
+        }
+    };
+    return self;
+};
 

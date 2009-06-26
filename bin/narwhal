@@ -52,7 +52,7 @@ elif [ -f "$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME" ]; th
 # try $PATH
 elif which -s "$EXECUTABLE_NAME"; then
 	export NARWHAL_PLATFORM_HOME=$(dirname -- "$(dirname -- "$EXECUTABLE_NAME")")
-	$EXECUTABLE_NAME "$@"
+	"$EXECUTABLE_NAME" "$@"
 else
 	echo "Can't find executable for $NARWHAL_PLATFORM"
 fi

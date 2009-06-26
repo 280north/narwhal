@@ -61,7 +61,7 @@ exports.evaluate = function (text, id) {
     // return a module factory function instead though.
     return context.compileFunction(
         global,
-        "function(require,exports,system){"+text+"}",
+        "function(require,exports,module,system,print){"+text+"}",
         id,
         1,
         null

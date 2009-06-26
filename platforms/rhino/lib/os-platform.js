@@ -37,8 +37,11 @@ var javaPopen = function (command) {
 
 exports.popen = function (command, options) {
     // todo options: "b", {charset, shell}
+    if (!options)
+        options = {};
     if (typeof command == "string")
         command = ["sh", "-c", command];
+
     var process = javaPopen(command);
 
     var stdin = new io.TextOutputStream(new io.IO(null, process.getOutputStream()));
@@ -52,30 +55,49 @@ exports.popen = function (command, options) {
         stdin: stdin,
         stdout: stdout,
         stderr: stderr,
-        communicate: function (stdin) {
-            if (stdin === undefined)
-                stdin = "";
+        communicate: function (input, output, errput) {
 
-            var out;
-            var err;
+            if (typeof stdin == "string")
+                stdin = new io.StringIO(input);
+            else if (!stdin)
+                stdin = new io.StringIO();
+
+            if (!input)
+                input = new io.StringIO();
+            if (!output)
+                output = new io.StringIO();
+            if (!errput)
+                errput = new io.StringIO();
+
+            var inThread = new JavaAdapter(Packages.java.lang.Thread, {
+                "run": function () {
+                    input.copy(stdin);
+                    stdin.close();
+                }
+            });
 
             var outThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
-                    out = stdout.read();
+                    stdout.copy(output);
+                    stdout.close();
                 }
             });
 
             var errThread = new JavaAdapter(Packages.java.lang.Thread, {
                 "run": function () {
-                    err = stderr.read();
+                    stderr.copy(errput);
+                    stderr.close();
                 }
             });
 
+            inThread.setDaemon(true);
+            inThread.start();
             errThread.setDaemon(true);
             errThread.start();
             outThread.setDaemon(true);
             outThread.start();
 
+            inThread.join();
             outThread.join();
             errThread.join();
 
@@ -83,21 +105,10 @@ exports.popen = function (command, options) {
 
             return {
                 code: code,
-                stdout: out,
-                stderr: err
+                stdout: output,
+                stderr: errput
             };
         }
     }
-};
-
-exports.system = function (command) {
-    var process = exports.popen(command);
-    process.stdout.close();
-    process.stdin.close();
-    // TODO should communicate on all streams
-    // without managing all streams simultaneously,
-    // if stderr's buffer fills while reading
-    // from stdout, the process will deadlock.
-    return process.wait();
 };
 
