@@ -9,10 +9,12 @@
         platform: 'jaxer',
         platforms: ['jaxer', 'default'],
         print: Jaxer.Log.info,
-        evaluate: function (text) {
+        evaluate: function (text, fileName) {
             // TODO maybe something better here:
-            return eval(
-                "(function(require,exports,module,system,print){" + text + "/**/\n})");
+            return Jaxer.Includer.evalOn(
+                "(function(require,exports,module,system,print){" + text + "/**/\n})",
+                this,
+                fileName);
         },
         fs: {
             read: read,
