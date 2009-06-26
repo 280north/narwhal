@@ -1,18 +1,27 @@
+/**
+ * Bootstrap code for Narwhal on Jaxer
+ * @author Nathan L Smith <nlloyds@gmail.com>
+ * @date June 26, 2009
+ */
+
 /*global Jaxer */
 /*jslint evil:true */
 (function (evalGlobal) {
-    var prefix = "/opt/narwhal"; // TODO: Make this configurable
-    function read(path) { return Jaxer.File.read(path); }
+    var prefix = "/opt/narwhal", // TODO: Make this configurable
+        read = Jaxer.File.read;
     eval(read(prefix + "/narwhal.js"))({
         global: this,
         evalGlobal: evalGlobal,
         platform: 'jaxer',
         platforms: ['jaxer', 'default'],
-        print: Jaxer.Log.info,
+        print: function () { 
+            var moduleLogger = Jaxer.Log.forModule("narwhal")
+            moduleLogger.info.apply(moduleLogger, arguments);
+        },
         evaluate: function (text, fileName) {
-            // TODO maybe something better here:
             return Jaxer.Includer.evalOn(
-                "(function(require,exports,module,system,print){" + text + "/**/\n})",
+                "(function(require,exports,module,system,print){" + text + 
+                    "/**/\n})",
                 this,
                 fileName);
         },
