@@ -2,7 +2,7 @@
 Narwhal, Tusk, and Sea
 ======================
 
-Narwhal is your JavaScript interpreter.  It is executable with "narwhal" or "js".  See "narwhal help" for a list of its options.  It is comparable to your shell, Python or Ruby/IRB.
+Narwhal is your JavaScript interpreter.  It is executable with "narwhal" or "js".  See "narwhal --help" for a list of its options.  It is comparable to your shell, Python or Ruby/IRB.
 
 Tusk is your package manager.  Tusk by default installs packages whereever "narwhal" is installed.  See "tusk help" for a list of options.  It is comparable to "apt" or "gem".  You can also use "tusk" to create new "packages", application project scaffolds, or "virtual environments", which are all the same thing.
 
