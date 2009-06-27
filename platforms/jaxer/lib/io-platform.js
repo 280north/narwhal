@@ -2,6 +2,14 @@ exports.IO = function () {
 
 };
 
-exports.TextIOWrapper = function () {
+var TextIOWrapper = exports.TextIOWrapper = function () {
+
+};
+
+TextIOWrapper.prototype.read = function () {
+
+};
+
+TextIOWrapper.prototype.close = function () {
 
 };
