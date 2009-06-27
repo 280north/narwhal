@@ -1,5 +1,7 @@
 exports.testString = require("./string-tests");
 exports.testURI = require("./uri-tests");
+exports.testOS = require("./os/all-tests");
+exports.testFile = require("./file/all-tests");
 
 exports.testServerJS = require("./serverjs/all-tests");
 
