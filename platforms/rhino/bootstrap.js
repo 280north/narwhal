@@ -19,6 +19,12 @@
         prefix = String(Packages.java.lang.System.getenv("NARWHAL_HOME") || "");
     }
 
+    var packagePrefixes = [prefix];
+
+    if (typeof SEA != "undefined") {
+        packagePrefixes.push(SEA);
+    }
+
     // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
 
@@ -132,6 +138,7 @@
             isFile: isFile
         },
         prefix: prefix,
+        packagePrefixes: packagePrefixes,
         evaluate: evaluate
     });
         

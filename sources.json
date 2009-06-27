@@ -1,42 +1,63 @@
 {
-    "narwhal": {
-        "type": "github",
-        "user": "tlrobinson"
-    },
-    "jack": {
-        "type": "github",
-        "user": "tlrobinson"
-    },
-    "nitro": {
-        "type": "github",
-        "user": "gmosx"
-    },
-    "chiron": {
-        "type": "github",
-        "user": "kriskowal"
-    },
-    "narcissus": {
-        "type": "github",
-        "user": "kriskowal"
-    },
-    "creolejs": {
-        "type": "github",
-        "user": "kriskowal"
-    },
-    "browserjs": {
-        "type": "github",
-        "user": "tlrobinson"
-    },
-    "inspec": {
-        "type": "github",
-        "user": "aq1018"
-    },
-    "kupo": {
-        "type": "github",
-        "user": "janv"
-    },
-    "appenginejs": {
-        "type": "github",
-        "user": "gmosx"
+    "version": "0",
+    "packages": {
+        "narwhal": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "jack": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "nitro": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "chiron": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "narcissus": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "creolejs": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "browserjs": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "inspec": {
+            "type": "github",
+            "user": "aq1018"
+        },
+        "kupo": {
+            "type": "github",
+            "user": "janv"
+        },
+        "appenginejs": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "jack-servlet": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "gae": {
+            "type": "inline",
+            "package.json": {
+                "name": "gae",
+                "title": "Google App Engine Java SDK",
+                "description": "Java components necessary for depolying applications on Google's App Engine.",
+                "author": "Google",
+                "version": "1.2.1",
+                "dependencies": ["jack-servlet", "jack", "narwhal"],
+                "lib": [],
+                "type": "zip",
+                "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
+            }
+        }
     }
 }

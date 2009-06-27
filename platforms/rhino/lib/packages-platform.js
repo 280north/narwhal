@@ -17,6 +17,13 @@ exports.analyze = function (analysis, sortedPackages) {
             packageData.java = [];
         for (var i = 0; i < packageData.java.length; i++)
             packageData.java[i] = packageData.directory.resolve(packageData.java[i]);
+        /* new approach */
+        var jarsDirectory = packageData.directory.join('jars');
+        if (jarsDirectory.isDirectory()) {
+            jarsDirectory.listPaths().forEach(function (jarDirectory) {
+                packageData.java.push(jarDirectory);
+            });
+        }
         javaPaths.unshift.apply(javaPaths, packageData.java);
     });
 };
