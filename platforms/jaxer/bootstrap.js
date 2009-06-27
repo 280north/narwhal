@@ -6,9 +6,19 @@
 
 /*global Jaxer */
 /*jslint evil:true */
+
+if (typeof Jaxer !== "object" || !Jaxer.isOnServer) { 
+    throw new Error("Must be run in the server-side Jaxer environment");
+}
+
 (function (evalGlobal) {
     var prefix = "/opt/narwhal", // TODO: Make this configurable
-        read = Jaxer.File.read;
+        isFile = function (path) {
+            try { 
+                return Jaxer.File.exists(path);
+            } catch (e) { return false; }
+        };
+
     eval(read(prefix + "/narwhal.js"))({
         global: this,
         evalGlobal: evalGlobal,
@@ -26,8 +36,8 @@
                 fileName);
         },
         fs: {
-            read: read,
-            isFile: Jaxer.File.exists
+            read: Jaxer.File.read,
+            isFile: isFile
         },
         prefix: prefix
     });
