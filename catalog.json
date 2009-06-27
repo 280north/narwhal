@@ -1,101 +1,132 @@
 {
-    "narwhal": {
-        "name": "narwhal",
-        "author": "Tom Robinson",
-        "contributors": [
-            "Kris Kowal",
-            "George Mosochovitis",
-            "Kevin Dangoor",
-            "Hannes Wallnöfer"
-        ],
-        "main": "examples/narwhal",
-        "githubName": "tlrobinson/narwhal",
-        "location": "http://github.com/tlrobinson/narwhal/raw/master/package.json"
-    },
-    "jack": {
-        "author": "Tom Robinson",
-        "dependencies": [
-            "narwhal"
-        ],
-        "js": "lib",
-        "jars": [
-            "jars/simple.jar"
-        ],
-        "githubName": "tlrobinson/jack",
-        "location": "http://github.com/tlrobinson/jack/raw/master/package.json"
-    },
-    "nitro": {
-        "name": "nitro",
-        "author": "George Moschovitis",
-        "email": "george-moschovitis@gmosx.com",
-        "dependencies": [
-            "jack"
-        ],
-        "js": "lib",
-        "main": "examples/simple/jackconfig",
-        "githubName": "gmosx/nitro",
-        "location": "http://github.com/gmosx/nitro/raw/master/package.json"
-    },
-    "chiron": {
-        "author": "Kris Kowal",
-        "dependencies": [],
-        "lib": "src",
-        "githubName": "kriskowal/chiron",
-        "location": "http://github.com/kriskowal/chiron/raw/master/package.json"
-    },
-    "narcissus": {
-        "author": "Brendan Eich <brendan@mozilla.org>",
-        "contributors": [
-            "Kris Kowal <kris@cixar.com>"
-        ],
-        "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
-        "githubName": "kriskowal/narcissus",
-        "location": "http://github.com/kriskowal/narcissus/raw/master/package.json"
-    },
-    "creolejs": {
-        "author": "Ivan Fomichev",
-        "contributors": [
-            "Chris Purcell",
-            "Kris Kowal"
-        ],
-        "js": "src",
-        "githubName": "kriskowal/creolejs",
-        "location": "http://github.com/kriskowal/creolejs/raw/master/package.json"
-    },
-    "browser": {
-        "name": "browser",
-        "author": "Tom Robinson",
-        "dependencies": [],
-        "js": "lib",
-        "githubName": "tlrobinson/browserjs",
-        "location": "http://github.com/tlrobinson/browserjs/raw/master/package.json"
-    },
-    "inspec": {
-        "name": "inspec",
-        "version": {
-            "label": "0.1",
-            "numeric": [
-                0,
-                1
+    "version": "0",
+    "packages": {
+        "narwhal": {
+            "name": "narwhal",
+            "author": "Tom Robinson",
+            "contributors": [
+                "Kris Kowal",
+                "George Mosochovitis",
+                "Kevin Dangoor",
+                "Hannes Wallnöfer"
             ],
-            "status": "development"
+            "main": "examples/narwhal",
+            "lib": [
+                "lib"
+            ],
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/narwhal/zipball/master"
         },
-        "githubName": "aq1018/inspec",
-        "location": "http://github.com/aq1018/inspec/raw/master/package.json"
-    },
-    "kupo_site": {
-        "name": "kupo_site",
-        "author": "Jan Varwig",
-        "githubName": "janv/kupo",
-        "location": "http://github.com/janv/kupo/raw/master/package.json"
-    },
-    "appengine-js": {
-        "name": "appengine-js",
-        "author": "George Moschovitis",
-        "email": "george.moschovitis@gmail.com",
-        "contributors": [],
-        "js": "lib",
-        "githubName": "gmosx/appenginejs",
-        "location": "http://github.com/gmosx/appenginejs/raw/master/package.json"
+        "jack": {
+            "name": "jack",
+            "author": "Tom Robinson",
+            "dependencies": [
+                "narwhal"
+            ],
+            "jars": [
+                "jars/simple-4.1.10.jar"
+            ],
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jack/zipball/master"
+        },
+        "nitro": {
+            "name": "nitro",
+            "author": "George Moschovitis",
+            "email": "george-moschovitis@gmosx.com",
+            "dependencies": [
+                "jack"
+            ],
+            "js": "lib",
+            "main": "examples/simple/jackconfig",
+            "type": "zip",
+            "location": "http://github.com/gmosx/nitro/zipball/master"
+        },
+        "chiron": {
+            "author": "Kris Kowal",
+            "dependencies": [],
+            "lib": "src",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/chiron/zipball/master"
+        },
+        "narcissus": {
+            "author": "Brendan Eich <brendan@mozilla.org>",
+            "contributors": [
+                "Kris Kowal <kris@cixar.com>"
+            ],
+            "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/narcissus/zipball/master"
+        },
+        "creolejs": {
+            "author": "Ivan Fomichev",
+            "contributors": [
+                "Chris Purcell",
+                "Kris Kowal"
+            ],
+            "js": "src",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/creolejs/zipball/master"
+        },
+        "browserjs": {
+            "name": "browser",
+            "author": "Tom Robinson",
+            "dependencies": [],
+            "js": "lib",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/browserjs/zipball/master"
+        },
+        "inspec": {
+            "name": "inspec",
+            "version": {
+                "label": "0.1",
+                "numeric": [
+                    0,
+                    1
+                ],
+                "status": "development"
+            },
+            "type": "zip",
+            "location": "http://github.com/aq1018/inspec/zipball/master"
+        },
+        "kupo": {
+            "name": "kupo_site",
+            "author": "Jan Varwig",
+            "type": "zip",
+            "location": "http://github.com/janv/kupo/zipball/master"
+        },
+        "appenginejs": {
+            "name": "appengine-js",
+            "author": "George Moschovitis",
+            "email": "george.moschovitis@gmail.com",
+            "contributors": [],
+            "js": "lib",
+            "type": "zip",
+            "location": "http://github.com/gmosx/appenginejs/zipball/master"
+        },
+        "jack-servlet": {
+            "name": "jack-servelet",
+            "author": "Tom Robinson",
+            "dependencies": [
+                "narwhal",
+                "jack"
+            ],
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jack-servlet/zipball/master"
+        },
+        "gae": {
+            "name": "gae",
+            "title": "Google App Engine Java SDK",
+            "description": "Java components necessary for depolying applications on Google's App Engine.",
+            "author": "Google",
+            "version": "1.2.1",
+            "dependencies": [
+                "jack-servlet",
+                "jack",
+                "narwhal"
+            ],
+            "lib": [],
+            "type": "zip",
+            "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
+        }
     }
 }

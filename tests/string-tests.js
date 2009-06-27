@@ -1,7 +1,5 @@
 var assert = require("test/assert");
 
-require("string");
-
 exports.testSqueze = function() {
     assert.isEqual("", "".squeeze());
     assert.isEqual("ok", "ok".squeeze());

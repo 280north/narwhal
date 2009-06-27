@@ -145,7 +145,7 @@ exports.link = function (source, target) {
 };
 
 exports.symlink = function (source, target) {
-    os.command(['ln', '-s', source, target]);
+    os.command(['ln', '-s', target, source]);
 };
 
 exports.rename = function (source, target) {
@@ -183,23 +183,8 @@ exports.mkdirs = function(path) {
 };
 
 exports.rmdir = function(path) {
-    if (!JavaPath(Path)['delete']())
+    if (!JavaPath(String(path))['delete']())
         throw new Error("failed to remove the directory " + path);
-};
-
-exports.rmtree = function(path) {
-    if (!(path instanceof java.io.File)) {
-        path = JavaPath(path);
-    }
-    var files = path.listFiles();
-    files.forEach(function(f) {
-        if (f.isDirectory()) {
-            exports.rmtree(f);
-        } else {
-            f['delete']();
-        }
-    });
-    path['delete']();
 };
 
 exports.list = function (path) {

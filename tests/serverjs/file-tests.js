@@ -12,4 +12,7 @@ exports.testWriteRead = function() {
     assert.isEqual(contents, read);
     
     File.remove("foobarbaz");
-}
+};
+
+if (require.main === module.id)
+    require("os").exit(require("test/runner").run(exports));
