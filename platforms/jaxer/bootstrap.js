@@ -13,6 +13,7 @@ if (typeof Jaxer !== "object" || !Jaxer.isOnServer) {
 
 (function (evalGlobal) {
     var prefix = "/opt/narwhal", // TODO: Make this configurable
+        read = Jaxer.File.read,
         isFile = function (path) {
             try { 
                 return Jaxer.File.exists(path);
@@ -35,10 +36,7 @@ if (typeof Jaxer !== "object" || !Jaxer.isOnServer) {
                 this,
                 fileName);
         },
-        fs: {
-            read: Jaxer.File.read,
-            isFile: isFile
-        },
+        fs: { read: read, isFile: isFile },
         prefix: prefix
     });
 }).call(this, function () { return eval(arguments[0]); });
