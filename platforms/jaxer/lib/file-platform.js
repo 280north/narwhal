@@ -1,5 +1,7 @@
-
-var file = require('./file');
+var IO = require('./io').IO,
+    file = require('./file'),
+    NSFile = new Components.Constructor("@mozilla.org/file/local;1",
+        "nsILocalFile", "initWithPath");
 
 exports.SEPARATOR = '/';
 
@@ -89,28 +91,29 @@ exports.touch = function (path, mtime) {
 var read = system.fs.read; // from bootstrap system object
 
 exports.FileIO = function (path, mode, permissions) {
-    mode = file.mode(mode);
-    var read = mode.read,
-        write = mode.write,
-        append = mode.append,
-        update = mode.update;
+    path = new NSFile(path);
+    var {
+        read: read,
+        write: write,
+        append: append,
+        update: update
+    } = file.mode(mode);
 
     if (update) {
         throw new Error("Updating IO not yet implemented.");
     } else if (write || append) {
-        throw new Error("Writing IO not yet implemented.");
+
+        var stream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+                                createInstance(Components.interfaces.nsIFileOutputStream);
+        stream.init(path, -1, -1, 0);
+        return new IO(stream, null);
     } else if (read) {
-        // FIXME temporary hack
-        return {
-            'read': function () {
-                return read(path);
-            },
-            'close': function () {
-            },
-            isatty : function () { return false; }
-        };
+
+        var stream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+                                createInstance(Components.interfaces.nsIFileInputStream);
+        stream.init(path, -1, 0, 0);
+        return new IO(stream, null);
     } else {
         throw new Error("Files must be opened either for read, write, or update mode.");
     }
 };
-

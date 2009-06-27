@@ -24,7 +24,7 @@ if (typeof Jaxer !== "object" || !Jaxer.isOnServer) {
         global: this,
         evalGlobal: evalGlobal,
         platform: 'jaxer',
-        platforms: ['jaxer', 'default'],
+        platforms: ['jaxer', 'mozilla', 'default'],
         print: function () { 
             var moduleLogger = Jaxer.Log.forModule("narwhal")
             moduleLogger.info.apply(moduleLogger, arguments);
