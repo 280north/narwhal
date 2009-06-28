@@ -12,7 +12,7 @@ if (typeof Jaxer !== "object" || !Jaxer.isOnServer) {
 }
 
 (function (evalGlobal) {
-    var prefix = "/opt/narwhal", // TODO: Make this configurable
+    var prefix = Jaxer.Config.NARWHAL_HOME || "/opt/narwhal",
         read = Jaxer.File.read,
         isFile = function (path) {
             try { 
