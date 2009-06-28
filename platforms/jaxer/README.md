@@ -15,7 +15,7 @@ Jaxer.Config.NARWHAL_HOME = "/path/to/your/narwhal";
 Put narwhal or a link to it in your web directory and in a page:
 
 <pre>
-<script runat="server" src="narwhal/platforms/jaxer/bootstrap.js"></script>
+&lt;script runat="server" src="narwhal/platforms/jaxer/bootstrap.js"&gt;&lt;/script&gt;
 </pre>
 
 Many features are not implemented, but the some of basics should work.
