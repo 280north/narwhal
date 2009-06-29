@@ -4,7 +4,7 @@
  * @date June 26, 2009
  */
 
-/*global Jaxer */
+/*global Components, Jaxer */
 /*jslint evil:true */
 
 if (typeof Jaxer !== "object" || !Jaxer.isOnServer) { 
@@ -12,7 +12,11 @@ if (typeof Jaxer !== "object" || !Jaxer.isOnServer) {
 }
 
 (function (evalGlobal) {
-    var prefix = Jaxer.Config.NARWHAL_HOME || "/opt/narwhal",
+    var env = Components.classes["@mozilla.org/process/environment;1"].
+            getService(Components.interfaces.nsIEnvironment);
+        // Check the environment, the jaxer config, then /opt/narwhal
+        prefix = env.get("NARWHAL_HOME") || Jaxer.Config.NARWHAL_HOME || 
+            "/opt/narwhal",
         read = Jaxer.File.read,
         isFile = function (path) {
             try { 
