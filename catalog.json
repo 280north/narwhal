@@ -94,8 +94,8 @@
             "type": "zip",
             "location": "http://github.com/janv/kupo/zipball/master"
         },
-        "appenginejs": {
-            "name": "appengine-js",
+        "appengine": {
+            "name": "appengine",
             "author": "George Moschovitis",
             "email": "george.moschovitis@gmail.com",
             "contributors": [],
