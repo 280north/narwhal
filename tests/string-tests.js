@@ -18,3 +18,14 @@ exports.testChomp = function() {
     assert.isEqual("he", "hello".chomp("llo"));
 }
 
+exports.testBegins = function() {
+    assert.isTrue("Hello".begins("H"));
+    assert.isTrue("Hello".begins("Hell"));
+    assert.isTrue("Hello".begins("Hello"));
+}
+
+exports.testEnds = function() {
+    assert.isTrue("Hello".ends("o"));
+    assert.isTrue("Hello".ends("llo"));
+    assert.isTrue("Hello".ends("Hello"));
+}
