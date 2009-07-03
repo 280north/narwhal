@@ -37,7 +37,8 @@
             "type": "github",
             "user": "janv"
         },
-        "appenginejs": {
+        "appengine": {
+            "name": "appenginejs",
             "type": "github",
             "user": "gmosx"
         },
