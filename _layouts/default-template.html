@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{{ page.title }}</title>
+<link rel="stylesheet" type="text/css" media="all"  href="/css/libraries.css" />
+<link rel="stylesheet" type="text/css" media="all"  href="/css/template.css" />
+<!--<link rel="stylesheet" type="text/css" media="all"  href="css/template_debug.css" />-->
+<link rel="stylesheet" type="text/css" media="all" href="/css/grids.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/css/content.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/css/disqus.css" />
+</head>
+<body>
+{% if page.github_url != '' %}
+<a href="{{ page.github_url }}"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+{% endif %}
+<!--<h1>{{ page.title }}</h1>-->
+<div class="page">
+    <!--<div class="head"></div>-->
+    <div class="body">
+        <!--<div class="leftCol"></div>-->
+        <div class="rightCol">
+            <h1>Articles</h1>
+            <ul>
+            {% for article in page.articles %}
+                <li><a href="{{ article.link }}">{{ article.name }}</a></li>
+            {% endfor %}
+            {% for post in site.posts %}
+                <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="main">
+{{ content }}
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript" charset="utf-8">/*disqus_developer = 1;*/</script>
+            <script type="text/javascript" src="http://disqus.com/forums/jsgijack/embed.js"></script>
+            <noscript><a href="http://jsgijack.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+        </div>
+    </div>
+    <!--<div class="foot"></div>-->
+</div>
+</body>
+</html>
