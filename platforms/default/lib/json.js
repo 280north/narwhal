@@ -158,7 +158,7 @@
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
-var JSON = exports;
+var JSON = this.JSON = typeof exports == "undefined" ? {} : exports;
 
 (function () {
 
