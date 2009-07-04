@@ -1,0 +1,36 @@
+#!/bin/sh
+# set -x
+#
+# An example hook script that is called after a successful
+# commit is made.
+#
+# To enable this hook, make this file executable.
+
+# getting branch name
+ref=$(<.git/HEAD)
+branch=${ref##ref: refs/heads/}
+
+origin=$(pwd)
+root=$origin; while [ ! -d "$root/.git" ]; do root="$root/.."; done
+
+extensions="$root/platforms/xulrunner/extensions"
+builds="$extensions/builds"
+
+# making builds folder
+mkdir -p $builds
+
+# building narwzilla@narwhaljs.org
+extension="$extensions/narwzilla@narwhaljs.org"
+build="$builds/narwzilla@narwhaljs.org.xpi"
+rm -f $build
+cd $extension
+zip -r $build chrome components modules defaults chrome.manifest install.rdf >/dev/null
+
+# building narwzilla.platform@narwhaljs.org.xpi
+extension="$extensions/narwhal@narwhaljs.org"
+build="$builds/narwhal@narwhaljs.org.xpi"
+rm -f $build
+cd $extension
+zip -r $build *.* chrome components defaults modules narwhal/*.* narwhal/lib narwhal/packages/jack narwhal/platforms/default narwhal/platforms/narwzilla/lib/ narwhal/platforms/narwzilla/*.* -x *.git/* >/dev/null
+
+cd $origin
