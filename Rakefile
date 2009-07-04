@@ -4,6 +4,10 @@
 
 require "fileutils"
 
+title_map = {
+  "index" => "introduction"
+}
+
 DEFAULT_LAYOUT_TEMPLATE = '_layouts/default-template.html'
 DEFAULT_LAYOUT = '_layouts/default.html'
 
@@ -25,6 +29,8 @@ task :build do
     partial_path = doc.match(/doc\/([^.]+)\.md/)[1]
     output_path = "#{partial_path}.md"
     title = partial_path.gsub(/-/, ' ').gsub(/\//, ' - ')
+    
+    title = title_map[title] || title
   
     articles += "- name: #{title.gsub(/-/,'/')}\n  link: \"/#{partial_path}.html\"\n"
   
@@ -41,10 +47,6 @@ task :build do
 ---
 github_url: "http://github.com/tlrobinson/narwhal"
 articles:
-- name: Introduction
-  link: "/"
-- name: Getting Started With Narwhal
-  link: "/getting-started-with-narwhal.html"
 #{articles}
 links:
 - name: jack & jsgi
@@ -61,4 +63,8 @@ end
 
 task :runserver do
   `jekyll --auto --server`
+end
+
+task :clean do
+  rm DEFAULT_LAYOUT
 end

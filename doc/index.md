@@ -1,7 +1,4 @@
----
-layout: default
-title: narwhal - introduction
----
+
 Narwhal
 =======
 
