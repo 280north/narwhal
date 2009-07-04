@@ -23,11 +23,33 @@ exports.testOpenWriteReadWrongMode = function () {
     });
 };
 
-exports.testOpenWriteRead = function () {
+exports.testOpenWriteFlushRead = function () {
     try {
         var path = "testOpenWriteRead.txt";
         var content = "testOpenWriteRead.txt\n";
         fs.open(path, 'w').write(content).flush().close();
+        assert.is(content, fs.open(path).read());
+    } finally {
+        fs.remove(path);
+    }
+};
+
+exports.testOpenWriteRead = function () {
+    try {
+        var path = "testOpenWriteRead.txt";
+        var content = "testOpenWriteRead.txt\n";
+        fs.open(path, 'w').write(content);
+        assert.is("", fs.open(path).read());
+    } finally {
+        fs.remove(path);
+    }
+};
+
+exports.testOpenWriteReadFlushOnClose = function () {
+    try {
+        var path = "testOpenWriteRead.txt";
+        var content = "testOpenWriteRead.txt\n";
+        fs.open(path, 'w').write(content).close();
         assert.is(content, fs.open(path).read());
     } finally {
         fs.remove(path);
@@ -203,8 +225,10 @@ exports.testsRenameList = function () {
     }
 };
 
+exports.testIterator = require('./file/iterator');
 exports.testExtension = require('./file/extension');
 exports.testResolve = require('./file/resolve');
+exports.testNormal = require('./file/normal');
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
