@@ -59,6 +59,11 @@ try {
 // load the complete system module
 global.require.force("system");
 
+if (system.complianceStage == "system") {
+    require(system.args[0]);
+    return;
+}
+
 // parse command line options
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);

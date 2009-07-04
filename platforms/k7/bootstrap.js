@@ -43,6 +43,10 @@
         return result;
     };
 
+    var isFile = function(path) {
+        return _system.posix.isFile(path);
+    }
+
     var _print = print;
     delete print;
 
@@ -56,18 +60,19 @@
             _print("" + string);
         },
         evaluate: function (text) {
-             return eval("(function(require,exports,system,print){" + text + "/**/\n})");
+             return eval("(function(require,exports,module,system,print){" + text + "/**/\n})");
         },
         fs: {
             read: read,
             isFile: isFile
         },
-        prefix: prefix
+        prefix: prefix,
+        complianceStage: "system"
     });
 
 })(function () {
     return eval(arguments[0]);
 });
 
-throw "Exiting. (FIXME: this exception does not mean an actual error occurred, we just need a better way to exit)";
+//throw "Exiting. (FIXME: this exception does not mean an actual error occurred, we just need a better way to exit)";
 // EOF - vim: ts=4 sw=4 et

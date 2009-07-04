@@ -103,6 +103,9 @@ exports.FileIO = function (path, mode, permissions) {
                 return read(path);
             },
             'close': function () {
+            },
+            'isatty': function () {
+                return false;
             }
         };
     } else {
