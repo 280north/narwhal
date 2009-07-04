@@ -18,7 +18,7 @@ exports.testOpenWriteReadWrongMode = function () {
     var path = "testOpenWriteReadWrongMode.txt";
     var content = "testOpenWriteReadWrongMode.txt\n";
     assert.throwsError(function () {
-        fs.open(path).write(content);
+        fs.open(path).write(content).flush().close();
         fs.remove(path);
     });
 };
@@ -27,7 +27,7 @@ exports.testOpenWriteRead = function () {
     try {
         var path = "testOpenWriteRead.txt";
         var content = "testOpenWriteRead.txt\n";
-        fs.open(path, 'w').write(content);
+        fs.open(path, 'w').write(content).flush().close();
         assert.isEqual(content, fs.open(path).read());
     } finally {
         fs.remove(path);
@@ -71,7 +71,7 @@ exports.testLittlePathOpenWriteRead = function () {
     var path = "testLittlePathWriteRead.txt";
     var content = "testLittlePathWriteRead.txt\n";
     assert.throwsError(function () {
-        fs.path(path).open().write(content);
+        fs.path(path).open().write(content).flush().close();
         fs.remove(path);
     });
 };
@@ -80,7 +80,7 @@ exports.testLittlePathOpenWriteRead = function () {
     try {
         var path = "testLittlePathOpenWriteRead.txt";
         var content = "testLittlePathOpenWriteRead.txt\n";
-        fs.path(path).open('w').write(content);
+        fs.path(path).open('w').write(content).flush().close();
         assert.isEqual(content, fs.path(path).open().read());
     } finally {
         fs.remove(path);
@@ -92,7 +92,7 @@ exports.testWriteReadNewlineEnforced = function() {
         var path = "testWriteReadNewlineEnforced.txt";
         var content = "testWriteReadNewlineEnforced.txt";
         fs.write(path, content);
-        assert.isEqual(content, fs.read(path) + "\n");
+        assert.isEqual(content + "\n", fs.read(path));
     } finally {
         fs.remove(path);
     }
@@ -102,7 +102,7 @@ exports.testWriteReadBinaryWrongMode = function () {
     var path = "testWriteReadBinaryModeWrongMode.txt";
     var content = "\0\0\0".toByteString("ascii");
     assert.throwsError(function () {
-        fs.path(path).open('b').write(content);
+        fs.path(path).open('b').write(content).flush().close();
         fs.remove(path);
     });
 };
@@ -111,7 +111,7 @@ exports.testWriteReadBinary = function () {
     try {
         var path = "testWriteReadBinary.txt";
         var content = "aaa".toByteString("ascii");
-        fs.path(path).open('wb').write(content);
+        fs.path(path).open('wb').write(content).flush().close();
         assert.isEqual(content, fs.path(path).open('b').read());
     } finally {
         fs.remove(path);
@@ -122,7 +122,7 @@ exports.testWriteReadBinaryNulls = function () {
     try {
         var path = "testWriteReadBinaryNulls.txt";
         var content = "\0\0\0".toByteString("ascii");
-        fs.path(path).open('wb').write(content);
+        fs.path(path).open('wb').write(content).flush().close();
         assert.isEqual(content, fs.path(path).open('b').read());
     } finally {
         fs.remove(path);

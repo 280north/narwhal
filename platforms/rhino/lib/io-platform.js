@@ -93,6 +93,7 @@ IO.prototype.write = function(object, charset) {
 
 IO.prototype.flush = function() {
     this.outputStream.flush();
+    return this;
 };
 
 IO.prototype.close = function() {
