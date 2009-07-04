@@ -8,6 +8,10 @@ title_map = {
   "index" => "introduction"
 }
 
+exclude = {
+  "modules/os/popen" => true
+}
+
 DEFAULT_LAYOUT_TEMPLATE = '_layouts/default-template.html'
 DEFAULT_LAYOUT = '_layouts/default.html'
 
@@ -17,6 +21,7 @@ task :all => [:checkout, :build, :runserver]
 
 task :checkout do
   puts "Checking out 'doc' from master"
+  rm_rf 'doc', :verbose => false
   `git checkout master doc`
 end
 
@@ -33,9 +38,11 @@ task :build do
   docs = Dir.glob "doc/**/*.md"
   docs.each do |doc|
     partial_path = doc.match(/doc\/([^.]+)\.md/)[1]
-    output_path = "#{partial_path}.md"
-    title = partial_path.gsub(/-/, ' ').gsub(/\//, ' - ')
+    next if exclude[partial_path]
     
+    output_path = "#{partial_path}.md"
+    
+    title = partial_path.gsub(/-/, ' ').gsub(/\//, ' - ')
     title = title_map[title] || title
   
     articles += "- name: #{title.gsub(/-/,'/')}\n  link: \"/#{partial_path}.html\"\n"
@@ -71,11 +78,11 @@ task :clean do
   rm_rf "doc"
   rm_rf "_site"
   rm_f DEFAULT_LAYOUT
-  Dir.glob("**/*.md").each do |file|
-    rm_f file
-    d = file
-    until (d = File.dirname(d)) =~ /^(\.|)$/ do
-      rmdir d
+  Dir.glob("**/*.md").each do |path|
+    rm_f path
+    # delete empty parent directories
+    until (path = File.dirname(path)) =~ /^(\.|)$/ do
+      rmdir path
     end
   end
 end
