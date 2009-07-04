@@ -25,6 +25,12 @@ task :checkout do
   `git checkout master doc`
 end
 
+task :deploy => [:clean, :checkout, :build] do
+  `git add $(find . -name "*.md" | xargs)`
+  `git commit -a -m 'Deployed on #{Date.today.to_s}'`
+  `git push origin gh-pages`
+end
+
 task :runserver do
   `jekyll --auto --server`
 end
