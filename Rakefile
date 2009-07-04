@@ -13,9 +13,15 @@ DEFAULT_LAYOUT = '_layouts/default.html'
 
 task :default => [:build]
 
+task :all => [:checkout, :build, :runserver]
+
 task :checkout do
   puts "Checking out 'doc' from master"
   `git checkout master doc`
+end
+
+task :runserver do
+  `jekyll --auto --server`
 end
 
 task :build do
@@ -61,10 +67,15 @@ EOS
   
 end
 
-task :runserver do
-  `jekyll --auto --server`
-end
-
 task :clean do
-  rm DEFAULT_LAYOUT
+  rm_rf "doc"
+  rm_rf "_site"
+  rm_f DEFAULT_LAYOUT
+  Dir.glob("**/*.md").each do |file|
+    rm_f file
+    d = file
+    until (d = File.dirname(d)) =~ /^(\.|)$/ do
+      rmdir d
+    end
+  end
 end
