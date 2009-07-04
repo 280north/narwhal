@@ -7,7 +7,7 @@ require "fileutils"
 DEFAULT_LAYOUT_TEMPLATE = '_layouts/default-template.html'
 DEFAULT_LAYOUT = '_layouts/default.html'
 
-task :default => [:checkout, :build, :runserver]
+task :default => [:build]
 
 task :checkout do
   puts "Checking out 'doc' from master"
