@@ -1,8 +1,3 @@
----
-layout: default
-title: getting started with narwhal
----
-
 Getting Started With Narwhal
 ============================
 
