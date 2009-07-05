@@ -88,6 +88,17 @@ Binary.prototype.valueOf = function() {
 /* ByteString */
 
 var ByteString = exports.ByteString = function() {
+    if (!(this instanceof ByteString)) {
+        if (arguments.length == 0)
+            return new ByteString();
+        if (arguments.length == 1)
+            return new ByteString(arguments[0]);
+        if (arguments.length == 2)
+            return new ByteString(arguments[0], arguments[1]);
+        if (arguments.length == 3)
+            return new ByteString(arguments[0], arguments[1], arguments[2]);
+    }
+
     // ByteString() - Construct an empty byte string.
     if (arguments.length === 0) {
         this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 0); // null;
@@ -228,6 +239,17 @@ ByteString.prototype.toSource = function() {
 /* ByteArray */
 
 var ByteArray = exports.ByteArray = function() {
+    if (!this instanceof ByteArray) {
+        if (arguments.length == 0)
+            return new ByteArray();
+        if (arguments.length == 1)
+            return new ByteArray(arguments[0]);
+        if (arguments.length == 2)
+            return new ByteArray(arguments[0], arguments[1]);
+        if (arguments.length == 3)
+            return new ByteArray(arguments[0], arguments[1], arguments[2]);
+    }
+
     // ByteArray() - New, empty ByteArray.
     if (arguments.length === 0) {
         this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 0); // null;
