@@ -32,9 +32,10 @@
         "nitro": {
             "name": "nitro",
             "author": "George Moschovitis",
-            "email": "george-moschovitis@gmosx.com",
+            "email": "george.moschovitis@gmail.com",
             "dependencies": [
-                "jack"
+                "jack",
+                "template"
             ],
             "js": "lib",
             "main": "examples/simple/jackconfig",
@@ -127,6 +128,14 @@
             "lib": [],
             "type": "zip",
             "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
+        },
+        "template": {
+            "name": "template",
+            "author": "George Moschovitis",
+            "email": "george.moschovitis@gmail.com",
+            "js": "lib",
+            "type": "zip",
+            "location": "http://github.com/gmosx/template/zipball/master"
         }
     }
 }
