@@ -40,13 +40,20 @@ for (var i = 0; i < system.platforms.length; i++) {
 paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:
-var loader = sandbox.MultiLoader({paths: paths});
+var loader = sandbox.MultiLoader({
+    paths: paths,
+    debug: system.verbose
+});
 if (system.loaders) {
     loader.loaders.unshift.apply(loader.loaders, system.loaders);
     delete system.loaders;
 }
 var modules = {system: system, sandbox: sandbox};
-global.require = sandbox.Sandbox({loader: loader, modules: modules});
+global.require = sandbox.Sandbox({
+    loader: loader,
+    modules: modules,
+    debug: system.verbose
+});
 
 // patch the primordials (or: save the whales)
 // to bring them up to at least the neighborhood of ES5 compliance.
@@ -59,18 +66,33 @@ try {
 // load the complete system module
 global.require.force("system");
 
+// augment the path search array with those provided in
+//  environment variables
+paths.push([
+    system.env.JS_PATH || '',
+    system.env.NARWHAL_PATH || ''
+].join(':').split(':').filter(function (path) {
+    return !!path;
+}));
+
 // parse command line options
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);
 system.packagePrefixes = system.packagePrefixes ||
     [system.prefix];
-system.debug = options.debug;
+if (options.debug !== undefined)
+    system.debug = options.debug;
+var wasVerbose = system.verbose;
+if (options.verbose !== undefined) {
+    system.verbose = options.verbose;
+    require.verbose = system.verbose;
+}
 
 // enable loader tracing
 global.require.debug = options.verbose;
 // in verbose mode, list all the modules that are 
 // already loaded
-if (options.verbose) {
+if (!wasVerbose && system.verbose) {
     Object.keys(modules).forEach(function (name) {
         print('@ ' + name);
     });
