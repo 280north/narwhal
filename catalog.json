@@ -141,20 +141,10 @@
             "type": "zip",
             "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
         },
-<<<<<<< HEAD:catalog.json
-        "template": {
-            "name": "template",
-            "author": "George Moschovitis",
-            "email": "george.moschovitis@gmail.com",
-            "js": "lib",
-            "type": "zip",
-            "location": "http://github.com/gmosx/template/zipball/master"
-=======
         "env": {
             "githubName": "env-js",
             "type": "zip",
             "location": "http://github.com/kriskowal/env-js/zipball/master"
->>>>>>> 3d2a504f99e6309bc5e1efad5aa3c5878a61d5d1:catalog.json
         }
     }
 }
