@@ -102,7 +102,7 @@
             "contributors": [],
             "js": "lib",
             "type": "zip",
-            "location": "http://github.com/gmosx/appenginejs/zipball/master"
+            "location": "http://github.com/gmosx/appengine/zipball/master"
         },
         "jack-servlet": {
             "name": "jack-servelet",
