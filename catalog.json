@@ -111,7 +111,7 @@
             "email": "george.moschovitis@gmail.com",
             "contributors": [],
             "js": "lib",
-            "githubName": "appenginejs",
+            "githubName": "appengine",
             "type": "zip",
             "location": "http://github.com/gmosx/appengine/zipball/master"
         },
@@ -145,6 +145,16 @@
             "githubName": "env-js",
             "type": "zip",
             "location": "http://github.com/kriskowal/env-js/zipball/master"
+        },
+        "template": {
+            "name": "template",
+            "author": "George Moschovitis",
+            "email": "george.moschovitis@gmail.com",
+            "dependencies": [],
+            "js": "lib",
+            "githubName": "template",
+            "type": "zip",
+            "location": "http://github.com/gmosx/template/zipball/master"
         }
     }
 }
