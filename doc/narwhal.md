@@ -15,11 +15,14 @@ Glossary
 *   module: a JavaScript file that gets its own local scope
     and certain free variables so that it may export and import
     APIs.
+
 *   library: a directory that contains additional top-level
     modules.
+
 *   package: a downloadable and installable component that
     may include a library of additional modules, as well
     as executables, source code, or other resources.
+
 *   sandbox: a system of module instances.  sandboxes
     are not necessarily secure in our parlance, but are
     the finest security boundary Narwhal can support.
@@ -34,6 +37,7 @@ Glossary
     be able to share the same primordial objects, particularly
     Array, so managed communication among sandboxes will
     be possible.
+
 *   sea: a sea for Narwhal is like a virtual environment.
     for simplicity, the directory schema of a package, a sea,
     and Narwhal itself are all the same.  They all
@@ -96,10 +100,23 @@ Command Line Options
 Environment Variables
 ---------------------
 
-*   `NARWHAL_DEFAULT_PLATFORM`
-*   `NARWHAL_PLATFORM` `system.platform`
-*   `NARWHAL_HOME` `system.prefix`
-*   `NARWHAL_PLATFORM_HOME`
+*   `NARWHAL_DEFAULT_PLATFORM` may be set in `narwhal.conf` to a
+    platform name like `rhino`, `v8`, or `xulrunner`.  Use
+    `tusk platforms` for a complete list and consult the `README` in
+    that platform directory for details about its function and
+    readiness for use.
+
+*   `NARWHAL_PLATFORM` may be set at the command line, but is
+    otherwise set to `NARWHAL_DEFAULT_PLATFORM` by `bin/narwhal`
+    and exposed in JavaScript as `system.platform`.  This
+    is the name of the JavaScript engine in use.
+
+*   `NARWHAL_HOME` is the path to the `narwhal` directory and
+    is available in JavaScript as `system.prefix`.
+
+*   `NARWHAL_PLATFORM_HOME` is the path to the narwhal
+    platform directory, where `bootstrap.js` may be found,
+    and is set by `bin/narwhal`.
 
 *   `NARWHAL_PATH` and `JS_PATH` can be used to add
     high priority library directories to the module
@@ -181,7 +198,7 @@ Configuration Files
     package sources and overrides the normal `sources.json`.
 
 *   `catalog.json` is meant to be maintained as a centrally
-    managed` catalog that may be downloaded from Github to
+    managed catalog that may be downloaded from Github to
     `.tusk/catalog.json` using `tusk update`.
 
 *   `.tusk/catalog.json` is where `tusk` looks for information
@@ -204,16 +221,17 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
     as a shell script to load any system-level configuration
     variables like `NARWHAL_DEFAULT_PLATFORM`.  From there,
     it discerns and exports the `NARWHAL_PLATFORM` and
-    `NARWHAL_PLATFORM_HOME`.  It then executes the
+    `NARWHAL_PLATFORM_HOME` environment variables.
+    It then executes the
     platform-specific script,
     `$NARWHAL_PLATFORM_HOME/bin/narwhal-$NARWHAL_PLATFORM`.
 
 *   `platforms/{platform}/bin/narwhal-{platform}`
 
-    This platform-specific `bash` script performs some
-    platform-specific configuration, like augmenting the
-    Java CLASSPATH for the Rhino platform, and executes
-    the platform-specific bootstrap JavaScript using the
+    This `bash` script performs some platform-specific
+    configuration, like augmenting the Java `CLASSPATH`
+    for the Rhino platform, and executes the
+    platform-specific bootstrap JavaScript using the
     JavaScript engine for the platform.
 
     Some platforms, like `k7` require the JavaScript engine
@@ -337,7 +355,7 @@ No system has been constructed for Windows systems yet.
 
 
 Narwhal Script
-~~~~~~~~~~~~~~
+--------------
 
 The `narwhal.js` script is the next layer of blubber.
 
@@ -360,7 +378,7 @@ The `narwhal.js` script is the next layer of blubber.
 
 
 Sandbox Module
-~~~~~~~~~~~~~~
+--------------
 
 The sandbox module provides a basic module `Loader` for
 module files on disk, a `MultiLoader` for plugable module
@@ -374,7 +392,7 @@ only go to disk when the underlying module text has changed.
 
 
 Global Module
-~~~~~~~~~~~~~
+-------------
 
 The global module is platform-specific, and there is sharable
 version in the default platform.  The purpose of the global
@@ -385,7 +403,7 @@ the ServerJS standard.
 
 
 System Module
-~~~~~~~~~~~~~
+-------------
 
 The system module provides the ServerJS
 [System](https://wiki.mozilla.org/ServerJS/System) module
@@ -400,14 +418,14 @@ stream.  `fs` is an alias for the `file` module, while `log` is a `Logger` insta
 
 
 Narwhal Module
-~~~~~~~~~~~~~~
+--------------
 
 The Narwhal module contains the command line parser declarations
 for Narwhal, and an Easter egg.
 
 
 Packages Module
-~~~~~~~~~~~~~~~
+---------------
 
 The packages module analyzes and installs packages, such that their libraries are available in the module search path, and also installs some platform-specific package components like Java archives at run-time.  The package loader uses a five pass algorithm:
 
@@ -449,7 +467,7 @@ applies to "packages" and "jars" as well.
 
 
 Unload Module
-~~~~~~~~~~~~~
+-------------
 
 When the program is finished, Narwhal checks whether the
 "unload" module has been used.  If so, it calls the "send" 
