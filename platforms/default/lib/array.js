@@ -145,3 +145,16 @@ if (!Array.prototype.reduceRight) {
     };
 }
 
+/* binary */
+
+// https://wiki.mozilla.org/ServerJS/Binary/B
+if (!Array.prototype.toByteString)
+    Array.prototype.toByteString = function(charset) {
+        return new ByteString(this);
+    };
+
+if (!Array.prototype.toByteArray)
+    Array.prototype.toByteArray = function(charset) {
+        return new ByteArray(this);
+    };
+

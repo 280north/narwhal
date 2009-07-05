@@ -65,10 +65,16 @@ Binary.prototype.toByteString = function(sourceCodec, targetCodec) {
 
 // decodeToString()
 // decodeToString(charset) - returns a String from its decoded bytes in a given charset. If no charset is provided, or if the charset is "undefined", assumes the default system encoding.
+// decodeToString(number) - returns a String from its decoded bytes in a given base, like 64, 32, 16, 8, 2
 Binary.prototype.decodeToString = function(charset) {
-    if (charset)
-        return String(new java.lang.String(this._bytes, this._offset, this._length, charset));
-    
+    if (charset) {
+        if (typeof charset == "number")
+            return require("base" + charset).encode(this);
+        else if (charset.begins("base"))
+            return require(charset).encode(this);
+        else
+            return String(new java.lang.String(this._bytes, this._offset, this._length, charset));
+    }
     return String(new java.lang.String(this._bytes, this._offset, this._length));
 };
 
@@ -88,6 +94,17 @@ Binary.prototype.valueOf = function() {
 /* ByteString */
 
 var ByteString = exports.ByteString = function() {
+    if (!(this instanceof ByteString)) {
+        if (arguments.length == 0)
+            return new ByteString();
+        if (arguments.length == 1)
+            return new ByteString(arguments[0]);
+        if (arguments.length == 2)
+            return new ByteString(arguments[0], arguments[1]);
+        if (arguments.length == 3)
+            return new ByteString(arguments[0], arguments[1], arguments[2]);
+    }
+
     // ByteString() - Construct an empty byte string.
     if (arguments.length === 0) {
         this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 0); // null;
@@ -112,8 +129,8 @@ var ByteString = exports.ByteString = function() {
         for (var i = 0; i < bytes.length; i++) {
             var b = bytes[i];
             // If any element is outside the range 0...255, an exception (TODO) is thrown.
-            if (b < 0 || b > 0xFF)
-                throw new Error("ByteString constructor argument Array of integers must be 0 - 255 ("+b+")");
+            if (b < -0x80 || b > 0xFF)
+                throw new Error("ByteString constructor argument Array of integers must be -128 - 255 ("+b+")");
             // Java "bytes" are interpreted as 2's complement
             this._bytes[i] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
         }
@@ -228,6 +245,17 @@ ByteString.prototype.toSource = function() {
 /* ByteArray */
 
 var ByteArray = exports.ByteArray = function() {
+    if (!this instanceof ByteArray) {
+        if (arguments.length == 0)
+            return new ByteArray();
+        if (arguments.length == 1)
+            return new ByteArray(arguments[0]);
+        if (arguments.length == 2)
+            return new ByteArray(arguments[0], arguments[1]);
+        if (arguments.length == 3)
+            return new ByteArray(arguments[0], arguments[1], arguments[2]);
+    }
+
     // ByteArray() - New, empty ByteArray.
     if (arguments.length === 0) {
         this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 0); // null;
@@ -394,38 +422,6 @@ ByteArray.prototype.toSource = function() {
     return "ByteArray(["+this.toArray().join(",")+"])";
 }
 
-/* String */
-
-String.prototype.toByteString = function(charset) {
-    // RHINO bug: it thinks "this" is a Java string (?!)
-    return new ByteString(String(this), charset);
-};
-
-String.prototype.toByteArray = function(charset) {
-    // RHINO bug: it thinks "this" is a Java string (?!)
-    return new ByteArray(String(this), charset);
-};
-
-String.prototype.charCodes = function() {
-    return Array.prototype.map.call(this, function (c) {
-        return c.charCodeAt();
-    });
-};
-
-String.fromCharCodes = function (codes) {
-    return codes.map(String.fromCharCode).join('');
-};
-
-/* Array */
-
-Array.prototype.toByteString = function(charset) {
-    return new ByteString(this);
-};
-
-Array.prototype.toByteArray = function(charset) {
-    return new ByteArray(this);
-};
-
 /* BinaryIO */
 
 exports.BinaryIO = function(binary) {
@@ -435,4 +431,5 @@ exports.BinaryIO = function(binary) {
     var stream = new (require("io").IO)(new java.io.ByteArrayInputStream(binary._bytes, binary._offset, binary._length), null);
     stream.length = binary.length;
     return stream;
-}
+};
+

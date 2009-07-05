@@ -127,6 +127,9 @@
         null
     );
 
+    var debug = +String(Packages.java.lang.System.getenv("NARWHAL_DEBUG"));
+    var verbose = +String(Packages.java.lang.System.getenv("NARWHAL_VERBOSE"));
+
     narwhal({
         global: global,
         evalGlobal: evalGlobal,
@@ -139,7 +142,9 @@
         },
         prefix: prefix,
         packagePrefixes: packagePrefixes,
-        evaluate: evaluate
+        evaluate: evaluate,
+        debug: debug,
+        verbose: verbose
     });
         
 })(this, function () {
