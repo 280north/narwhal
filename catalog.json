@@ -35,9 +35,10 @@
         "nitro": {
             "name": "nitro",
             "author": "George Moschovitis",
-            "email": "george-moschovitis@gmosx.com",
+            "email": "george.moschovitis@gmail.com",
             "dependencies": [
-                "jack"
+                "jack",
+                "template"
             ],
             "js": "lib",
             "main": "examples/simple/jackconfig",
@@ -112,7 +113,7 @@
             "js": "lib",
             "githubName": "appenginejs",
             "type": "zip",
-            "location": "http://github.com/gmosx/appenginejs/zipball/master"
+            "location": "http://github.com/gmosx/appengine/zipball/master"
         },
         "jack-servlet": {
             "name": "jack-servelet",

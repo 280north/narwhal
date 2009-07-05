@@ -38,7 +38,6 @@
             "user": "janv"
         },
         "appengine": {
-            "name": "appenginejs",
             "type": "github",
             "user": "gmosx"
         },
@@ -65,6 +64,10 @@
             "name": "env-js",
             "user": "kriskowal",
             "package.json": {}
+        },
+        "template": {
+            "type": "github",
+            "user": "gmosx"
         }
     }
 }
