@@ -37,7 +37,7 @@
             "type": "github",
             "user": "janv"
         },
-        "appenginejs": {
+        "appengine": {
             "type": "github",
             "user": "gmosx"
         },
@@ -58,6 +58,10 @@
                 "type": "zip",
                 "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
             }
-        }
+        },
+        "template": {
+            "type": "github",
+            "user": "gmosx"
+        },
     }
 }
