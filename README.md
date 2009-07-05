@@ -7,6 +7,8 @@ Narwhal is a server-side JavaScript standard library conforming to the [ServerJS
 Documentation
 -------------
 
+**The following links are relative and may not resolve properly depending on where and how they are viewed.  Please visit the [canonical repository](http://github.com/tlrobinson/narwhal/tree/master/) if they do not work.**
+
 * [Quick Start](doc/quick-start.md)
 * [Packages](doc/packages.md)
 * [How to Install Packages](doc/packages.md)
