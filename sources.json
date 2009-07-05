@@ -1,5 +1,5 @@
 {
-    "version": "0",
+    "version": 1,
     "packages": {
         "narwhal": {
             "type": "github",
@@ -59,9 +59,15 @@
                 "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
             }
         },
+        "env": {
+            "type": "github",
+            "name": "env-js",
+            "user": "kriskowal",
+            "package.json": {}
+        },
         "template": {
             "type": "github",
             "user": "gmosx"
-        },
+        }
     }
 }

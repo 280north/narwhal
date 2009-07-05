@@ -28,6 +28,8 @@
             isFile: isFile
         },
         prefix: prefix,
+        debug: false,
+        verbose: false
     });
 
 }).call(this, function () {

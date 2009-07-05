@@ -7,4 +7,5 @@ require("regexp");
 require("date");
 require("binary");
 require("function");
+require("json");
 

@@ -93,6 +93,7 @@ IO.prototype.write = function(object, charset) {
 
 IO.prototype.flush = function() {
     this.outputStream.flush();
+    return this;
 };
 
 IO.prototype.close = function() {
@@ -141,6 +142,10 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         return String(line);
     };
 
+    self.iterator = function () {
+        return self;
+    };
+
     self.forEach = function (block, context) {
         var line;
         while (true) {
@@ -161,7 +166,8 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         var lines = [];
         do {
             var line = self.readLine();
-            lines.push(line);
+            if (line.length)
+                lines.push(line);
         } while (line.length);
         return lines;
     };
