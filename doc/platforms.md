@@ -8,10 +8,10 @@ Narwhal is a standard library and tools for multiple JavaScript engines; each en
 * `k7`: is a `v8` based engine, in development by Sébastien Pierre.
 * `helma`: is based on Rhino with extensions, being developed by Hannes Wallnöefer.
 * `xulrunner`: is in development for Firefox extensions and XULRunner applications on the Spidermonkey platform by Irakli Gozalishvili, Christoph Dorn, and Zach Carter.
-* `jaxer`: is an engine based on Rhino, for deploying web pages with both server and client side scripts, being developed by Nathan Smith.
+* `jaxer`: is an engine based on Mozilla SpiderMonkey, for deploying web pages with both server and client side scripts, being developed by Nathan L Smith.
 * `v8cgi`: is based on the work of Ondrej Zara, and has not been updated in a long while.
 * `default`: is a catchall platform that implements modules that can be shared among platforms.
-* `browser`: will eventually be available for client side loading of modules, with various techniques.
+* `browser`: will eventually be available for client side loading of modules with various techniques.
 * `secure`: will eventually be available for dependency injection sandboxed module systems within some other platforms.
 
 
