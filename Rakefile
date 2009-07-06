@@ -20,9 +20,9 @@ task :default => [:build]
 task :all => [:checkout, :build, :runserver]
 
 task :checkout do
-  puts "Checking out 'doc' from master"
-  rm_rf 'doc', :verbose => false
-  `git checkout master doc`
+  puts "Checking out 'docs' from master"
+  rm_rf 'docs', :verbose => false
+  `git checkout master docs`
 end
 
 task :deploy => [:clean, :checkout, :build] do
@@ -41,9 +41,9 @@ task :build do
   articles = ""
 
   # find all Markdown files and copy them over, prepending the YAML header
-  docs = Dir.glob "doc/**/*.md"
+  docs = Dir.glob "docs/**/*.md"
   docs.each do |doc|
-    partial_path = doc.match(/doc\/([^.]+)\.md/)[1]
+    partial_path = doc.match(/docs\/([^.]+)\.md/)[1]
     next if exclude[partial_path]
     
     output_path = "#{partial_path}.md"
@@ -81,7 +81,7 @@ EOS
 end
 
 task :clean do
-  rm_rf "doc"
+  rm_rf "docs"
   rm_rf "_site"
   rm_f DEFAULT_LAYOUT
   Dir.glob("**/*.md").each do |path|
