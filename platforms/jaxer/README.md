@@ -1,7 +1,7 @@
 Narwhal Jaxer Platform
 ======================
 
-This is the an implementation of Narwhal on Aptana Jaxer.
+This is an implementation of Narwhal on [Aptana Jaxer](http://aptana.com/jaxer/).
 
 Usage
 -----
