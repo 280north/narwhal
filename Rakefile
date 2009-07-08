@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
-
 # FIXME: make this a Narwhal program!
 
+$:.unshift File.join(File.dirname(__FILE__),'_tools')
+
+require "wiki2md"
 require "fileutils"
 
 title_map = {
@@ -37,25 +39,34 @@ end
 
 task :build do
   puts "Building"
+  
+  docs = Dir.glob "docs/**/*.wiki"
+  docs.each do |src|
+    dest = src.gsub(/\.wiki$/, ".md")
+    puts "wiki2md: #{src} => #{dest}"
+    wiki2md(src, dest)
+  end
 
   articles = ""
 
   # find all Markdown files and copy them over, prepending the YAML header
   docs = Dir.glob "docs/**/*.md"
-  docs.each do |doc|
-    partial_path = doc.match(/docs\/([^.]+)\.md/)[1]
+  docs.each do |src|
+    partial_path = src.match(/docs\/([^.]+)\.md/)[1]
     next if exclude[partial_path]
     
-    output_path = "#{partial_path}.md"
+    dest = "#{partial_path}.md"
+    
+    puts "prepending yaml header: #{src} => #{dest}"
     
     title = partial_path.gsub(/-/, ' ').gsub(/\//, ' - ')
     title = title_map[title] || title
   
     articles += "- name: #{title.gsub(/-/,'/')}\n  link: \"/#{partial_path}.html\"\n"
   
-    mkdir_p File.dirname(output_path), :verbose => false
-    text = File.read(doc)
-    File.open(output_path, 'w') do |f|
+    mkdir_p File.dirname(dest), :verbose => false
+    text = File.read(src)
+    File.open(dest, 'w') do |f|
       f.write("---\nlayout: default\ntitle: narwhal - #{title}\n---\n")
       f.write(text)
     end
