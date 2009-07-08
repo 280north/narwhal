@@ -9,7 +9,7 @@ title_map = {
 }
 
 exclude = {
-  "modules/os/popen" => true
+  "lib/os/popen" => true
 }
 
 DEFAULT_LAYOUT_TEMPLATE = '_layouts/default-template.html'
@@ -56,7 +56,7 @@ task :build do
     mkdir_p File.dirname(output_path), :verbose => false
     text = File.read(doc)
     File.open(output_path, 'w') do |f|
-      f.write("---\nlayout: default\ntitle: narwhal - #{title}\n---")
+      f.write("---\nlayout: default\ntitle: narwhal - #{title}\n---\n")
       f.write(text)
     end
   end
