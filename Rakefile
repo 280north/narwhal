@@ -98,8 +98,11 @@ task :clean do
   Dir.glob("**/*.md").each do |path|
     rm_f path
     # delete empty parent directories
-    until (path = File.dirname(path)) =~ /^(\.|)$/ do
-      rmdir path
+    begin
+      until (path = File.dirname(path)) =~ /^(\.|)$/ do
+        rmdir path
+      end
+    rescue
     end
   end
 end
