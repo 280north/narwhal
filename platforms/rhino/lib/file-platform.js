@@ -145,7 +145,7 @@ exports.link = function (source, target) {
 };
 
 exports.symlink = function (source, target) {
-    os.command(['ln', '-s', target, source]);
+    os.command(['ln', '-s', source, target]);
 };
 
 exports.rename = function (source, target) {
