@@ -3,7 +3,7 @@ Narwhal
 =======
 
 A flexible JavaScript standard library
---------------------------------------------------
+--------------------------------------
 
 Narwhal is a server-side JavaScript standard library conforming to the [ServerJS standard](https://wiki.mozilla.org/ServerJS). It is designed to work with multiple JavaScript interpreters, and to be easy to add support for new interpreters. Wherever possible, it is implemented in pure JavaScript to maximize reuse of code between platforms.
 
