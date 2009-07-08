@@ -124,7 +124,7 @@ Environment Variables
     sandboxes as the `require.loader.paths` variable,
     and may be editable in place with methods like
     `shift`, `unshift`, and `splice`.  Replacing
-    `require.loader.paths` with a new array may not
+    `require.loader.paths` with a new Array may not
     have any effect.  In secure sandboxes, `paths`
     are not available.
 
@@ -249,7 +249,7 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
     `system` `Object`, to be replaced later by loading
     the `system` module proper.  `bootstrap.js` provides a
     `system` object with `global`, `evalGlobal`, `platform`,
-    a `platforms` `Array`, `print`, `fs.read`, `fs.isFile`,
+    a `platforms` Array, `print`, `fs.read`, `fs.isFile`,
     `prefix`, `packagePrefixes`, and optionally `evaluate`,
     `debug`, or `verbose`.
 
@@ -277,7 +277,7 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
         environment variable, the path leading to the
         `narwhal` package containing `bin/narwhal`.
 
-    *   `packagePrefixes` is a prioritized `Array` of all of
+    *   `packagePrefixes` is a prioritized Array of all of
         the package directories to search for packages
         when that time comes.  The first package prefix
         should be the `SEA` environment variable, if it 
@@ -288,10 +288,10 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
         prefix appears first so that virtual environments
         can load their own package versions.
 
-    *   `platforms` is an `Array` of platform names, used
+    *   `platforms` is an Array of platform names, used
         to extend the module search path at various stages
         to include platform specific libraries.  There will
-        usually be more than one platform in this `Array`.
+        usually be more than one platform in this Array.
         For Rhino, it is `['rhino', 'default']`.  The
         `default` platform contains many "catch-all" modules
         that, while being platform-specific, are also 
@@ -314,7 +314,7 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
         has a suitable default, but some platforms provide
         their own.  For example, the "secure" platform
         injects a safe, hermetic evaluator.  `evaluate`
-        accepts a module as a `String`, and optionally
+        accepts a module as a String, and optionally
         a file name and line number for debugging purposes.
         `evaluate` returns a module factory `Function`
         that accepts `require`, `exports`, `module`, `system`,
@@ -432,7 +432,7 @@ The packages module analyzes and installs packages, such that their libraries ar
 *   find and read package.json for every accessible package,
     collating them into a catalog.  This involves a breadth
     first topological search of the `packages/` directory of each
-    `package` in the `system.packagePrefixes` `array`.  This
+    `package` in the `system.packagePrefixes` Array.  This
     guarantees that the packages installed in the Sea
     (virtual environment) can override the versions installed
     with the system.
@@ -457,7 +457,7 @@ The packages module analyzes and installs packages, such that their libraries ar
 Much of the weight of code in the `packages` module concerns 
 using both the conventional locations for libraries and whatnot,
 but also handling overriden configuration values, gracefully
-accepting both single `Strings` and `Arrays` of multiple options
+accepting both single Strings and Arrays of multiple options
 for all directories.  For example, `packages` assumes that
 each package has a `lib` directory.  However, the package may
 provide a `package.json` that states that `lib` has been put

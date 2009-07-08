@@ -56,4 +56,4 @@ Run it!
 
     jackup
 
-Next, take a look at the introduction to [modules](/modules.html), for a primer on using and making modules in Narwhal.
+Next, take a look at the introduction to [modules](modules.html), for a primer on using and making modules in Narwhal.
