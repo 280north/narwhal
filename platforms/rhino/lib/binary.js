@@ -15,10 +15,8 @@ Binary.prototype.toArray = function(codec) {
     if (arguments.length === 0) {
         var bytes = new Array(this._length);
         
-        for (var i = 0; i < this._length; i++) {
-            var b = this._bytes[i + this._offset];
-            // Java "bytes" are interpreted as 2's complement
-            bytes[i] = (b >= 0) ? b : -1 * ((b ^ 0xFF) + 1);
+        for (var i = 0; i < this.length; i++) {
+            bytes[i] = this.get(i);
         }
         
         return bytes;
@@ -78,12 +76,13 @@ Binary.prototype.decodeToString = function(charset) {
     return String(new java.lang.String(this._bytes, this._offset, this._length));
 };
 
-// byteAt(offset) - Return the byte at offset as a Number.
-Binary.prototype.byteAt = function(offset) {
+// get(offset) - Return the byte at offset as a Number.
+Binary.prototype.get = function(offset) {
     if (offset < 0 || offset >= this._length)
         return NaN;
-        
-    return this._bytes[this._offset + offset];
+    
+    var b = this._bytes[this._offset + offset];
+    return (b >= 0) ? b : -1 * ((b ^ 0xFF) + 1);
 };
 
 // valueOf()
@@ -185,10 +184,11 @@ ByteString.prototype.lastIndexOf = function(byteValue, start, stop) {
     return (result < 0) ? -1 : result + (start || 0);
 };
 
-ByteString.prototype.charCodeAt = Binary.prototype.byteAt;
+ByteString.prototype.charCodeAt = Binary.prototype.get;
 
+ByteString.prototype.byteAt =
 ByteString.prototype.charAt = function(offset) {
-    var byteValue = this.charCodeAt(offset);
+    var byteValue = this.get(offset);
     
     if (isNaN(byteValue))
         return new ByteString();
@@ -196,8 +196,64 @@ ByteString.prototype.charAt = function(offset) {
     return new ByteString([byteValue]);
 };
 
-ByteString.prototype.split = function(delimiter, options) {
-    throw "NYI";
+ByteString.prototype.split = function(delimiters, options) {
+    var options = options || {},
+        count = options.count === undefined ? -1 : options.count,
+        includeDelimiter = options.includeDelimiter || false;
+    
+    // standardize delimiters into an array of ByteStrings:
+    if (!Array.isArray(delimiters))
+        delimiters = [delimiters];
+        
+    delimiters = delimiters.map(function(delimiter) {
+        if (typeof delimiter === "number")
+            delimiter = [delimiter];
+        return new ByteString(delimiter);
+    });
+    
+    var components = [],
+        startOffset = this._offset,
+        currentOffset = this._offset;
+    
+    // loop until there's no more bytes to consume
+    bytes_loop :
+    while (currentOffset < this._offset + this._length) {
+        
+        // try each delimiter until we find a match
+        delimiters_loop :
+        for (var i = 0; i < delimiters.length; i++) {
+            var d = delimiters[i];
+            
+            for (var j = 0; j < d._length; j++) {
+                // reached the end of the bytes, OR bytes not equal
+                if (currentOffset + j > this._offset + this._length ||
+                    this._bytes[currentOffset + j] !== d._bytes[d._offset + j]) {
+                    continue delimiters_loop;
+                }
+            }
+            
+            // push the part before the delimiter
+            components.push(new ByteString(this._bytes, startOffset, currentOffset - startOffset));
+            
+            // optionally push the delimiter
+            if (includeDelimiter)
+                components.push(new ByteString(this._bytes, currentOffset, d._length))
+            
+            // reset the offsets
+            startOffset = currentOffset = currentOffset + d._length;
+            
+            continue bytes_loop;
+        }
+        
+        // if there was no match, increment currentOffset to try the next one
+        currentOffset++;
+    }
+    
+    // push the remaining part, if any
+    if (currentOffset > startOffset)
+        components.push(new ByteString(this._bytes, startOffset, currentOffset - startOffset));
+    
+    return components;
 };
 
 ByteString.prototype.slice = function(begin, end) {
@@ -360,8 +416,33 @@ ByteArray.prototype.toString = function(charset) {
 }
 
 // concat(other ByteArray|ByteString|Array)
+// TODO: I'm assuming Array means an array of ByteStrings/ByteArrays, not an array of integers.
 ByteArray.prototype.concat = function() {
-    throw "NYI";
+    var components = [this],
+        totalLength = this.length;
+    
+    for (var i = 0; i < arguments.length; i++) {
+        var component = Array.isArray(component) ? arguments[i] : [component];
+        
+        for (var j = 0; j < component.length; j++) {
+            var subcomponent = component[j];
+            if (!(subcomponent instanceof ByteString) && !(subcomponent instanceof ByteArray))
+                throw "Arguments to ByteArray.concat() must be ByteStrings, ByteArrays, or Arrays of those.";
+            
+            components.push(subcomponent);
+            totalLength += subcomponent.length;
+        }
+    }
+    
+    var result = new ByteArray(totalLength),
+        offset = 0;
+    
+    components.forEach(function(component) {
+        java.lang.System.arraycopy(component._bytes, component._offset, result._byte, offset, component._length);
+        offset += component._length;
+    });
+    
+    return result;
 }
 
 // pop() -> byte Number
@@ -397,7 +478,18 @@ ByteArray.prototype.unshift = function() {
 
 // reverse() in place reversal
 ByteArray.prototype.reverse = function() {
-    throw "NYI";
+    // "limit" should is halway, rounded down. "top" is the last index.
+    var limit = Math.floor(this._length/2) + this._offset,
+        top = this._length - 1;
+        
+    // swap each pair of bytes, up to the halfway point
+    for (var i = this._offset; i < limit; i++) {
+        var tmp = this._bytes[i];
+        this._bytes[i] = this._bytes[top - i];
+        this._bytes[top - i] = tmp;
+    }
+    
+    return this;
 }
 
 // slice()
