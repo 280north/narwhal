@@ -7,7 +7,7 @@ exports.testRmtreeDoesNotFollowSymlinks = function () {
         here.join('foo').rmtree();
     try {
         here.join('foo', 'bar').mkdirs();
-        here.join('foo', 'baz').symlink('../bar');
+        here.join('foo', 'bar').symlink(here.join('foo', 'baz'));
         here.join('foo', 'baz').rmtree();
         assert.isTrue(here.join('foo', 'bar').exists());
     } finally {
