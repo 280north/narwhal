@@ -13,14 +13,14 @@ exports.testByteStringConstructor = function() {
     //assert.isTrue(b1 instanceof Binary, "not instanceof Binary");
     assert.isTrue(b1 instanceof ByteString, "not instanceof ByteString");
     assert.isEqual(0, b1.length);
-    b1.length = 1234;
+    b1.length = 123;
     assert.isEqual(0, b1.length);
     
     // ByteString(byteString)
     // Copies byteString.
-    var b2 = new ByteString(testArray);
+    var b2 = new ByteString(new ByteString(testArray));
     assert.isEqual(testArray.length, b2.length);
-    b2.length = 2345;
+    b2.length = 123;
     assert.isEqual(testArray.length, b2.length);
     assert.isEqual(1, b2.get(0));
     assert.isEqual(4, b2.get(3));
@@ -29,7 +29,7 @@ exports.testByteStringConstructor = function() {
     // Use the contents of byteArray.
     var b2 = new ByteString(new ByteArray(testArray));
     assert.isEqual(testArray.length, b2.length);
-    b2.length = 1234;
+    b2.length = 123;
     assert.isEqual(testArray.length, b2.length);
     assert.isEqual(1, b2.get(0));
     assert.isEqual(4, b2.get(3));
@@ -37,10 +37,10 @@ exports.testByteStringConstructor = function() {
     // ByteString(arrayOfNumbers)
     // Use the numbers in arrayOfNumbers as the bytes.
     // If any element is outside the range 0...255, an exception (TODO) is thrown.
-    var b3 = new ByteString(b2);
-    assert.isEqual(b2.length, b3.length);
-    b3.length = 3456;
-    assert.isEqual(b2.length, b3.length);
+    var b3 = new ByteString(testArray);
+    assert.isEqual(testArray.length, b3.length);
+    b3.length = 123;
+    assert.isEqual(testArray.length, b3.length);
     assert.isEqual(1, b3.get(0));
     assert.isEqual(4, b3.get(3));
     
@@ -49,7 +49,7 @@ exports.testByteStringConstructor = function() {
     var testString = "hello world";
     var b4 = new ByteString(testString, "US-ASCII");
     assert.isEqual(testString.length, b4.length);
-    b4.length = 4567;
+    b4.length = 123;
     assert.isEqual(testString.length, b4.length);
     assert.isEqual(testString.charCodeAt(0), b4.get(0));
     assert.isEqual(testString.charCodeAt(testString.length-1), b4.get(testString.length-1));
@@ -233,12 +233,14 @@ exports.testSplit = function() {
     
     a1 = b1.split([]);
     assert.isEqual(1, a1.length);
+    assert.isTrue(a1[0] instanceof ByteString);
     assert.isEqual(6, a1[0].length);
     assert.isEqual(0, a1[0].get(0));
     assert.isEqual(5, a1[0].get(5));
     
     a1 = b1.split([2]);
     assert.isEqual(2, a1.length);
+    assert.isTrue(a1[0] instanceof ByteString);
     assert.isEqual(2, a1[0].length);
     assert.isEqual(0, a1[0].get(0));
     assert.isEqual(1, a1[0].get(1));
@@ -248,6 +250,7 @@ exports.testSplit = function() {
     
     a1 = b1.split([2], { includeDelimiter : true });
     assert.isEqual(3, a1.length);
+    assert.isTrue(a1[0] instanceof ByteString);
     assert.isEqual(2, a1[0].length);
     assert.isEqual(0, a1[0].get(0));
     assert.isEqual(1, a1[0].get(1));
@@ -259,6 +262,7 @@ exports.testSplit = function() {
     
     a1 = b1.split(new ByteString([2,3]));
     assert.isEqual(2, a1.length);
+    assert.isTrue(a1[0] instanceof ByteString);
     assert.isEqual(2, a1[0].length);
     assert.isEqual(0, a1[0].get(0));
     assert.isEqual(1, a1[0].get(1));
