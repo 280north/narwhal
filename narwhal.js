@@ -11,6 +11,7 @@ system.log = log;
 
 // global reference
 global = system.global;
+global.global = global;
 global.system = system;
 global.print = system.print;
 
