@@ -61,18 +61,7 @@ exports.testByteArrayConstructor = function() {
     assert.isEqual(1, b.get(0));
     assert.isEqual(4, b.get(3));
     assert.isEqual(0, b.get(4));
-    
-    // ByteString(string, charset)
-    // Convert a string. The ByteString will contain string encoded with charset.
-    var testString = "hello world";
-    b = new ByteArray(testString, "US-ASCII");
-    assert.isEqual(testString.length, b.length);
-    b.length = 678;
-    assert.isEqual(678, b.length);
-    assert.isEqual(testString.charCodeAt(0), b.get(0));
-    assert.isEqual(testString.charCodeAt(testString.length-1), b.get(testString.length-1));
-    assert.isEqual(0, b.get(677));
-}
+};
 
 exports.testByteArrayResizing = function() {
     var b1 = new ByteArray([0,1,2,3,4,5,6]);
@@ -80,20 +69,20 @@ exports.testByteArrayResizing = function() {
     assert.isNaN(b1.get(7));
     
     b1.length = 10;
-    assert.isEqual(10, b1.length);
+    assert.isEqual(10, b1.length, "Length should change to 10");
     assert.isEqual(5, b1.get(5));
     assert.isEqual(0, b1.get(7));
     
     b1.length = 3;
-    assert.isEqual(3, b1.length);
+    assert.isEqual(3, b1.length, "Length should change to 10");
     assert.isEqual(0, b1.get(0));
     assert.isNaN(b1.get(4));
     
-    b1.length = 10;
-    assert.isEqual(10, b1.length);
+    b1.length = 9;
+    assert.isEqual(9, b1.length, "Length should change to 9");
     assert.isEqual(0, b1.get(0));
     assert.isEqual(0, b1.get(4));
-}
+};
 
 exports.testToByteArray = function() {
     var b1 = new ByteArray([1,2,3]),
@@ -111,10 +100,7 @@ exports.testToByteArray = function() {
     
     assert.isEqual(10, b1.get(0));
     assert.isEqual(1, b2.get(0));
-    
-    var testString = "I ♥ JS";
-    assert.isEqual(testString, new ByteArray(testString, "UTF-8").toByteArray("UTF-8", "UTF-16").decodeToString("UTF-16"));
-}
+};
 
 exports.testToByteString = function() {
     var b1 = new ByteArray([1,2,3]),
@@ -131,10 +117,7 @@ exports.testToByteString = function() {
     
     assert.isEqual(10, b1.get(0));
     assert.isEqual(1, b2.get(0));
-    
-    var testString = "I ♥ JS";
-    assert.isEqual(testString, new ByteArray(testString, "UTF-8").toByteString("UTF-8", "UTF-16").decodeToString("UTF-16"));
-}
+};
 
 exports.testToArray = function() {
     var testArray = [0,1,254,255],
@@ -144,56 +127,22 @@ exports.testToArray = function() {
     assert.isEqual(testArray.length, a1.length);
     for (var i = 0; i < testArray.length; i++)
         assert.isEqual(testArray[i], a1[i]);
-    
-    a1 = new ByteArray("\u0024\u00A2\u20AC", "UTF-8").toArray("UTF-8");
-    assert.isEqual(3, a1.length);
-    assert.isEqual(0x24, a1[0]);
-    assert.isEqual(0xA2, a1[1]);
-    assert.isEqual(0x20AC, a1[2]);
-    
-    a1 = new ByteArray("\u0024\u00A2\u20AC", "UTF-16").toArray("UTF-16");
-    assert.isEqual(3, a1.length);
-    assert.isEqual(0x24, a1[0]);
-    assert.isEqual(0xA2, a1[1]);
-    assert.isEqual(0x20AC, a1[2]);
-}
+};
 
 exports.testToString = function() {
     // the format of the resulting string isn't specified, but it shouldn't be the decoded string
     // TODO: is this an ok test?
     
-    var testString = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    var testString = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+
+                     "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        testArray = [];
+    for (var i = 0; i < 128; i++) testArray.push(65);
     
-    var resultString = new ByteArray(testString, "US-ASCII").toString();
+    var resultString = new ByteArray(testArray).toString();
     
     assert.isTrue(resultString.length < 100);
     assert.isTrue(resultString !== testString);
-}
-
-exports.testDecodeToString = function() {
-    assert.isEqual("hello world", new ByteArray("hello world", "US-ASCII").decodeToString("US-ASCII"));
-    
-    assert.isEqual("I ♥ JS", new ByteArray("I ♥ JS", "UTF-8").decodeToString("UTF-8"));
-    
-    assert.isEqual("\u0024", new ByteArray([0x24]).decodeToString("UTF-8"));
-    assert.isEqual("\u00A2", new ByteArray([0xC2,0xA2]).decodeToString("UTF-8"));
-    assert.isEqual("\u20AC", new ByteArray([0xE2,0x82,0xAC]).decodeToString("UTF-8"));
-    // FIXME:
-    //assert.isEqual("\u10ABCD", (new ByteArray([0xF4,0x8A,0xAF,0x8D])).decodeToString("UTF-8"));
-    
-    assert.isEqual("\u0024", new ByteArray("\u0024", "UTF-8").decodeToString("UTF-8"));
-    assert.isEqual("\u00A2", new ByteArray("\u00A2", "UTF-8").decodeToString("UTF-8"));
-    assert.isEqual("\u20AC", new ByteArray("\u20AC", "UTF-8").decodeToString("UTF-8"));
-    assert.isEqual("\u10ABCD", new ByteArray("\u10ABCD", "UTF-8").decodeToString("UTF-8"));
-    
-    assert.isEqual("\u0024", new ByteArray("\u0024", "UTF-16").decodeToString("UTF-16"));
-    assert.isEqual("\u00A2", new ByteArray("\u00A2", "UTF-16").decodeToString("UTF-16"));
-    assert.isEqual("\u20AC", new ByteArray("\u20AC", "UTF-16").decodeToString("UTF-16"));
-    assert.isEqual("\u10ABCD", new ByteArray("\u10ABCD", "UTF-16").decodeToString("UTF-16"));
-}
+};
 
 exports.testIndexOf = function() {
     var b1 = new ByteArray([0,1,2,3,4,5,0,1,2,3,4,5]);
@@ -211,7 +160,7 @@ exports.testIndexOf = function() {
     assert.isEqual(0,  b1.indexOf(0, 0, 3));
     assert.isEqual(-1,  b1.indexOf(5, 0, 3));
     assert.isEqual(-1, b1.indexOf(12, 0, 3));
-}
+};
 
 exports.testLastIndexOf = function() {
     var b1 = new ByteArray([0,1,2,3,4,5,0,1,2,3,4,5]);
@@ -229,7 +178,7 @@ exports.testLastIndexOf = function() {
     assert.isEqual(6,  b1.lastIndexOf(0, 6, 9));
     assert.isEqual(-1,  b1.lastIndexOf(5, 6, 9));
     assert.isEqual(-1, b1.lastIndexOf(12, 6, 9));
-}
+};
 
 exports.testByteArrayReverse = function() {
     var testArray = [0,1,2,3,4,5,6];
@@ -251,7 +200,7 @@ exports.testByteArrayReverse = function() {
     assert.isEqual(b1.length, b2.length);
     for (var i = 0; i < testArray.length; i++)
         assert.isEqual(testArray[i], b2.get(testArray.length-i-1));
-}
+};
 
 exports.testByteArraySort = function() {
     var testArray = [];
@@ -263,7 +212,7 @@ exports.testByteArraySort = function() {
     
     for (var i = 1; i < a.length; i++)
         assert.isTrue(a.get(i-1) <= a.get(i), "index="+i+"("+a.get(i-1)+","+a.get(i)+")");    
-}
+};
 
 exports.testByteArraySortCustom = function() {
     var testArray = [];
@@ -275,7 +224,7 @@ exports.testByteArraySortCustom = function() {
 
     for (var i = 1; i < a.length; i++)
         assert.isTrue(a.get(i-1) >= a.get(i), "index="+i+"("+a.get(i-1)+","+a.get(i)+")");
-}
+};
 
 exports.testSplit = function() {
     var b1 = new ByteArray([0,1,2,3,4,5]), a1;
@@ -318,7 +267,7 @@ exports.testSplit = function() {
     assert.isEqual(2, a1[1].length);
     assert.isEqual(4, a1[1].get(0));
     assert.isEqual(5, a1[1].get(1));
-}
+};
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));

@@ -1,5 +1,17 @@
 /* Binary */
 
+var B_GET = require("binary-platform").B_GET,
+    B_SET = require("binary-platform").B_SET,
+    B_ALLOC = require("binary-platform").B_ALLOC,
+    B_FILL = require("binary-platform").B_FILL,
+    B_COPY = require("binary-platform").B_COPY,
+    B_DECODE = require("binary-platform").B_DECODE,
+    B_ENCODE = require("binary-platform").B_ENCODE,
+    B_DECODE_DEFAULT = require("binary-platform").B_DECODE_DEFAULT,
+    B_ENCODE_DEFAULT = require("binary-platform").B_ENCODE_DEFAULT,
+    B_TRANSCODE = require("binary-platform").B_TRANSCODE,
+    B_LENGTH = require("binary-platform").B_LENGTH;
+    
 var Binary = exports.Binary = function() {
     // this._bytes
     // this._offset
@@ -40,8 +52,8 @@ Binary.prototype.toByteArray = function(sourceCodec, targetCodec) {
     if (arguments.length < 2)
         return new ByteArray(this);
     else if (arguments.length === 2 && typeof sourceCodec === "string" && typeof targetCodec === "string") {
-        var bytes = new java.lang.String(this._bytes, this._offset, this._length, sourceCodec).getBytes(targetCodec);
-        return new ByteArray(bytes, 0, bytes.length);
+        var bytes = B_TRANSCODE(this._bytes, this._offset, this._length, sourceCodec, targetCodec);
+        return new ByteArray(bytes, 0, B_LENGTH(bytes));
     }
     
     throw new Error("Illegal arguments to ByteArray toByteArray");
@@ -53,8 +65,8 @@ Binary.prototype.toByteString = function(sourceCodec, targetCodec) {
     if (arguments.length < 2)
         return new ByteString(this);
     else if (arguments.length === 2 && typeof sourceCodec === "string" && typeof targetCodec === "string") {
-        var bytes = new java.lang.String(this._bytes, this._offset, this._length, sourceCodec).getBytes(targetCodec);
-        return new ByteString(bytes, 0, bytes.length);
+        var bytes = B_TRANSCODE(this._bytes, this._offset, this._length, sourceCodec, targetCodec);
+        return new ByteString(bytes, 0, B_LENGTH(bytes));
     }
     
     throw new Error("Illegal arguments to ByteArray toByteString");
@@ -70,9 +82,9 @@ Binary.prototype.decodeToString = function(charset) {
         else if (charset.begins("base"))
             return require(charset).encode(this);
         else
-            return String(new java.lang.String(this._bytes, this._offset, this._length, charset));
+            return B_DECODE(this._bytes, this._offset, this._length, charset);
     }
-    return String(new java.lang.String(this._bytes, this._offset, this._length));
+    return B_DECODE_DEFAULT(this._bytes, this._offset, this._length);
 };
 
 // get(offset) - Return the byte at offset as a Number.
@@ -80,8 +92,9 @@ Binary.prototype.get = function(offset) {
     if (offset < 0 || offset >= this._length)
         return NaN;
     
-    var b = this._bytes[this._offset + offset];
-    return (b >= 0) ? b : -1 * ((b ^ 0xFF) + 1);
+    //var b = this._bytes[this._offset + offset];
+    //return (b >= 0) ? b : -1 * ((b ^ 0xFF) + 1);
+    return B_GET(this._bytes, this._offset + offset)
 };
 
 Binary.prototype.indexOf = function(byteValue, start, stop) {
@@ -119,7 +132,7 @@ var ByteString = exports.ByteString = function() {
 
     // ByteString() - Construct an empty byte string.
     if (arguments.length === 0) {
-        this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 0); // null;
+        this._bytes     = B_ALLOC(0); // null;
         this._offset    = 0;
         this._length    = 0;
     }
@@ -137,28 +150,29 @@ var ByteString = exports.ByteString = function() {
     // ByteString(arrayOfNumbers) - Use the numbers in arrayOfNumbers as the bytes.
     else if (arguments.length === 1 && Array.isArray(arguments[0])) {
         var bytes = arguments[0];
-        this._bytes = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, bytes.length);
-        for (var i = 0; i < bytes.length; i++) {
+        this._bytes = B_ALLOC(B_LENGTH(bytes));
+        for (var i = 0, length = B_LENGTH(bytes); i < length; i++) {
             var b = bytes[i];
             // If any element is outside the range 0...255, an exception (TODO) is thrown.
             if (b < -0x80 || b > 0xFF)
                 throw new Error("ByteString constructor argument Array of integers must be -128 - 255 ("+b+")");
             // Java "bytes" are interpreted as 2's complement
-            this._bytes[i] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
+            //this._bytes[i] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
+            B_SET(this._bytes, i, b);
         }
         this._offset = 0;
-        this._length = this._bytes.length;
+        this._length = B_LENGTH(this._bytes);
     }
     // ByteString(string, charset) - Convert a string. The ByteString will contain string encoded with charset.
     else if ((arguments.length === 1 || (arguments.length === 2 && arguments[1] === undefined)) && typeof arguments[0] === "string") {
-        this._bytes     = new java.lang.String(arguments[0]).getBytes();
+        this._bytes     = B_ENCODE_DEFAULT(arguments[0]);
         this._offset    = 0;
-        this._length    = this._bytes.length;
+        this._length    = B_LENGTH(this._bytes);
     }
     else if (arguments.length === 2 && typeof arguments[0] === "string" && typeof arguments[1] === "string") {
-        this._bytes     = new java.lang.String(arguments[0]).getBytes(arguments[1]);
+        this._bytes     = B_ENCODE(arguments[0], arguments[1]);
         this._offset    = 0;
-        this._length    = this._bytes.length;
+        this._length    = B_LENGTH(this._bytes);
     }
     // private: ByteString(bytes, offset, length)
     else if (arguments.length === 3 && Array.isArray(arguments[0]) && typeof arguments[1] === "number" && typeof arguments[2] === "number") {
@@ -254,7 +268,7 @@ ByteString.prototype.split = function(delimiters, options) {
             for (var j = 0; j < d._length; j++) {
                 // reached the end of the bytes, OR bytes not equal
                 if (currentOffset + j > this._offset + this._length ||
-                    this._bytes[currentOffset + j] !== d._bytes[d._offset + j]) {
+                    B_GET(this._bytes, currentOffset + j) !== B_GET(d._bytes, d._offset + j)) {
                     continue delimiters_loop;
                 }
             }
@@ -358,13 +372,13 @@ var ByteArray = exports.ByteArray = function() {
 
     // ByteArray() - New, empty ByteArray.
     if (arguments.length === 0) {
-        this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 0); // null;
+        this._bytes     = B_ALLOC(0); // null;
         this._offset    = 0;
         this._length    = 0;
     }
     // ByteArray(length) - New ByteArray filled with length zero bytes.
     else if (arguments.length === 1 && typeof arguments[0] === "number") {
-        this._bytes     = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, arguments[0]); // null;
+        this._bytes     = B_ALLOC(arguments[0]); // null;
         this._offset    = 0;
         this._length    = this._bytes.length;
     }
@@ -372,35 +386,36 @@ var ByteArray = exports.ByteArray = function() {
     // ByteArray(byteString) - Copy contents of byteString.
     else if (arguments.length === 1 && (arguments[0] instanceof ByteArray || arguments[0] instanceof ByteString)) {
         var byteArray = new ByteArray(arguments[0]._length);
-        java.lang.System.arraycopy(arguments[0]._bytes, arguments[0]._offset, byteArray._bytes, byteArray._offset, byteArray._length);
+        B_COPY(arguments[0]._bytes, arguments[0]._offset, byteArray._bytes, byteArray._offset, byteArray._length);
         return byteArray;
     }
     // ByteArray(arrayOfBytes) - Use numbers in arrayOfBytes as contents.
     // Throws an exception if any element is outside the range 0...255 (TODO).
     else if (arguments.length === 1 && Array.isArray(arguments[0])) {
         var bytes = arguments[0];
-        this._bytes = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, bytes.length);
-        for (var i = 0; i < bytes.length; i++) {
+        this._bytes = B_ALLOC(B_LENGTH(bytes));
+        for (var i = 0, length = B_LENGTH(bytes); i < length; i++) {
             var b = bytes[i];
             // If any element is outside the range 0...255, an exception (TODO) is thrown.
             if (b < 0 || b > 0xFF)
                 throw new Error("ByteString constructor argument Array of integers must be 0 - 255 ("+b+")");
             // Java "bytes" are interpreted as 2's complement
-            this._bytes[i] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
+            //this._bytes[i] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
+            B_SET(this._bytes, i, b);
         }
         this._offset = 0;
-        this._length = this._bytes.length;
+        this._length = B_LENGTH(this._bytes);
     }
     // ByteArray(string, charset) - Create a ByteArray from a Javascript string, the result being encoded with charset.
     else if ((arguments.length === 1 || (arguments.length === 2 && arguments[1] === undefined)) && typeof arguments[0] === "string") {
-        this._bytes     = new java.lang.String(arguments[0]).getBytes();
+        this._bytes     = B_ENCODE_DEFAULT(arguments[0]);
         this._offset    = 0;
-        this._length    = this._bytes.length;
+        this._length    = B_LENGTH(this._bytes);
     }
     else if (arguments.length === 2 && typeof arguments[0] === "string" && typeof arguments[1] === "string") {
-        this._bytes     = new java.lang.String(arguments[0]).getBytes(arguments[1]);
+        this._bytes     = B_ENCODE(arguments[0], arguments[1]);
         this._offset    = 0;
-        this._length    = this._bytes.length;
+        this._length    = B_LENGTH(this._bytes);
     }
     // private: ByteArray(bytes, offset, length)
     else if (arguments.length === 3 && Array.isArray(arguments[0]) && typeof arguments[1] === "number" && typeof arguments[2] === "number") {
@@ -429,21 +444,21 @@ ByteArray.prototype.__defineSetter__("length", function(length) {
         this._length = length;
     }
     // new length is more, but fits without moving, just clear new bytes
-    else if (this._offset + length <= this._bytes.length) {
-        java.util.Arrays.fill(this._bytes, this._length, this._offset + length - 1, 0);
+    else if (this._offset + length <= B_LENGTH(this._bytes)) {
+        B_FILL(this._bytes, this._length, this._offset + length - 1, 0);
         this._length = length;
     }
     // new length is more, but fits if we shift to bottom, so do that.
-    else if (length <= this._bytes.length) {
-        java.lang.System.arraycopy(this._bytes, this._offset, this._bytes, 0, this._length);
+    else if (length <= B_LENGTH(this._bytes)) {
+        B_COPY(this._bytes, this._offset, this._bytes, 0, this._length);
         this._offset = 0;
-        java.util.Arrays.fill(this._bytes, this._length, this._offset + length - 1, 0);
+        B_FILL(this._bytes, this._length, this._offset + length - 1, 0);
         this._length = length;
     }
     // new length is more than the allocated bytes array, allocate a new one and copy the data
     else {
-        var newBytes = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
-        java.lang.System.arraycopy(this._bytes, this._offset, newBytes, 0, this._length);
+        var newBytes = B_ALLOC(length);
+        B_COPY(this._bytes, this._offset, newBytes, 0, this._length);
         this._bytes = newBytes;
         this._offset = 0;
         this._length = length;
@@ -460,7 +475,8 @@ ByteArray.prototype.set = function(index, b) {
         throw new Error("Out of range");
     
     // Java "bytes" are interpreted as 2's complement
-    this._bytes[this._offset + index] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
+    //this._bytes[this._offset + index] = (b < 128) ? b : -1 * ((b ^ 0xFF) + 1);
+    B_SET(this._bytes, this._offset + index, b);
 };
 
 // toArray()
@@ -515,7 +531,7 @@ ByteArray.prototype.concat = function() {
         offset = 0;
     
     components.forEach(function(component) {
-        java.lang.System.arraycopy(component._bytes, component._offset, result._byte, offset, component._length);
+        B_COPY(component._bytes, component._offset, result._byte, offset, component._length);
         offset += component._length;
     });
     
@@ -529,7 +545,7 @@ ByteArray.prototype.pop = function() {
     
     this._length--;
     
-    return this._bytes[this._offset + this._length];
+    return B_GET(this._bytes, this._offset + this._length);
 };
 
 // push(...variadic Numbers...)-> count Number
@@ -550,7 +566,7 @@ ByteArray.prototype.shift = function() {
     this._length--;
     this._offset++;
     
-    return this._bytes[this._offset - 1];
+    return B_GET(this._bytes, this._offset - 1);
 };
 
 // unshift(...variadic Numbers...) -> count Number
@@ -571,9 +587,9 @@ ByteArray.prototype.reverse = function() {
         
     // swap each pair of bytes, up to the halfway point
     for (var i = this._offset; i < limit; i++) {
-        var tmp = this._bytes[i];
-        this._bytes[i] = this._bytes[top - i];
-        this._bytes[top - i] = tmp;
+        var tmp = B_GET(this._bytes, i);
+        B_SET(this._bytes, i, B_GET(this._bytes, top - i));
+        B_SET(this._bytes, top - i, tmp);
     }
     
     return this;
