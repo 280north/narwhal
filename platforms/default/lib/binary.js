@@ -1,16 +1,16 @@
 /* Binary */
 
-var B_GET = require("binary-platform").B_GET,
+var B_ALLOC = require("binary-platform").B_ALLOC,
+    B_LENGTH = require("binary-platform").B_LENGTH,
+    B_GET = require("binary-platform").B_GET,
     B_SET = require("binary-platform").B_SET,
-    B_ALLOC = require("binary-platform").B_ALLOC,
     B_FILL = require("binary-platform").B_FILL,
     B_COPY = require("binary-platform").B_COPY,
     B_DECODE = require("binary-platform").B_DECODE,
     B_ENCODE = require("binary-platform").B_ENCODE,
     B_DECODE_DEFAULT = require("binary-platform").B_DECODE_DEFAULT,
     B_ENCODE_DEFAULT = require("binary-platform").B_ENCODE_DEFAULT,
-    B_TRANSCODE = require("binary-platform").B_TRANSCODE,
-    B_LENGTH = require("binary-platform").B_LENGTH;
+    B_TRANSCODE = require("binary-platform").B_TRANSCODE;
     
 var Binary = exports.Binary = function() {
     // this._bytes
@@ -149,10 +149,10 @@ var ByteString = exports.ByteString = function() {
     }
     // ByteString(arrayOfNumbers) - Use the numbers in arrayOfNumbers as the bytes.
     else if (arguments.length === 1 && Array.isArray(arguments[0])) {
-        var bytes = arguments[0];
-        this._bytes = B_ALLOC(B_LENGTH(bytes));
-        for (var i = 0, length = B_LENGTH(bytes); i < length; i++) {
-            var b = bytes[i];
+        var array = arguments[0];
+        this._bytes = B_ALLOC(array.length);
+        for (var i = 0; i < array.length; i++) {
+            var b = array[i];
             // If any element is outside the range 0...255, an exception (TODO) is thrown.
             if (b < -0x80 || b > 0xFF)
                 throw new Error("ByteString constructor argument Array of integers must be -128 - 255 ("+b+")");
@@ -175,7 +175,7 @@ var ByteString = exports.ByteString = function() {
         this._length    = B_LENGTH(this._bytes);
     }
     // private: ByteString(bytes, offset, length)
-    else if (arguments.length === 3 && Array.isArray(arguments[0]) && typeof arguments[1] === "number" && typeof arguments[2] === "number") {
+    else if (arguments.length === 3 && typeof arguments[1] === "number" && typeof arguments[2] === "number") {
         this._bytes     = arguments[0];
         this._offset    = arguments[1];
         this._length    = arguments[2];
@@ -380,7 +380,7 @@ var ByteArray = exports.ByteArray = function() {
     else if (arguments.length === 1 && typeof arguments[0] === "number") {
         this._bytes     = B_ALLOC(arguments[0]); // null;
         this._offset    = 0;
-        this._length    = this._bytes.length;
+        this._length    = B_LENGTH(this._bytes);
     }
     // ByteArray(byteArray) - Copy byteArray.
     // ByteArray(byteString) - Copy contents of byteString.
@@ -392,10 +392,10 @@ var ByteArray = exports.ByteArray = function() {
     // ByteArray(arrayOfBytes) - Use numbers in arrayOfBytes as contents.
     // Throws an exception if any element is outside the range 0...255 (TODO).
     else if (arguments.length === 1 && Array.isArray(arguments[0])) {
-        var bytes = arguments[0];
-        this._bytes = B_ALLOC(B_LENGTH(bytes));
-        for (var i = 0, length = B_LENGTH(bytes); i < length; i++) {
-            var b = bytes[i];
+        var array = arguments[0];
+        this._bytes = B_ALLOC(array.length);
+        for (var i = 0; i < array.length; i++) {
+            var b = array[i];
             // If any element is outside the range 0...255, an exception (TODO) is thrown.
             if (b < 0 || b > 0xFF)
                 throw new Error("ByteString constructor argument Array of integers must be 0 - 255 ("+b+")");
@@ -418,7 +418,7 @@ var ByteArray = exports.ByteArray = function() {
         this._length    = B_LENGTH(this._bytes);
     }
     // private: ByteArray(bytes, offset, length)
-    else if (arguments.length === 3 && Array.isArray(arguments[0]) && typeof arguments[1] === "number" && typeof arguments[2] === "number") {
+    else if (arguments.length === 3 && typeof arguments[1] === "number" && typeof arguments[2] === "number") {
         this._bytes     = arguments[0];
         this._offset    = arguments[1];
         this._length    = arguments[2];
