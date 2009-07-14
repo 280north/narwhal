@@ -122,8 +122,8 @@ if (system.args.length && !options.interactive && !options.main) {
 }
 
 // user package prefixes
-if (system.env.SEA)
-    system.packagePrefixes.unshift(system.env.SEA);
+if (system.env.PACKAGE_HOME)
+    system.packagePrefixes.unshift(system.env.PACKAGE_HOME);
 system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefixes);
 
 // load packages
