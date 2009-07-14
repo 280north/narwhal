@@ -20,3 +20,7 @@ IO.prototype.flush = function() {
 
 IO.prototype.close = function() {
 }
+
+exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, charset, options) {
+    return raw;
+}
