@@ -27,8 +27,11 @@ exports.B_SET = function(bytes, index, value) {
     return bytes[index] = value;
 }
 
+var DEFAULT_ENCODING = "UTF-8";
+
 exports.B_DECODE = function(bytes, offset, length, codec) {
-    throw "NYI";
+    var newBytes = exports.B_TRANSCODE(bytes, offset, length, codec, DEFAULT_ENCODING);
+    return exports.B_DECODE_DEFAULT(newBytes, 0, exports.B_LENGTH(newBytes));
 }
 
 exports.B_DECODE_DEFAULT = function(bytes, offset, length) {
@@ -36,7 +39,8 @@ exports.B_DECODE_DEFAULT = function(bytes, offset, length) {
 }
 
 exports.B_ENCODE = function(string, codec) {
-    throw "NYI";
+    var bytes = exports.B_ENCODE_DEFAULT(string);
+    return exports.B_TRANSCODE(bytes, 0, exports.B_LENGTH(bytes), DEFAULT_ENCODING, codec);
 }
 
 exports.B_ENCODE_DEFAULT = function(string) {
@@ -46,3 +50,4 @@ exports.B_ENCODE_DEFAULT = function(string) {
 exports.B_TRANSCODE = function(bytes, offset, length, sourceCodec, targetCodec) {
     throw "NYI";
 }
+
