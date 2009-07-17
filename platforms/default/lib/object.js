@@ -19,3 +19,9 @@ if (!Object.create) {
     };
 }
 
+if (!Object.freeze) {
+    Object.freeze = function (object) {
+        return object;
+    };
+}
+

@@ -37,12 +37,16 @@ exports.synthesize = function (analysis) {
 var loader = Packages.java.lang.ClassLoader.getSystemClassLoader();
 // so that replacing Packages does not implicitly dispose of the
 //  only means of creating new Packages objects.
-var PackageType = Packages;
 
 /*** addJavaPaths
 */
 exports.addJavaPaths = function addJavaPaths(javaPaths) {
     if (!javaPaths || javaPaths.length === 0)
+        return;
+    // after reinstalling Packages once, the Packages object
+    // is no longer a Packages constructor function.
+    // If that's the case, abandone hope.
+    if (typeof Packages == "object")
         return;
         
     /* set up jar loader */
@@ -58,7 +62,8 @@ exports.addJavaPaths = function addJavaPaths(javaPaths) {
         var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
         context.setApplicationClassLoader(loader);
         // must explicitly be made global when each module has it's own scope
-        global.Packages = new PackageType(loader);
+        global.Packages = new Packages(loader);
+        installed = true;
     } catch (e) {
         print("warning: couldn't install jar loader: " + e);
     }
