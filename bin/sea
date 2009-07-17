@@ -13,7 +13,7 @@ while [ -h "$SELF_PATH" ]; do
 	SELF_PATH=$(cd -- "$DIR" && cd -- $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
 done
 
-PACKAGE_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
+export PACKAGE_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
 
 source "$PACKAGE_HOME/bin/activate.bash"
 

@@ -145,7 +145,13 @@ exports.link = function (source, target) {
 };
 
 exports.symlink = function (source, target) {
-    os.command(['ln', '-s', target, source]);
+    // XXX this behavior of resolving the source
+    // path from the target path when the source 
+    // path is relative ought to be discussed
+    // on ServerJS
+    if (file.isRelative(source))
+        source = file.relative(target, source);
+    os.command(['ln', '-s', source, target]);
 };
 
 exports.rename = function (source, target) {
