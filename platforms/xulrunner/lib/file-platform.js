@@ -129,6 +129,10 @@ exports.touch = function (path, mtime) {
     else file.lastModifiedTime = new Date().getTime().toString();
 };
 
+exports.symlink = function (path) {
+    throw "NYI";
+};
+
 exports.FileIO = function (path, mode, permissions) {
     file = MozFile(path);
 
