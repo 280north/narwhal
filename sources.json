@@ -45,18 +45,18 @@
             "type": "github",
             "user": "tlrobinson"
         },
-        "gae": {
+        "appengine-java-sdk": {
             "type": "inline",
             "package.json": {
                 "name": "gae",
                 "title": "Google App Engine Java SDK",
-                "description": "Java components necessary for depolying applications on Google's App Engine.",
+                "description": "Java components necessary for deploying applications on Google's App Engine.",
                 "author": "Google",
-                "version": "1.2.1",
+                "version": "1.2.2",
                 "dependencies": ["jack-servlet", "jack", "narwhal"],
                 "lib": [],
                 "type": "zip",
-                "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
+                "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
             }
         },
         "env": {
