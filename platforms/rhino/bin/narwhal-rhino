@@ -24,6 +24,8 @@ CLASSPATH=$NARWHAL_PLATFORM_HOME/jars/js.jar:$NARWHAL_PLATFORM_HOME/jars/jline.j
 if [ "$(which cygpath 2>/dev/null)" ]; then
     CLASSPATH=$(cygpath -wp -- "$CLASSPATH")
     BOOTSTRAP=$(cygpath -wa -- "$BOOTSTRAP")
+    export NARWHAL_HOME=$(cygpath -wa -- "$NARWHAL_HOME")
+    export NARWHAL_PLATFORM_HOME=$(cygpath -wa -- "$NARWHAL_PLATFORM_HOME")
 fi
 
 JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
