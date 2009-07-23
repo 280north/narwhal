@@ -229,6 +229,7 @@ exports.testIterator = require('./file/iterator');
 exports.testExtension = require('./file/extension');
 exports.testResolve = require('./file/resolve');
 exports.testNormal = require('./file/normal');
+exports.testDirname = require('./file/dirname');
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
