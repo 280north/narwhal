@@ -5,12 +5,13 @@
     var isFile = /*TODO*/; // function(path:string):boolean
 
     var prefix = "/path/to/narwhal"; /*TODO*/
-
+    
     eval(read(prefix + "/narwhal.js"))({
         global: this,
         evalGlobal: evalGlobal,
         platform: '<<<name>>>', /*TODO*/
         platforms: ['<<<name>>>', 'default'], /*TODO*/
+        os: "", /* TODO /\bwindows\b/i for Windows FS support */
         // XXX platforms may include any number of
         // prioritized generic platforms like:
         // rhino, java, c, v8, default
