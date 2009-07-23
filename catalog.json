@@ -40,8 +40,14 @@
                 "jack",
                 "template"
             ],
+            "contributors": [
+                "Kris Kowal"
+            ],
             "js": "lib",
             "main": "examples/simple/jackconfig",
+            "lean": [
+                "lib"
+            ],
             "githubName": "nitro",
             "type": "zip",
             "location": "http://github.com/gmosx/nitro/zipball/master"
@@ -126,12 +132,12 @@
             "type": "zip",
             "location": "http://github.com/tlrobinson/jack-servlet/zipball/master"
         },
-        "gae": {
+        "appengine-java-sdk": {
             "name": "gae",
             "title": "Google App Engine Java SDK",
-            "description": "Java components necessary for depolying applications on Google's App Engine.",
+            "description": "Java components necessary for deploying applications on Google's App Engine.",
             "author": "Google",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "dependencies": [
                 "jack-servlet",
                 "jack",
@@ -139,7 +145,7 @@
             ],
             "lib": [],
             "type": "zip",
-            "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.1.zip"
+            "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
         },
         "env": {
             "githubName": "env-js",
