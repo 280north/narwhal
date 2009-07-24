@@ -11,15 +11,13 @@ while [ -h "$SELF_PATH" ]; do
 done
 
 # NARWHAL_PLATFORM_HOME is the 2nd ancestor directory of this shell script
-NARWHAL_PLATFORM_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
+export NARWHAL_PLATFORM_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
 
 BOOTSTRAP=$NARWHAL_PLATFORM_HOME/bootstrap.js
 
 if [ -z "$NARWHAL_HOME" ]; then
 	NARWHAL_HOME=$(dirname -- "$(dirname -- "$NARWHAL_PLATFORM_HOME")")
 fi
-
-export NARWHAL_PLATFORM_HOME
 
 CLASSPATH=$NARWHAL_PLATFORM_HOME/jars/js.jar:$NARWHAL_PLATFORM_HOME/jars/jline.jar
 if [ -z "$NARWHAL_CLASSPATH" ]; then
