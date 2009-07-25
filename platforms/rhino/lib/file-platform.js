@@ -37,9 +37,10 @@ exports.FileIO = function (path, mode, permissions) {
 
 /* paths */
 
-exports.SEPARATOR = '/';
-exports.ALT_SEPARATOR = undefined;
-exports.ROOT = '/';
+// FIXME: works for Unix and Windows. Others?
+exports.SEPARATOR = String(java.io.File.separator);
+exports.ALT_SEPARATOR = (exports.SEPARATOR == "\\") ? "/" : undefined;
+exports.ROOT = (exports.SEPARATOR == "\\") ? "c:\\" : "/";
 
 exports.cwd = function () {
     return String(Packages.java.lang.System.getProperty("user.dir"));
@@ -89,6 +90,11 @@ exports.isDirectory = function (path) {
 exports.isFile = function (path) {
     try { return JavaPath(path).isFile(); } catch (e) {}
     return false;
+};
+
+// XXX not standard
+exports.isAbsolute = function (path) {
+    return new java.io.File(path).isAbsolute();
 };
 
 /* java doesn't provide isLink, but File.getCanonical leaks
