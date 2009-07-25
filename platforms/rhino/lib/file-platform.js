@@ -1,7 +1,10 @@
+
+// use the "file" module as the exports object.
+var exports = require("file");
+
 // File: Rhino
 
 var IO = require("./io").IO;
-var file = require('./file');
 var os = require('./os');
 
 var javaRuntime = function () {
@@ -22,7 +25,7 @@ exports.FileIO = function (path, mode, permissions) {
         write: write,
         append: append,
         update: update
-    } = file.mode(mode);
+    } = exports.mode(mode);
 
     if (update) {
         throw new Error("Updating IO not yet implemented.");
@@ -103,7 +106,7 @@ exports.isAbsolute = function (path) {
    containing directory to infer whether the file is a link.
 */
 exports.isLink = function (path) {
-    path = file.path(path);
+    path = exports.path(path);
     var canonical = path.canonical().toString();
     var container = path.resolve('.').canonical();
     if (path.isDirectory()) {
@@ -155,13 +158,13 @@ exports.symlink = function (source, target) {
     // path from the target path when the source 
     // path is relative ought to be discussed
     // on ServerJS
-    if (file.isRelative(source))
-        source = file.relative(target, source);
+    if (exports.isRelative(source))
+        source = exports.relative(target, source);
     os.command(['ln', '-s', source, target]);
 };
 
 exports.rename = function (source, target) {
-    source = file.path(source);
+    source = exports.path(source);
     target = source.resolve(target);
     source = JavaPath(source);
     target = JavaPath(target);
@@ -170,8 +173,8 @@ exports.rename = function (source, target) {
 };
 
 exports.move = function (source, target) {
-    source = file.path(source);
-    target = file.path(target);
+    source = exports.path(source);
+    target = exports.path(target);
     source = JavaPath(source);
     target = JavaPath(target);
     if (!source.renameTo(target))
