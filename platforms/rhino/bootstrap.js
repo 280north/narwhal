@@ -80,12 +80,14 @@
 
     var debug = +String(Packages.java.lang.System.getenv("NARWHAL_DEBUG"));
     var verbose = +String(Packages.java.lang.System.getenv("NARWHAL_VERBOSE"));
+    var os = String(Packages.java.lang.System.getProperty("os.name"));
 
     narwhal({
         global: global,
         evalGlobal: evalGlobal,
         platform: 'rhino',
         platforms: ['rhino', 'default'],
+        os: os,
         print: print,
         fs: {
             read: read,
