@@ -21,5 +21,5 @@ set JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
 if "%1" == "" (
 	java -cp "%CLASSPATH%" "%JAVA_MAIN%" -f "%BOOTSTRAP%" -f -
 ) else (
-	java -cp "%CLASSPATH%" "%JAVA_MAIN%" "%BOOTSTRAP%" "%0" "%*"
+	java -cp "%CLASSPATH%" "%JAVA_MAIN%" "%BOOTSTRAP%" "%0" %*
 )

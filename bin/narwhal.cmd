@@ -26,5 +26,4 @@ if exist %NARWHAL_HOME%\platforms\%NARWHAL_PLATFORM%. (
 	exit
 )
 
-:: FIXME: should this be "start" instead of "call" in case it's actually an executable?
 call %NARWHAL_PLATFORM_HOME%\bin\%EXECUTABLE_NAME% %*
