@@ -40,11 +40,6 @@ exports.FileIO = function (path, mode, permissions) {
 
 /* paths */
 
-// FIXME: works for Unix and Windows. Others?
-exports.SEPARATOR = String(java.io.File.separator);
-exports.ALT_SEPARATOR = (exports.SEPARATOR == "\\") ? "/" : undefined;
-exports.ROOT = (exports.SEPARATOR == "\\") ? "c:\\" : "/";
-
 exports.cwd = function () {
     return String(Packages.java.lang.System.getProperty("user.dir"));
 };
