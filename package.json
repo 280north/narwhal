@@ -8,5 +8,6 @@
         "Hannes Wallnöfer"
     ],
     "main": "examples/narwhal",
-    "lib": ["lib"]
+    "lib": ["lib"],
+    "lean": ["lib", "platforms"] 
 }

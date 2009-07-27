@@ -22,7 +22,7 @@ set EXECUTABLE_NAME=narwhal-%NARWHAL_PLATFORM%.cmd
 if exist %NARWHAL_HOME%\platforms\%NARWHAL_PLATFORM%. (
 	set NARWHAL_PLATFORM_HOME=%NARWHAL_HOME%\platforms\%NARWHAL_PLATFORM%
 ) else (
-	echo "Can't find executable for $NARWHAL_PLATFORM"
+	echo "Can't find executable for %NARWHAL_PLATFORM%"
 	exit
 )
 
