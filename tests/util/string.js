@@ -8,10 +8,11 @@ exports.testEscape = function () {
 
 exports.testEnquote = function () {
 };
+*/
 
-exports.testExpand = function () {
-};
+exports.testExpand = require("./expand");
 
+/*
 exports.testTrim = function () {
 };
 
