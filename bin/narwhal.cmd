@@ -2,7 +2,7 @@
 setlocal
 
 :: NARWHAL_HOME is the parent the bin directory
-set NARWHAL_HOME=%~p0..
+set NARWHAL_HOME=%~dp0..
 
 :: use Rhino as the default if none is specified in narwhal.conf
 set NARWHAL_DEFAULT_PLATFORM=rhino

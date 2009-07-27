@@ -2,7 +2,7 @@
 setlocal
 
 :: NARWHAL_PLATFORM_HOME is the parent the bin directory
-set NARWHAL_PLATFORM_HOME=%~p0..
+set NARWHAL_PLATFORM_HOME=%~dp0..
 
 set BOOTSTRAP=%NARWHAL_PLATFORM_HOME%\bootstrap.js
 
