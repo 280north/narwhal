@@ -15,6 +15,24 @@ Narwhal's standard library conforms to the [ServerJS standard](https://wiki.mozi
 Combined with [Jack](http://jackjs.org/), a [JSGI](http://jackjs.org/jsgi-spec.html) compatible library, Narwhal provides a platform for creating server-side web applications and frameworks such as [Nitro](http://www.nitrojs.org/).
 
 
+### Homepage:
+
+* [http://narwhaljs.org/](http://narwhaljs.org/)
+
+### Source & Download:
+
+* [http://github.com/tlrobinson/narwhal/](http://github.com/tlrobinson/narwhal/)
+
+### Mailing list:
+
+* [http://groups.google.com/group/narwhaljs](http://groups.google.com/group/narwhaljs)
+
+### IRC:
+
+* \#narwhal on irc.freenode.net
+* \#serverjs on irc.freenode.net (unofficial)
+
+
 Documentation
 -------------
 
