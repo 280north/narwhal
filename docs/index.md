@@ -1,5 +1,8 @@
-Narwhal: A general purpose JavaScript platform
-==============================================
+Narwhal
+=======
+
+A general purpose JavaScript platform
+-------------------------------------
 
 Narwhal is a cross-platform, multi-interpreter, general purpose JavaScript platform. It aims to provide a solid foundation for building JavaScript applications, primarily outside the web browser. Currently Narwhal's Rhino support is the most complete, but [other platforms](platforms.html) are available too.
 
@@ -33,7 +36,7 @@ Contributors
 * Irakli Gozalishvili
 * Christoph Dorn
 * Zach Carter
-* Nathan L Smith
+* Nathan L. Smith
 * Jan Varwig
 * Mark Porter
 
