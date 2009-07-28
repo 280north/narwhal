@@ -4,7 +4,7 @@ Available Packages
 
 You can download and install packages using the `tusk` application that comes with Narwhal.  Check out `tusk help` for details.  These are some of the packages:
 
-* `jack`: the webserver and web application/framework agnostic interface, similar to Ruby's Rack and Python's WSGI. Narwhal was concieved while building Jack, and was later extracted into it's own project.
+* `jack`: the webserver and web application/framework agnostic interface, similar to Ruby's Rack and Python's WSGI. Narwhal was conceived while building Jack, and was later extracted into it's own project.
 
 [http://github.com/tlrobinson/jack](http://github.com/tlrobinson/jack)
 
@@ -15,10 +15,6 @@ You can download and install packages using the `tusk` application that comes wi
 * `nitro`: a web application framework built on top of Jack.
 
 [http://github.com/gmosx/nitro](http://github.com/gmosx/nitro)
-
-* `getjs`: a JavaScript package manager for ServerJS implementations
-
-[http://github.com/dangoor/getjs](http://github.com/dangoor/getjs)
 
 And others including:
 
