@@ -1,37 +1,41 @@
-Narwhal: A flexible server-side JavaScript standard library
-===========================================================
+Narwhal: A general purpose JavaScript platform
+==============================================
 
-Narwhal is a server-side JavaScript standard library conforming to the [ServerJS standard](https://wiki.mozilla.org/ServerJS). It is designed to work with multiple JavaScript interpreters, and to be easy to add support for new interpreters. Wherever possible, it is implemented in pure JavaScript to maximize reuse of code among platforms.
+Narwhal is a cross-platform, multi-interpreter, general purpose JavaScript platform. It aims to provide a solid foundation for building JavaScript applications, primarily outside the web browser. Currently Narwhal's Rhino support is the most complete, but [other platforms](platforms.html) are available too.
+
+Narwhal's standard library conforms to the [ServerJS standard](https://wiki.mozilla.org/ServerJS). It is designed to work with multiple JavaScript interpreters, and to be easy to add support for new interpreters. Wherever possible, it is implemented in pure JavaScript to maximize reuse of code among platforms.
+
+Combined with [Jack](http://jackjs.org/), a [JSGI](http://jackjs.org/jsgi-spec.html) compatible library, Narwhal provides a platform for creating server-side web applications and frameworks such as [Nitro](http://www.nitrojs.org/).
 
 
 Documentation
 -------------
 
-**The following links are relative and may not resolve properly depending on where and how they are viewed.  Please visit the [canonical repository](http://github.com/tlrobinson/narwhal/tree/master/) or this repository's [master](master/) branch if they do not work.**
-
-* [Quick Start](doc/quick-start.md)
-* [Packages](doc/packages.md)
-* [How to Install Packages](doc/packages.md)
-* [How to Build Packages](doc/packages-howto.md)
-* [Modules](doc/modules.md)
-* [Virtual Environments / Seas](doc/sea.md)
-* [How to Build Platforms](doc/platforms.md)
-* [How Narwhal Works](doc/narwhal.md)
+* [Quick Start](quick-start.html)
+* [Packages](packages.html)
+* [How to Install Packages](packages.html)
+* [How to Build Packages](packages-howto.html)
+* [Modules](modules.html)
+* [Virtual Environments / Seas](sea.html)
+* [How to Build Platforms](platforms.html)
+* [How Narwhal Works](narwhal.html)
 
 
 Contributors
 ------------
 
-* Tom Robinson
-* Kris Kowal
-* George Moschovitis
-* Kevin Dangoor
+* [Tom Robinson](http://tlrobinson.net/)
+* [Kris Kowal](http://askawizard.blogspot.com/)
+* [George Moschovitis](http://blog.gmosx.com/)
+* [Kevin Dangoor](http://www.blueskyonmars.com/)
 * Hannes Wallnöfer
 * Sébastien Pierre
 * Irakli Gozalishvili
 * Christoph Dorn
 * Zach Carter
 * Nathan L Smith
+* Jan Varwig
+* Mark Porter
 
 
 License
