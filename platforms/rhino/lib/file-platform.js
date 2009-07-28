@@ -1,6 +1,6 @@
 
 // use the "file" module as the exports object.
-var exports = require("file");
+var exports = require('./file');
 
 // File: Rhino
 

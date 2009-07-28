@@ -1,5 +1,5 @@
 
-var file = require('./file');
+var exports = require('./file');
 
 exports.SEPARATOR = '/';
 
@@ -92,7 +92,7 @@ exports.touch = function (path, mtime) {
 var read = system.fs.read; // from bootstrap system object
 
 exports.FileIO = function (path, mode, permissions) {
-    mode = file.mode(mode);
+    mode = exports.mode(mode);
     var read = mode.read,
         write = mode.write,
         append = mode.append,
