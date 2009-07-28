@@ -25,6 +25,8 @@ task :checkout do
   puts "Checking out 'docs' from master"
   rm_rf 'docs', :verbose => false
   `git checkout master docs`
+  `git checkout master README.md`
+  `mv README.md docs/index.md`
 end
 
 task :deploy => [:clean, :checkout, :build] do
