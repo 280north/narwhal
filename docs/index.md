@@ -4,7 +4,7 @@ Narwhal
 A general purpose JavaScript platform
 -------------------------------------
 
-Narwhal is a cross-platform, multi-interpreter, general purpose JavaScript platform. It aims to provide a solid foundation for building JavaScript applications, primarily outside the web browser. Narwhal includes a package manager, module system, and standard library for multiple JavaScript interpreters. Currently Narwhal's Rhino support is the most complete, but [other platforms](platforms.html) are available too.
+Narwhal is a cross-platform, multi-interpreter, general purpose JavaScript platform. It aims to provide a solid foundation for building JavaScript applications, primarily outside the web browser. Narwhal includes a package manager, module system, and standard library for multiple JavaScript interpreters. Currently Narwhal's [Rhino](http://www.mozilla.org/rhino/) support is the most complete, but [other platforms](platforms.html) are available too.
 
 Narwhal's standard library conforms to the [ServerJS standard](https://wiki.mozilla.org/ServerJS). It is designed to work with multiple JavaScript interpreters, and to be easy to add support for new interpreters. Wherever possible, it is implemented in pure JavaScript to maximize reuse of code among platforms.
 
