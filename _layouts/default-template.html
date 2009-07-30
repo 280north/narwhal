@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>{{ page.title }}</title>
+<title>narwhal - {{ page.title }}</title>
 <link rel="stylesheet" type="text/css" media="all"  href="/css/libraries.css" />
 <link rel="stylesheet" type="text/css" media="all"  href="/css/template.css" />
 <!--<link rel="stylesheet" type="text/css" media="all"  href="css/template_debug.css" />-->
@@ -20,16 +20,19 @@
     <div class="body">
         <!--<div class="leftCol"></div>-->
         <div class="rightCol">
+            <h1>Blog</h1>
+            <ul>
+            {% for post in site.posts %}
+                <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
             <h1>Documentation</h1>
             <ul>
             {% for article in page.articles %}
                 <li><a href="{{ article.link }}">{{ article.name }}</a></li>
             {% endfor %}
-            {% for post in site.posts %}
-                <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-            {% endfor %}
             </ul>
-            <h1>links</h1>
+            <h1>Links</h1>
             <ul>
             {% for article in page.links %}
                 <li><a href="{{ article.link }}">{{ article.name }}</a></li>

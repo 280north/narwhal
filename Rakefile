@@ -54,22 +54,27 @@ task :build do
   # find all Markdown files and copy them over, prepending the YAML header
   docs = Dir.glob "docs/**/*.md"
   docs.each do |src|
-    partial_path = src.match(/docs\/([^.]+)\.md/)[1]
+    puts src
+    partial_path = src.match(/docs\/(.+)\.md/)[1]
     next if exclude[partial_path]
     
+    if partial_path =~ /^posts/ 
+      title = partial_path.match(/posts\/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.+)/)[1].gsub(/-/, ' ').gsub(/\//, ' - ')
+      partial_path = "_" + partial_path
+    else
+      title = partial_path.gsub(/-/, ' ').gsub(/\//, ' - ')
+      title = title_map[title] || title
+      
+      articles += "- name: #{title.gsub(/-/,'/')}\n  link: \"/#{partial_path}.html\"\n"
+    end
+    
     dest = "#{partial_path}.md"
-    
     puts "prepending yaml header: #{src} => #{dest}"
-    
-    title = partial_path.gsub(/-/, ' ').gsub(/\//, ' - ')
-    title = title_map[title] || title
-  
-    articles += "- name: #{title.gsub(/-/,'/')}\n  link: \"/#{partial_path}.html\"\n"
   
     mkdir_p File.dirname(dest), :verbose => false
     text = File.read(src)
     File.open(dest, 'w') do |f|
-      f.write("---\nlayout: default\ntitle: narwhal - #{title}\n---\n")
+      f.write("---\nlayout: default\ntitle: \"#{title}\"\n---\n")
       f.write(text)
     end
   end
@@ -81,6 +86,10 @@ github_url: "http://github.com/tlrobinson/narwhal"
 articles:
 #{articles}
 links:
+- name: source
+  link: "http://github.com/tlrobinson/narwhal"
+- name: mailing list
+  link: "http://groups.google.com/group/narwhaljs"
 - name: jack & jsgi
   link: "http://jackjs.org/"
 ---
