@@ -3,7 +3,7 @@
 // save "fs" here since it will be replaced in "system" later.
 var fs = system.fs;
 
-var file = require('./file');
+var exports = require('./file');
 
 exports.SEPARATOR = '/';
 exports.ALT_SEPARATOR = undefined;
@@ -21,7 +21,7 @@ exports.list = function (path) {
 // TODO necessary for package loading
 exports.canonical = function (path) {
     // does not resolve symlinks
-    return file.normal(file.join(exports.cwd(), path));
+    return exports.normal(exports.join(exports.cwd(), path));
 };
 
 exports.exists = function (path) {
@@ -93,7 +93,7 @@ exports.touch = function (path, mtime) {
 };
 
 exports.FileIO = function (path, mode, permissions) {
-    mode = file.mode(mode);
+    mode = exports.mode(mode);
     var read = mode.read,
         write = mode.write,
         append = mode.append,

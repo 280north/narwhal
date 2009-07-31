@@ -1,4 +1,4 @@
-var FILE = require('./file');
+var exports = require('./file');
 var IO = require("./io").IO;
 
 const Cc = Components.classes;
@@ -141,7 +141,7 @@ exports.FileIO = function (path, mode, permissions) {
         write: write,
         append: append,
         update: update
-    } = FILE.mode(mode);
+    } = exports.mode(mode);
 
     if (update) {
         throw new Error("Updating IO not yet implemented.");

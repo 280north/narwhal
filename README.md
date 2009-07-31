@@ -1,43 +1,67 @@
-Narwhal: A flexible server-side JavaScript standard library
-===========================================================
+Narwhal
+=======
 
-Narwhal is a server-side JavaScript standard library conforming to the [ServerJS standard](https://wiki.mozilla.org/ServerJS). It is designed to work with multiple JavaScript interpreters, and to be easy to add support for new interpreters. Wherever possible, it is implemented in pure JavaScript to maximize reuse of code among platforms.
+A general purpose JavaScript platform
+-------------------------------------
+
+Narwhal is a cross-platform, multi-interpreter, general purpose JavaScript platform. It aims to provide a solid foundation for building JavaScript applications, primarily outside the web browser. Narwhal includes a package manager, module system, and standard library for multiple JavaScript interpreters. Currently Narwhal's [Rhino](http://www.mozilla.org/rhino/) support is the most complete, but [other platforms](platforms.html) are available too.
+
+Narwhal's standard library conforms to the [ServerJS standard](https://wiki.mozilla.org/ServerJS). It is designed to work with multiple JavaScript interpreters, and to be easy to add support for new interpreters. Wherever possible, it is implemented in pure JavaScript to maximize reuse of code among platforms.
+
+Combined with [Jack](http://jackjs.org/), a [Rack](http://rack.rubyforge.org/)-like [JSGI](http://jackjs.org/jsgi-spec.html) compatible library, Narwhal provides a platform for creating server-side JavaScript web applications and frameworks such as [Nitro](http://www.nitrojs.org/).
+
+
+### Homepage:
+
+* [http://narwhaljs.org/](http://narwhaljs.org/)
+
+### Source & Download:
+
+* [http://github.com/tlrobinson/narwhal/](http://github.com/tlrobinson/narwhal/)
+
+### Mailing list:
+
+* [http://groups.google.com/group/narwhaljs](http://groups.google.com/group/narwhaljs)
+
+### IRC:
+
+* [\#narwhal on irc.freenode.net](http://webchat.freenode.net/?channels=narwhal)
 
 
 Documentation
 -------------
 
-**The following links are relative and may not resolve properly depending on where and how they are viewed.  Please visit the [canonical repository](http://github.com/tlrobinson/narwhal/tree/master/) or this repository's [master](master/) branch if they do not work.**
-
-* [Quick Start](doc/quick-start.md)
-* [Packages](doc/packages.md)
-* [How to Install Packages](doc/packages.md)
-* [How to Build Packages](doc/packages-howto.md)
-* [Modules](doc/modules.md)
-* [Virtual Environments / Seas](doc/sea.md)
-* [How to Build Platforms](doc/platforms.md)
-* [How Narwhal Works](doc/narwhal.md)
+* [Quick Start](quick-start.html)
+* [Packages](packages.html)
+* [How to Install Packages](packages.html)
+* [How to Build Packages](packages-howto.html)
+* [Modules](modules.html)
+* [Virtual Environments / Seas](sea.html)
+* [How to Build Platforms](platforms.html)
+* [How Narwhal Works](narwhal.html)
 
 
 Contributors
 ------------
 
-* Tom Robinson
-* Kris Kowal
-* George Moschovitis
-* Kevin Dangoor
+* [Tom Robinson](http://tlrobinson.net/)
+* [Kris Kowal](http://askawizard.blogspot.com/)
+* [George Moschovitis](http://blog.gmosx.com/)
+* [Kevin Dangoor](http://www.blueskyonmars.com/)
 * Hannes Wallnöfer
 * Sébastien Pierre
 * Irakli Gozalishvili
 * Christoph Dorn
 * Zach Carter
-* Nathan L Smith
+* Nathan L. Smith
+* Jan Varwig
+* Mark Porter
 
 
 License
 -------
 
-Copyright (c) 2009 Thomas Robinson <tlrobinson.net>
+Copyright (c) 2009 Thomas Robinson <[280north.com](http://280north.com/)\>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to
