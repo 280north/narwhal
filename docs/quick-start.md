@@ -10,9 +10,9 @@ Download Narwhal.
 Put Narwhal on your PATH environment variable.
 
 * `export PATH=$PATH:~/narwhal/bin`, or
-* execute `narwhal/bin/sea` for a quick Narwhal subshell
+* `source narwhal/bin/activate`
 
-Run `narwhal` or `js` (they're equivalent).
+Run `narwhal` or `js` (they are equivalent).
 
 * `js narwhal/examples/hello`
 
@@ -30,8 +30,9 @@ Create a project "hello-web".
     tusk init hello-web
     cd hello-web
 
-Enter your project as a "virtual environment" using `sea` so that its libraries, binaries, and packages get automatically installed when you run Narwhal.
+Enter your project as a "virtual environment" using `activate` or `sea` so that its libraries, binaries, and packages get automatically installed when you run Narwhal.
 
+    source bin/activate
     bin/sea
 
 Install some packages you will need, like Jack, the JSGI standard library for interoperable web services.

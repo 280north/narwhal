@@ -9,5 +9,5 @@
     ],
     "main": "examples/narwhal",
     "lib": ["lib"],
-    "lean": ["lib", "platforms"] 
+    "lean": ["lib", "engines"] 
 }

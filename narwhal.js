@@ -48,9 +48,9 @@ system.fs = fs;
 
 // construct the initial paths
 var paths = [];
-for (var i = 0; i < system.platforms.length; i++) {
-    var platform = system.platforms[i];
-    paths.push(system.prefix + '/platforms/' + platform + '/lib');
+for (var i = 0; i < system.engines.length; i++) {
+    var engine = system.engines[i];
+    paths.push(system.prefix + '/engines/' + engine + '/lib');
 }
 paths.push(system.prefix + '/lib');
 
