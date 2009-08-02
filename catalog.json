@@ -161,6 +161,19 @@
             "githubName": "template",
             "type": "zip",
             "location": "http://github.com/gmosx/template/zipball/master"
+        },
+        "markdown": {
+            "name": "markdown",
+            "author": "John Fraser",
+            "contributors": [
+                "John Gruber",
+                "George Moschovitis"
+            ],
+            "dependencies": [],
+            "js": "lib",
+            "githubName": "markdown",
+            "type": "zip",
+            "location": "http://github.com/gmosx/markdown/zipball/master"
         }
     }
 }
