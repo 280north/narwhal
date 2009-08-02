@@ -255,8 +255,10 @@ exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, charset, 
 var ByteIO = exports.ByteIO = function (initial) {
 };
 
-var StringIO = exports.StringIO = function (initial) {
+var StringIO = exports.StringIO = function (initial, delimiter) {
     var buffer = new java.lang.StringBuffer();
+    if (!delimiter)
+        delimiter = "\n";
     if (initial)
         buffer.append(initial);
 
@@ -292,7 +294,7 @@ var StringIO = exports.StringIO = function (initial) {
     function next() {
         if (buffer.length() == 0)
             throw StopIteration;
-        var pos = buffer.indexOf("\n");
+        var pos = buffer.indexOf(delimiter);
         if (pos == -1)
             pos = buffer.length();
         var result = read(pos);
@@ -328,14 +330,14 @@ var StringIO = exports.StringIO = function (initial) {
             }
         },
         readLine: function () {
-            var pos = buffer.indexOf("\n");
+            var pos = buffer.indexOf(delimiter);
             if (pos == -1)
                 pos = buffer.length();
             return read(pos + 1);
         },
         next: next,
         print: function (line) {
-            return write(line + "\n").flush();
+            return write(line + delimiter).flush();
         },
         toString: function() {
             return String(buffer);
