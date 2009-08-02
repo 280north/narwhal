@@ -62,7 +62,9 @@ exports.popen = function (command, options) {
             else if (!stdin)
                 stdin = new io.StringIO();
 
-            if (!input)
+            if (typeof input == "string")
+                input = new io.StringIO(input);
+            else if (!input)
                 input = new io.StringIO();
             if (!output)
                 output = new io.StringIO();
@@ -101,10 +103,11 @@ exports.popen = function (command, options) {
             outThread.join();
             errThread.join();
 
-            var code = process.waitFor();
+            var status = process.waitFor();
 
             return {
-                code: code,
+                status: status,
+                stdin: input,
                 stdout: output,
                 stderr: errput
             };
