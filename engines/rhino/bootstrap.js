@@ -19,11 +19,15 @@
         prefix = String(Packages.java.lang.System.getenv("NARWHAL_HOME") || "");
     }
 
-    var packagePrefixes = [prefix];
-
-    if (typeof SEA != "undefined") {
-        packagePrefixes.push(SEA);
+    var enginePrefix = "";
+    if (typeof NARWHAL_ENGINE_HOME != "undefined") {
+        enginePrefix = NARWHAL_ENGINE_HOME;
+        delete NARWHAL_ENGINE_HOME;
+    } else {
+        enginePrefix = String(Packages.java.lang.System.getenv("NARWHAL_ENGINE_HOME") || "");
     }
+
+    var prefixes = [enginePrefix, prefix];
 
     // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
@@ -94,7 +98,7 @@
             isFile: isFile
         },
         prefix: prefix,
-        packagePrefixes: packagePrefixes,
+        prefixes: prefixes,
         evaluate: evaluate,
         debug: debug,
         verbose: verbose
