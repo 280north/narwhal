@@ -33,7 +33,7 @@ EXECUTABLE_NAME="narwhal-$NARWHAL_ENGINE"
 # search for the engine home directory
 # try narwhal.conf setting
 if [ "$NARWHAL_ENGINE_HOME" ]; then
-	export NARWHAL_ENGINE_HOME
+	export NARWHAL_ENGINE_HOME=$(cd -P -- "$NARWHAL_HOME" && cd -P -- "$NARWHAL_ENGINE_HOME" && pwd -P)
 # try relative
 elif [ -f "$NARWHAL_HOME/engines/$NARWHAL_ENGINE/bin/$EXECUTABLE_NAME" ]; then
 	export NARWHAL_ENGINE_HOME="$NARWHAL_HOME/engines/$NARWHAL_ENGINE"
