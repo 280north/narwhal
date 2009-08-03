@@ -168,9 +168,6 @@ if (!options.noPackages) {
 //  -e, -c , --command command
 //  -:, --path delimiter
 
-if (options.jsonOutput)
-    options.print = true;
-
 options.todo.forEach(function (item) {
     var action = item[0];
     var value = item[1];
@@ -179,26 +176,7 @@ options.todo.forEach(function (item) {
     } else if (action == "require") {
         require(value);
     } else if (action == "eval") {
-        var lines = [""];
-        if (options.input) {
-            lines = system.stdin;
-        }
-        if (options.inputAll) {
-            lines = [system.stdin.read()];
-        }
-        lines.forEach(function (line) {
-            if (options.input || options.inputAll) {
-                if (options.jsonInput)
-                    line = JSON.decode(line);
-                // XXX consider better ways of injecting _
-                global._ = line;
-            }
-            var result = system.evalGlobal(value);
-            if (options.jsonOutput)
-                result = JSON.encode(result);
-            if (options.print)
-                system.print(result);
-        });
+        system.evalGlobal(value);
     } else if (action == "path") {
         var paths = packages.packageOrder.map(function (pkg) {
             return pkg.directory.join('bin');
