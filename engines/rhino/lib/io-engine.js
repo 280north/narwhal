@@ -335,6 +335,15 @@ var StringIO = exports.StringIO = function (initial, delimiter) {
                 pos = buffer.length();
             return read(pos + 1);
         },
+        readLines: function () {
+            var lines = [];
+            do {
+                var line = self.readLine();
+                if (line.length)
+                    lines.push(line);
+            } while (line.length);
+            return lines;
+        },
         next: next,
         print: function (line) {
             return write(line + delimiter).flush();
