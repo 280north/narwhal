@@ -364,6 +364,6 @@ var StringIO = exports.StringIO = function (initial, delimiter) {
             return string.substr.apply(string, arguments);
         }
     };
-    return self;
+    return Object.create(self);
 };
 
