@@ -187,6 +187,7 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         stream.close();
     };
 
+    return Object.create(self);
 };
 
 exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, options) {
@@ -238,6 +239,7 @@ exports.TextOutputStream = function (raw, lineBuffering, buffering, charset, opt
         return self;
     };
 
+    return Object.create(self);
 };
 
 exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, charset, options) {
