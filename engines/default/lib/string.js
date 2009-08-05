@@ -1,10 +1,5 @@
 // String additions
 
-String.prototype.forEach = function(block, separator) {
-    system.print("WARNING: String.prototype.forEach deprecated");
-    block(String(this)); // RHINO bug: it thinks "this" is a Java string (?!)
-};
-
 String.prototype.squeeze = function() {
     var set = arguments.length > 0 ? "["+Array.prototype.join.apply(arguments, ["]|["])+"]" : ".|\\n",
         regex = new RegExp("("+set+")\\1+", "g");
