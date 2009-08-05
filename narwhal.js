@@ -34,14 +34,18 @@ var requireFake = function(id, path, modules) {
 };
 
 // bootstrap sandbox module
-var sandbox = requireFake("sandbox", system.prefix + "/lib/sandbox.js");
+var sandbox = requireFake(
+    "sandbox",
+    system.prefix + "/lib/sandbox.js",
+    {"system": system}
+);
 
 // bootstrap file module
 var fs = {};
 requireFake(
     "sandbox",
     system.prefix + "/lib/file-bootstrap.js",
-    {"file" : fs}
+    {"file" : fs, "system": system}
 );
 // override generic bootstrapping methods with those provided
 //  by the engine bootstrap system.fs object
