@@ -122,7 +122,7 @@ global.require.debug = options.verbose;
 // already loaded
 if (!wasVerbose && system.verbose) {
     Object.keys(modules).forEach(function (name) {
-        print('@ ' + name);
+        print('| ' + name);
     });
 }
 

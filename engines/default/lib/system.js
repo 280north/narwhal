@@ -1,9 +1,13 @@
 
 var IO = require("./io").IO;
 
+exports.print = function () {
+    exports.stdout.write(Array.prototype.join.call(arguments, ' ') + "\n").flush();
+};
+
 exports.stdin  = new IO(function(){}, null);
-exports.stdout = new IO(null, function(string) { print(String(string).replace(/\n$/,"")); });
-exports.stderr = new IO(null, function(string) { print(String(string).replace(/\n$/,"")); });
+exports.stdout = new IO(null, function(string) { exports.print(String(string).replace(/\n$/,"")); });
+exports.stderr = new IO(null, function(string) { exports.print(String(string).replace(/\n$/,"")); });
 
 exports.args = global.arguments || [];
 

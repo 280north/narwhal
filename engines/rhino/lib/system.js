@@ -1,6 +1,10 @@
 
 var io = require("./io");
 
+exports.print = function () {
+    exports.stdout.write(Array.prototype.join.call(arguments, ' ') + "\n").flush();
+};
+
 exports.stdin  = new io.TextInputStream(new io.IO(Packages.java.lang.System['in'], null));
 exports.stdout = new io.TextOutputStream(new io.IO(null, Packages.java.lang.System.out));
 exports.stderr = new io.TextOutputStream(new io.IO(null, Packages.java.lang.System.err));
