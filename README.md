@@ -51,7 +51,7 @@ Contributors
 * Hannes Wallnöfer
 * Sébastien Pierre
 * Irakli Gozalishvili
-* Christoph Dorn
+* [Christoph Dorn](http://www.christophdorn.com/)
 * Zach Carter
 * Nathan L. Smith
 * Jan Varwig
