@@ -140,7 +140,7 @@ The current working directory is used by all routines that resolve relative path
 :numeric id of the owner user
 ;; rdev Number
 :the device identifier for special files
-;; size NUmber
+;; size Number
 :total size in bytes
 ;; blockSize Number
 :preferred block size for file system IO, in bytes

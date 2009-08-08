@@ -141,10 +141,13 @@ exports.testReduce = function () {
 
 exports.testReduceRight = function () {
 };
+*/
 
 exports.testZip = function () {
+    assert.eq([[1,"a"],[2,"b"]], util.zip([1,2], "abc"));
 };
 
+/*
 exports.testTranspose = function () {
 };
 

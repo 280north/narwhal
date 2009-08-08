@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# get the absolute path of the executable
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
+
+# resolve symlinks
+while [ -h "$SELF_PATH" ]; do
+	DIR=$(dirname -- "$SELF_PATH")
+	SYM=$(readlink -- "$SELF_PATH")
+	SELF_PATH=$(cd -- "$DIR" && cd -- $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+done
+
+NARWHAL_ENGINE_HOME=$(dirname -- $(dirname -- $SELF_PATH))
+BOOTSTRAP="$NARWHAL_ENGINE_HOME/bootstrap.js"
+
+if [ ! "$NARWHAL_HOME" ]; then
+	NARWHAL_HOME=$(dirname -- $(dirname -- $NARWHAL_ENGINE_HOME))
+fi
+
+export NARWHAL_HOME
+
+# uses rlwrap (readline wrapper) if present
+NARWHAL="$(which rlwrap) narwhal-engine" # TODO replace narwhal-engine with js bin
+
+# drop into shell if there are no additional arguments
+if [ $# -lt 1 ]; then
+	# FIXME: no way to explicitly drop into shell
+	$NARWHAL $BOOTSTRAP "$@"
+else
+	MAIN=$(cd -P -- "$(dirname -- "$1")" && pwd -P) && MAIN=$MAIN/$(basename -- "$1" .js)
+	$NARWHAL $BOOTSTRAP $MAIN "$0" "$@"
+fi

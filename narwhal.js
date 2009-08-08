@@ -31,14 +31,24 @@ var requireFake = function(id, path, modules) {
     );
 
     return exports;
-}
+};
 
 // bootstrap sandbox module
-var sandbox = requireFake("sandbox", system.prefix + "/lib/sandbox.js");
+var sandbox = requireFake(
+    "sandbox",
+    system.prefix + "/lib/sandbox.js",
+    {"system": system}
+);
 
 // bootstrap file module
 var fs = {};
-requireFake("sandbox", system.prefix + "/lib/file-bootstrap.js", { "file" : fs });
+requireFake(
+    "sandbox",
+    system.prefix + "/lib/file-bootstrap.js",
+    {"file" : fs, "system": system}
+);
+// override generic bootstrapping methods with those provided
+//  by the engine bootstrap system.fs object
 for (var name in system.fs) {
     if (Object.prototype.hasOwnProperty.call(system.fs, name)) {
         fs[name] = system.fs[name];
@@ -48,11 +58,16 @@ system.fs = fs;
 
 // construct the initial paths
 var paths = [];
-for (var i = 0; i < system.platforms.length; i++) {
-    var platform = system.platforms[i];
-    paths.push(system.prefix + '/platforms/' + platform + '/lib');
+// XXX system.packagePrefixes deprecated in favor of system.prefixes
+var prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
+for (var i = 0; i < prefixes.length; i++) {
+    var prefix = prefixes[i];
+    for (var j = 0; j < system.engines.length; j++) {
+        var engine = system.engines[j];
+        paths.push(prefixes[i] + '/engines/' + engine + '/lib');
+    }
+    paths.push(prefixes[i] + '/lib');
 }
-paths.push(system.prefix + '/lib');
 
 // create the primary Loader and Sandbox:
 var loader = sandbox.MultiLoader({
@@ -93,8 +108,6 @@ paths.push([
 // parse command line options
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);
-system.packagePrefixes = system.packagePrefixes ||
-    [system.prefix];
 if (options.debug !== undefined)
     system.debug = options.debug;
 var wasVerbose = system.verbose;
@@ -126,30 +139,26 @@ if (system.args.length && !options.interactive && !options.main) {
         var path = system.fs.join.apply(null, parts.slice(0, i));
         var packageJson = system.fs.join(path, 'package.json');
         if (system.fs.isFile(packageJson))
-            system.packagePrefixes.unshift(path);
+            system.prefixes.unshift(path);
     }
 
     if (program.isDirectory()) {
         if (!program.join('package.json').isFile())
             throw new Error("Program directory does not contain a package.json");
-        system.packagePrefixes.unshift(program);
+        system.prefixes.unshift(program);
     }
 }
 
-// user package prefixes
-if (system.env.PACKAGE_HOME)
-    system.packagePrefixes.unshift(system.env.PACKAGE_HOME);
-system.packagePrefixes.unshift.apply(system.packagePrefixes, options.packagePrefixes);
+// user package prefix
+if (system.env.SEA)
+    system.prefixes.unshift(system.env.SEA);
+system.prefixes.unshift.apply(system.prefixes, options.prefixes);
 
 // load packages
 var packages;
 if (!options.noPackages) {
-    try {
-        packages = require("packages");
-        packages.main();
-    } catch (e) {
-        system.log.error("Warning: Couldn't load packages. Packages won't be available. ("+e+")");
-    }
+    packages = require("packages");
+    packages.main();
 } else {
     packages = {
         catalog: {},
@@ -162,6 +171,7 @@ if (!options.noPackages) {
 //  -r, --require module
 //  -e, -c , --command command
 //  -:, --path delimiter
+
 options.todo.forEach(function (item) {
     var action = item[0];
     var value = item[1];

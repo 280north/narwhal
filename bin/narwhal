@@ -14,35 +14,35 @@ done
 NARWHAL_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
 
 # use Rhino as the default if none is specified in narwhal.conf
-NARWHAL_DEFAULT_PLATFORM="rhino"
+NARWHAL_DEFAULT_ENGINE="rhino"
 
 # load narwhal.conf if it exists
 if [ -f "$NARWHAL_HOME/narwhal.conf" ]; then
     source "$NARWHAL_HOME"/narwhal.conf
 fi
 
-# if NARWHAL_PLATFORM isn't yet set, set it to the default platform, and export it
-if [ -z "$NARWHAL_PLATFORM" ]; then
-    NARWHAL_PLATFORM=$NARWHAL_DEFAULT_PLATFORM
+# if NARWHAL_ENGINE isn't yet set, set it to the default engine, and export it
+if [ -z "$NARWHAL_ENGINE" ]; then
+    NARWHAL_ENGINE=$NARWHAL_DEFAULT_ENGINE
 fi
 export NARWHAL_HOME
 
-# build the executable name for the platform
-EXECUTABLE_NAME="narwhal-$NARWHAL_PLATFORM"
+# build the executable name for the engine
+EXECUTABLE_NAME="narwhal-$NARWHAL_ENGINE"
 
-# search for the platform home directory
+# search for the engine home directory
 # try narwhal.conf setting
-if [ "$NARWHAL_PLATFORM_HOME" ]; then
-	export NARWHAL_PLATFORM_HOME
+if [ "$NARWHAL_ENGINE_HOME" ]; then
+	export NARWHAL_ENGINE_HOME=$(cd -P -- "$NARWHAL_HOME" && cd -P -- "$NARWHAL_ENGINE_HOME" && pwd -P)
 # try relative
-elif [ -f "$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM/bin/$EXECUTABLE_NAME" ]; then
-	export NARWHAL_PLATFORM_HOME="$NARWHAL_HOME/platforms/$NARWHAL_PLATFORM"
+elif [ -f "$NARWHAL_HOME/engines/$NARWHAL_ENGINE/bin/$EXECUTABLE_NAME" ]; then
+	export NARWHAL_ENGINE_HOME="$NARWHAL_HOME/engines/$NARWHAL_ENGINE"
 # try $PATH
 elif which -s "$EXECUTABLE_NAME"; then
-	export NARWHAL_PLATFORM_HOME=$(dirname -- "$(dirname -- "$EXECUTABLE_NAME")")
+	export NARWHAL_ENGINE_HOME=$(dirname -- "$(dirname -- "$EXECUTABLE_NAME")")
 else
-	echo "Can't find executable for $NARWHAL_PLATFORM"
+	echo "Can't find executable for $NARWHAL_ENGINE"
 	exit 1
 fi
 
-exec "$NARWHAL_PLATFORM_HOME"/bin/"$EXECUTABLE_NAME" "$@"
+exec "$NARWHAL_ENGINE_HOME"/bin/"$EXECUTABLE_NAME" "$@"
