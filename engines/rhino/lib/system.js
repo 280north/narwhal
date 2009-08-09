@@ -20,6 +20,15 @@ while (keyIterator.hasNext()) {
     exports.env[String(key)] = String(env.get(key));
 }
 
+var securityManager = Packages.java.lang.System.getSecurityManager()
+if (securityManager) {
+    var securityManagerName = securityManager.getClass().getName();
+    if (/^com.google.app(engine|hosting)./.test(securityManagerName))
+        exports.appEngine = true;
+    if (/^com.google.apphosting\./.test(securityManagerName))
+        exports.appEngineHosting = true;
+}
+
 exports.fs = require('./file');
 
 // default logger
