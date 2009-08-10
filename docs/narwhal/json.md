@@ -16,13 +16,13 @@ List the active engine names:
 
 List the prefix paths of every installed package:
 
-        json -e 'require("packages").packageOrder' -n -f directory -p
+        json -e 'require("packages").order' -n -f directory -p
 
 Visit the home page of every contributor to every installed package.  "open" is
 on Mac OS X only, but you can use "gnome-open" or "xdg-open" on Linux, or
 "kde-open" on Kubuntu specifically:
 
-        json -e 'require("packages").packageOrder'
+        json -e 'require("packages").order'
             -n
             -e _.contributors
             -A                  # flatten the array
@@ -94,7 +94,7 @@ Grab the UID of the "root" user:
 Reverse engineer a package catalog from installed packages:
 
         json
-            -e 'require("packages").packageOrder'
+            -e 'require("packages").order'
             -n # line input mode
             -e '[_.name || _.directory.dirname().basename(), JSON.decode(_.directory.resolve("package.json").read())'
             -N # object input mode
