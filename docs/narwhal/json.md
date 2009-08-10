@@ -18,6 +18,19 @@ List the prefix paths of every installed package:
 
         json -e 'require("packages").packageOrder' -n -f directory -p
 
+Visit the home page of every contributor to every installed package.  "open" is
+on Mac OS X only, but you can use "gnome-open" or "xdg-open" on Linux, or
+"kde-open" on Kubuntu specifically:
+
+        json -e 'require("packages").packageOrder'
+            -n
+            -e _.contributors
+            -A                  # flatten the array
+            -w _.url            # if they've got one
+            -e _.url            # extract it from their Author object
+            -p
+        | sort | uniq | xargs open
+
 List the contributors to Narwhal with field selection:
 
         json -i package.json -j -f contributors -Anp
