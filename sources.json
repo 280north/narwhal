@@ -80,6 +80,18 @@
         "wiky": {
             "type": "github",
             "user": "kriskowal"
+        },
+        "jsdocs": {
+            "type": "github",
+            "user": "Gozala"
+        },
+        "syntax-stroop": {
+            "type": "github",
+            "user": "Gozala"
+        },
+        "seethrough": {
+            "type": "github",
+            "user": "Gozala"
         }
     }
 }
