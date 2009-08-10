@@ -292,6 +292,74 @@
             "githubName": "wiky",
             "type": "zip",
             "location": "http://github.com/kriskowal/wiky/zipball/master"
+        },
+        "jsdocs": {
+            "name": "JSDocs",
+            "description": "Tool for generating template-formatted, multi-page HTML (or XML, JSON, or any other text-based) documentation from commented JavaScript source code.",
+            "keywords": [
+                "jsdoc",
+                "documentation"
+            ],
+            "author": "Irakli Gozalishvili(http://rfobic.wordpress.com/)",
+            "email": "rfobic@gmail.com",
+            "lib": "lib",
+            "license": [
+                "MPL 1.1",
+                "GPL 2.0",
+                "LGPL 2.1"
+            ],
+            "dependencies": [
+                "syntaxStroop",
+                "seethrough"
+            ],
+            "githubName": "jsdocs",
+            "type": "zip",
+            "location": "http://github.com/Gozala/jsdocs/zipball/master"
+        },
+        "syntaxStroop": {
+            "name": "syntaxStroop",
+            "description": "A syntax highlighter based on Google-code-prettify.",
+            "keywords": [
+                "syntax",
+                "highlight"
+            ],
+            "author": "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
+            "email": "rfobic@gmail.com",
+            "lib": "lib",
+            "license": [
+                "Apache License, Version 2.0"
+            ],
+            "platform": [
+                "rhino"
+            ],
+            "dependencies": [],
+            "githubName": "syntaxStroop",
+            "type": "zip",
+            "location": "http://github.com/Gozala/syntaxStroop/zipball/master"
+        },
+        "seethrough": {
+            "name": "seethrough",
+            "description": "Seethrough is a simple XML/XHTML template engine for JavaScript based on E4X. It’s a port of a former project for Erlang.",
+            "keywords": [
+                "template",
+                "xml",
+                "xhtml",
+                "json"
+            ],
+            "author": "Massimiliano Mirra (http://hyperstruct.net/)",
+            "contributors": [
+                "Irakli Gozalishvili (http://rfobic.wordpress.com/)"
+            ],
+            "lib": "lib",
+            "license": [
+                "MPL 1.1",
+                "GPL 2.0",
+                "LGPL 2.1"
+            ],
+            "dependencies": [],
+            "githubName": "seethrough",
+            "type": "zip",
+            "location": "http://github.com/Gozala/seethrough/zipball/master"
         }
     }
 }
