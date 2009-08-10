@@ -12,26 +12,30 @@ if (!Object.keys) {
 }
 
 if (!Object.defineProperty)
-    Object.defineProperty = function(object, prop, descriptor) {
+    Object.defineProperty = function(object, property, descriptor) {
         var has = Object.prototype.hasOwnProperty;
         if (typeof descriptor == "object") {
             if (has.call(descriptor, "value")) {
-                if (!object.__lookupGetter__(prop) && !object.__lookupSetter__(prop))
+                if (!object.__lookupGetter__(property) && !object.__lookupSetter__(property))
                     // data property defined and no pre-existing accessors
-                    object[prop] = descriptor.value;
-                if((has.call(descriptor, "get") || has.call(descriptor, "set")))
-                    // descriptor has a value prop but accessor already exists
+                    object[property] = descriptor.value;
+                if ((has.call(descriptor, "get") || has.call(descriptor, "set")))
+                    // descriptor has a value property but accessor already exists
                     throw new TypeError("Object doesn't support this action");
             }
             if ( // can't implement these features; allow false but not true
                 !(has.call(descriptor, "writable") ? descriptor.writable : true) ||
                 !(has.call(descriptor, "enumerable") ? descriptor.enumerable : true) ||
                 !(has.call(descriptor, "configurable") ? descriptor.configurable : true)
-            ) throw new RangeError("This implementation of Object.defineProperty does not support configurable, enumerable, or writable.");
+            )
+                throw new RangeError(
+                    "This implementation of Object.defineProperty does not " +
+                    "support configurable, enumerable, or writable."
+                );
             else if (typeof descriptor.get == "function")
-                object.__defineGetter__(prop, descriptor.get);
+                object.__defineGetter__(property, descriptor.get);
             if (typeof descriptor.set == "function")
-                object.__defineSetter__(prop, descriptor.set);
+                object.__defineSetter__(property, descriptor.set);
         }
         return object;
     };
@@ -63,18 +67,3 @@ if (!Object.freeze) {
     };
 }
 
-if (!Object.defineProperty) {
-    // WARNING: does not handle writable, enumerable, configurable
-    Object.defineProperty = function(obj, prop, desc) {
-        if (undefined != desc.value) obj[prop] = desc.value;
-        if ("function" == typeof(desc.get)) obj.__defineGetter__(prop, desc.get);
-        if ("function" == typeof(desc.set)) obj.__defineSetter__(prop, desc.set);
-    }
-}
-
-if (!Object.defineProperties) {
-    Object.defineProperties = function(obj, props) {    
-        for (var prop in props)
-            Object.defineProperty(obj, prop, props[prop]);
-    }    
-}
