@@ -34,6 +34,12 @@
         },
         "nitro": {
             "name": "nitro",
+            "description": "A Web Application Framework",
+            "keywords": [
+                "web",
+                "framework",
+                "jsgi"
+            ],
             "author": "George Moschovitis",
             "email": "george.moschovitis@gmail.com",
             "dependencies": [
@@ -41,9 +47,9 @@
                 "template"
             ],
             "contributors": [
-                "Kris Kowal"
+                "Kris Kowal (http://askawizard.blogspot.com/)"
             ],
-            "js": "lib",
+            "lib": "lib",
             "main": "examples/simple/jackconfig",
             "lean": [
                 "lib"
@@ -54,8 +60,10 @@
         },
         "chiron": {
             "author": "Kris Kowal",
+            "contributors": [
+                "Steven Levithan"
+            ],
             "dependencies": [],
-            "lib": "src",
             "githubName": "chiron",
             "type": "zip",
             "location": "http://github.com/kriskowal/chiron/zipball/master"
@@ -72,6 +80,15 @@
         },
         "creolejs": {
             "author": "Ivan Fomichev",
+            "description": "A JavaScript implementation of the CreoleWiki language, for browsers.",
+            "keywords": [
+                "browser",
+                "markup",
+                "wiki",
+                "creole",
+                "javascript",
+                "dom-based"
+            ],
             "contributors": [
                 "Chris Purcell",
                 "Kris Kowal"
@@ -113,10 +130,17 @@
         },
         "appengine": {
             "name": "appengine",
+            "description": "A port of the Python AppEngine API to JavaScript",
+            "keywords": [
+                "google",
+                "appengine",
+                "cloud",
+                "datastore"
+            ],
             "author": "George Moschovitis",
             "email": "george.moschovitis@gmail.com",
             "contributors": [],
-            "js": "lib",
+            "lib": "lib",
             "githubName": "appengine",
             "type": "zip",
             "location": "http://github.com/gmosx/appengine/zipball/master"
@@ -154,16 +178,27 @@
         },
         "template": {
             "name": "template",
+            "description": "A simple templating engine",
+            "keywords": [
+                "template",
+                "text",
+                "json"
+            ],
             "author": "George Moschovitis",
             "email": "george.moschovitis@gmail.com",
             "dependencies": [],
-            "js": "lib",
+            "lib": "lib",
             "githubName": "template",
             "type": "zip",
             "location": "http://github.com/gmosx/template/zipball/master"
         },
         "markdown": {
             "name": "markdown",
+            "description": "A port of markdown to JavaScript",
+            "keywords": [
+                "markdown",
+                "markup"
+            ],
             "author": "John Fraser",
             "contributors": [
                 "John Gruber",
@@ -171,10 +206,38 @@
                 "Kris Kowal"
             ],
             "dependencies": [],
-            "js": "lib",
+            "lib": "lib",
             "githubName": "markdown",
             "type": "zip",
             "location": "http://github.com/gmosx/markdown/zipball/master"
+        },
+        "xbin": {
+            "name": "xbin",
+            "description": "A suite of Unix command line tools for enlightened pipelines.",
+            "keywords": [
+                "cli",
+                "command line",
+                "bin",
+                "tools",
+                "enquote",
+                "xip",
+                "shuffle",
+                "cycle",
+                "nonblank",
+                "uncomment",
+                "dog"
+            ],
+            "author": {
+                "name": "Kris Kowal",
+                "web": "http://cixar.com/~kris.kowal",
+                "email": "kris.kowal@cixar.com"
+            },
+            "lean": [
+                "bin"
+            ],
+            "githubName": "xbin",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/xbin/zipball/master"
         }
     }
 }

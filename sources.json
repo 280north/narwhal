@@ -72,6 +72,10 @@
         "markdown": {
             "type": "github",
             "user": "gmosx"
+        },
+        "xbin": {
+            "type": "github",
+            "user": "kriskowal"
         }
     }
 }
