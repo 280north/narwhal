@@ -23,7 +23,7 @@ if (!Object.defineProperty)
                     // descriptor has a value prop but accessor already exists
                     throw new TypeError("Object doesn't support this action");
             }
-            if ( // can't implement these features allow false but not true
+            if ( // can't implement these features; allow false but not true
                 !(has.call(descriptor, "writable") ? descriptor.writable : true) ||
                 !(has.call(descriptor, "enumerable") ? descriptor.enumerable : true) ||
                 !(has.call(descriptor, "configurable") ? descriptor.configurable : true)
@@ -36,22 +36,26 @@ if (!Object.defineProperty)
         return object;
     };
 
-if (!Object.defineProperties)
-    Object.defineProperties = function(object, props) {
-        for (var prop in props)
-            Object.defineProperty(object, prop, props[prop]);
+if (!Object.defineProperties) {
+    Object.defineProperties = function(object, properties) {
+        for (var property in properties) {
+            if (Object.prototype.hasOwnProperty.call(properties, property))
+                Object.defineProperty(object, property, properties[property]);
+        }
         return object;
     };
+}
 
-if (!Object.create)
-    Object.create = function(proto, props) {
+if (!Object.create) {
+    Object.create = function(prototype, properties) {
         function Type() {};
-        Type.prototype = proto;
+        Type.prototype = prototype;
         var object = new Type();
-        if ( typeof props !== "undefined" )
-            Object.defineProperties(object, props);
+        if (typeof properties !== "undefined")
+            Object.defineProperties(object, properties);
         return object;
     };
+}
 
 if (!Object.freeze) {
     Object.freeze = function (object) {
