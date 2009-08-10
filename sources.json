@@ -76,6 +76,10 @@
         "xbin": {
             "type": "github",
             "user": "kriskowal"
+        },
+        "wiky": {
+            "type": "github",
+            "user": "kriskowal"
         }
     }
 }

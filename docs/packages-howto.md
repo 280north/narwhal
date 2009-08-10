@@ -20,7 +20,10 @@ A package directory might have the following files and directories:
 
 * "name" - the name of the package.  The package system will only load one package with a given name.  The name defaults to the name of the parent directory.
 * "author" - the original author of the package.  The author may be a String including an optional `(` URL in parentheses `)` and optional `<` email address in angle brackets `>`.  Alternately, it may be an Object with any of `name`, `email`, and `url` attributes.  The package reader normalizes authors to the latter Object form.
+* "maintainer" - the package maintainer for the project as a String or Object just as the author attribute.
 * "contributors" - may be an Array of additional author Strings.
+* "url" - the URL of the project website.
+* "license" - the name of the license as a String, with an optional URL in parentheses, or an Object with "name" and "url" attributes.
 * "description" - a String describing the package.  Most package descriptions end with a period/full stop.
 * "keywords" - an Array of String keywords to assist users searching for the package with "tusk search" or "tusk apropos".
 * "lib" - a path or array of paths to top-level module directories provided in this package.  Defaults to ["lib"].
