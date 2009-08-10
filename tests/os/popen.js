@@ -15,7 +15,25 @@ exports.testArrayCommunicateStdout = function () {
         lines.push(line);
     });
 
-    assert.isSame(lines, ["4", "30", "200", "1000"]);
+    assert.eq(["4", "30", "200", "1000"], lines);
+};
+
+exports.testCommunicateStatus = function () {
+    assert.eq(255, os.popen("exit -1").communicate().status);
+    assert.eq(255, os.popen("exit -1").wait());
+};
+
+exports.testCommunicateStdout = function () {
+    assert.eq("hi\n", os.popen("echo hi").communicate().stdout.read());
+    assert.eq("hi\n", os.popen("cat").communicate("hi").stdout.read());
+};
+
+exports.testCommunicateStderr = function () {
+    assert.eq("hi\n", os.popen("echo hi >&2").communicate().stderr.read());
+};
+
+exports.testCommunicateStdin = function () {
+    assert.eq("", os.popen("exit 0").communicate("hi").stdin.read());
 };
 
 if (require.main === module.id)

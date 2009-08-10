@@ -41,7 +41,7 @@ fi
 
 if [ -f "$PACKAGE_HOME"/narwhal.conf ]; then
     source "$PACKAGE_HOME"/narwhal.conf
-    export NARWHAL_DEFAULT_PLATFORM
+    export NARWHAL_DEFAULT_ENGINE
 fi
 
 if [ "$NARWHAL" ]; then
