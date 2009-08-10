@@ -37,17 +37,17 @@ String.prototype.ends = function(str) {
 //Trim the string, left.
 var trimBeginExpression = /^\s\s*/g;
 String.prototype.trimBegin = function() {
-	return this.replace(trimBeginExpression, "");
+    return this.replace(trimBeginExpression, "");
 };
 
 // Trim the string, right.
 var trimEndExpression = /\s\s*$/g;
 String.prototype.trimEnd = function() {
-	return this.replace(trimEndExpression, "");
+    return this.replace(trimEndExpression, "");
 };
 
 String.prototype.trim = function() {
-	return this.replace(trimBeginExpression, "").replace(trimEndExpression, "");
+    return this.replace(trimBeginExpression, "").replace(trimEndExpression, "");
 };
 
 /* binary */
