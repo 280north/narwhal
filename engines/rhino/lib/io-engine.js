@@ -40,7 +40,7 @@ IO.prototype.read = function(length) {
                 bytes.write(buffer, 0, length);
                 index = 0;
             }
-        }	
+        }   
         total += read;
         
         

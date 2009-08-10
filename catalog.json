@@ -4,16 +4,34 @@
     "packages": {
         "narwhal": {
             "name": "narwhal",
-            "author": "Tom Robinson",
+            "description": "A general purpose JavaScript platform",
+            "keywords": [
+                "javascript",
+                "engine",
+                "platform"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
             "contributors": [
-                "Kris Kowal",
-                "George Mosochovitis",
-                "Kevin Dangoor",
-                "Hannes Wallnöfer"
+                "Tom Robinson (http://tlrobinson.net/)",
+                "Kris Kowal (http://askawizard.blogspot.com/)",
+                "George Moschovitis (http://blog.gmosx.com/)",
+                "Kevin Dangoor (http://www.blueskyonmars.com/)",
+                "Hannes Wallnöfer",
+                "Sébastien Pierre",
+                "Irakli Gozalishvili",
+                "Christoph Dorn (http://www.christophdorn.com/)",
+                "Zach Carter",
+                "Nathan L. Smith",
+                "Jan Varwig",
+                "Mark Porter"
             ],
             "main": "examples/narwhal",
             "lib": [
                 "lib"
+            ],
+            "lean": [
+                "lib",
+                "engines"
             ],
             "githubName": "narwhal",
             "type": "zip",
@@ -34,6 +52,12 @@
         },
         "nitro": {
             "name": "nitro",
+            "description": "A Web Application Framework",
+            "keywords": [
+                "web",
+                "framework",
+                "jsgi"
+            ],
             "author": "George Moschovitis",
             "email": "george.moschovitis@gmail.com",
             "dependencies": [
@@ -41,9 +65,9 @@
                 "template"
             ],
             "contributors": [
-                "Kris Kowal"
+                "Kris Kowal (http://askawizard.blogspot.com/)"
             ],
-            "js": "lib",
+            "lib": "lib",
             "main": "examples/simple/jackconfig",
             "lean": [
                 "lib"
@@ -54,14 +78,31 @@
         },
         "chiron": {
             "author": "Kris Kowal",
+            "description": "A system of interoperable JavaScript modules, including a Pythonic type system and types",
+            "keywords": [
+                "type system",
+                "types",
+                "interoperable",
+                "events",
+                "caching",
+                "cache"
+            ],
+            "contributors": [
+                "Steven Levithan"
+            ],
             "dependencies": [],
-            "lib": "src",
             "githubName": "chiron",
             "type": "zip",
             "location": "http://github.com/kriskowal/chiron/zipball/master"
         },
         "narcissus": {
             "author": "Brendan Eich <brendan@mozilla.org>",
+            "description": "JavaScript implemented in JavaScript",
+            "keywords": [
+                "javascript",
+                "interpreter",
+                "parser"
+            ],
             "contributors": [
                 "Kris Kowal <kris@cixar.com>"
             ],
@@ -72,6 +113,15 @@
         },
         "creolejs": {
             "author": "Ivan Fomichev",
+            "description": "A JavaScript implementation of the CreoleWiki language, for browsers.",
+            "keywords": [
+                "browser",
+                "markup",
+                "wiki",
+                "creole",
+                "javascript",
+                "dom-based"
+            ],
             "contributors": [
                 "Chris Purcell",
                 "Kris Kowal"
@@ -113,10 +163,17 @@
         },
         "appengine": {
             "name": "appengine",
+            "description": "A port of the Python AppEngine API to JavaScript",
+            "keywords": [
+                "google",
+                "appengine",
+                "cloud",
+                "datastore"
+            ],
             "author": "George Moschovitis",
             "email": "george.moschovitis@gmail.com",
             "contributors": [],
-            "js": "lib",
+            "lib": "lib",
             "githubName": "appengine",
             "type": "zip",
             "location": "http://github.com/gmosx/appengine/zipball/master"
@@ -154,16 +211,27 @@
         },
         "template": {
             "name": "template",
+            "description": "A simple templating engine",
+            "keywords": [
+                "template",
+                "text",
+                "json"
+            ],
             "author": "George Moschovitis",
             "email": "george.moschovitis@gmail.com",
             "dependencies": [],
-            "js": "lib",
+            "lib": "lib",
             "githubName": "template",
             "type": "zip",
             "location": "http://github.com/gmosx/template/zipball/master"
         },
         "markdown": {
             "name": "markdown",
+            "description": "A port of markdown to JavaScript",
+            "keywords": [
+                "markdown",
+                "markup"
+            ],
             "author": "John Fraser",
             "contributors": [
                 "John Gruber",
@@ -171,10 +239,59 @@
                 "Kris Kowal"
             ],
             "dependencies": [],
-            "js": "lib",
+            "lib": "lib",
             "githubName": "markdown",
             "type": "zip",
             "location": "http://github.com/gmosx/markdown/zipball/master"
+        },
+        "xbin": {
+            "name": "xbin",
+            "description": "A suite of Unix command line tools for enlightened pipelines.",
+            "keywords": [
+                "cli",
+                "command line",
+                "bin",
+                "tools",
+                "enquote",
+                "xip",
+                "shuffle",
+                "cycle",
+                "nonblank",
+                "uncomment",
+                "dog"
+            ],
+            "author": {
+                "name": "Kris Kowal",
+                "web": "http://cixar.com/~kris.kowal",
+                "email": "kris.kowal@cixar.com"
+            },
+            "lean": [
+                "bin"
+            ],
+            "githubName": "xbin",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/xbin/zipball/master"
+        },
+        "wiky": {
+            "name": "wiky",
+            "version": "0.95",
+            "description": "A bidirectional Wiki markup to and from HTML converter written in JavaScript.",
+            "url": "http://goessner.net/articles/wiky/",
+            "license": "LGPL 2.1 (http://creativecommons.org/licenses/LGPL/2.1/)",
+            "keywords": [
+                "wiky",
+                "wiki",
+                "markup",
+                "parser",
+                "formatter"
+            ],
+            "author": "Stefan Goessner (http://goessner.net/)",
+            "maintainer": "Kris Kowal (http://askawizard.blogspot.com) <kris.kowal@cixar.com>",
+            "contributors": [],
+            "dependencies": [],
+            "githubName": "wiky",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/wiky/zipball/master"
         }
     }
 }

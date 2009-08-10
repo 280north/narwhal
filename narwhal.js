@@ -122,7 +122,7 @@ global.require.debug = options.verbose;
 // already loaded
 if (!wasVerbose && system.verbose) {
     Object.keys(modules).forEach(function (name) {
-        print('@ ' + name);
+        print('| ' + name);
     });
 }
 
@@ -162,7 +162,7 @@ if (!options.noPackages) {
 } else {
     packages = {
         catalog: {},
-        packageOrder: []
+        order: []
     }
 }
 
@@ -182,7 +182,7 @@ options.todo.forEach(function (item) {
     } else if (action == "eval") {
         system.evalGlobal(value);
     } else if (action == "path") {
-        var paths = packages.packageOrder.map(function (pkg) {
+        var paths = packages.order.map(function (pkg) {
             return pkg.directory.join('bin');
         }).filter(function (path) {
             return path.isDirectory();
