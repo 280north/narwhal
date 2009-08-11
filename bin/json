@@ -1,0 +1,2 @@
+#!/usr/bin/env narwhal
+require("narwhal/json").main(system);

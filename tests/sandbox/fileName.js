@@ -1,3 +1,3 @@
 
-print(require.fileName);
+print(module.path);
 

@@ -1,0 +1,97 @@
+{
+    "version": 1,
+    "packages": {
+        "narwhal": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "jack": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "nitro": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "chiron": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "narcissus": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "creolejs": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "browserjs": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "inspec": {
+            "type": "github",
+            "user": "aq1018"
+        },
+        "kupo": {
+            "type": "github",
+            "user": "janv"
+        },
+        "appengine": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "jack-servlet": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "appengine-java-sdk": {
+            "type": "inline",
+            "package.json": {
+                "name": "gae",
+                "title": "Google App Engine Java SDK",
+                "description": "Java components necessary for deploying applications on Google's App Engine.",
+                "author": "Google",
+                "version": "1.2.2",
+                "dependencies": ["jack-servlet", "jack", "narwhal"],
+                "lib": [],
+                "type": "zip",
+                "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
+            }
+        },
+        "env": {
+            "type": "github",
+            "name": "env-js",
+            "user": "kriskowal",
+            "package.json": {}
+        },
+        "template": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "markdown": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "xbin": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "wiky": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "jsdocs": {
+            "type": "github",
+            "user": "Gozala"
+        },
+        "syntax-stroop": {
+            "type": "github",
+            "user": "Gozala"
+        },
+        "seethrough": {
+            "type": "github",
+            "user": "Gozala"
+        }
+    }
+}

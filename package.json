@@ -1,11 +1,23 @@
 {
     "name": "narwhal",
-    "author": "Tom Robinson",
+    "description": "A general purpose JavaScript platform",
+    "keywords": ["javascript", "engine", "platform"],
+    "author": "Tom Robinson (http://tlrobinson.net/)",
     "contributors": [
-        "Kris Kowal",
-        "George Mosochovitis",
-        "Kevin Dangoor",
-        "Hannes Wallnöfer"
+        "Tom Robinson (http://tlrobinson.net/) <tlrobinson@280north.com>",
+        "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
+        "George Moschovitis (http://blog.gmosx.com/)",
+        "Kevin Dangoor (http://www.blueskyonmars.com/)",
+        "Hannes Wallnöfer",
+        "Sébastien Pierre",
+        "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
+        "Christoph Dorn (http://www.christophdorn.com/)",
+        "Zach Carter",
+        "Nathan L. Smith",
+        "Jan Varwig",
+        "Mark Porter"
     ],
-    "main": "examples/narwhal"
+    "main": "examples/narwhal",
+    "lib": ["lib"],
+    "lean": ["lib", "engines"] 
 }
