@@ -37,6 +37,41 @@
             "type": "zip",
             "location": "http://github.com/tlrobinson/narwhal/zipball/master"
         },
+        "narwhal-jsc": {
+            "name": "narwhal-jsc",
+            "engine": "jsc",
+            "githubName": "narwhal-jsc",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/narwhal-jsc/zipball/master"
+        },
+        "narwhal-v8": {
+            "name": "narwhal-v8",
+            "engine": "v8",
+            "githubName": "narwhal-v8",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/narwhal-v8/zipball/master"
+        },
+        "narwhal-johnson": {
+            "name": "narwhal-johnson",
+            "engine": "johnson",
+            "githubName": "narwhal-johnson",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/narwhal-johnson/zipball/master"
+        },
+        "narwhal-xulrunner": {
+            "name": "narwhal-xulrunner",
+            "engine": "xulrunner",
+            "githubName": "narwhal-xulrunner",
+            "type": "zip",
+            "location": "http://github.com/Gozala/narwhal-xulrunner/zipball/master"
+        },
+        "narwhal-jaxer": {
+            "name": "narwhal-jaxer",
+            "engine": "jaxer",
+            "githubName": "narwhal-jaxer",
+            "type": "zip",
+            "location": "http://github.com/smith/narwhal-jaxer/zipball/master"
+        },
         "jack": {
             "name": "jack",
             "author": "Tom Robinson",

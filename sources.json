@@ -5,6 +5,26 @@
             "type": "github",
             "user": "tlrobinson"
         },
+        "narwhal-jsc": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "narwhal-v8": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "narwhal-johnson": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "narwhal-xulrunner": {
+            "type": "github",
+            "user": "Gozala"
+        },
+        "narwhal-jaxer": {
+            "type": "github",
+            "user": "smith"
+        },
         "jack": {
             "type": "github",
             "user": "tlrobinson"
