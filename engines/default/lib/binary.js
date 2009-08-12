@@ -651,7 +651,7 @@ ByteArray.prototype.filter = function(callback, thisObject) {
 };
 
 // forEach(callback[, thisObject]);
-ByteArray.prototype.forEach = function(callback) {
+ByteArray.prototype.forEach = function(callback, thisObject) {
     for (var i = 0, length = this.length; i < length; i++)
         callback.apply(thisObject, [this.get(i), i, this]);
 };
