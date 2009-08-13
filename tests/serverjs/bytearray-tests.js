@@ -269,5 +269,33 @@ exports.testSplit = function() {
     assert.isEqual(5, a1[1].get(1));
 };
 
+exports.testByteArrayForEach = function() {
+    
+    var b = new ByteArray([2, 3, 4, 5]),
+        log = [],
+        item;
+    
+    var thisObj = {};
+    
+    b.forEach(function() {
+        log.push({
+            thisObj: this,
+            args: arguments
+        });
+    }, thisObj);
+    
+    assert.isEqual(4, log.length, "block called for each item");
+
+    item = log[0];
+    assert.isTrue(thisObj === item.thisObj, "block called with correct thisObj");
+    assert.isEqual(3, item.args.length, "block called with three args");
+    assert.isEqual(b.get(0), item.args[0], "block called with correct item 0");
+    
+    item = log[3];
+    assert.isEqual(b.get(3), item.args[0], "block called with correct item 3");
+    
+    
+};
+
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
