@@ -1,1 +1,0 @@
-../../narwzilla@narwhaljs.org/components/nsINarwhal.js

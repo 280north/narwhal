@@ -1,1 +1,0 @@
-../../../narwzilla@narwhaljs.org/chrome/content/narwhal.js

@@ -1,7 +1,0 @@
-<!ENTITY  brandShortName        "firenarwhal">
-<!ENTITY  brandFullName         "narwhal runtime for xulrunner">
-<!ENTITY  vendorShortName       "narwhaljs.org">
-<!ENTITY  logoCopyright         " ">
-
-<!-- LOCALIZATION NOTE (releaseBaseURL): The about: page appends __MOZ_APP_VERSION__.html, e.g. 2.0.html -->
-<!ENTITY  releaseBaseURL        "http://gozala.github.com/narwhal/firenarwhal/releases/">
