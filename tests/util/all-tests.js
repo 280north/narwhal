@@ -47,9 +47,11 @@ exports.testRepr = function () {
 exports.testIs = function () {
 };
 
-exports.testEq = function () {
-};
+*/
 
+exports.testEq = require("./eq");
+
+/*
 exports.testNe = function () {
 };
 
