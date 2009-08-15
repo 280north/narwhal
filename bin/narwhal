@@ -34,12 +34,22 @@ EXECUTABLE_NAME="narwhal-$NARWHAL_ENGINE"
 # try narwhal.conf setting
 if [ "$NARWHAL_ENGINE_HOME" ]; then
 	export NARWHAL_ENGINE_HOME=$(cd -P -- "$NARWHAL_HOME" && cd -P -- "$NARWHAL_ENGINE_HOME" && pwd -P)
-# try relative
+# try relative, engines
 elif [ -f "$NARWHAL_HOME/engines/$NARWHAL_ENGINE/bin/$EXECUTABLE_NAME" ]; then
 	export NARWHAL_ENGINE_HOME="$NARWHAL_HOME/engines/$NARWHAL_ENGINE"
+# try relative, packages
+elif [ -f "$NARWHAL_HOME/packages/narwhal-$NARWHAL_ENGINE/bin/$EXECUTABLE_NAME" ]; then
+	export NARWHAL_ENGINE_HOME="$NARWHAL_HOME/packages/narwhal-$NARWHAL_ENGINE"
 # try $PATH
 elif which -s "$EXECUTABLE_NAME"; then
-	export NARWHAL_ENGINE_HOME=$(dirname -- "$(dirname -- "$EXECUTABLE_NAME")")
+    EXECUTABLE_PATH=$(which "$EXECUTABLE_NAME")
+    # resolve symlinks
+    while [ -h "$EXECUTABLE_PATH" ]; do
+    	DIR=$(dirname -- "$EXECUTABLE_PATH")
+    	SYM=$(readlink -- "$EXECUTABLE_PATH")
+    	EXECUTABLE_PATH=$(cd -- "$DIR" && cd -- $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+    done
+	export NARWHAL_ENGINE_HOME=$(dirname -- "$(dirname -- "$EXECUTABLE_PATH")")
 else
 	echo "Can't find executable for $NARWHAL_ENGINE"
 	exit 1
