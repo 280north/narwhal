@@ -18,7 +18,6 @@ exports.testArrayObject = function () {
     assert.eq([["a", 10], ["b", 20]], util.array({"a": 10, "b": 20}));
 };
 
-exports.testIsArray = require("./array/is-array");
 exports.testIsArguments = require("./array/is-arguments");
 exports.testIsArrayLike = require("./array/is-array-like");
 
