@@ -181,9 +181,10 @@ var ByteString = exports.ByteString = function() {
         this._offset    = arguments[1];
         this._length    = arguments[2];
     }
-    else
-        throw new Error("Illegal arguments to ByteString constructor: [" +
-            Array.prototype.join.apply(arguments, [","]) + "] ("+arguments.length+")");
+    else {
+        var util = require("util");
+        throw new Error("Illegal arguments to ByteString constructor: " + util.repr(arguments));
+    }
     
     //seal(this);
 };
