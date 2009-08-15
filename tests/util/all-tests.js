@@ -40,10 +40,11 @@ exports.testCopyDate = function () {
 /*
 exports.testDeepCopy = function () {
 };
+*/
 
-exports.testRepr = function () {
-};
+exports.testRepr = require("./repr");
 
+/*
 exports.testIs = function () {
 };
 
