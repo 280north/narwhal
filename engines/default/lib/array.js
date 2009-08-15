@@ -6,7 +6,7 @@
 // ES5 15.4.3.2 
 if (!Array.isArray) {
     Array.isArray = function(obj) {
-        return obj && typeof obj === "object" && obj.constructor === Array;
+        return Object.prototype.toString.call(obj) == "[object Array]";
     };
 }
 
