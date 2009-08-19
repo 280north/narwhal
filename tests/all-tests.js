@@ -6,6 +6,7 @@ exports.testCodecs = require("./codecs");
 exports.testOS = require("./os/all-tests");
 exports.testFile = require("./file/all-tests");
 exports.testUtil = require("./util/all-tests");
+exports.testArgs = require("./args");
 
 exports.testGlobal = require("./global");
 
