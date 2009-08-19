@@ -8,6 +8,7 @@ exports.testArray = require("./array");
 exports.testCollection = require("./collection");
 exports.testString = require("./string");
 exports.testCase = require("./case");
+exports.testUnique = require("./unique");
 
 exports.testNo = function () {
     assert.isTrue(util.no(undefined));
