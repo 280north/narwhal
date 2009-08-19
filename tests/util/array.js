@@ -18,20 +18,8 @@ exports.testArrayObject = function () {
     assert.eq([["a", 10], ["b", 20]], util.array({"a": 10, "b": 20}));
 };
 
-exports.testIsArrayLikeArray = function () {
-    assert.isTrue(util.isArrayLike([]));
-    assert.isTrue(util.isArrayLike([1, 2, 3]));
-};
-
-exports.testIsArrayLikeArguments = function () {
-    assert.isTrue(util.isArrayLike(arguments));
-};
-
-exports.testIsArrayLikeArgumentsReturned = function () {
-    assert.isTrue(util.isArrayLike((function () {
-        return arguments;
-    })()));
-};
+exports.testIsArguments = require("./array/is-arguments");
+exports.testIsArrayLike = require("./array/is-array-like");
 
 exports.testCopyShallow = function () {
     var foo = {"a": 10};

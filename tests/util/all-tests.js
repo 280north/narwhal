@@ -8,6 +8,7 @@ exports.testArray = require("./array");
 exports.testCollection = require("./collection");
 exports.testString = require("./string");
 exports.testCase = require("./case");
+exports.testUnique = require("./unique");
 
 exports.testNo = function () {
     assert.isTrue(util.no(undefined));
@@ -40,16 +41,19 @@ exports.testCopyDate = function () {
 /*
 exports.testDeepCopy = function () {
 };
+*/
 
-exports.testRepr = function () {
-};
+exports.testRepr = require("./repr");
 
+/*
 exports.testIs = function () {
 };
 
-exports.testEq = function () {
-};
+*/
 
+exports.testEq = require("./eq");
+
+/*
 exports.testNe = function () {
 };
 
