@@ -1,7 +1,7 @@
 // String additions
 
 String.prototype.squeeze = function() {
-    var set = arguments.length > 0 ? "["+Array.prototype.join.apply(arguments, ["]|["])+"]" : ".|\\n",
+    var set = arguments.length > 0 ? "["+Array.prototype.join.call(arguments, '')+"]" : ".|\\n",
         regex = new RegExp("("+set+")\\1+", "g");
     
     return this.replace(regex, "$1");
