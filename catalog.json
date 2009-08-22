@@ -12,13 +12,13 @@
             ],
             "author": "Tom Robinson (http://tlrobinson.net/)",
             "contributors": [
-                "Tom Robinson (http://tlrobinson.net/)",
-                "Kris Kowal (http://askawizard.blogspot.com/)",
+                "Tom Robinson (http://tlrobinson.net/) <tlrobinson@280north.com>",
+                "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
                 "George Moschovitis (http://blog.gmosx.com/)",
                 "Kevin Dangoor (http://www.blueskyonmars.com/)",
                 "Hannes Wallnöfer",
                 "Sébastien Pierre",
-                "Irakli Gozalishvili",
+                "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
                 "Christoph Dorn (http://www.christophdorn.com/)",
                 "Zach Carter",
                 "Nathan L. Smith",
@@ -67,7 +67,19 @@
         },
         "narwhal-jaxer": {
             "name": "narwhal-jaxer",
+            "author": "Nathan L. Smith <nlloyds@gmail.com>",
+            "keywords": [
+                "jaxer",
+                "engine",
+                "mozilla",
+                "spidermonkey",
+                "embedded"
+            ],
             "engine": "jaxer",
+            "dependencies": [
+                "narwhal-xulrunner",
+                "narwhal"
+            ],
             "githubName": "narwhal-jaxer",
             "type": "zip",
             "location": "http://github.com/smith/narwhal-jaxer/zipball/master"
@@ -392,6 +404,16 @@
             "githubName": "seethrough",
             "type": "zip",
             "location": "http://github.com/Gozala/seethrough/zipball/master"
+        },
+        "jack-dav": {
+            "name": "jack-dav",
+            "author": "Tom Robinson",
+            "dependencies": [
+                "jack"
+            ],
+            "githubName": "jack-dav",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jack-dav/zipball/master"
         }
     }
 }
