@@ -39,21 +39,57 @@
         },
         "narwhal-jsc": {
             "name": "narwhal-jsc",
+            "dependencies": [
+                "narwhal"
+            ],
             "engine": "jsc",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "JavaScriptCore engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "jsc",
+                "javascriptcore",
+                "webkit"
+            ],
             "githubName": "narwhal-jsc",
             "type": "zip",
             "location": "http://github.com/tlrobinson/narwhal-jsc/zipball/master"
         },
         "narwhal-v8": {
             "name": "narwhal-v8",
+            "dependencies": [
+                "narwhal"
+            ],
             "engine": "v8",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "V8 engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "v8",
+                "google"
+            ],
             "githubName": "narwhal-v8",
             "type": "zip",
             "location": "http://github.com/tlrobinson/narwhal-v8/zipball/master"
         },
         "narwhal-johnson": {
             "name": "narwhal-johnson",
+            "dependencies": [
+                "narwhal"
+            ],
             "engine": "johnson",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "Johnson (Ruby-JavaScript bridge, using SpiderMonkey) engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "johnson",
+                "ruby",
+                "spidermonkey",
+                "mozilla"
+            ],
             "githubName": "narwhal-johnson",
             "type": "zip",
             "location": "http://github.com/tlrobinson/narwhal-johnson/zipball/master"
@@ -86,12 +122,20 @@
         },
         "jack": {
             "name": "jack",
-            "author": "Tom Robinson",
             "dependencies": [
                 "narwhal"
             ],
             "jars": [
                 "jars/simple-4.1.10.jar"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A library of JSGI middleware, handlers, and utilities, based on Rack",
+            "keywords": [
+                "web server",
+                "server",
+                "jsgi",
+                "rack",
+                "wsgi"
             ],
             "githubName": "jack",
             "type": "zip",
@@ -180,9 +224,17 @@
         },
         "browserjs": {
             "name": "browser",
-            "author": "Tom Robinson",
-            "dependencies": [],
-            "js": "lib",
+            "dependencies": [
+                "narwhal"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A simulated web browser environment, includes XMLHttpRequest, timeouts, console, a DOM, etc",
+            "keywords": [
+                "browser",
+                "web browser",
+                "dom",
+                "xmlhttprequest"
+            ],
             "githubName": "browserjs",
             "type": "zip",
             "location": "http://github.com/tlrobinson/browserjs/zipball/master"
@@ -227,10 +279,17 @@
         },
         "jack-servlet": {
             "name": "jack-servelet",
-            "author": "Tom Robinson",
             "dependencies": [
                 "narwhal",
                 "jack"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A Java servlet for running JSGI applications",
+            "keywords": [
+                "jack",
+                "java",
+                "servlet",
+                "jsgi"
             ],
             "githubName": "jack-servlet",
             "type": "zip",
@@ -407,9 +466,17 @@
         },
         "jack-dav": {
             "name": "jack-dav",
-            "author": "Tom Robinson",
             "dependencies": [
+                "narwhal",
                 "jack"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A JSGI compatible WebDAV server, based on RackDAV",
+            "keywords": [
+                "jack",
+                "webdav",
+                "dav",
+                "rackdav"
             ],
             "githubName": "jack-dav",
             "type": "zip",
