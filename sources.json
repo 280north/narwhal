@@ -116,6 +116,10 @@
         "jack-dav": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "jsont": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }

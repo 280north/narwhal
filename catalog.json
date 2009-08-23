@@ -481,6 +481,23 @@
             "githubName": "jack-dav",
             "type": "zip",
             "location": "http://github.com/tlrobinson/jack-dav/zipball/master"
+        },
+        "jsont": {
+            "name": "jsont",
+            "author": "Stefan Gössner (http://goessner.net/)",
+            "contributors": [
+                "Tom Robinson (http://tlrobinson.net/)"
+            ],
+            "description": "JSON transforms, akin to XSLT but for JSON: http://goessner.net/articles/jsont/",
+            "keywords": [
+                "json",
+                "transform",
+                "template",
+                "xslt"
+            ],
+            "githubName": "jsont",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jsont/zipball/master"
         }
     }
 }
