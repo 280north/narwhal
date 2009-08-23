@@ -112,6 +112,10 @@
         "seethrough": {
             "type": "github",
             "user": "Gozala"
+        },
+        "jack-dav": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }
