@@ -20,7 +20,7 @@ if [ -z "$NARWHAL_HOME" ]; then
 fi
 
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar:$NARWHAL_ENGINE_HOME/jars/jline.jar
-if [ -z "$NARWHAL_CLASSPATH" ]; then
+if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
 fi
 
