@@ -66,7 +66,7 @@ function wrapper(that) {
                 else
                     that[index] = value;
             },
-            wrap : function() {
+            unwrap : function() {
                 var bytes = Packages.java.lang.reflect.Array.newInstance(Packages.java.lang.Byte.TYPE, that._length);
                 Packages.java.lang.System.arraycopy(that._bytes, that._offset, bytes, 0, that._length);
                 return bytes;
