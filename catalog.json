@@ -498,6 +498,14 @@
             "githubName": "jsont",
             "type": "zip",
             "location": "http://github.com/tlrobinson/jsont/zipball/master"
+        },
+        "activejs": {
+            "name": "activejs",
+            "author": "Aptana Inc.",
+            "description": "The Cross Platform JavaScript MVC, http://activejs.org/",
+            "githubName": "activejs",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/activejs/zipball/master"
         }
     }
 }

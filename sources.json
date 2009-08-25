@@ -120,6 +120,10 @@
         "jsont": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "activejs": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }
