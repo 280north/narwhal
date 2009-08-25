@@ -1,16 +1,17 @@
 /* Binary */
 
-var B_ALLOC = require("binary-engine").B_ALLOC,
-    B_LENGTH = require("binary-engine").B_LENGTH,
-    B_GET = require("binary-engine").B_GET,
-    B_SET = require("binary-engine").B_SET,
-    B_FILL = require("binary-engine").B_FILL,
-    B_COPY = require("binary-engine").B_COPY,
-    B_DECODE = require("binary-engine").B_DECODE,
-    B_ENCODE = require("binary-engine").B_ENCODE,
-    B_DECODE_DEFAULT = require("binary-engine").B_DECODE_DEFAULT,
-    B_ENCODE_DEFAULT = require("binary-engine").B_ENCODE_DEFAULT,
-    B_TRANSCODE = require("binary-engine").B_TRANSCODE;
+var engine = require("binary-engine"),
+    B_ALLOC = engine.B_ALLOC,
+    B_LENGTH = engine.B_LENGTH,
+    B_GET = engine.B_GET,
+    B_SET = engine.B_SET,
+    B_FILL = engine.B_FILL,
+    B_COPY = engine.B_COPY,
+    B_DECODE = engine.B_DECODE,
+    B_ENCODE = engine.B_ENCODE,
+    B_DECODE_DEFAULT = engine.B_DECODE_DEFAULT,
+    B_ENCODE_DEFAULT = engine.B_ENCODE_DEFAULT,
+    B_TRANSCODE = engine.B_TRANSCODE;
     
 var Binary = exports.Binary = function() {
     // this._bytes
@@ -19,8 +20,12 @@ var Binary = exports.Binary = function() {
 };
 
 // XXX non interoperable: create and use an Object.defineProperty stub.
-Binary.prototype.__defineGetter__("length", function() { return this._length; });
-Binary.prototype.__defineSetter__("length", function(length) { print("x trying to set length: " + length); });
+Binary.prototype.__defineGetter__("length", function() {
+    return this._length;
+});
+Binary.prototype.__defineSetter__("length", function(length) {
+    print("x trying to set length: " + length);
+});
 
 // toArray() - n array of the byte values
 // toArray(charset) - an array of the code points, decoded
@@ -28,7 +33,7 @@ Binary.prototype.toArray = function(codec) {
     if (arguments.length === 0) {
         var array = new Array(this._length);
         
-        for (var i = 0; i < this.length; i++)
+        for (var i = 0; i < this._length; i++)
             array[i] = this.get(i);
         
         return array;
@@ -186,13 +191,19 @@ var ByteString = exports.ByteString = function() {
         throw new Error("Illegal arguments to ByteString constructor: " + util.repr(arguments));
     }
     
-    //seal(this);
+    if (engine.ByteStringWrapper)
+        return engine.ByteStringWrapper(this);
+    else
+        return this;
 };
 
 ByteString.prototype = new Binary();
 
-ByteString.prototype.__defineGetter__("length", function() { return this._length; });
-ByteString.prototype.__defineSetter__("length", function(length) {});
+ByteString.prototype.__defineGetter__("length", function() {
+    return this._length;
+});
+ByteString.prototype.__defineSetter__("length", function(length) {
+});
 
 // toByteArray() - Returns a byte for byte copy in a ByteArray.
 // toByteArray(sourceCharset, targetCharset) - Returns a transcoded copy in a ByteArray.
@@ -211,7 +222,7 @@ ByteString.prototype.toString = function(charset) {
     if (charset)
         return this.decodeToString(charset);
         
-    return "[ByteString "+this.length+"]";
+    return "[ByteString "+this._length+"]";
 };
 
 // decodeToString(charset) - Returns the decoded ByteArray as a string.
@@ -428,17 +439,24 @@ var ByteArray = exports.ByteArray = function() {
     else
         throw new Error("Illegal arguments to ByteString constructor: [" +
             Array.prototype.join.apply(arguments, [","]) + "] ("+arguments.length+")");
+    
+    if (engine.ByteArrayWrapper)
+        return engine.ByteArrayWrapper(this);
+    else
+        return this;
 };
 
 ByteArray.prototype = new Binary();
 
-ByteArray.prototype.__defineGetter__("length", function() { return this._length; });
+ByteArray.prototype.__defineGetter__("length", function() {
+    return this._length;
+});
 ByteArray.prototype.__defineSetter__("length", function(length) {
     if (typeof length !== "number")
         return;
     
     // same length
-    if (length === this.length) {
+    if (length === this._length) {
         return;
     }
     // new length is less, truncate
@@ -499,7 +517,7 @@ ByteArray.prototype.toString = function(charset) {
     if (charset)
         return this.decodeToString(charset);
     
-    return "[ByteArray "+this.length+"]"; 
+    return "[ByteArray "+this._length+"]"; 
 };
 
 // decodeToString(charset) - implemented on Binary
@@ -514,7 +532,7 @@ ByteArray.prototype.toString = function(charset) {
 // TODO: I'm assuming Array means an array of ByteStrings/ByteArrays, not an array of integers.
 ByteArray.prototype.concat = function() {
     var components = [this],
-        totalLength = this.length;
+        totalLength = this._length;
     
     for (var i = 0; i < arguments.length; i++) {
         var component = Array.isArray(component) ? arguments[i] : [component];
@@ -642,8 +660,8 @@ ByteArray.prototype.split = function() {
 
 // filter(callback[, thisObject])
 ByteArray.prototype.filter = function(callback, thisObject) {
-    var result = new ByteArray(this.length);
-    for (var i = 0, length = this.length; i < length; i++) {
+    var result = new ByteArray(this._length);
+    for (var i = 0, length = this._length; i < length; i++) {
         var value = this.get(i);
         if (callback.apply(thisObject, [value, i, this]))
             result.push(value);
@@ -653,13 +671,13 @@ ByteArray.prototype.filter = function(callback, thisObject) {
 
 // forEach(callback[, thisObject]);
 ByteArray.prototype.forEach = function(callback, thisObject) {
-    for (var i = 0, length = this.length; i < length; i++)
+    for (var i = 0, length = this._length; i < length; i++)
         callback.apply(thisObject, [this.get(i), i, this]);
 };
 
 // every(callback[, thisObject])
 ByteArray.prototype.every = function(callback, thisObject) {
-    for (var i = 0, length = this.length; i < length; i++)
+    for (var i = 0, length = this._length; i < length; i++)
         if (!callback.apply(thisObject, [this.get(i), i, this]))
             return false;
     return true;
@@ -667,7 +685,7 @@ ByteArray.prototype.every = function(callback, thisObject) {
 
 // some(callback[, thisObject])
 ByteArray.prototype.some = function(callback, thisObject) {
-    for (var i = 0, length = this.length; i < length; i++)
+    for (var i = 0, length = this._length; i < length; i++)
         if (callback.apply(thisObject, [this.get(i), i, this]))
             return true;
     return false;
@@ -675,8 +693,8 @@ ByteArray.prototype.some = function(callback, thisObject) {
 
 // map(callback[, thisObject]);
 ByteArray.prototype.map = function(callback, thisObject) {
-    var result = new ByteArray(this.length);
-    for (var i = 0, length = this.length; i < length; i++)
+    var result = new ByteArray(this._length);
+    for (var i = 0, length = this._length; i < length; i++)
         result.set(i, callback.apply(thisObject, [this.get(i), i, this]));
     return result;
 };
@@ -684,7 +702,7 @@ ByteArray.prototype.map = function(callback, thisObject) {
 // reduce(callback[, initialValue])
 ByteArray.prototype.reduce = function(callback, initialValue) {
     var value = initialValue;
-    for (var i = 0, length = this.length; i < length; i++)
+    for (var i = 0, length = this._length; i < length; i++)
         value = callback(value, this.get(i), i, this);
     return value;
 };
@@ -692,7 +710,7 @@ ByteArray.prototype.reduce = function(callback, initialValue) {
 // reduceRight(callback[, initialValue])
 ByteArray.prototype.reduceRight = function(callback, initialValue) {
     var value = initialValue;
-    for (var i = this.length-1; i > 0; i--)
+    for (var i = this._length-1; i > 0; i--)
         value = callback(value, this.get(i), i, this);
     return value;
 };
