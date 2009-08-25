@@ -79,5 +79,6 @@ function wrapper(that) {
     return obj;
 }
 
-exports.ByteStringWrapper = wrapper;
-exports.ByteArrayWrapper = wrapper;
+// FIXME: disabling these because it broke several tests. figure out why.
+//exports.ByteStringWrapper = wrapper;
+//exports.ByteArrayWrapper = wrapper;
