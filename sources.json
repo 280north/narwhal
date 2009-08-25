@@ -124,6 +124,10 @@
         "activejs": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "speller": {
+            "type": "github",
+            "user": "past"
         }
     }
 }

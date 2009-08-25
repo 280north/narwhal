@@ -501,11 +501,27 @@
         },
         "activejs": {
             "name": "activejs",
+            "jars": [
+                "jars/mysql-connector-java-5.1.8-bin.jar"
+            ],
             "author": "Aptana Inc.",
             "description": "The Cross Platform JavaScript MVC, http://activejs.org/",
             "githubName": "activejs",
             "type": "zip",
             "location": "http://github.com/tlrobinson/activejs/zipball/master"
+        },
+        "speller": {
+            "name": "speller",
+            "description": "A JavaScript spell-checker",
+            "author": "Panagiotis Astithas",
+            "keywords": [
+                "spell-checker",
+                "spelling",
+                "corrector"
+            ],
+            "githubName": "speller",
+            "type": "zip",
+            "location": "http://github.com/past/speller/zipball/master"
         }
     }
 }
