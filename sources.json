@@ -123,11 +123,18 @@
         },
         "activejs": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "tlrobinson",
+            "ref": "package"
         },
         "speller": {
             "type": "github",
             "user": "past"
+        },
+        "objj": {
+            "type": "github",
+            "name": "cappuccino",
+            "user": "280north",
+            "ref": "package"
         }
     }
 }
