@@ -2,12 +2,11 @@
 exports.testSandbox = require("./iojs/program");
 exports.testString = require("./string-tests");
 exports.testURI = require("./uri-tests");
-exports.testCodecs = require("./codecs");
+exports.testCodecs = require("./hashes");
 exports.testOS = require("./os/all-tests");
 exports.testFile = require("./file/all-tests");
 exports.testUtil = require("./util/all-tests");
 exports.testArgs = require("./args");
-exports.testSHA256 = require("./sha256-tests");
 
 exports.testGlobal = require("./global");
 
