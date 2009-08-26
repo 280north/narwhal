@@ -223,7 +223,7 @@
             "location": "http://github.com/kriskowal/creolejs/zipball/master"
         },
         "browserjs": {
-            "name": "browser",
+            "name": "browserjs",
             "dependencies": [
                 "narwhal"
             ],
@@ -501,11 +501,54 @@
         },
         "activejs": {
             "name": "activejs",
+            "jars": [
+                "jars/mysql-connector-java-5.1.8-bin.jar"
+            ],
             "author": "Aptana Inc.",
             "description": "The Cross Platform JavaScript MVC, http://activejs.org/",
             "githubName": "activejs",
             "type": "zip",
-            "location": "http://github.com/tlrobinson/activejs/zipball/master"
+            "location": "http://github.com/tlrobinson/activejs/zipball/package"
+        },
+        "speller": {
+            "name": "speller",
+            "description": "A JavaScript spell-checker",
+            "author": "Panagiotis Astithas",
+            "keywords": [
+                "spell-checker",
+                "spelling",
+                "corrector"
+            ],
+            "githubName": "speller",
+            "type": "zip",
+            "location": "http://github.com/past/speller/zipball/master"
+        },
+        "objj": {
+            "name": "objj",
+            "dependencies": [
+                "narwhal",
+                "jack",
+                "browserjs"
+            ],
+            "lib": "lib-js",
+            "preload": [
+                "objj/loader"
+            ],
+            "description": "Objective-J and Cappuccino tools",
+            "keywords": [
+                "Objective-J",
+                "Cappuccino"
+            ],
+            "author": "280 North (http://280north.com/)",
+            "contributors": [
+                "Francisco Tolmasky (http://tolmasky.com/)",
+                "Ross Boucher (http://rossboucher.com/)",
+                "Tom Robinson (http://tlrobinson.net/)",
+                "Numerous others (http://contributors.cappuccino.org/)"
+            ],
+            "githubName": "cappuccino",
+            "type": "zip",
+            "location": "http://github.com/280north/cappuccino/zipball/package"
         }
     }
 }
