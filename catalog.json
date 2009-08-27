@@ -549,6 +549,19 @@
             "githubName": "cappuccino",
             "type": "zip",
             "location": "http://github.com/280north/cappuccino/zipball/package"
+        },
+        "jake": {
+            "name": "jake",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A build system for ServerJS, inspired by Rake",
+            "keywords": [
+                "build",
+                "rake",
+                "make"
+            ],
+            "githubName": "jake",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jake/zipball/master"
         }
     }
 }
