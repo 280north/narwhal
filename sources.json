@@ -135,6 +135,10 @@
             "name": "cappuccino",
             "user": "280north",
             "ref": "package"
+        },
+        "jake": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }
