@@ -2,7 +2,7 @@
 Deploying Modules to Browsers
 =============================
 
-/!\ Warning: most of the techniques described below have not yet been implemented.  This document sets forth the design for a variety of solutions.  Thanks for your patience.
+/!\ Warning: most of the techniques described below have not yet been implemented.  This document sets forth the design for a variety of solutions.
 
 There are a myriad of ways to deploy Narwhal modules to web browsers, although none of them are as familiar as adding the module files with script tags.
 
@@ -27,6 +27,12 @@ If you are using a JSGI server, you can let Narwhal's `narwhal/server` applicati
     var server = require("narwhal/server");
     app = server.App(app, options);
     ...
+
+Wherever you install this App on your request routing, the app will intercept any requests on the "/javascript" path.  Otherwise, the application tracks the `env.SCRIPT_NAME` at that point in the request router so it can construct URL's for the modules.  The "/javascript" path is configurable.
+
+    app = server.App(app, {
+        "path": "/.js"
+    });
 
 The most simple use case embeds a loader that will asynchronously load your main module and its transitive dependencies and then "require" the main module.
 
@@ -82,11 +88,11 @@ You can pass any `Boolean` value to the `App` options to configure it for debug 
 
 If you are using a JSGI server, you can use Narwhal's server application to host the individual modules dynamically.  The application also sends updated versions of your modules when they change.  For performance, the server induces browser caching by selecting a unique URL and an expiration date in the distant future.  The module loader provides a global "require" function.
 
-Each individual module will be wrapped by the server in a bit of code that will register the module factory with the loader.  This defers execution of the module and adds it to the loader's module factory table.  To avoid interferring with line numbers, the server condenses the entire boilerplate onto a single line.
+Each individual module will be wrapped by the server in a bit of code that will register the module factory with the loader.  This defers execution of the module and adds it to the loader's module factory table.  To avoid interfering with line numbers, the server condenses the entire boilerplate onto a single line.
 
     require.register({ // no newline
         "bar/baz": // no newline
-        function (require, exports, module) { // no newline
+        function (require, exports, module, system, print) { // no newline
             // module text here
             // */ and newline here to break out of comments
         }
@@ -168,15 +174,6 @@ In production, all techniques minify modules before sending them to the browser.
 
 If you can use a server-side component and you are willing to serve your modules from your origin document server instead of a static media server, the method for hosting those files is similar to hosting those files from the server in developer mode.  The key difference is that the server minifies the modules.
 
-In your JSGI configuration:
-
-    var server = require("narwhal/server");
-    app = server.Production(app);
-
-Or to use Narwhal's `system.debug` flag (set with `narwhal -d`) to switch between production and development modes, use:
-
-    app = server.App(app);
-
 With this architecture, in the future it will be possible to write a smarter module loader that will balance the cost of downloading modules serially as a bundle or individually in parallel by maintaining knowledge in persistent session storage about which individual modules have been presumably cached by the browser.  Initial page loads would be expedited by bundling.  The client would wait an interval and begin redownloading individual modules, which would be tracked by the server in persistent session storage.  On subsequent pages, the server would decide, based on what it knows is present in the browser cache, whether to send individual modules or a bundle.
 
     app = session.App(app);
@@ -240,4 +237,54 @@ The list will begin with the selfsame identifier so you can pass it directly to 
 If you have a bundle, you can create a snippet that will block the browser until the entire bundle has been registered, just as you would get from `require.block`.
 
     $ tusk browser block [<bundle-id>]
+
+
+Background
+----------
+
+This design is based on several propositions:
+
+ * synchronous XHR -> blocks most HTML parsers, delaying subsequent static resource enqueue -> bad for performance -> bad for production
+ * synchronous XHR -> breaks browsers when the server fails to respond -> bad for reliability -> bad for production
+ * XHR -> same origin limitation -> not feasible for static media server or CDN -> sometimes bad for production
+ * asynchronous XHR -> does not block browser parsing -> not bad for production
+ * asynchronous XHR -> paired with eval, does not need module factory boilerplate
+ * asynchronous XHR -> does not preserve file names -> bad for development
+ * script injection -> requires module factory boilerplate -> build step OR module server
+ * script injection -> line numbers and file names preserved -> good for development
+ * build step -> bad for development
+ * module server -> not statically deployable -> only good for production in conjunction with a CDN
+ * CDNs and static files are distinct deployment scenarios
+ * individual modules -> cacheable -> good for subsequent page loads
+ * individual modules -> chatty (round trip between requests) -> bad for initial page loads
+ * bundles -> less chatty (fewer round trips) -> faster download -> good for initial page loads
+ * bundles -> less cacheable -> not good for subsequent page loads
+ * balancing bundles, combos, and individuals -> server side logic and session state required
+ * combinations -> more cacheable than bundles AND less cacheable than individual modules
+ * embedding -> not cacheable -> bad for production
+ * minification -> changes line numbers -> bad for development
+ * minification -> decreases download size -> good for production
+ * embeded scripts -> not cacheable -> bad for performance -> bad for production
+ * blocking script -> bundle OR synchronous XHR
+ * static files -> build step -> bad for debug
+
+    +--------------------+------------------+--------------+
+    | Debug / Production | Static / Dynamic | Sync / Async |
+    +-------+------------+--------+---------+------+-------+
+    | Debug |            | Static |         | Sync |       |
+    +-------+------------+--------+---------+------+-------+
+    | Debug |            | Static |         |      | Async |
+    +-------+------------+--------+---------+------+-------+
+    | Debug |            |        | Dynamic | Sync |       |
+    +-------+------------+--------+---------+------+-------+
+    | Debug |            |        | Dynamic |      | Async | 
+    +-------+------------+--------+---------+------+-------+
+    |       | Production | Static |         | Sync |       | production and synchronous (by way of bundling or sync XHR) are incompatible
+    +-------+------------+--------+---------+------+-------+
+    |       | Production | Static |         |      | Async | build step
+    +-------+------------+--------+---------+------+-------+
+    |       | Production |        | Dynamic | Sync |       | production and synchronous (by way of bundling or sync XHR) are incompatible
+    +-------+------------+--------+---------+------+-------+
+    |       | Production |        | Dynamic |      | Async | module server
+    +-------+------------+--------+---------+------+-------+
 
