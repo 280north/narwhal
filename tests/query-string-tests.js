@@ -1,4 +1,7 @@
 var QueryString = require("querystring");
+var assert = require("test/assert");
+
+
 exports.testUnescape = function() {
     assert.isEqual("fo<o>bar", QueryString.unescape("fo%3Co%3Ebar"));
     assert.isEqual("a space", QueryString.unescape("a%20space"));
