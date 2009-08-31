@@ -43,12 +43,31 @@ var qsColonTestCases = [
     ["foo%3Abaz:bar", "foo%3Abaz:bar", {"foo:baz":"bar"}],
     ["foo:baz:bar", "foo:baz%3Abar", {"foo":"baz:bar"}]
 ];
+
+var extendedFunction = function () {};
+extendedFunction.prototype = {a:"b"};
+var qsWeirdObjects = [ //{
+    [ {regexp:/./g}, "regexp=", {"regexp":""} ],
+    [ {regexp: new RegExp(".", "g")}, "regexp=", {"regexp":""} ],
+    [ {fn:function () {}}, "fn=", {"fn":""}],
+    [ {fn:new Function("")}, "fn=", {"fn":""} ],
+    [ {math:Math}, "math=", {"math":""} ],
+    [ {e:extendedFunction}, "e=", {"e":""} ],
+    [ {d:new Date()}, "d=", {"d":""} ],
+    [ {d:Date}, "d=", {"d":""} ],
+    [ {f:new Boolean(false), t:new Boolean(true)}, "f=0&t=1", {"f":0, "t":1} ],
+    [ {f:false, t:true}, "f=0&t=1", {"f":0, "t":1} ],
+]; //}
+
 exports.testParseQuery = function() {
     qsTestCases.forEach(function (testCase) {
         assert.isSame(testCase[2], QueryString.parseQuery(testCase[0]));
     });
     qsColonTestCases.forEach(function (testCase) {
         assert.isSame(testCase[2], QueryString.parseQuery(testCase[0], ";", ":"))
+    });
+    qsWeirdObjects.forEach(function (testCase) {
+        assert.isSame(testCase[2], QueryString.parseQuery(testCase[1]));
     });
 }
 exports.testToQueryString = function () {
@@ -58,4 +77,10 @@ exports.testToQueryString = function () {
     qsColonTestCases.forEach(function (testCase) {
         assert.isSame(testCase[1], QueryString.toQueryString(testCase[2], ";", ":"));
     });
+    qsWeirdObjects.forEach(function (testCase) {
+        assert.isSame(testCase[1], QueryString.toQueryString(testCase[0]));
+    });
 };
+
+if (require.main === module.id)
+    require("os").exit(require("test/runner").run(exports));
