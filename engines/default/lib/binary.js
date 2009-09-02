@@ -535,7 +535,7 @@ ByteArray.prototype.concat = function() {
         totalLength = this._length;
     
     for (var i = 0; i < arguments.length; i++) {
-        var component = Array.isArray(component) ? arguments[i] : [component];
+        var component = Array.isArray(arguments[i]) ? arguments[i] : [arguments[i]];
         
         for (var j = 0; j < component.length; j++) {
             var subcomponent = component[j];
@@ -551,7 +551,7 @@ ByteArray.prototype.concat = function() {
         offset = 0;
     
     components.forEach(function(component) {
-        B_COPY(component._bytes, component._offset, result._byte, offset, component._length);
+        B_COPY(component._bytes, component._offset, result._bytes, offset, component._length);
         offset += component._length;
     });
     
@@ -728,12 +728,22 @@ ByteArray.prototype.toSource = function() {
 
 /* BinaryIO */
 
-exports.BinaryIO = function(binary) {
-    if (!binary)
-        throw "NYI";
+var BinaryIO = exports.BinaryIO = function(binary) {
+    this.inputStream = binary ? new java.io.ByteArrayInputStream(binary._bytes, binary._offset, binary._length) : null;
+    this.outputStream = new java.io.ByteArrayOutputStream();
     
-    var stream = new (require("io").IO)(new java.io.ByteArrayInputStream(binary._bytes, binary._offset, binary._length), null);
-    stream.length = binary.length;
-    return stream;
+    var stream = (this.inStream, this.outStream);
+    
+    this.length = binary ? binary.length : 0;
 };
 
+BinaryIO.prototype = new (require("io").IO)()
+
+BinaryIO.prototype.toByteString = function() {
+    var bytes = this.outputStream.toByteArray();
+    return new ByteString(bytes, 0, bytes.length);
+}
+
+BinaryIO.prototype.decodeToString = function(charset) {
+    return String(charset ? this.outputStream.toString(charset) : this.outputStream.toString());
+}

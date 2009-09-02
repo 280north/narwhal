@@ -297,5 +297,28 @@ exports.testByteArrayForEach = function() {
     
 };
 
+exports.testByteArrayConcat = function() {
+
+    var b = new ByteArray();
+    
+    var b1 = b.concat(new ByteArray([1,2,3]));
+    assert.isEqual(3, b1.length);
+    assert.isEqual(1, b1.get(0));
+    assert.isEqual(2, b1.get(1));
+    assert.isEqual(3, b1.get(2));
+    
+    var b2 = b1.concat(new ByteString([4,5,6]));
+    assert.isEqual(6, b2.length);
+    assert.isEqual(1, b2.get(0));
+    assert.isEqual(3, b2.get(2));
+    assert.isEqual(4, b2.get(3));
+    assert.isEqual(6, b2.get(5));
+    
+    var b3 = b2.concat([b, b1, b2, new ByteString(), new ByteArray()]);
+    assert.isEqual(b.length + b1.length + b2.length + b2.length, b3.length);
+    
+};
+
+
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
