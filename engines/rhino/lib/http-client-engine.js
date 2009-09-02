@@ -59,6 +59,7 @@ exports.finish = function (tx) {
         var is = con.getInputStream();
     } catch (ex) {}
     if (is) {
+        //TODO - Just wrap the body.forEach in a reader function.
         var reader = new IO(con.getInputStream(), null);
         resp.body = [ reader.read() ];
         reader.close();
