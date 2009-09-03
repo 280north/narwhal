@@ -565,6 +565,20 @@
             "githubName": "jake",
             "type": "zip",
             "location": "http://github.com/tlrobinson/jake/zipball/master"
+        },
+        "json-rpc": {
+            "name": "json-rpc",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "An implementation of JSON-RPC for CommonJS, include a JSGI appliance",
+            "keywords": [
+                "json-rpc",
+                "rpc",
+                "rmi",
+                "jsgi"
+            ],
+            "githubName": "json-rpc",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/json-rpc/zipball/master"
         }
     }
 }
