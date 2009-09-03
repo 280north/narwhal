@@ -200,7 +200,7 @@ numeric id of the owner user
 * rdev Number
 the device identifier for special files
 
-* size NUmber
+* size Number
 total size in bytes
 
 * blockSize Number
