@@ -6,7 +6,7 @@ This document provides information on how to use `bin/narwhal`
 through its command line options, environment variables,
 and configuration files, then descends into the exact
 maddenning details of how it goes about bootstrapping
-and configuraing itself.
+and configuring itself.
 
 
 Glossary
@@ -100,22 +100,22 @@ Command Line Options
 Environment Variables
 ---------------------
 
-*   `NARWHAL_DEFAULT_PLATFORM` may be set in `narwhal.conf` to a
-    platform name like `rhino`, `v8`, or `xulrunner`.  Use
-    `tusk platforms` for a complete list and consult the `README` in
-    that platform directory for details about its function and
+*   `NARWHAL_DEFAULT_ENGINE` may be set in `narwhal.conf` to a
+    engine name like `rhino`, `v8`, or `xulrunner`.  Use
+    `tusk engines` for a complete list and consult the `README` in
+    that engine directory for details about its function and
     readiness for use.
 
-*   `NARWHAL_PLATFORM` may be set at the command line, but is
-    otherwise set to `NARWHAL_DEFAULT_PLATFORM` by `bin/narwhal`
-    and exposed in JavaScript as `system.platform`.  This
+*   `NARWHAL_ENGINE` may be set at the command line, but is
+    otherwise set to `NARWHAL_DEFAULT_ENGINE` by `bin/narwhal`
+    and exposed in JavaScript as `system.engine`.  This
     is the name of the JavaScript engine in use.
 
 *   `NARWHAL_HOME` is the path to the `narwhal` directory and
     is available in JavaScript as `system.prefix`.
 
-*   `NARWHAL_PLATFORM_HOME` is the path to the narwhal
-    platform directory, where `bootstrap.js` may be found,
+*   `NARWHAL_ENGINE_HOME` is the path to the narwhal
+    engine directory, where `bootstrap.js` may be found,
     and is set by `bin/narwhal`.
 
 *   `NARWHAL_PATH` and `JS_PATH` can be used to add
@@ -164,10 +164,10 @@ Configuration Files
 
 *   `narwhal.conf` may be provided to configure site-specific
     or virtual-environment (sea) specific environment
-    variables like `NARWHAL_DEFAULT_PLATFORM`.  You can
-    also opt to specify `NARWHAL_PLATFORM`, but that obviates
+    variables like `NARWHAL_DEFAULT_ENGINE`.  You can
+    also opt to specify `NARWHAL_ENGINE`, but that obviates
     the possibility of allowing the user to override
-    the narwhal platform at the command line.  `narwhal.conf`
+    the narwhal engine at the command line.  `narwhal.conf`
     follows the BSD convention of using shell scripts as
     configuration files, so you may use any `bash` syntax
     in this file.  A `narwhal.conf.template` exists for 
@@ -211,7 +211,7 @@ Configuration Files
 Bootstrapping Narwhal
 ---------------------
 
-Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` script, a platform specific `bash` script, a platform specific JavaScript, then the common JavaScript.
+Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` script, an engine specific `bash` script, an engine specific JavaScript, then the common JavaScript.
 
 *   `bin/narwhal`
 
@@ -219,44 +219,44 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
     for configuration.  This script discovers its own
     location on the file system and sources `narwhal.conf`
     as a shell script to load any system-level configuration
-    variables like `NARWHAL_DEFAULT_PLATFORM`.  From there,
-    it discerns and exports the `NARWHAL_PLATFORM` and
-    `NARWHAL_PLATFORM_HOME` environment variables.
+    variables like `NARWHAL_DEFAULT_ENGINE`.  From there,
+    it discerns and exports the `NARWHAL_ENGINE` and
+    `NARWHAL_ENGINE_HOME` environment variables.
     It then executes the
-    platform-specific script,
-    `$NARWHAL_PLATFORM_HOME/bin/narwhal-$NARWHAL_PLATFORM`.
+    engine-specific script,
+    `$NARWHAL_ENGINE_HOME/bin/narwhal-$NARWHAL_ENGINE`.
 
-*   `platforms/{platform}/bin/narwhal-{platform}`
+*   `engines/{engine}/bin/narwhal-{engine}`
 
-    This `bash` script performs some platform-specific
+    This `bash` script performs some engine-specific
     configuration, like augmenting the Java `CLASSPATH`
-    for the Rhino platform, and executes the
-    platform-specific bootstrap JavaScript using the
-    JavaScript engine for the platform.
+    for the Rhino engine, and executes the
+    engine-specific bootstrap JavaScript using the
+    JavaScript engine for the engine.
 
-    Some platforms, like `k7` require the JavaScript engine
-    to be on the `PATH`.  The Rhino platform just expects
+    Some engines, like `k7` require the JavaScript engine
+    to be on the `PATH`.  The Rhino engine just expects
     Java to be on the `PATH`, and uses the `js.jar` included
     in the repository.
 
-*   `platforms/{platform}/bootstrap.js`
+*   `engines/{engine}/bootstrap.js`
 
-    This platform-specific JavaScript uses whatever
+    This engine-specific JavaScript uses whatever
     minimal mechanisms the JavaScript engine provides
     for reading files and environment variables to
     read and evaluate `narwhal.js`.  `narwhal.js` evaluates
     to a function expression that accepts a zygotic
     `system` `Object`, to be replaced later by loading
     the `system` module proper.  `bootstrap.js` provides a
-    `system` object with `global`, `evalGlobal`, `platform`,
-    a `platforms` Array, `print`, `fs.read`, `fs.isFile`,
+    `system` object with `global`, `evalGlobal`, `engine`,
+    a `engines` Array, `print`, `fs.read`, `fs.isFile`,
     `prefix`, `packagePrefixes`, and optionally `evaluate`,
     `debug`, or `verbose`.
 
     *   `global` is the `global` `Object`.  This is
         passed explicitly in anticipation of times
         when it will be much harder to grab this
-        object in platforms where its name varies
+        object in engines where its name varies
         (like `window`, or `this`) and where it will
         be unsafe to assume that `this` defaults
         to `global` for functions called anonymously.
@@ -269,8 +269,8 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
         it will be harder to call `eval` in a pristine
         scope chain.
 
-    *   `platform` is a synonym for the `NARWHAL_PLATFORM`
-        environment variable, the name of the platform.
+    *   `engine` is a synonym for the `NARWHAL_ENGINE`
+        environment variable, the name of the engine.
         This variable is informational.
 
     *   `prefix` is a synonym for the `NARWHAL_HOME`
@@ -288,18 +288,18 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
         prefix appears first so that virtual environments
         can load their own package versions.
 
-    *   `platforms` is an Array of platform names, used
+    *   `engines` is an Array of engine names, used
         to extend the module search path at various stages
-        to include platform specific libraries.  There will
-        usually be more than one platform in this Array.
+        to include engine specific libraries.  There will
+        usually be more than one engine in this Array.
         For Rhino, it is `['rhino', 'default']`.  The
-        `default` platform contains many "catch-all" modules
-        that, while being platform-specific, are also 
+        `default` engine contains many "catch-all" modules
+        that, while being engine-specific, are also 
         general enough to be shared among almost all
-        platforms.  Other platforms are likely to share
-        dynamically linked C modules in a "c" platform,
-        and the "rhino" platform itself is useful for
-        the "helma" platform.
+        engines.  Other engines are likely to share
+        dynamically linked C modules in a "c" engine,
+        and the "rhino" engine itself is useful for
+        the "helma" engine.
 
     *   `print` is a temporary shortcut for writing a line to
         a logging console or standard output, favoring
@@ -309,10 +309,10 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
         which will be loaded later.  The module loader
         uses `read` and `isFile` to load the initial modules.
 
-    *   `evaluate` is a module evaluator.  If the platform
+    *   `evaluate` is a module evaluator.  If the engine
         does not provide an evaluator, the `sandbox` module
-        has a suitable default, but some platforms provide
-        their own.  For example, the "secure" platform
+        has a suitable default, but some engines provide
+        their own.  For example, the "secure" engine
         injects a safe, hermetic evaluator.  `evaluate`
         accepts a module as a String, and optionally
         a file name and line number for debugging purposes.
@@ -341,15 +341,15 @@ Narwhal launches in stages.  On UNIX-like systems, Narwhal starts with a `bash` 
 *   `narwhal.js`
 
     This is the common script that creates a module loader,
-    makes the global scope consistent across platforms,
+    makes the global scope consistent across engines,
     finishes the `system` module, parses command line arguments,
     loads packages, executes the desired program, and
     finally calls the unload event for cleanup or running
     a daemon event loop.
 
-When Narwhal is embedded, the recommended practice is to load the `bootstrap.js` platform script directly, skipping the shell script phases.
+When Narwhal is embedded, the recommended practice is to load the `bootstrap.js` engine script directly, skipping the shell script phases.
 
-Some platforms, like Helma or GPSEE, may provide their own module loader implementation.  In that case, they may bypass all of this bootstrapping business and simply include Narwhal as if it were a mere package.
+Some engines, like Helma or GPSEE, may provide their own module loader implementation.  In that case, they may bypass all of this bootstrapping business and simply include Narwhal as if it were a mere package.
 
 No system has been constructed for Windows systems yet.
 
@@ -363,7 +363,7 @@ The `narwhal.js` script is the next layer of blubber.
     provides the means to construct a `require` function
     so all other modules can be loaded.
 *   `global` module, monkey patches the transitive globals
-    so that every platform receives the same ServerJS
+    so that every engine receives the same ServerJS
     and EcmaScript 5 global object, or as near to that
     as possible.
 *   `system` module, including the `file` and `logger`
@@ -371,7 +371,7 @@ The `narwhal.js` script is the next layer of blubber.
     variable in all modules.
 *   `narwhal` module parses arguments.
 *   `packages` module loads packages.
-    *   `packages-platform` loads jars for Java/Rhino.
+    *   `packages-engine` loads jars for Java/Rhino.
 *   run command
 *   `unload` module sends an `unload` signal to any
     observers, usually for cleanup or to kick off event loops.
@@ -394,11 +394,11 @@ only go to disk when the underlying module text has changed.
 Global Module
 -------------
 
-The global module is platform-specific, and there is sharable
-version in the default platform.  The purpose of the global
+The global module is engine-specific, and there is sharable
+version in the default engine.  The purpose of the global
 module is to load modules like "json", "string", "array", and
 "binary", that monkey patch the globals if necessary to
-bring every platform up to speed with EcmaScript 5 and
+bring every engine up to speed with EcmaScript 5 and
 the ServerJS standard.
 
 
@@ -427,7 +427,7 @@ for Narwhal, and an Easter egg.
 Packages Module
 ---------------
 
-The packages module analyzes and installs packages, such that their libraries are available in the module search path, and also installs some platform-specific package components like Java archives at run-time.  The package loader uses a five pass algorithm:
+The packages module analyzes and installs packages, such that their libraries are available in the module search path, and also installs some engine-specific package components like Java archives at run-time.  The package loader uses a five pass algorithm:
 
 *   find and read package.json for every accessible package,
     collating them into a catalog.  This involves a breadth
@@ -444,13 +444,13 @@ The packages module analyzes and installs packages, such that their libraries ar
     in the module search path.
 *   "analyze" the packages in order.  This involves finding
     the library directories in each package, including
-    platform-specific libraries for all of the
-    `system.platforms`, and performing platform-specific
+    engine-specific libraries for all of the
+    `system.engines`, and performing engine-specific
     analysis like finding the Java archives (`jars`) installed
     in each package.
 *   "synthesize" a configuration from the analysis.  This
     involves setting the module search path, and performing
-    platform-specific synthesis, like installing a Java
+    engine-specific synthesis, like installing a Java
     class loader for the Java archives, and creating a new,
     global `Packages` object.
 
