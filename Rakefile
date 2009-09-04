@@ -14,6 +14,8 @@ exclude = {
   "lib/os/popen" => true
 }
 
+CHECKOUT_BRANCH = 'master'
+
 DEFAULT_LAYOUT_TEMPLATE = '_layouts/default-template.html'
 DEFAULT_LAYOUT = '_layouts/default.html'
 
@@ -22,10 +24,10 @@ task :default => [:build]
 task :all => [:checkout, :build, :runserver]
 
 task :checkout do
-  puts "Checking out 'docs' from master"
+  puts "Checking out 'docs' from #{CHECKOUT_BRANCH}"
   rm_rf 'docs', :verbose => false
-  `git checkout master docs`
-  `git checkout master README.md`
+  `git checkout #{CHECKOUT_BRANCH} docs`
+  `git checkout #{CHECKOUT_BRANCH} README.md`
   `mv README.md docs/index.md`
 end
 
