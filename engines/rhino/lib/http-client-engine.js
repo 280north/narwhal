@@ -72,7 +72,7 @@ engine.read = function HTTPClient_engine_read (tx) {
         var fieldName = fieldKeys[i];
         if (fieldName === null) {
             // Something like: HTTP/1.1 200 OK
-            HashP.set(resp, "status", /HTTP\/1\.[01] ([0-9]{3})/.exec(fieldValue)[1]);
+            HashP.set(resp, "status", +(/HTTP\/1\.[01] ([0-9]{3})/.exec(fieldValue)[1]));
             // fieldName = "Status";
             resp.statusText = fieldValue;
             continue;
