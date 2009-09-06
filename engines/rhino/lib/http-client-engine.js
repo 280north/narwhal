@@ -6,7 +6,7 @@ var engine = exports;
 engine.connect = function HTTPClient_engine_connect (tx) {
     if (tx._isConnected) return;
     
-    var con = tx._connection = java.net.HttpURLConnection(
+    var con = java.net.HttpURLConnection(
         new java.net.URL(tx.url).openConnection()
     );
     con.setRequestMethod(tx.method.toUpperCase());
@@ -42,6 +42,7 @@ engine.connect = function HTTPClient_engine_connect (tx) {
         ].join("\n");
         throw ex;
     }
+    
     tx._isConnected = true;
     var resp = tx._response = {status:200, headers:{}, body:[]};
     
@@ -50,19 +51,6 @@ engine.connect = function HTTPClient_engine_connect (tx) {
     // on all of them, you'll only wait as long as the slowest one, since
     // the streams will start filling up right away.
     
-    // This feels and looks like a kludge, and I don't like it any more
-    // than you do. Until you don't call getHeaderFields (or getContent, or something)
-    // then the java.net.HttpURLConnection object will just connect to
-    // the server on port 80 and patiently wait for you to want something.
-    // Since the body is typically the slow bit, waiting for headers is not so bad.
-    con.getHeaderFields();
-};
-
-engine.read = function HTTPClient_engine_read (tx) {
-    if (!tx._isConnected) engine.connect(tx);
-    
-    var con = tx._connection,
-        resp = tx._response;
     
     // now pull everything out.
     var fields = con.getHeaderFields();
@@ -89,8 +77,7 @@ engine.read = function HTTPClient_engine_read (tx) {
         return resp;
     }
     
-    // TODO: Should the input stream be rewindable?  Perhaps it doesn't make sense to
-    // close it after the first pass through the data.
+    // TODO: Should the input stream be rewindable?
     var reader = new IO(con.getInputStream(), null);
     resp.body = {forEach : function (block) {
         var buflen = 1024;
