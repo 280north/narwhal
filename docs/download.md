@@ -19,6 +19,6 @@ Bleeding Edge
 Releases
 --------
 
-<div id="releases">Loading...</div>
+<div id="releases-list">Loading...</div>
 <script type="text/javascript" charset="utf-8" src="js/releases.js"></script>
 <script type="text/javascript" charset="utf-8" src="http://github.com/api/v2/json/repos/show/tlrobinson/narwhal/tags?callback=showreleases"></script>

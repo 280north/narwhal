@@ -11,5 +11,5 @@ function showreleases(response) {
     var reversed = [];
     while (releases.length) reversed.push(releases.pop());
     
-    document.getElementById("releases").innerHTML = "<ul>" + reversed.join("\n") + "</ul>";
+    document.getElementById("releases-list").innerHTML = "<ul>" + reversed.join("\n") + "</ul>";
 }
