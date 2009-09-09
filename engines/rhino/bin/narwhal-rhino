@@ -21,18 +21,6 @@ fi
 
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar
 
-# prefer rlwrap to jline.
-[ $# -lt 1 ] && SHELL=1 || SHELL=0
-if [ $SHELL ]; then
-    RLWRAP="$(which rlwrap)"
-    if [ -x "$RLWRAP" ]; then
-        RLWRAP="$RLWRAP -C narwhal"
-    else
-        RLWRAP=""
-        CLASSPATH="$CLASSPATH:$NARWHAL_ENGINE_HOME/jars/jline.jar"
-    fi
-fi
-
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
 fi
@@ -55,8 +43,15 @@ if [ "$LOWER_VERSION" != "1.5" ]; then
 fi
 
 # drop into shell if there are no additional arguments
-
-if [ $SHELL ]; then
+if [ $# -lt 1 ]; then
+    # prefer rlwrap to jline.
+    RLWRAP="$(which rlwrap)"
+    if [ -x "$RLWRAP" ]; then
+        RLWRAP="$RLWRAP -C narwhal"
+    else
+        RLWRAP=""
+        CLASSPATH="$CLASSPATH:$NARWHAL_ENGINE_HOME/jars/jline.jar"
+    fi
     $RLWRAP java $NARWHAL_JAVA_ARGUMENTS -cp "$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
     java $NARWHAL_JAVA_ARGUMENTS -cp "$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$0" "$@"
