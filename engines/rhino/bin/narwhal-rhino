@@ -47,7 +47,7 @@ if [ $# -lt 1 ]; then
     # prefer rlwrap to jline.
     RLWRAP="$(which rlwrap)"
     if [ -x "$RLWRAP" ]; then
-        RLWRAP="$RLWRAP -C narwhal"
+        RLWRAP="$RLWRAP -C narwhal -m\\"
     else
         RLWRAP=""
         CLASSPATH="$CLASSPATH:$NARWHAL_ENGINE_HOME/jars/jline.jar"
