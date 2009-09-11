@@ -20,7 +20,12 @@ exports.exec = function () {
 };
 
 exports.system = function (command) {
-    cSystem.invoke([command]);
+    if (Array.isArray(command)) {
+        command = command.map(function (arg) {
+            return require("os").enquote(arg);
+        }).join(" ");
+    }
+    return cSystem.invokeInt([command]);
 };
 
 exports.dup = function () {
