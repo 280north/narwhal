@@ -54,8 +54,12 @@ Tusk gets downloaded and installed at "hello-web/packages/jack".
 Create your "jackconfig.js". This is a trivial JSGI compatible application, wrapped in the `ContentLength` middleware to automatically set the "Content-Length" header.
 
     exports.app = function(env) {
-        var body = "Hello, Web!";
-        return [200, {"Content-Type":"text/plain", "Content-Length":String(body.length) }, [body]];
+        var text = "Hello, Web!";
+        return {
+            status : 200,
+            headers : { "Content-Type" : "text/plain", "Content-Length" : String(text.length) },
+            body : [text]
+        };
     };
 
 Run it!
