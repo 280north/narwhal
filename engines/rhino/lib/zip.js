@@ -46,7 +46,9 @@ exports.Unzip.prototype.forEach = function (block, context) {
         } catch (exception) {
             break;
         }
-        block.call(context, next);
+        if(block.call(context, next)===false) {
+            break;
+        }
     }
 };
 
