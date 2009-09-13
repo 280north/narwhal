@@ -50,6 +50,13 @@ exports.Unzip.prototype.forEach = function (block, context) {
     }
 };
 
+exports.Unzip.prototype.getEntry = function (name) {
+    var entry = this._javaZipFile.getEntry(name);
+    if(!entry)
+        return null;
+    return new exports.Entry(this._javaZipFile, entry);    
+};
+
 exports.Entry = function (javaZipFile, javaZipEntry) {
     this._javaZipFile = javaZipFile;
     this._javaZipEntry = javaZipEntry;
