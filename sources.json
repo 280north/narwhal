@@ -112,6 +112,37 @@
         "seethrough": {
             "type": "github",
             "user": "Gozala"
+        },
+        "jack-dav": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "jsont": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "activejs": {
+            "type": "github",
+            "user": "tlrobinson",
+            "ref": "package"
+        },
+        "speller": {
+            "type": "github",
+            "user": "past"
+        },
+        "objj": {
+            "type": "github",
+            "name": "cappuccino",
+            "user": "280north",
+            "ref": "package"
+        },
+        "jake": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "json-rpc": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }

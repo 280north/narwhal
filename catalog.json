@@ -12,13 +12,13 @@
             ],
             "author": "Tom Robinson (http://tlrobinson.net/)",
             "contributors": [
-                "Tom Robinson (http://tlrobinson.net/)",
-                "Kris Kowal (http://askawizard.blogspot.com/)",
+                "Tom Robinson (http://tlrobinson.net/) <tlrobinson@280north.com>",
+                "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
                 "George Moschovitis (http://blog.gmosx.com/)",
                 "Kevin Dangoor (http://www.blueskyonmars.com/)",
                 "Hannes Wallnöfer",
                 "Sébastien Pierre",
-                "Irakli Gozalishvili",
+                "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
                 "Christoph Dorn (http://www.christophdorn.com/)",
                 "Zach Carter",
                 "Nathan L. Smith",
@@ -39,21 +39,57 @@
         },
         "narwhal-jsc": {
             "name": "narwhal-jsc",
+            "dependencies": [
+                "narwhal"
+            ],
             "engine": "jsc",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "JavaScriptCore engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "jsc",
+                "javascriptcore",
+                "webkit"
+            ],
             "githubName": "narwhal-jsc",
             "type": "zip",
             "location": "http://github.com/tlrobinson/narwhal-jsc/zipball/master"
         },
         "narwhal-v8": {
             "name": "narwhal-v8",
+            "dependencies": [
+                "narwhal"
+            ],
             "engine": "v8",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "V8 engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "v8",
+                "google"
+            ],
             "githubName": "narwhal-v8",
             "type": "zip",
             "location": "http://github.com/tlrobinson/narwhal-v8/zipball/master"
         },
         "narwhal-johnson": {
             "name": "narwhal-johnson",
+            "dependencies": [
+                "narwhal"
+            ],
             "engine": "johnson",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "Johnson (Ruby-JavaScript bridge, using SpiderMonkey) engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "johnson",
+                "ruby",
+                "spidermonkey",
+                "mozilla"
+            ],
             "githubName": "narwhal-johnson",
             "type": "zip",
             "location": "http://github.com/tlrobinson/narwhal-johnson/zipball/master"
@@ -67,19 +103,39 @@
         },
         "narwhal-jaxer": {
             "name": "narwhal-jaxer",
+            "author": "Nathan L. Smith <nlloyds@gmail.com>",
+            "keywords": [
+                "jaxer",
+                "engine",
+                "mozilla",
+                "spidermonkey",
+                "embedded"
+            ],
             "engine": "jaxer",
+            "dependencies": [
+                "narwhal-xulrunner",
+                "narwhal"
+            ],
             "githubName": "narwhal-jaxer",
             "type": "zip",
             "location": "http://github.com/smith/narwhal-jaxer/zipball/master"
         },
         "jack": {
             "name": "jack",
-            "author": "Tom Robinson",
             "dependencies": [
                 "narwhal"
             ],
             "jars": [
                 "jars/simple-4.1.10.jar"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A library of JSGI middleware, handlers, and utilities, based on Rack",
+            "keywords": [
+                "web server",
+                "server",
+                "jsgi",
+                "rack",
+                "wsgi"
             ],
             "githubName": "jack",
             "type": "zip",
@@ -167,10 +223,18 @@
             "location": "http://github.com/kriskowal/creolejs/zipball/master"
         },
         "browserjs": {
-            "name": "browser",
-            "author": "Tom Robinson",
-            "dependencies": [],
-            "js": "lib",
+            "name": "browserjs",
+            "dependencies": [
+                "narwhal"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A simulated web browser environment, includes XMLHttpRequest, timeouts, console, a DOM, etc",
+            "keywords": [
+                "browser",
+                "web browser",
+                "dom",
+                "xmlhttprequest"
+            ],
             "githubName": "browserjs",
             "type": "zip",
             "location": "http://github.com/tlrobinson/browserjs/zipball/master"
@@ -215,10 +279,17 @@
         },
         "jack-servlet": {
             "name": "jack-servelet",
-            "author": "Tom Robinson",
             "dependencies": [
                 "narwhal",
                 "jack"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A Java servlet for running JSGI applications",
+            "keywords": [
+                "jack",
+                "java",
+                "servlet",
+                "jsgi"
             ],
             "githubName": "jack-servlet",
             "type": "zip",
@@ -392,6 +463,122 @@
             "githubName": "seethrough",
             "type": "zip",
             "location": "http://github.com/Gozala/seethrough/zipball/master"
+        },
+        "jack-dav": {
+            "name": "jack-dav",
+            "dependencies": [
+                "narwhal",
+                "jack"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A JSGI compatible WebDAV server, based on RackDAV",
+            "keywords": [
+                "jack",
+                "webdav",
+                "dav",
+                "rackdav"
+            ],
+            "githubName": "jack-dav",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jack-dav/zipball/master"
+        },
+        "jsont": {
+            "name": "jsont",
+            "author": "Stefan Gössner (http://goessner.net/)",
+            "contributors": [
+                "Tom Robinson (http://tlrobinson.net/)"
+            ],
+            "description": "JSON transforms, akin to XSLT but for JSON: http://goessner.net/articles/jsont/",
+            "keywords": [
+                "json",
+                "transform",
+                "template",
+                "xslt"
+            ],
+            "githubName": "jsont",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jsont/zipball/master"
+        },
+        "activejs": {
+            "name": "activejs",
+            "dependencies": [
+                "jack"
+            ],
+            "jars": [
+                "jars/mysql-connector-java-5.1.8-bin.jar"
+            ],
+            "author": "Aptana Inc.",
+            "description": "The Cross Platform JavaScript MVC, http://activejs.org/",
+            "githubName": "activejs",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/activejs/zipball/package"
+        },
+        "speller": {
+            "name": "speller",
+            "description": "A JavaScript spell-checker",
+            "author": "Panagiotis Astithas",
+            "keywords": [
+                "spell-checker",
+                "spelling",
+                "corrector"
+            ],
+            "githubName": "speller",
+            "type": "zip",
+            "location": "http://github.com/past/speller/zipball/master"
+        },
+        "objj": {
+            "name": "objj",
+            "dependencies": [
+                "narwhal",
+                "jack",
+                "browserjs"
+            ],
+            "lib": "lib-js",
+            "preload": [
+                "objj/loader"
+            ],
+            "description": "Objective-J and Cappuccino tools",
+            "keywords": [
+                "Objective-J",
+                "Cappuccino"
+            ],
+            "author": "280 North (http://280north.com/)",
+            "contributors": [
+                "Francisco Tolmasky (http://tolmasky.com/)",
+                "Ross Boucher (http://rossboucher.com/)",
+                "Tom Robinson (http://tlrobinson.net/)",
+                "Numerous others (http://contributors.cappuccino.org/)"
+            ],
+            "githubName": "cappuccino",
+            "type": "zip",
+            "location": "http://github.com/280north/cappuccino/zipball/package"
+        },
+        "jake": {
+            "name": "jake",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "A build system for ServerJS, inspired by Rake",
+            "keywords": [
+                "build",
+                "rake",
+                "make"
+            ],
+            "githubName": "jake",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/jake/zipball/master"
+        },
+        "json-rpc": {
+            "name": "json-rpc",
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "description": "An implementation of JSON-RPC for CommonJS, include a JSGI appliance",
+            "keywords": [
+                "json-rpc",
+                "rpc",
+                "rmi",
+                "jsgi"
+            ],
+            "githubName": "json-rpc",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/json-rpc/zipball/master"
         }
     }
 }

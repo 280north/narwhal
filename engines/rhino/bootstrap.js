@@ -10,7 +10,11 @@
 
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
+    context.getWrapFactory().setJavaPrimitiveWrap(false); 
 
+    // TODO: enable this via a command line switch
+    context.setOptimizationLevel(-1);
+    
     var prefix = "";
     if (typeof NARWHAL_HOME != "undefined") {
         prefix = NARWHAL_HOME;
@@ -28,9 +32,6 @@
     }
 
     var prefixes = [enginePrefix, prefix];
-
-    // TODO: enable this via a command line switch
-    context.setOptimizationLevel(-1);
 
     var isFile = function (path) {
         try { return new java.io.File(path).isFile(); } catch (e) {}

@@ -45,7 +45,7 @@ exports.cwd = function () {
 };
 
 var JavaPath = function (path) {
-    return new java.io.File(String(path));
+    return new java.io.File(String(path) || ".");
 };
 
 exports.canonical = function (path) {

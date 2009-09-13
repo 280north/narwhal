@@ -1,6 +1,7 @@
 
 var assert = require('test/assert');
 var struct = require('struct');
+var util = require('util');
 
 var raw = "Hello, World!";
 var md4 = require('md4');
@@ -59,6 +60,34 @@ exports.testCrc32 = function () {
     http://www.fileformat.info/tool/hash.htm?text=Hello%2C+World%21
 
 */
+
+/* test the consistency attribute of each algorithm
+ * (always returns the same value for the same input) */
+
+var consistency = function (algorithm) {
+    return function () {
+        // the returned hash should be consistent for the same input.
+        var s1 = algorithm.hash("test");
+        var s2 = algorithm.hash("test");
+        if (s1.decodeToString) {
+            assert.eq(
+                s1.decodeToString(64),
+                s2.decodeToString(64)
+            );
+        }
+        assert.eq(s1, s2);
+    };
+};
+
+util.forEachApply([
+    [md4, 'Md4'],
+    [md5, 'Md5'],
+    [sha, 'Sha'],
+    [sha256, 'Sha256'],
+    [crc32, 'Crc32']
+], function (algorithm, name) {
+    exports['testConsistency' + name] = consistency(algorithm);
+});
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));

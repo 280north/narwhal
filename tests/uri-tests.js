@@ -1,6 +1,8 @@
 var assert = require("test/assert");
+var util = require("util");
 
-var URI = require("uri").URI;
+var uri = require("uri");
+var URI = uri.URI;
 
 exports.testConstructor = function() {
     var uri = new URI("http://www.narwhaljs.org/blog/categories?id=news");
@@ -16,3 +18,24 @@ exports.testToString = function() {
     var uri = new URI("http://www.narwhaljs.org/blog/categories?id=news");
     assert.isEqual("http://www.narwhaljs.org/blog/categories?id=news", uri.toString());
 }
+
+util.forEachApply([
+    ["/foo/bar/baz", "/foo/bar/quux", "quux"],
+    ["/foo/bar/baz", "/foo/bar/quux/asdf", "quux/asdf"],
+    ["/foo/bar/baz", "/foo/bar/quux/baz", "quux/baz"],
+    ["/foo/bar/baz", "/foo/quux/baz", "../quux/baz"]
+], function (from, to, expected) {
+    exports[
+        'testRelative ' +
+        'from: ' + util.repr(from) + ' ' +
+        'to: ' + util.repr(to) + ' ' +
+        'is: ' + util.repr(expected)
+    ] = function () {
+        var actual = uri.relative(from, to);
+        assert.eq(expected, actual);
+    };
+});
+
+if (require.main === module.id)
+    require("os").exit(require("test/runner").run(exports));
+

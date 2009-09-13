@@ -20,7 +20,7 @@ if [ -z "$NARWHAL_HOME" ]; then
 fi
 
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar:$NARWHAL_ENGINE_HOME/jars/jline.jar
-if [ -z "$NARWHAL_CLASSPATH" ]; then
+if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
 fi
 
@@ -32,6 +32,14 @@ if [ "$(which cygpath 2>/dev/null)" ]; then
 fi
 
 JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
+
+# check the java version number in the most complicated fashion imaginable
+JAVA_VERSION=$(java -version 2>&1 | awk -F '[ ".]+' 'NR==1 {print $3 "." $4}')
+LOWER_VERSION=$( (echo "$JAVA_VERSION"; echo "1.5") | sort -n | head -n 1)
+if [ "$LOWER_VERSION" != "1.5" ]; then
+    echo "Narwhal on Rhino requires Java 1.5 or higher.  You have $JAVA_VERSION."
+    exit
+fi
 
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then

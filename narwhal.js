@@ -162,7 +162,7 @@ if (!options.noPackages) {
 } else {
     packages = {
         catalog: {},
-        packageOrder: []
+        order: []
     }
 }
 
@@ -182,7 +182,7 @@ options.todo.forEach(function (item) {
     } else if (action == "eval") {
         system.evalGlobal(value);
     } else if (action == "path") {
-        var paths = packages.packageOrder.map(function (pkg) {
+        var paths = packages.order.map(function (pkg) {
             return pkg.directory.join('bin');
         }).filter(function (path) {
             return path.isDirectory();
@@ -199,7 +199,7 @@ options.todo.forEach(function (item) {
 
 // load the program module
 if (options.interactive) {
-    require('narwhal/repl');
+    require('narwhal/repl').repl();
 } else if (options.main) {
     require.main(options.main);
 } else if (program) {
