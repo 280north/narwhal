@@ -15,15 +15,15 @@ Options:
  * `debug`: causes the loader to favor debug information over
    performance.  This disables bundling, minification,
    and caching (maybe).
-
-These options haven't been implemented yet:
-
  * `path`: overrides the path used for server-hosted modules.
    For example, "javascript/" instead of the default, ".js/".
    This is intended to avoid collisions with existing services
    down the routing cascade.
  * `proxy`: Alternate URL to search for scripts.
- * `catalog`: Alternate URL's for indivudal scripts or
+
+These options haven't been implemented yet:
+
+ * `catalog`: Alternate URLs for individual scripts or
    script bundles.
 
 This introduces an API to the "env" for all subsequent
@@ -78,8 +78,7 @@ promise.
 Fin
 ===
 
-Only features documented before this line have been
-implemented.
+Features below this line have not been implemented.
 
 
 *****
