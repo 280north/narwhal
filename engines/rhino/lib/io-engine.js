@@ -125,10 +125,6 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
         return String(line) + "\n";
     };
 
-    self.itertor = function () {
-        return self;
-    };
-
     self.next = function () {
         var line = stream.readLine();
         if (line === null)
