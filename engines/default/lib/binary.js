@@ -29,7 +29,7 @@ Binary.prototype.__defineSetter__("length", function(length) {
 
 // toArray() - n array of the byte values
 // toArray(charset) - an array of the code points, decoded
-Binary.prototype.toArray = function(codec) {
+Binary.prototype.toArray = function(charset) {
     if (arguments.length === 0) {
         var array = new Array(this._length);
         
@@ -39,12 +39,12 @@ Binary.prototype.toArray = function(codec) {
         return array;
     }
     else if (arguments.length === 1) {
-        var string = new java.lang.String(this._bytes, this._offset, this._length, codec),
-            length = string.length(),
+        var string = B_DECODE(this._bytes, this._offset, this._length, charset),
+            length = string.length,
             array = new Array(length);
         
         for (var i = 0; i < length; i++)
-            array[i] = string.codePointAt(i);
+            array[i] = string.charCodeAt(i);
         
         return array;
     }
