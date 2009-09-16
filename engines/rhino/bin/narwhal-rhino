@@ -19,7 +19,7 @@ if [ -z "$NARWHAL_HOME" ]; then
 	export NARWHAL_HOME=$(dirname -- "$(dirname -- "$NARWHAL_ENGINE_HOME")")
 fi
 
-CLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar:$NARWHAL_ENGINE_HOME/jars/jline.jar
+CLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar:$NARWHAL_ENGINE_HOME/jars/jline.jar:$NARWHAL_ENGINE_HOME/jars/jna.jar
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
 fi

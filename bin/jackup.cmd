@@ -1,0 +1,1 @@
+/pinf/packages-birth/PINF/Proprietary/com.github.kriskowal/narwhal/build/narwhal/packages/jack/bin/jackup.cmd

@@ -177,9 +177,8 @@ exports.TextInputStream = function (raw, lineBuffering, buffering, charset, opti
     self.copy = function (output, mode, options) {
         do {
             var line = self.readLine();
-            output.write(line);
+            output.write(line).flush();
         } while (line.length);
-        output.flush();
         return self;
     };
 

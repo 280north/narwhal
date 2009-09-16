@@ -1,6 +1,10 @@
 
 var io = require('io');
 
+var jna = Packages.com.sun.jna;
+var c = jna.NativeLibrary.getInstance(jna.Platform.isWindows() ? "msvcrt" : "c");
+var cSystem = c.getFunction("system");
+
 exports.exit = function (status) {
     Packages.java.lang.System.exit(status << 0);
 };
@@ -13,6 +17,15 @@ exports.fork = function () {
 };
 
 exports.exec = function () {
+};
+
+exports.system = function (command) {
+    if (Array.isArray(command)) {
+        command = command.map(function (arg) {
+            return require("os").enquote(arg);
+        }).join(" ");
+    }
+    return cSystem.invokeInt([command]);
 };
 
 exports.dup = function () {
@@ -104,6 +117,9 @@ exports.popen = function (command, options) {
             errThread.join();
 
             var status = process.waitFor();
+            stdin.close();
+            stdout.close();
+            stderr.close();
 
             return {
                 status: status,
