@@ -8,13 +8,29 @@ exports.testByteStringConstructorEncodings = function() {
     // ByteString(string, charset)
     // Convert a string. The ByteString will contain string encoded with charset.
     var testString = "hello world";
-    var b4 = new ByteString(testString, "US-ASCII");
-    assert.isEqual(testString.length, b4.length);
+    var b4 = new ByteString(testString, "ASCII");
+    assert.isEqual(testString.length, b4.length, "6543");
     b4.length = 123;
-    assert.isEqual(testString.length, b4.length);
-    assert.isEqual(testString.charCodeAt(0), b4.get(0));
-    assert.isEqual(testString.charCodeAt(testString.length-1), b4.get(testString.length-1));
+    assert.isEqual(testString.length, b4.length, "asdf");
+    assert.isEqual(testString.charCodeAt(0), b4.get(0), "234");
+    assert.isEqual(testString.charCodeAt(testString.length-1), b4.get(testString.length-1), "zxcv");
 };
+
+exports.testToByteStringConstructorUnicode = function() {
+    var testString = "I ♥ JS";
+    var b = new ByteString(testString, "UTF-8");
+    
+    assert.isEqual(8, b.length, "length");
+    
+    assert.isEqual(0x49, b.get(0), "expected I");
+    assert.isEqual(0x20, b.get(1), "expected [space]");
+    assert.isEqual(0xE2, b.get(2), "expected heart byte 1");
+    assert.isEqual(0x99, b.get(3), "expected heart byte 1");
+    assert.isEqual(0xA5, b.get(4), "expected heart byte 1");
+    assert.isEqual(0x20, b.get(5), "expected [space]");
+    assert.isEqual(0x4A, b.get(6), "expected J");
+    assert.isEqual(0x53, b.get(7), "expected S");
+}
 
 exports.testToByteArrayEncodings = function() {
     var testString = "I ♥ JS";
