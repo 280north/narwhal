@@ -250,8 +250,30 @@ exports.TextIOWrapper = function (raw, mode, lineBuffering, buffering, charset, 
     }
 }; 
 
-var ByteIO = exports.ByteIO = function (initial) {
+
+/* ByteIO */
+
+// FIXME: this doesn't read/write the same stream
+
+var ByteIO = exports.ByteIO = function(binary) {
+    this.inputStream = binary ? new java.io.ByteArrayInputStream(binary._bytes, binary._offset, binary._length) : null;
+    this.outputStream = new java.io.ByteArrayOutputStream();
+    
+    var stream = (this.inStream, this.outStream);
+    
+    this.length = binary ? binary.length : 0;
 };
+
+ByteIO.prototype = new exports.IO();
+
+ByteIO.prototype.toByteString = function() {
+    var bytes = this.outputStream.toByteArray();
+    return new ByteString(bytes, 0, bytes.length);
+}
+
+ByteIO.prototype.decodeToString = function(charset) {
+    return String(charset ? this.outputStream.toString(charset) : this.outputStream.toString());
+}
 
 var StringIO = exports.StringIO = function (initial, delimiter) {
     var buffer = new java.lang.StringBuffer();
