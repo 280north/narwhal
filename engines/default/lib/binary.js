@@ -725,25 +725,3 @@ ByteArray.prototype.displace = function(begin, end) {
 ByteArray.prototype.toSource = function() {
     return "ByteArray(["+this.toArray().join(",")+"])";
 };
-
-/* BinaryIO */
-
-var BinaryIO = exports.BinaryIO = function(binary) {
-    this.inputStream = binary ? new java.io.ByteArrayInputStream(binary._bytes, binary._offset, binary._length) : null;
-    this.outputStream = new java.io.ByteArrayOutputStream();
-    
-    var stream = (this.inStream, this.outStream);
-    
-    this.length = binary ? binary.length : 0;
-};
-
-BinaryIO.prototype = new (require("io").IO)()
-
-BinaryIO.prototype.toByteString = function() {
-    var bytes = this.outputStream.toByteArray();
-    return new ByteString(bytes, 0, bytes.length);
-}
-
-BinaryIO.prototype.decodeToString = function(charset) {
-    return String(charset ? this.outputStream.toString(charset) : this.outputStream.toString());
-}
