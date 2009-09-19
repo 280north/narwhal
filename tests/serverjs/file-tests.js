@@ -183,10 +183,12 @@ exports.testCopyChain = function () {
 };
 
 exports.testMoveExists = function () {
+    var testString = "testCopy";
     try {
-        fs.path("testCopyA.txt").write("testCopy").move("testCopyB.txt");
+        fs.path("testCopyA.txt").write(testString).move("testCopyB.txt");
         assert.isFalse(fs.exists("testCopyA.txt"));
         assert.isTrue(fs.exists("testCopyB.txt"));
+        assert.is(fs.size("testCopyB.txt"), testString.length);
     } finally {
         if (fs.exists("testCopyA.txt"))
             fs.remove("testCopyA.txt");
@@ -203,6 +205,17 @@ exports.testsExists = function () {
 exports.testsIsFile = function () {
     assert.isTrue(fs.isFile(module.path));
     assert.isTrue(fs.path(module.path).isFile());
+};
+
+exports.testsMkdir = function () {
+    try {
+        fs.mkdir('testMkdir');
+        assert.isTrue(fs.exists('testMkdir'));
+        assert.isTrue(fs.isDirectory('testMkdir'));
+        assert.isFalse(fs.isFile('testMkdir'));
+    } finally {
+        fs.rmtree('testMkdir');
+    }
 };
 
 exports.testsIsDirectoryDirname = function () {
@@ -224,6 +237,10 @@ exports.testsRenameList = function () {
         fs.rmtree('testsRename');
     }
 };
+
+exports.testCwd = function() {
+    assert.eq(system.env["PWD"], fs.cwd(), "Ensure the PWD environment variable is set!");
+}
 
 exports.testIterator = require('./file/iterator');
 exports.testExtension = require('./file/extension');
