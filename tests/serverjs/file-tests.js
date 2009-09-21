@@ -38,6 +38,7 @@ exports.testOpenWriteRead = function () {
     try {
         var path = "testOpenWriteRead.txt";
         var content = "testOpenWriteRead.txt\n";
+        if (fs.exists(path)) fs.remove(path);
         fs.open(path, 'w').write(content);
         assert.is("", fs.open(path).read());
     } finally {
@@ -72,7 +73,7 @@ exports.testNewPathWriteRead = function () {
         var path = "testNewPathWriteRead.txt";
         var content = "testNewPathWriteRead.txt\n";
         new fs.Path(path).write(content);
-        assert.is(content, new fs.Path(path).read());
+        assert.is(content, fs.Path(path).read());
     } finally {
         fs.remove(path);
     }
@@ -89,7 +90,7 @@ exports.testBigPathOpenWriteRead = function () {
     }
 };
 
-exports.testLittlePathOpenWriteRead = function () {
+exports.testLittlePathOpenWriteRead1 = function () {
     var path = "testLittlePathWriteRead.txt";
     var content = "testLittlePathWriteRead.txt\n";
     assert.throwsError(function () {
