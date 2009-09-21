@@ -21,7 +21,7 @@ exports.list = function (path) {
 // TODO necessary for package loading
 exports.canonical = function (path) {
     // does not resolve symlinks
-    return exports.normal(exports.join(exports.cwd(), path));
+    return exports.absolute(path);
 };
 
 exports.exists = function (path) {
