@@ -45,8 +45,8 @@ fi
 
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
-    java $NARWHAL_JAVA_ARGUMENTS "-Xbootclasspath/p:$BOOTCLASSPATH" -cp "$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
+    java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
-    java $NARWHAL_JAVA_ARGUMENTS "-Xbootclasspath/p:$BOOTCLASSPATH" -cp "$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$0" "$@"
+    java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$0" "$@"
 fi
 
