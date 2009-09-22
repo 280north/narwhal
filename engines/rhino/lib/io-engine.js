@@ -1,68 +1,35 @@
 // IO: Rhino
 
-var ByteString = require("./binary").ByteString;
-
 var IO = exports.IO = function(inputStream, outputStream) {
     this.inputStream = inputStream;
     this.outputStream = outputStream;
 };
 
-IO.prototype.read = function(length) {
-    var readAll = false,
-        buffer  = null,
-        bytes   = null,
-        total   = 0,
-        index   = 0,
-        read    = 0;
-    
-    if (arguments.length == 0) {
-        readAll = true;
-    }
-    if (typeof length !== "number") {
-        length = 1024;
-    }
+IO.prototype.readInto = function(buffer, length, from) {
+    var bytes = buffer._bytes; // java byte array
 
-    buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length);
+    var offset = buffer._offset;
+    if (typeof from === "number")
+        offset += from;
 
-    do {
-        read = this.inputStream.read(buffer, index, length - index);
-        
-        if (read < 0)
+    if (length > bytes.length + offset)
+        throw "FIXME: Buffer too small. Throw or truncate?";
+
+    var total = 0,
+        bytesRead = 0;
+
+    while (total < length) {
+        bytesRead = this.inputStream.read(bytes, offset + total, length - total);
+        if (bytesRead < 0)
             break;
-        
-        if (bytes) {
-            bytes.write(buffer, index, read);
-            index = 0;
-        } else {
-            index += read;
-            if (index === buffer.length && readAll) {
-                bytes = new java.io.ByteArrayOutputStream(length * 2);
-                bytes.write(buffer, 0, length);
-                index = 0;
-            }
-        }   
-        total += read;
-        
-        
-    } while ((readAll || total < length) && read > -1);
-    
-    var resultBuffer, resultLength;
-    
-    if (bytes) {
-        resultBuffer = bytes.toByteArray();
-    } else if (total < buffer.length) {
-        resultBuffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, total);
-        java.lang.System.arraycopy(buffer, 0, resultBuffer, 0, total);
-    } else {
-        resultBuffer = buffer;
+        total += bytesRead;
     }
-    
-    resultLength = resultBuffer.length;
-    
-    if (total != resultLength || total !== resultBuffer.length)
-        throw new Error("IO.read sanity check failed: total="+total+" resultLength="+resultLength+" resultBuffer.length="+resultBuffer.length);
 
-    return new ByteString(resultBuffer, 0, resultBuffer.length);
+    return total;
+};
+
+IO.prototype.writeInto = function(buffer, from, to) {
+    this.outputStream.write(buffer._bytes, buffer._offset + from, to - from);
 };
 
 IO.prototype.copy = function (output, mode, options) {
@@ -73,15 +40,6 @@ IO.prototype.copy = function (output, mode, options) {
         output.write(buffer);
     }
     output.flush();
-    return this;
-};
-
-IO.prototype.write = function(object, charset) {
-    if (object === null || object === undefined || typeof object.toByteString !== "function")
-        throw new Error("Argument to IO.write must have toByteString() method");
-
-    var binary = object.toByteString(charset);
-    this.outputStream.write(binary._bytes, binary._offset, binary.length);
     return this;
 };
 
