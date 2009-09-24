@@ -21,7 +21,7 @@ if not "%NARWHAL_CLASSPATH%" == "" (
 set JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
 
 :: drop into shell if there are no additional arguments
-if %1 == "" (
+if "%1" == "" (
 	java -cp "%CLASSPATH%" "%JAVA_MAIN%" -f "%BOOTSTRAP%" -f -
 ) else (
 	java -cp "%CLASSPATH%" "%JAVA_MAIN%" "%BOOTSTRAP%" %0 %*
