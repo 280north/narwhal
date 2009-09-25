@@ -485,3 +485,5 @@ JSON.encode = JSON.stringify;
  * Deserialize an object from a JSON string.
  */
 JSON.decode = JSON.parse;
+
+exports.JSON = JSON;
