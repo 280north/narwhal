@@ -21,7 +21,7 @@ Options:
    down the routing cascade.
  * `proxy`: Alternate URL to search for scripts.
 
-These options haven't been implemented yet:
+This option has not been implemented yet:
 
  * `catalog`: Alternate URLs for individual scripts or
    script bundles.
@@ -38,6 +38,19 @@ of them.
 
     env.script.preload([id...])
 
+You can also embed a call to require a module and its transitive dependencies
+instead of loading them with asynchronous script injection.
+
+    env.script.embed("main")
+
+If you just need to install the loader and you intend to use the loader
+manually, you can inject it.  The `script.loader` function will return a bit of
+JavaScript that will return an expression that evaluates to the `require`
+object in JavaScript.  The first time it's called, this will be the full text
+of the loader, but thereafter it will simply be the global `require` variable.
+
+    env.script.loader()
+
 These functions return unescaped JavaScript text
 suitable for inserting in an HTML `<script>` tag.  The intent
 is for you to use these functions through whatever template
@@ -50,11 +63,10 @@ Or, with a higher level API that could be implemented to look like:
 
     {% script.require "main" %}
 
-If you intend to use modules in inline scripts, you will need
-to wait for the desired modules to load before you execute
-your code.
+If you intend to use modules in inline scripts, you will need to wait for the
+desired modules to load before you execute your code.  The `require.when`
+function executes a block of code when a module is *ready* to be required.
 
-    {% script.preload "main" %}
     <script>
         require.when("main", function () {
             var MAIN = require("main");
@@ -62,16 +74,40 @@ your code.
         });
     </script>
 
-This is a shortcut for attaching a fullfilment handler to a
-promise.
+You can also use promises directly with the `require.async` call, which
+performs an asynchronous require that fulfills the returned promise with the
+required module's exports.
 
-    {% script.preload "main" %}
     <script>
-        var Q = require("promise");
-        Q.when(require.async("main"), function () {
-            var MAIN = require("main");
-            ...
-        });
+        (function () {
+            var Q = require("promise");
+            Q.when(require.async("main"), function (MAIN) {
+                ...
+            });
+        })();
+    </script>
+
+The synchronous `require` call may throw an error if you use it without
+ensuring that the module you want has been loaded.
+
+    {{env.script.preload(["foo"])|javascript}}
+    <script>
+        require("bar"); // throws up
+    </script>
+
+However, you can make asynchronous require calls without preloading the
+corresponding modules.  Missing dependencies will be fetched on demand in a
+dynamic, albeit chatty fashion that may not take full advantage of the network
+capacity.
+
+    {{env.script.loader()|javascript}}
+    <script>
+        (function () {
+            var Q = require("promise");
+            Q.when(require.async("bar"), function (MAIN) {
+                ...
+            });
+        })();
     </script>
 
 
@@ -82,14 +118,6 @@ Features below this line have not been implemented.
 
 
 *****
-
-In a browser, calling "require" directly will throw an
-error since it cannot guarantee that the modules have
-loaded before the function returns.
-
-    <script>
-        require("main"); // throws require.Error
-    </script>
 
 If you want to use modules but are not using a JSGI application
 to host them, you will need to use "tusk" to build a module
