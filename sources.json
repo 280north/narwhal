@@ -138,11 +138,17 @@
         },
         "jake": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "json-rpc": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "prototype": {
+            "type": "github",
+            "name": "prototype-asp",
+            "user": "smith",
+            "ref": "narwhal-global"
         }
     }
 }

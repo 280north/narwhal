@@ -241,14 +241,19 @@
         },
         "inspec": {
             "name": "inspec",
-            "version": {
-                "label": "0.1",
-                "numeric": [
-                    0,
-                    1
-                ],
-                "status": "development"
-            },
+            "author": "Aaron Qian (http://aaronqian.com/)",
+            "url": "http://github.com/aq1018/inspec",
+            "dependencies": [
+                "narwhal"
+            ],
+            "license": "MIT",
+            "description": "BDD test framwork inspired by rspec",
+            "keywords": [
+                "bdd",
+                "tdd",
+                "test framework",
+                "spec"
+            ],
             "githubName": "inspec",
             "type": "zip",
             "location": "http://github.com/aq1018/inspec/zipball/master"
@@ -408,7 +413,21 @@
             ],
             "author": "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
             "email": "rfobic@gmail.com",
-            "lib": "lib",
+            "lib": [
+                "lib"
+            ],
+            "lean": [
+                "lib",
+                "engines"
+            ],
+            "version": {
+                "label": "0.1",
+                "numeric": [
+                    0,
+                    1
+                ],
+                "status": "development"
+            },
             "license": [
                 "MPL 1.1",
                 "GPL 2.0",
@@ -442,7 +461,7 @@
         },
         "seethrough": {
             "name": "seethrough",
-            "description": "Seethrough is a simple XML/XHTML template engine for JavaScript based on E4X. It’s a port of a former project for Erlang.",
+            "description": "Seethrough is a simple XML/XHTML template engine for JavaScript based on E4X. It's a port of a former project for Erlang.",
             "keywords": [
                 "template",
                 "xml",
@@ -555,16 +574,17 @@
         },
         "jake": {
             "name": "jake",
-            "author": "Tom Robinson (http://tlrobinson.net/)",
-            "description": "A build system for ServerJS, inspired by Rake",
+            "author": "Francisco Tolmasky (http://tolmasky.com/)",
+            "description": "A build system for CommonJS, lifted from Rake",
             "keywords": [
                 "build",
+                "jake",
                 "rake",
                 "make"
             ],
             "githubName": "jake",
             "type": "zip",
-            "location": "http://github.com/tlrobinson/jake/zipball/master"
+            "location": "http://github.com/280north/jake/zipball/master"
         },
         "json-rpc": {
             "name": "json-rpc",
@@ -579,6 +599,24 @@
             "githubName": "json-rpc",
             "type": "zip",
             "location": "http://github.com/tlrobinson/json-rpc/zipball/master"
+        },
+        "prototype": {
+            "name": "prototype",
+            "author": "Sam Stephenson",
+            "maintainer": "Nathan L Smith (http://nlsmith.com/) <nlloyds@gmail.com>",
+            "url": "http://github.com/smith/prototype-asp/tree/narwhal-global",
+            "license": "MIT",
+            "description": "Prototype is a JavaScript Framework that aims to ease development of dynamic web applications. This package implements a subset of Prototype",
+            "keywords": [
+                "prototype",
+                "framework",
+                "library",
+                "language",
+                "extension"
+            ],
+            "githubName": "prototype-asp",
+            "type": "zip",
+            "location": "http://github.com/smith/prototype-asp/zipball/narwhal-global"
         }
     }
 }
