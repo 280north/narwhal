@@ -486,4 +486,3 @@ JSON.encode = JSON.stringify;
  */
 JSON.decode = JSON.parse;
 
-exports.JSON = JSON;
