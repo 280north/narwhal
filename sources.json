@@ -143,6 +143,10 @@
         "json-rpc": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "qunit": {
+            "type": "github",
+            "user": "jquery"
         }
     }
 }
