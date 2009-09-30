@@ -147,6 +147,10 @@
         "qunit": {
             "type": "github",
             "user": "jquery"
+        },
+        "oauth": {
+            "type": "github",
+            "user": "cloudwork"
         }
     }
 }
