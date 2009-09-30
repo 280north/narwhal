@@ -627,6 +627,21 @@
             "githubName": "qunit",
             "type": "zip",
             "location": "http://github.com/jquery/qunit/zipball/master"
+        },
+        "oauth": {
+            "name": "oauth",
+            "dependencies": [
+                "narwhal"
+            ],
+            "jars": [],
+            "author": "Neville Burnell",
+            "description": "OAuth Library",
+            "keywords": [
+                "oauth"
+            ],
+            "githubName": "oauth",
+            "type": "zip",
+            "location": "http://github.com/cloudwork/oauth/zipball/master"
         }
     }
 }
