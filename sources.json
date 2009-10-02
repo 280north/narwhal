@@ -151,6 +151,10 @@
         "oauth": {
             "type": "github",
             "user": "cloudwork"
+        },
+        "bogart": {
+            "type": "github",
+            "user": "nrstott"
         }
     }
 }

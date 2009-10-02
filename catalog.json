@@ -642,6 +642,24 @@
             "githubName": "oauth",
             "type": "zip",
             "location": "http://github.com/cloudwork/oauth/zipball/master"
+        },
+        "bogart": {
+            "name": "bogart",
+            "description": "A simple web framework",
+            "keywords": [
+                "bogart",
+                "framework",
+                "routes"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [
+                "ejs"
+            ],
+            "lib": "lib",
+            "githubName": "bogart",
+            "type": "zip",
+            "location": "http://github.com/nrstott/bogart/zipball/master"
         }
     }
 }
