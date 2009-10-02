@@ -642,6 +642,7 @@
             "githubName": "oauth",
             "type": "zip",
             "location": "http://github.com/cloudwork/oauth/zipball/master"
+<<<<<<< HEAD
         },
         "bogart": {
             "name": "bogart",
@@ -660,6 +661,8 @@
             "githubName": "bogart",
             "type": "zip",
             "location": "http://github.com/nrstott/bogart/zipball/master"
+=======
+>>>>>>> ec940c8f09ea7234d0534c9404afcb78eb2e243a
         }
     }
 }
