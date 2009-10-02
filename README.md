@@ -56,6 +56,8 @@ Contributors
 * Nathan L. Smith
 * Jan Varwig
 * Mark Porter
+* [Isaac Z. Schlueter](http://blog.izs.me/)
+* [Kris Zyp](http://www.xucia.com/)
 
 
 License

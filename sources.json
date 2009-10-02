@@ -149,6 +149,13 @@
             "name": "prototype-asp",
             "user": "smith",
             "ref": "narwhal-global"
+        "qunit": {
+            "type": "github",
+            "user": "jquery"
+        },
+        "oauth": {
+            "type": "github",
+            "user": "cloudwork"
         }
     }
 }
