@@ -57,7 +57,7 @@ Contributors
 * Jan Varwig
 * Mark Porter
 * [Isaac Z. Schlueter](http://blog.izs.me/)
-* [Kris Zyp](http://www.xucia.com/)
+* [Kris Zyp](http://www.sitepen.com/blog/author/kzyp/)
 
 
 License
