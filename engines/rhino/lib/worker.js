@@ -49,7 +49,7 @@ function createWorker(scriptName, worker, args){
             workerGlobal.arguments = args;
         }
     // crazy hack to get the path to the bootstrap.js file :/
-    var bootstrapPath = require("system").originalArgs[0].replace(/bin\/narwhal-rhino/,"bootstrap.js");
+    var bootstrapPath = system.enginePrefix + "/bootstrap.js";
     org.mozilla.javascript.tools.shell.Main.processFile(
         org.mozilla.javascript.Context.enter(), 
         workerGlobal,
