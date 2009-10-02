@@ -1,9 +1,9 @@
 
 var io = require('io');
 
-var jna = Packages.com.sun.jna;
-var c = jna.NativeLibrary.getInstance(jna.Platform.isWindows() ? "msvcrt" : "c");
-var cSystem = c.getFunction("system");
+//var jna = Packages.com.sun.jna;
+//var c = jna.NativeLibrary.getInstance(jna.Platform.isWindows() ? "msvcrt" : "c");
+//var cSystem = c.getFunction("system");
 
 exports.exit = function (status) {
     Packages.java.lang.System.exit(status << 0);
