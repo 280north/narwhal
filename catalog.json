@@ -241,14 +241,19 @@
         },
         "inspec": {
             "name": "inspec",
-            "version": {
-                "label": "0.1",
-                "numeric": [
-                    0,
-                    1
-                ],
-                "status": "development"
-            },
+            "author": "Aaron Qian (http://aaronqian.com/)",
+            "url": "http://github.com/aq1018/inspec",
+            "dependencies": [
+                "narwhal"
+            ],
+            "license": "MIT",
+            "description": "BDD test framwork inspired by rspec",
+            "keywords": [
+                "bdd",
+                "tdd",
+                "test framework",
+                "spec"
+            ],
             "githubName": "inspec",
             "type": "zip",
             "location": "http://github.com/aq1018/inspec/zipball/master"
@@ -408,7 +413,21 @@
             ],
             "author": "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
             "email": "rfobic@gmail.com",
-            "lib": "lib",
+            "lib": [
+                "lib"
+            ],
+            "lean": [
+                "lib",
+                "engines"
+            ],
+            "version": {
+                "label": "0.1",
+                "numeric": [
+                    0,
+                    1
+                ],
+                "status": "development"
+            },
             "license": [
                 "MPL 1.1",
                 "GPL 2.0",
@@ -555,16 +574,17 @@
         },
         "jake": {
             "name": "jake",
-            "author": "Tom Robinson (http://tlrobinson.net/)",
-            "description": "A build system for ServerJS, inspired by Rake",
+            "author": "Francisco Tolmasky (http://tolmasky.com/)",
+            "description": "A build system for CommonJS, lifted from Rake",
             "keywords": [
                 "build",
+                "jake",
                 "rake",
                 "make"
             ],
             "githubName": "jake",
             "type": "zip",
-            "location": "http://github.com/tlrobinson/jake/zipball/master"
+            "location": "http://github.com/280north/jake/zipball/master"
         },
         "json-rpc": {
             "name": "json-rpc",
@@ -579,6 +599,70 @@
             "githubName": "json-rpc",
             "type": "zip",
             "location": "http://github.com/tlrobinson/json-rpc/zipball/master"
+        },
+        "qunit": {
+            "name": "qunit",
+            "author": {
+                "name": "John Resig",
+                "email": "jeresig@gmail.com",
+                "url": "http://ejohn.org/"
+            },
+            "maintainer": {
+                "name": "Jörn Zaefferer",
+                "email": "joern.zaefferer@googlemail.com",
+                "url": "http://bassistance.de/"
+            },
+            "url": "http://docs.jquery.com/QUnit",
+            "license": {
+                "name": "MIT",
+                "url": "http://www.opensource.org/licenses/mit-license.php"
+            },
+            "description": "An easy-to-use JavaScript Unit Testing framework.",
+            "keywords": [
+                "testing",
+                "unit",
+                "jquery"
+            ],
+            "lib": "qunit",
+            "githubName": "qunit",
+            "type": "zip",
+            "location": "http://github.com/jquery/qunit/zipball/master"
+        },
+        "oauth": {
+            "name": "oauth",
+            "dependencies": [
+                "narwhal"
+            ],
+            "jars": [],
+            "author": "Neville Burnell",
+            "description": "OAuth Library",
+            "keywords": [
+                "oauth"
+            ],
+            "githubName": "oauth",
+            "type": "zip",
+            "location": "http://github.com/cloudwork/oauth/zipball/master"
+<<<<<<< HEAD
+        },
+        "bogart": {
+            "name": "bogart",
+            "description": "A simple web framework",
+            "keywords": [
+                "bogart",
+                "framework",
+                "routes"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [
+                "ejs"
+            ],
+            "lib": "lib",
+            "githubName": "bogart",
+            "type": "zip",
+            "location": "http://github.com/nrstott/bogart/zipball/master"
+=======
+>>>>>>> ec940c8f09ea7234d0534c9404afcb78eb2e243a
         }
     }
 }

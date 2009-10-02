@@ -138,11 +138,23 @@
         },
         "jake": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "json-rpc": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "qunit": {
+            "type": "github",
+            "user": "jquery"
+        },
+        "oauth": {
+            "type": "github",
+            "user": "cloudwork"
+        },
+        "bogart": {
+            "type": "github",
+            "user": "nrstott"
         }
     }
 }
