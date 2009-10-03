@@ -3,18 +3,16 @@ var IO = require("io").IO,
 
 var engine = exports;
 
-engine.connect = function HTTPClient_engine_connect (tx) {
+engine.connect = function HttpClient_engine_connect (tx) {
     if (tx._isConnected) return;
     
-    var con = java.net.HttpURLConnection(
-        new java.net.URL(tx.url).openConnection()
-    );
+    var con = java.net.HttpURLConnection(new java.net.URL(tx.url).openConnection());
     con.setRequestMethod(tx.method.toUpperCase());
     
     HashP.forEach(tx.headers, function (h, v) {
         con.setRequestProperty(h, v);
     });
-    
+    if (!tx.headers) tx.headers = {};
     var cl = HashP.get(tx.headers, "Content-Length") || 0;
     if (cl > 0) {
         con.setDoOutput(true);
@@ -47,7 +45,7 @@ engine.connect = function HTTPClient_engine_connect (tx) {
     var resp = tx._response = {status:200, headers:{}, body:[]};
     
     // Call this now to trigger the fetch asynchronously.
-    // This way, if you set up multiple HTTPClients, and then call connect()
+    // This way, if you set up multiple HttpClients, and then call connect()
     // on all of them, you'll only wait as long as the slowest one, since
     // the streams will start filling up right away.
     
