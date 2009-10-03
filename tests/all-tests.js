@@ -1,7 +1,7 @@
 
 exports.testSandbox = require("./iojs/program");
-exports.testString = require("./string-tests");
-exports.testURI = require("./uri-tests");
+exports.testString = require("./string");
+exports.testURI = require("./uri");
 exports.testCodecs = require("./hashes");
 exports.testOS = require("./os/all-tests");
 exports.testFile = require("./file/all-tests");
@@ -10,7 +10,7 @@ exports.testArgs = require("./args");
 
 exports.testGlobal = require("./global");
 
-exports.testServerJS = require("./serverjs/all-tests");
+exports.testCommonjs = require("./commonjs/all-tests");
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
