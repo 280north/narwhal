@@ -1,5 +1,4 @@
 
-exports.testSandbox = require("./iojs/program");
 exports.testString = require("./string");
 exports.testURI = require("./uri");
 exports.testCodecs = require("./hashes");
