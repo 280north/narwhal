@@ -19,7 +19,7 @@ if [ -z "$NARWHAL_HOME" ]; then
 	export NARWHAL_HOME=$(dirname -- "$(dirname -- "$NARWHAL_ENGINE_HOME")")
 fi
 
-CLASSPATH=$NARWHAL_ENGINE_HOME/jars/jline.jar:$NARWHAL_ENGINE_HOME/jars/jna.jar
+CLASSPATH=$NARWHAL_ENGINE_HOME/jars/jna.jar
 BOOTCLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
@@ -45,7 +45,15 @@ fi
 
 # drop into shell if there are no additional arguments
 if [ $# -lt 1 ]; then
-    java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
+    # prefer rlwrap to jline.
+    RLWRAP="$(which rlwrap)"
+    if [ -x "$RLWRAP" ]; then
+        RLWRAP="$RLWRAP -C narwhal -m\\"
+    else
+        RLWRAP=""
+        CLASSPATH="$CLASSPATH:$NARWHAL_ENGINE_HOME/jars/jline.jar"
+    fi
+    $RLWRAP java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
     java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$0" "$@"
 fi

@@ -600,6 +600,24 @@
             "type": "zip",
             "location": "http://github.com/tlrobinson/json-rpc/zipball/master"
         },
+        "prototype": {
+            "name": "prototype",
+            "author": "Sam Stephenson",
+            "maintainer": "Nathan L Smith (http://nlsmith.com/) <nlloyds@gmail.com>",
+            "url": "http://github.com/smith/prototype-asp/tree/narwhal-global",
+            "license": "MIT",
+            "description": "Prototype is a JavaScript Framework that aims to ease development of dynamic web applications. This package implements a subset of Prototype",
+            "keywords": [
+                "prototype",
+                "framework",
+                "library",
+                "language",
+                "extension"
+            ],
+            "githubName": "prototype-asp",
+            "type": "zip",
+            "location": "http://github.com/smith/prototype-asp/zipball/narwhal-global"
+        },
         "qunit": {
             "name": "qunit",
             "author": {
