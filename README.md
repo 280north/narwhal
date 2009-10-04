@@ -58,6 +58,7 @@ Contributors
 * Mark Porter
 * [Isaac Z. Schlueter](http://blog.izs.me/)
 * [Kris Zyp](http://www.sitepen.com/blog/author/kzyp/)
+* [Nathan Stott](http://nathan.whiteboard-it.com/)
 
 
 License
