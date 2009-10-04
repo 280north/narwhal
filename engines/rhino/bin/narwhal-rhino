@@ -33,7 +33,11 @@ if [ "$(which cygpath 2>/dev/null)" ]; then
     export NARWHAL_ENGINE_HOME=$(cygpath -wa -- "$NARWHAL_ENGINE_HOME")
 fi
 
-JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
+if [ -z "$NARWHAL_DEBUGGER" ] || [ "$NARWHAL_DEBUGGER" -eq 0 ]; then
+    JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
+else
+    JAVA_MAIN=org.mozilla.javascript.tools.debugger.Main
+fi
 
 # check the java version number in the most complicated fashion imaginable
 JAVA_VERSION=$(java -version 2>&1 | awk -F '[ ".]+' 'NR==1 {print $3 "." $4}')
