@@ -154,7 +154,7 @@ if (!Array.prototype.reduceRight) {
 // https://wiki.mozilla.org/ServerJS/Binary/B
 if (!Array.prototype.toByteString)
     Array.prototype.toByteString = function(charset) {
-        return new ByteString(this);
+        return new require("binary").ByteString(this);
     };
 
 if (!Array.prototype.toByteArray)
