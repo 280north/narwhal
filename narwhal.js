@@ -1,29 +1,38 @@
-(function (system) {
+(function (modules) {
+
+if (modules.fs) {
+    // XXX: migration step for deprecated engines
+    var system = modules;
+    var file = system.fs;
+    var modules = {system: system, file: file};
+    system.print(
+        "WARNING: this version of the " + system.engine + " engine \n" +
+        "         is deprecated because it injects the system module \n" +
+        "         instead of a modules memo in the narwhal bootstrap system."
+    );
+} else {
+    var system = modules.system;
+    var file = modules.file;
+}
 
 // global reference
+// XXX: beyond-compliance with CommonJS
 global = system.global;
 global.global = global;
 global.system = system;
 global.print = system.print;
 
-// logger shim
-var logFake = function () {
-    if (system.debug) {
-        system.print(Array.prototype.join.apply(arguments, [" "]));
-    }
-};
-var log = {fatal:logFake, error:logFake, warn:logFake, info:logFake, debug:logFake};
-system.log = log;
-
 // this only works for modules with no dependencies and a known absolute path
-var requireFake = function(id, path, modules) {
-    modules = modules || {};
-    var exports = {};
+var requireFake = function(id, path, force) {
+    if (modules[id] && !force)
+        return modules[id];
+
+    var exports = modules[id] || {};
     var module = {id: id, path: path};
 
-    var factory = system.evaluate(system.fs.read(path), path, 1);
+    var factory = system.evaluate(file.read(path), path, 1);
     factory(
-        function(id) { return modules[id]; }, // require
+        requireFake, // require
         exports, // exports
         module, // module
         system, // system
@@ -34,27 +43,11 @@ var requireFake = function(id, path, modules) {
 };
 
 // bootstrap sandbox module
-var sandbox = requireFake(
-    "sandbox",
-    system.prefix + "/lib/sandbox.js",
-    {"system": system}
-);
+var sandbox = requireFake("sandbox", system.prefix + "/lib/sandbox.js");
 
 // bootstrap file module
-var fs = {};
-requireFake(
-    "sandbox",
-    system.prefix + "/lib/file-bootstrap.js",
-    {"file" : fs, "system": system}
-);
-// override generic bootstrapping methods with those provided
-//  by the engine bootstrap system.fs object
-for (var name in system.fs) {
-    if (Object.prototype.hasOwnProperty.call(system.fs, name)) {
-        fs[name] = system.fs[name];
-    }
-}
-system.fs = fs;
+requireFake("file", system.prefix + "/lib/file-bootstrap.js", "force");
+
 system.enginePrefix = system.prefix + '/engines/' + system.engines[0];
 // construct the initial paths
 var paths = [];
@@ -78,7 +71,6 @@ if (system.loaders) {
     loader.loaders.unshift.apply(loader.loaders, system.loaders);
     delete system.loaders;
 }
-var modules = {system: system, sandbox: sandbox};
 global.require = sandbox.Sandbox({
     loader: loader,
     modules: modules,
@@ -90,11 +82,13 @@ global.require = sandbox.Sandbox({
 try {
     require("global");
 } catch (e) {
-    system.log.error("Couldn't load global/primordial patches ("+e+")");
+    system.print("Couldn't load global/primordial patches ("+e+")");
 }
 
 // load the complete system module
 global.require.force("system");
+global.require.force("file-engine");
+global.require.force("file");
 
 // augment the path search array with those provided in
 //  environment variables
@@ -130,15 +124,15 @@ if (!wasVerbose && system.verbose) {
 var program;
 if (system.args.length && !options.interactive && !options.main) {
     if (!program)
-        program = system.fs.path(system.args[0]).canonical();
+        program = file.path(system.args[0]).canonical();
 
     // add package prefixes for all of the packages
     // containing the program, from specific to general
-    var parts = system.fs.split(program);
+    var parts = file.split(program);
     for (var i = 0; i < parts.length; i++) {
-        var path = system.fs.join.apply(null, parts.slice(0, i));
-        var packageJson = system.fs.join(path, "package.json");
-        if (system.fs.isFile(packageJson))
+        var path = file.join.apply(null, parts.slice(0, i));
+        var packageJson = file.join(path, "package.json");
+        if (file.isFile(packageJson))
             system.prefixes.unshift(path);
     }
 
