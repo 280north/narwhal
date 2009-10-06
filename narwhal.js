@@ -24,11 +24,18 @@ global.print = system.print;
 
 // this only works for modules with no dependencies and a known absolute path
 var requireFake = function(id, path, force) {
+    // when a real require is ready, use it instead
+    if (require)
+        require(id);
+    // if the module has already been loaded,
+    //  and this isn't a forced reload,
+    //  return the memoized exports
     if (modules[id] && !force)
         return modules[id];
 
-    var exports = modules[id] || {};
+    var exports = modules[id] = modules[id] || {};
     var module = {id: id, path: path};
+
 
     var factory = system.evaluate(file.read(path), path, 1);
     factory(
@@ -42,7 +49,9 @@ var requireFake = function(id, path, force) {
     return exports;
 };
 
-// bootstrap sandbox module
+// bootstrap sandbox and loader modules
+var loader = requireFake("loader", system.prefix + "/lib/loader.js");
+var multiLoader = requireFake("loader/multi", system.prefix + "/lib/loader/multi.js");
 var sandbox = requireFake("sandbox", system.prefix + "/lib/sandbox.js");
 
 // bootstrap file module
@@ -63,7 +72,7 @@ for (var i = 0; i < prefixes.length; i++) {
 }
 
 // create the primary Loader and Sandbox:
-var loader = sandbox.MultiLoader({
+var loader = multiLoader.MultiLoader({
     paths: paths,
     debug: system.verbose
 });
@@ -71,7 +80,7 @@ if (system.loaders) {
     loader.loaders.unshift.apply(loader.loaders, system.loaders);
     delete system.loaders;
 }
-global.require = sandbox.Sandbox({
+var require = global.require = sandbox.Sandbox({
     loader: loader,
     modules: modules,
     debug: system.verbose
@@ -86,9 +95,9 @@ try {
 }
 
 // load the complete system module
-global.require.force("system");
-global.require.force("file-engine");
-global.require.force("file");
+require.force("system");
+require.force("file");
+require.force("file-engine");
 
 // augment the path search array with those provided in
 //  environment variables
@@ -116,7 +125,7 @@ global.require.debug = options.verbose;
 // already loaded
 if (!wasVerbose && system.verbose) {
     Object.keys(modules).forEach(function (name) {
-        print("| " + name);
+        system.print("| " + name);
     });
 }
 
@@ -182,7 +191,7 @@ options.todo.forEach(function (item) {
             if (paths.indexOf(path) < 0)
                 paths.push(path);
         }
-        print(paths.join(value));
+        system.print(paths.join(value));
     }
 });
 
