@@ -89,21 +89,23 @@
 
     try {
         narwhal({
-            global: global,
-            evalGlobal: evalGlobal,
-            engine: 'rhino',
-            engines: ['rhino', 'default'],
-            os: os,
-            print: print,
-            fs: {
+            system: {
+                global: global,
+                evalGlobal: evalGlobal,
+                engine: 'rhino',
+                engines: ['rhino', 'default'],
+                os: os,
+                print: print,
+                prefix: prefix,
+                prefixes: prefixes,
+                evaluate: evaluate,
+                debug: debug,
+                verbose: verbose
+            },
+            file: {
                 read: read,
                 isFile: isFile
-            },
-            prefix: prefix,
-            prefixes: prefixes,
-            evaluate: evaluate,
-            debug: debug,
-            verbose: verbose
+            }
         });
     } catch (e) {
         if (e.rhinoException)
