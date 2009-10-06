@@ -26,17 +26,25 @@ exports.B_SET = function(bytes, index, value) {
 exports.B_DECODE = function(bytes, offset, length, codec) {
     return String(new Packages.java.lang.String(bytes, offset, length, codec));
 }
-
+/*
 exports.B_DECODE_DEFAULT = function(bytes, offset, length) {
     return String(new Packages.java.lang.String(bytes, offset, length));
+}
+*/
+exports.B_DECODE_DEFAULT = function(bytes, offset, length) {
+    return String(new Packages.java.lang.String(bytes, offset, length, "UTF-8"));
 }
 
 exports.B_ENCODE = function(string, codec) {
     return new Packages.java.lang.String(string).getBytes(codec);
 }
-
+/*
 exports.B_ENCODE_DEFAULT = function(string) {
     return new Packages.java.lang.String(string).getBytes();
+}
+*/
+exports.B_ENCODE_DEFAULT = function(string) {
+    return new Packages.java.lang.String(string).getBytes("UTF-8");
 }
 
 exports.B_TRANSCODE = function(bytes, offset, length, sourceCodec, targetCodec) {
