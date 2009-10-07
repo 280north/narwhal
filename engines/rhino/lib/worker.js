@@ -16,7 +16,6 @@ function createPort(queue, target, port){
 		// allows for sending a message with a direct object reference.
             // this is not part of CommonJS, and must be used with great care.
             __enqueue__: function(eventName, args){
-            print("queuing " + eventName);
                 queue.enqueue(function(){
                     if(typeof target[eventName] == "function"){
                         target[eventName].apply(target, args);
@@ -61,7 +60,6 @@ function createWorker(scriptName, setup){
         javaWorkerGlobal.init(org.mozilla.javascript.tools.shell.Main.shellContextFactory);
         workerGlobal.NARWHAL_HOME = system.prefix;
         workerGlobal.NARWHAL_ENGINE_HOME = system.enginePrefix;
-        print(system.enginePrefix + "/bootstrap.js");
     // get the path to the bootstrap.js file
     var bootstrapPath = system.enginePrefix + "/bootstrap.js";
     org.mozilla.javascript.tools.shell.Main.processFile(
@@ -78,9 +76,7 @@ function createWorker(scriptName, setup){
 		workerGlobal.require(scriptName);
 		while(true){
 		    try{
-		    	print("in event loop");
 			workerQueue.nextEvent()();
-		    	print("did event");
 			if(workerQueue.isEmpty()){
 			    queue.enqueue(function(){
 				if(worker && worker.onidle){
