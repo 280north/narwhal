@@ -600,6 +600,24 @@
             "type": "zip",
             "location": "http://github.com/tlrobinson/json-rpc/zipball/master"
         },
+        "prototype": {
+            "name": "prototype",
+            "author": "Sam Stephenson",
+            "maintainer": "Nathan L Smith (http://nlsmith.com/) <nlloyds@gmail.com>",
+            "url": "http://github.com/smith/prototype-asp/tree/narwhal-global",
+            "license": "MIT",
+            "description": "Prototype is a JavaScript Framework that aims to ease development of dynamic web applications. This package implements a subset of Prototype",
+            "keywords": [
+                "prototype",
+                "framework",
+                "library",
+                "language",
+                "extension"
+            ],
+            "githubName": "prototype-asp",
+            "type": "zip",
+            "location": "http://github.com/smith/prototype-asp/zipball/narwhal-global"
+        },
         "qunit": {
             "name": "qunit",
             "author": {
@@ -642,6 +660,24 @@
             "githubName": "oauth",
             "type": "zip",
             "location": "http://github.com/cloudwork/oauth/zipball/master"
+        },
+        "bogart": {
+            "name": "bogart",
+            "description": "A simple web framework",
+            "keywords": [
+                "bogart",
+                "framework",
+                "routes"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [
+                "ejs"
+            ],
+            "lib": "lib",
+            "githubName": "bogart",
+            "type": "zip",
+            "location": "http://github.com/nrstott/bogart/zipball/master"
         }
     }
 }

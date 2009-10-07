@@ -17,7 +17,6 @@ if "%1" == "" (
     echo PATH=%PATH%
     %SHELL%
 ) else (
-echo "asdfasdfadsf"
     %SHELL% %*
 )
 
