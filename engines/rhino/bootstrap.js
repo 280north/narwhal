@@ -112,6 +112,7 @@
             e.rhinoException.printStackTrace();
         if (e.javaException)
             e.javaException.printStackTrace();
+        print(e);
     }
         
 })(this, function () {
