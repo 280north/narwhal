@@ -1,104 +1,142 @@
+var queue = require("event-queue");
 
 var Worker = exports.Worker = function(scriptName){
-    return createWorker(scriptName);
+    var worker;
+    createWorker(scriptName, function(workerQueue, global){
+    	worker = createPort(workerQueue, global);
+    	createPort(queue, worker, global);
+    	return worker;
+    });
+    return worker;
 };
-function createWorker(scriptName, worker, args){
-    worker = worker || {
-            postMessage: function(message){
-                workerQueue.enqueue(function(){
-                    var event = {
-                        target: workerGlobal,
-                        data: message,
-                    }
-                    if(typeof workerGlobal.onmessage == "function"){
-                        workerGlobal.onmessage(event);
-                    }
-                });
-            },
-            postData: function(message){
-                workerQueue.enqueue(function(){
-                    var event = {
-                        target: workerGlobal,
-                        // this can be optimized to be much faster
-                        data: workerGlobal.JSON.parse(JSON.stringify(message)), 
-                    }
-                    if(typeof workerGlobal.onmessage == "function"){
-                        workerGlobal.onmessage(event);
-                    }
-                });
-            },
-            // allows for sending a message with a direct object reference.
+
+function createPort(queue, target, port){
+	target.onmessage = true; // give it something to feature detect off of
+	port = port || {
+		// allows for sending a message with a direct object reference.
             // this is not part of CommonJS, and must be used with great care.
             __enqueue__: function(eventName, args){
-                workerQueue.enqueue(function(){
-                    if(typeof workerGlobal[eventName] == "function"){
-                        workerGlobal[eventName].apply(workerGlobal, args);
+            print("queuing " + eventName);
+                queue.enqueue(function(){
+                    if(typeof target[eventName] == "function"){
+                        target[eventName].apply(target, args);
                     }
                 });
-            },
-            isIdle: function(){
-                return workerQueue.isEmpty();
             }
         };
-        var queue = require("event-queue"),
-            workerQueue, 
-        workerGlobal = new org.mozilla.javascript.tools.shell.Global();
+        port.postMessage = function(message){
+                queue.enqueue(function(){
+                    var event = {
+                    	//when is supposed to be the target, and when the ports? The spec is confusing
+                    	target: target,
+                        ports: [target],
+                        data: message.toString(),
+                    }
+                    if(typeof target.onmessage == "function"){
+                        target.onmessage(event);
+                    }
+                });
+            };
+        port.postData= function(message){
+                queue.enqueue(function(){
+                    var event = {
+                        ports: [target],
+                        // this can be optimized to be much faster
+                        data: target.JSON.parse(JSON.stringify(message)), 
+                    }
+                    if(typeof target.ondata == "function"){
+                        target.ondata(event);
+                    }
+                });
+            };
+        port.isIdle= function(){
+                return queue.isEmpty();
+            };
+        return port;
+}
+function createWorker(scriptName, setup){
+        var workerQueue, 
+        	workerGlobal = new org.mozilla.javascript.tools.shell.Global();
         javaWorkerGlobal = new org.mozilla.javascript.NativeJavaObject(global, workerGlobal, null);
         javaWorkerGlobal.init(org.mozilla.javascript.tools.shell.Main.shellContextFactory);
-        if(args){
-            workerGlobal.arguments = args;
-        }
-    // crazy hack to get the path to the bootstrap.js file :/
+        workerGlobal.NARWHAL_HOME = system.prefix;
+        workerGlobal.NARWHAL_ENGINE_HOME = system.enginePrefix;
+        print(system.enginePrefix + "/bootstrap.js");
+    // get the path to the bootstrap.js file
     var bootstrapPath = system.enginePrefix + "/bootstrap.js";
     org.mozilla.javascript.tools.shell.Main.processFile(
         org.mozilla.javascript.Context.enter(), 
         workerGlobal,
         bootstrapPath);
     var paths = workerGlobal.require.paths;
-    paths.splice(0, paths.length) // unless there's a better way to empty an array?
+    paths.splice(0, paths.length);
     paths.push.apply(paths, require.paths);
-    workerGlobal.postMessage = function(message){
-        queue.enqueue(function(){
-            var event = {
-                target: worker,
-                data: message
-            }
-            if(typeof worker.onmessage == "function"){
-                worker.onmessage(event);
-            }
-        });
-    }
     workerQueue = workerGlobal.require("event-queue");
-    workerQueue.__sharedWorkers__ == exports.__sharedWorkers__;
-        var thread = new java.lang.Thread(function(){
-        workerGlobal.require(scriptName);
-        while(true){
-            try{
-                workerQueue.nextEvent()();
-                print("worker.onidle " + worker.onidle );
-                if(workerQueue.isEmpty() && typeof worker.onidle == "function"){
-                    queue.enqueue(function(){
-                        worker.onidle();
-                    });
-                }
-            }catch(e){
-                // this needs to be delegated to the onerror handler
-                print(e);
-            }
-        }
-        }, "Worker thread");
-        thread.start();
-        return worker;
+    var worker = setup(workerQueue, workerGlobal);
+    workerGlobal.require("system").__sharedWorkers__ = system.__sharedWorkers__;
+	var thread = new java.lang.Thread(function(){
+		workerGlobal.require(scriptName);
+		while(true){
+		    try{
+		    	print("in event loop");
+			workerQueue.nextEvent()();
+		    	print("did event");
+			if(workerQueue.isEmpty()){
+			    queue.enqueue(function(){
+				if(worker && worker.onidle){
+					worker.onidle();
+				}
+			    });
+			}
+		    }catch(e){
+		    	workerQueue.enqueue(function(){
+		    		if(typeof workerGlobal.onerror === "function"){
+		    			try{
+		    				workerGlobal.onerror(e);
+		    			}
+		    			catch(e){
+		    				// don't want an error here to go into an infinite loop!
+		    				print(e);
+		    			}
+		    		}
+		    		else{
+		    			print(e);
+		    		}
+		    	});
+			
+			
+		    }
+		}
+	}, "Worker thread");
+	thread.start();
 };
 
-exports.__sharedWorkers__ = {};
+if(!system.__sharedWorkers__){
+	system.__sharedWorkers__ = {};
+}
 
 exports.SharedWorker = function(scriptName, workerName){
-    var worker = exports.__sharedWorkers__[workerName] = exports.__sharedWorkers__[workerName] || {};
-    //TODO: create ports as well
-    return createWorker(scriptName, worker);
+	workerName = workerName || scriptName;
+	var shared = system.__sharedWorkers__[workerName];
+	if(!shared){
+		var shared = {};
+		createWorker(scriptName, function(queue, global){
+			shared.queue = queue;
+			shared.global = global;
+		});
+		system.__sharedWorkers__[workerName] = shared;
+	}
+	var port = {};
+	var returnPort = createPort(queue, port);
+	createPort(shared.queue, returnPort, port);
+	shared.global.onconnect = true;
+	shared.queue.enqueue(function(){
+		if(typeof shared.global.onconnect == "function"){
+			shared.global.onconnect({
+				port: port
+			});
+		}
+	});
+	return {port: port};
 }
 
-exports.__WorkerWithArgs__ = function(scriptName, args){
-    return createWorker(scriptName, null, args);
-}
