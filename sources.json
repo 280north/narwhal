@@ -149,6 +149,7 @@
             "name": "prototype-asp",
             "user": "smith",
             "ref": "narwhal-global"
+        },
         "qunit": {
             "type": "github",
             "user": "jquery"
@@ -156,6 +157,20 @@
         "oauth": {
             "type": "github",
             "user": "cloudwork"
+        },
+        "bogart": {
+            "type": "github",
+            "user": "nrstott"
+        },
+        "ejs": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "narwhal-ejs"
+        },
+        "couchdb": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "narwhal-couchdb"
         }
     }
 }

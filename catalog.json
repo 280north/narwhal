@@ -23,7 +23,10 @@
                 "Zach Carter",
                 "Nathan L. Smith",
                 "Jan Varwig",
-                "Mark Porter"
+                "Mark Porter",
+                "Isaac Z. Schlueter (http://blog.izs.me/)",
+                "Kris Zyp (http://www.sitepen.com/blog/author/kzyp/)",
+                "Nathan Stott (http://nathan.whiteboard-it.com) <nathan.stott@whiteboard-it.com>"
             ],
             "main": "examples/narwhal",
             "lib": [
@@ -461,7 +464,7 @@
         },
         "seethrough": {
             "name": "seethrough",
-            "description": "Seethrough is a simple XML/XHTML template engine for JavaScript based on E4X. It's a port of a former project for Erlang.",
+            "description": "Seethrough is a simple XML/XHTML template engine for JavaScript based on E4X. It’s a port of a former project for Erlang.",
             "keywords": [
                 "template",
                 "xml",
@@ -617,6 +620,7 @@
             "githubName": "prototype-asp",
             "type": "zip",
             "location": "http://github.com/smith/prototype-asp/zipball/narwhal-global"
+        },
         "qunit": {
             "name": "qunit",
             "author": {
@@ -659,6 +663,57 @@
             "githubName": "oauth",
             "type": "zip",
             "location": "http://github.com/cloudwork/oauth/zipball/master"
+        },
+        "bogart": {
+            "name": "bogart",
+            "description": "A simple web framework",
+            "keywords": [
+                "bogart",
+                "framework",
+                "routes"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [
+                "ejs"
+            ],
+            "lib": "lib",
+            "githubName": "bogart",
+            "type": "zip",
+            "location": "http://github.com/nrstott/bogart/zipball/master"
+        },
+        "ejs": {
+            "name": "ejs",
+            "description": "Embedded JavaScript templating framework",
+            "keywords": [
+                "erb",
+                "ejs",
+                "template"
+            ],
+            "author": "",
+            "email": "",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-ejs",
+            "type": "zip",
+            "location": "http://github.com/nrstott/narwhal-ejs/zipball/master"
+        },
+        "couchdb": {
+            "name": "couchdb",
+            "description": "API to access CouchDB servers, a schema-free database of JSON documents",
+            "keywords": [
+                "couch",
+                "database",
+                "document",
+                "nosql"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-couchdb",
+            "type": "zip",
+            "location": "http://github.com/nrstott/narwhal-couchdb/zipball/master"
         }
     }
 }

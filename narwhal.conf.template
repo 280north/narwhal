@@ -1,9 +1,13 @@
 
+# If a debugger is available for your engine, use it?
+#NARWHAL_DEBUGGER=1
+
+# Alternate engines
+
 # Rhino
-NARWHAL_DEFAULT_ENGINE="rhino"
+#NARWHAL_DEFAULT_ENGINE="rhino"
 
-# k7
-#NARWHAL_DEFAULT_ENGINE="k7"
-
-#NARWHAL_ENGINE_HOME="."
+# JavaScript Core
+#NARWHAL_ENGINE="jsc"
+#NARWHAL_ENGINE_HOME="packages/jsc"
 
