@@ -1,4 +1,5 @@
 var queue = require("event-queue");
+var workerEngine = require("worker-engine");
 
 var Worker = exports.Worker = function(scriptName){
     var worker;
@@ -55,29 +56,30 @@ function createPort(queue, target, port){
 }
 function createWorker(scriptName, setup){
     var workerQueue, 
-        workerGlobal = new org.mozilla.javascript.tools.shell.Global();
-    javaWorkerGlobal = new org.mozilla.javascript.NativeJavaObject(global, workerGlobal, null);
-    javaWorkerGlobal.init(org.mozilla.javascript.tools.shell.Main.shellContextFactory);
-    workerGlobal.NARWHAL_HOME = system.prefix;
-    workerGlobal.NARWHAL_ENGINE_HOME = system.enginePrefix;
-    // get the path to the bootstrap.js file
-    var bootstrapPath = system.enginePrefix + "/bootstrap.js";
-    org.mozilla.javascript.tools.shell.Main.processFile(
-        org.mozilla.javascript.Context.enter(), 
-        workerGlobal,
-        bootstrapPath);
+        workerGlobal = workerEngine.createEnvironment();
+    
+    // add the module lookup paths from our environment
     var paths = workerGlobal.require.paths;
     paths.splice(0, paths.length);
     paths.push.apply(paths, require.paths);
+    
+    // get the event queue
     workerQueue = workerGlobal.require("event-queue");
+    
+    // calback for dedicated and shared workers to do their thing
     var worker = setup(workerQueue, workerGlobal);
+    
+    // there must be one and only one shared worker map amongst all workers
     workerGlobal.require("system").__sharedWorkers__ = system.__sharedWorkers__;
-    var thread = new java.lang.Thread(function(){
+
+    workerEngine.spawn(function(){
         workerGlobal.require(scriptName);
+        // enter the event loop
         while(true){
             try{
                 workerQueue.nextEvent()();
                 if(workerQueue.isEmpty()){
+                    // fire onidle events when empty, this allows to do effective worker pooling
                     queue.enqueue(function(){
                        if(worker && worker.onidle){
                            worker.onidle();
@@ -87,24 +89,24 @@ function createWorker(scriptName, setup){
             }catch(e){
                 workerQueue.enqueue(function(){
                     if(typeof workerGlobal.onerror === "function"){
+                        // trigger the onerror event in the worker if an error occurs
                         try{
                             workerGlobal.onerror(e);
                         }
                         catch(e){
                             // don't want an error here to go into an infinite loop!
-                            print((e.rhinoException && e.rhinoException.printStackTrace()) || (e.name + ": " + e.message));
+                            workerEngine.defaultErrorReporter(e);
                         }
                     }
                     else{
-                        print((e.rhinoException && e.rhinoException.printStackTrace()) || (e.name + ": " + e.message));
+                        workerEngine.defaultErrorReporter(e);
                     }
                 });
             
             
             }
         }
-    }, "Worker thread");
-    thread.start();
+    });
 };
 
 if(!system.__sharedWorkers__){
