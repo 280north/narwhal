@@ -23,7 +23,10 @@
                 "Zach Carter",
                 "Nathan L. Smith",
                 "Jan Varwig",
-                "Mark Porter"
+                "Mark Porter",
+                "Isaac Z. Schlueter (http://blog.izs.me/)",
+                "Kris Zyp (http://www.sitepen.com/blog/author/kzyp/)",
+                "Nathan Stott (http://nathan.whiteboard-it.com) <nathan.stott@whiteboard-it.com>"
             ],
             "main": "examples/narwhal",
             "lib": [
@@ -241,14 +244,19 @@
         },
         "inspec": {
             "name": "inspec",
-            "version": {
-                "label": "0.1",
-                "numeric": [
-                    0,
-                    1
-                ],
-                "status": "development"
-            },
+            "author": "Aaron Qian (http://aaronqian.com/)",
+            "url": "http://github.com/aq1018/inspec",
+            "dependencies": [
+                "narwhal"
+            ],
+            "license": "MIT",
+            "description": "BDD test framwork inspired by rspec",
+            "keywords": [
+                "bdd",
+                "tdd",
+                "test framework",
+                "spec"
+            ],
             "githubName": "inspec",
             "type": "zip",
             "location": "http://github.com/aq1018/inspec/zipball/master"
@@ -408,7 +416,21 @@
             ],
             "author": "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
             "email": "rfobic@gmail.com",
-            "lib": "lib",
+            "lib": [
+                "lib"
+            ],
+            "lean": [
+                "lib",
+                "engines"
+            ],
+            "version": {
+                "label": "0.1",
+                "numeric": [
+                    0,
+                    1
+                ],
+                "status": "development"
+            },
             "license": [
                 "MPL 1.1",
                 "GPL 2.0",
@@ -555,16 +577,17 @@
         },
         "jake": {
             "name": "jake",
-            "author": "Tom Robinson (http://tlrobinson.net/)",
-            "description": "A build system for ServerJS, inspired by Rake",
+            "author": "Francisco Tolmasky (http://tolmasky.com/)",
+            "description": "A build system for CommonJS, lifted from Rake",
             "keywords": [
                 "build",
+                "jake",
                 "rake",
                 "make"
             ],
             "githubName": "jake",
             "type": "zip",
-            "location": "http://github.com/tlrobinson/jake/zipball/master"
+            "location": "http://github.com/280north/jake/zipball/master"
         },
         "json-rpc": {
             "name": "json-rpc",
@@ -579,6 +602,118 @@
             "githubName": "json-rpc",
             "type": "zip",
             "location": "http://github.com/tlrobinson/json-rpc/zipball/master"
+        },
+        "prototype": {
+            "name": "prototype",
+            "author": "Sam Stephenson",
+            "maintainer": "Nathan L Smith (http://nlsmith.com/) <nlloyds@gmail.com>",
+            "url": "http://github.com/smith/prototype-asp/tree/narwhal-global",
+            "license": "MIT",
+            "description": "Prototype is a JavaScript Framework that aims to ease development of dynamic web applications. This package implements a subset of Prototype",
+            "keywords": [
+                "prototype",
+                "framework",
+                "library",
+                "language",
+                "extension"
+            ],
+            "githubName": "prototype-asp",
+            "type": "zip",
+            "location": "http://github.com/smith/prototype-asp/zipball/narwhal-global"
+        },
+        "qunit": {
+            "name": "qunit",
+            "author": {
+                "name": "John Resig",
+                "email": "jeresig@gmail.com",
+                "url": "http://ejohn.org/"
+            },
+            "maintainer": {
+                "name": "Jörn Zaefferer",
+                "email": "joern.zaefferer@googlemail.com",
+                "url": "http://bassistance.de/"
+            },
+            "url": "http://docs.jquery.com/QUnit",
+            "license": {
+                "name": "MIT",
+                "url": "http://www.opensource.org/licenses/mit-license.php"
+            },
+            "description": "An easy-to-use JavaScript Unit Testing framework.",
+            "keywords": [
+                "testing",
+                "unit",
+                "jquery"
+            ],
+            "lib": "qunit",
+            "githubName": "qunit",
+            "type": "zip",
+            "location": "http://github.com/jquery/qunit/zipball/master"
+        },
+        "oauth": {
+            "name": "oauth",
+            "dependencies": [
+                "narwhal"
+            ],
+            "jars": [],
+            "author": "Neville Burnell",
+            "description": "OAuth Library",
+            "keywords": [
+                "oauth"
+            ],
+            "githubName": "oauth",
+            "type": "zip",
+            "location": "http://github.com/cloudwork/oauth/zipball/master"
+        },
+        "bogart": {
+            "name": "bogart",
+            "description": "A simple web framework",
+            "keywords": [
+                "bogart",
+                "framework",
+                "routes"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [
+                "ejs"
+            ],
+            "lib": "lib",
+            "githubName": "bogart",
+            "type": "zip",
+            "location": "http://github.com/nrstott/bogart/zipball/master"
+        },
+        "ejs": {
+            "name": "ejs",
+            "description": "Embedded JavaScript templating framework",
+            "keywords": [
+                "erb",
+                "ejs",
+                "template"
+            ],
+            "author": "",
+            "email": "",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-ejs",
+            "type": "zip",
+            "location": "http://github.com/nrstott/narwhal-ejs/zipball/master"
+        },
+        "couchdb": {
+            "name": "couchdb",
+            "description": "API to access CouchDB servers, a schema-free database of JSON documents",
+            "keywords": [
+                "couch",
+                "database",
+                "document",
+                "nosql"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-couchdb",
+            "type": "zip",
+            "location": "http://github.com/nrstott/narwhal-couchdb/zipball/master"
         }
     }
 }

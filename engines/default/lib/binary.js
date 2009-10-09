@@ -347,10 +347,10 @@ ByteString.prototype.substr = function(start, length) {
 ByteString.prototype.substring = function(from, to) {
     if (from !== undefined) {
         if (to !== undefined)
-            return this.slice(Math.max(Math.min(begin, this._length), 0));
+            return this.slice(Math.max(Math.min(from, this._length), 0));
         else
-            return this.slice(Math.max(Math.min(begin, this._length), 0),
-                              Math.max(Math.min(end, this._length), 0));
+            return this.slice(Math.max(Math.min(from, this._length), 0),
+                              Math.max(Math.min(to, this._length), 0));
     }
     return this.slice();
 };
