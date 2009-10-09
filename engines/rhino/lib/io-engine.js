@@ -225,6 +225,7 @@ ByteIO.prototype = new exports.IO();
 
 ByteIO.prototype.toByteString = function() {
     var bytes = this.outputStream.toByteArray();
+    var ByteString = require("binary").ByteString;
     return new ByteString(bytes, 0, bytes.length);
 }
 
