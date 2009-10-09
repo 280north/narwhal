@@ -10,6 +10,7 @@ exports.stdout = new io.TextOutputStream(new io.IO(null, Packages.java.lang.Syst
 exports.stderr = new io.TextOutputStream(new io.IO(null, Packages.java.lang.System.err));
 
 exports.args = global.arguments || [];
+exports.originalArgs = exports.args.slice(0);
 
 exports.env = {};
 

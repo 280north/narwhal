@@ -21,6 +21,10 @@ if [ -f "$NARWHAL_HOME/narwhal.conf" ]; then
     source "$NARWHAL_HOME"/narwhal.conf
 fi
 
+if [ -n "$NARWHAL_DEBUG" ]; then
+    export NARWHAL_DEBUG
+fi
+
 # if NARWHAL_ENGINE isn't yet set, set it to the default engine, and export it
 if [ -z "$NARWHAL_ENGINE" ]; then
     NARWHAL_ENGINE=$NARWHAL_DEFAULT_ENGINE

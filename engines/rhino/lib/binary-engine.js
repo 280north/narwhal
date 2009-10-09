@@ -15,12 +15,11 @@ exports.B_COPY = function(src, srcOffset, dst, dstOffset, length) {
 }
 
 exports.B_GET = function(bytes, index) {
-    var b = bytes[index];
-    return (b >= 0) ? b : -1 * ((b ^ 0xFF) + 1);
+    return (bytes[index] >>> 0) & 0xFF;
 }   
 
 exports.B_SET = function(bytes, index, value) {
-    return bytes[index] = (value < 128) ? value : -1 * ((value ^ 0xFF) + 1);
+    return bytes[index] = ((value & 0x80) ? -1 - (value ^ 0xFF) : value);
 }
 
 exports.B_DECODE = function(bytes, offset, length, codec) {

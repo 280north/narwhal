@@ -145,6 +145,11 @@ Environment Variables
     command line arguments have been parsed, which
     happens before packages are loaded.
 
+*   `NARWHAL_DEBUGGER` starts Narwhal with a debugger
+    GUI if one is available for the engine.  For the
+    Rhino-Java engine, this activates the Rhino Java
+    AWT-based debugger.
+
 *   `SEA` is an environment variable set by `sea` that
     notifies `narwhal` to search the given virtual
     environment for packages first.  This function can
