@@ -261,6 +261,6 @@ exports.testNormal = require('./file/normal');
 exports.testDirname = require('./file/dirname');
 exports.testIsAbsolute = require('./file/is-absolute');
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 

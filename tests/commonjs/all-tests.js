@@ -6,5 +6,5 @@ exports.testByteArrayEncodings = require("./bytearray-encodings-tests");
 exports.testByteStringEncodings = require("./bytestring-encodings-tests");
 exports.testFile = require("./file-tests");
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));

@@ -18,6 +18,6 @@ exports.testEncodeDecode = function () {
     assert.eq(base64.decode(base64.encode(raw)), raw, 'encode decode identity');
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 

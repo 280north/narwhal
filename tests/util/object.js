@@ -121,5 +121,5 @@ exports.testRepr = function () {
     assert.eq('{"a": 10}', util.repr({"a": 10}));
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
