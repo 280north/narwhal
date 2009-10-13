@@ -87,23 +87,32 @@
     var verbose = +String(Packages.java.lang.System.getenv("NARWHAL_VERBOSE"));
     var os = String(Packages.java.lang.System.getProperty("os.name"));
 
-    narwhal({
-        global: global,
-        evalGlobal: evalGlobal,
-        engine: 'rhino',
-        engines: ['rhino', 'default'],
-        os: os,
-        print: print,
-        fs: {
-            read: read,
-            isFile: isFile
-        },
-        prefix: prefix,
-        prefixes: prefixes,
-        evaluate: evaluate,
-        debug: debug,
-        verbose: verbose
-    });
+    try {
+        narwhal({
+            global: global,
+            evalGlobal: evalGlobal,
+            engine: 'rhino',
+            engines: ['rhino', 'default'],
+            os: os,
+            print: print,
+            fs: {
+                read: read,
+                isFile: isFile
+            },
+            prefix: prefix,
+            prefixes: prefixes,
+            evaluate: evaluate,
+            debug: debug,
+            verbose: verbose
+        });
+    } catch (e) {
+        print(e);
+        if (e.rhinoException)
+            e.rhinoException.printStackTrace();
+        if (e.javaException)
+            e.javaException.printStackTrace();
+        Packages.java.lang.System.exit(1);
+    }
         
 })(this, function () {
     return eval(arguments[0]);

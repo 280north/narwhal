@@ -10,16 +10,25 @@ if "%NARWHAL_HOME%" == "" (
 	set NARWHAL_HOME=%NARWHAL_ENGINE_HOME%\..\..
 )
 
-set CLASSPATH=%NARWHAL_ENGINE_HOME%\jars\js.jar;%NARWHAL_ENGINE_HOME%\jars\jline.jar;%NARWHAL_ENGINE_HOME%\jars\jna.jar
+setlocal ENABLEDELAYEDEXPANSION
+set CLASSPATH=
+for /R "%NARWHAL_ENGINE_HOME%\jars" %%g in (*.jar) do set CLASSPATH=!CLASSPATH!;%%g
+
 if not "%NARWHAL_CLASSPATH%" == "" (
 	set CLASSPATH=%NARWHAL_CLASSPATH%;%CLASSPATH%
 )
 
-set JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
+if not "%NARWHAL_DEBUGGER%" == "" (
+    set JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
+)
+if "%NARWHAL_DEBUGGER%" == "" (
+    set JAVA_MAIN=org.mozilla.javascript.tools.debugger.Main
+)
+
 
 :: drop into shell if there are no additional arguments
 if "%1" == "" (
 	java -cp "%CLASSPATH%" "%JAVA_MAIN%" -f "%BOOTSTRAP%" -f -
 ) else (
-	java -cp "%CLASSPATH%" "%JAVA_MAIN%" "%BOOTSTRAP%" "%0" %*
+	java -cp "%CLASSPATH%" "%JAVA_MAIN%" "%BOOTSTRAP%" %0 %*
 )

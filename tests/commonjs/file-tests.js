@@ -110,6 +110,17 @@ exports.testLittlePathOpenWriteRead = function () {
     }
 };
 
+exports.testWriteReadNewlineNotEnforced = function() {
+    try {
+        var path = "testWriteReadNewlineNotEnforced.txt";
+        var content = "testWriteReadNewlineNotEnforced.txt";
+        fs.write(path, content);
+        assert.is(content, fs.read(path));
+    } finally {
+        fs.remove(path);
+    }
+}; 
+/*
 exports.testWriteReadNewlineEnforced = function() {
     try {
         var path = "testWriteReadNewlineEnforced.txt";
@@ -119,8 +130,8 @@ exports.testWriteReadNewlineEnforced = function() {
     } finally {
         fs.remove(path);
     }
-}; 
-
+};
+*/
 exports.testWriteReadBinaryWrongMode = function () {
     var path = "testWriteReadBinaryModeWrongMode.txt";
     var content = "\0\0\0".toByteString("ascii");
@@ -164,7 +175,7 @@ exports.testPrintRead = function () {
 
 exports.testCopy = function () {
     try {
-        fs.path("testCopyA.txt").write("testCopy").copy("testCopyB.txt");
+        fs.path("testCopyA.txt").write("testCopy\n").copy("testCopyB.txt");
         assert.is("testCopy\n", fs.read("testCopyB.txt"));
     } finally {
         fs.remove("testCopyA.txt");
@@ -174,7 +185,7 @@ exports.testCopy = function () {
 
 exports.testCopyChain = function () {
     try {
-        fs.path("testCopyA.txt").write("testCopy").copy("testCopyB.txt").copy("testCopyC.txt");
+        fs.path("testCopyA.txt").write("testCopy\n").copy("testCopyB.txt").copy("testCopyC.txt");
         assert.is("testCopy\n", fs.read("testCopyC.txt"));
     } finally {
         fs.remove("testCopyA.txt");
