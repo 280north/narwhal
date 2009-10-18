@@ -113,6 +113,7 @@
         if (e.javaException)
             e.javaException.printStackTrace();
         print(e);
+        Packages.java.lang.System.exit(1);
     }
         
 })(this, function () {

@@ -23,7 +23,10 @@
                 "Zach Carter",
                 "Nathan L. Smith",
                 "Jan Varwig",
-                "Mark Porter"
+                "Mark Porter",
+                "Isaac Z. Schlueter (http://blog.izs.me/)",
+                "Kris Zyp (http://www.sitepen.com/blog/author/kzyp/)",
+                "Nathan Stott (http://nathan.whiteboard-it.com) <nathan.stott@whiteboard-it.com>"
             ],
             "main": "examples/narwhal",
             "lib": [
@@ -97,6 +100,18 @@
         "narwhal-xulrunner": {
             "name": "narwhal-xulrunner",
             "engine": "xulrunner",
+            "dependencies": [
+                "narwhal"
+            ],
+            "author": "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
+            "description": "XULRunner engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "xulrunner",
+                "mozilla",
+                "extension"
+            ],
             "githubName": "narwhal-xulrunner",
             "type": "zip",
             "location": "http://github.com/Gozala/narwhal-xulrunner/zipball/master"
@@ -672,12 +687,68 @@
             "author": "Nathan Stott",
             "email": "nathan.stott@whiteboard-it.com",
             "dependencies": [
+                "jack",
                 "ejs"
             ],
             "lib": "lib",
             "githubName": "bogart",
             "type": "zip",
             "location": "http://github.com/nrstott/bogart/zipball/master"
+        },
+        "json-template": {
+            "name": "json-template",
+            "description": "Minimal but powerful templating language implemented in multiple languages.",
+            "keywords": [
+                "template",
+                "json"
+            ],
+            "author": "andychup (http://code.google.com/u/andychup/)",
+            "contributors": [
+                "Irakli Gozalishvili (http://rfobic.wordpress.com/)"
+            ],
+            "lib": "lib",
+            "license": [
+                "Apache License 2.0"
+            ],
+            "dependencies": [],
+            "githubName": "json-template",
+            "type": "zip",
+            "location": "http://github.com/Gozala/json-template/zipball/master"
+        },
+        "ejs": {
+            "name": "ejs",
+            "description": "Embedded JavaScript templating framework",
+            "keywords": [
+                "erb",
+                "ejs",
+                "template"
+            ],
+            "author": "",
+            "email": "",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-ejs",
+            "type": "zip",
+            "location": "http://github.com/nrstott/narwhal-ejs/zipball/master"
+        },
+        "couchdb": {
+            "name": "couchdb",
+            "description": "API to access CouchDB servers, a schema-free database of JSON documents",
+            "keywords": [
+                "couch",
+                "database",
+                "document",
+                "nosql"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [
+                "browserjs"
+            ],
+            "lib": "lib",
+            "githubName": "narwhal-couchdb",
+            "type": "zip",
+            "location": "http://github.com/nrstott/narwhal-couchdb/zipball/master"
         }
     }
 }

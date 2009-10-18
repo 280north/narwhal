@@ -95,20 +95,12 @@ exports.isAbsolute = function (path) {
     return new java.io.File(path).isAbsolute();
 };
 
-/* java doesn't provide isLink, but File.getCanonical leaks
-   information about whether a file is a link, so we use the canonical
-   file name of a path and the canonical file name of the
-   containing directory to infer whether the file is a link.
-*/
+/* see: http://www.idiom.com/~zilla/Xfiles/javasymlinks.html */
 exports.isLink = function (path) {
     path = exports.path(path);
     var canonical = path.canonical().toString();
-    var container = path.resolve('.').canonical();
-    if (path.isDirectory()) {
-        return container.toString() != canonical;
-    } else {
-        return container.join('').resolve(path.basename()).toString() != canonical;
-    }
+    var absolute = path.absolute().toString();
+    return absolute != canonical;
 };
 
 exports.isReadable = function (path) {
