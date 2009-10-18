@@ -165,6 +165,16 @@
         "json-template": {
             "type": "github",
             "user": "Gozala"
+        },
+        "ejs": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "narwhal-ejs"
+        },
+        "couchdb": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "narwhal-couchdb"
         }
     }
 }

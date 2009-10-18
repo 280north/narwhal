@@ -250,6 +250,24 @@ exports.testsRenameList = function () {
     }
 };
 
+exports.testsMtime = function () {
+    try {
+        fs.mkdir('testsMtime');
+        
+        // add/subtract 1 second to account for lower precision of mtime
+        var before = new Date().getTime() - 1000;
+        fs.path('testsMtime', 'A.txt').touch();
+        var after = new Date().getTime() + 1000;
+        
+        var mtime = fs.path('testsMtime', 'A.txt').mtime().getTime();
+        
+        assert.isTrue(before <= mtime, "Expected " + before + " <= " + mtime);
+        assert.isTrue(mtime <= after, "Expected " + mtime + " <= " + after);
+    } finally {
+        fs.rmtree('testsMtime');
+    }
+};
+
 exports.testCwd = function() {
     assert.eq(system.env["PWD"], fs.cwd(), "Ensure the PWD environment variable is set!");
 }
