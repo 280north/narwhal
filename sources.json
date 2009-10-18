@@ -161,6 +161,10 @@
         "bogart": {
             "type": "github",
             "user": "nrstott"
+        },
+        "json-template": {
+            "type": "github",
+            "user": "Gozala"
         }
     }
 }
