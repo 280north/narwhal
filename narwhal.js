@@ -57,7 +57,8 @@ var sandbox = requireFake("sandbox", system.prefix + "/lib/sandbox.js");
 // bootstrap file module
 requireFake("file", system.prefix + "/lib/file-bootstrap.js", "force");
 
-system.enginePrefix = system.prefix + '/engines/' + system.engines[0];
+system.enginePrefix = system.enginePrefix || system.prefix + '/engines/' + system.engines[0];
+
 // construct the initial paths
 var paths = [];
 // XXX system.packagePrefixes deprecated in favor of system.prefixes
