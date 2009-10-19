@@ -5,11 +5,6 @@ if (modules.fs) {
     var system = modules;
     var file = system.fs;
     var modules = {system: system, file: file};
-    system.print(
-        "WARNING: this version of the " + system.engine + " engine \n" +
-        "         is deprecated because it injects the system module \n" +
-        "         instead of a modules memo in the narwhal bootstrap system."
-    );
 } else {
     var system = modules.system;
     var file = modules.file;
@@ -118,6 +113,17 @@ var wasVerbose = system.verbose;
 if (options.verbose !== undefined) {
     system.verbose = options.verbose;
     require.verbose = system.verbose;
+}
+
+if (system.fs) {
+    delete system.fs;
+    if (options.verbose) {
+        system.print(
+            "WARNING: this version of the " + system.engine + " engine \n" +
+            "         is deprecated because it injects the system module \n" +
+            "         instead of a modules memo in the narwhal bootstrap system."
+        );
+    }
 }
 
 // enable loader tracing
