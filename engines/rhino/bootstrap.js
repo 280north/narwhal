@@ -106,10 +106,12 @@
             verbose: verbose
         });
     } catch (e) {
+        print(e);
         if (e.rhinoException)
             e.rhinoException.printStackTrace();
         if (e.javaException)
             e.javaException.printStackTrace();
+        Packages.java.lang.System.exit(1);
     }
         
 })(this, function () {

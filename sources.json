@@ -161,6 +161,16 @@
         "bogart": {
             "type": "github",
             "user": "nrstott"
+        },
+        "ejs": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "narwhal-ejs"
+        },
+        "couchdb": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "narwhal-couchdb"
         }
     }
 }
