@@ -31,7 +31,7 @@
         enginePrefix = String(Packages.java.lang.System.getenv("NARWHAL_ENGINE_HOME") || "");
     }
 
-    var prefixes = [enginePrefix, prefix];
+    var prefixes = [prefix, enginePrefix];
 
     var isFile = function (path) {
         try { return new java.io.File(path).isFile(); } catch (e) {}
