@@ -319,6 +319,147 @@ exports.testByteArrayConcat = function() {
     
 };
 
+exports.testByteArrayPush = function() {
+    var b1 = new ByteArray();
+    assert.isEqual(3, b1.push(1,2,3));
+    assert.isEqual(3, b1.length);
+    assert.isEqual(1, b1.get(0));
+    assert.isEqual(2, b1.get(1));
+    assert.isEqual(3, b1.get(2));
+    
+    var b2 = new ByteArray([7, 8, 9]);
+    assert.isEqual(6, b1.push.apply(b1, b2.toArray()));
+    assert.isEqual(6, b1.length);
+    assert.isEqual(7, b1.get(3));
+    assert.isEqual(8, b1.get(4));
+    assert.isEqual(9, b1.get(5));
+};
+
+exports.testByteArrayUnshift = function() {
+    var b1 = new ByteArray([10, 43]);
+    assert.isEqual(5, b1.unshift(9, 112, 67));
+    assert.isEqual(5, b1.length);
+    assert.isEqual(9, b1.get(0));
+    assert.isEqual(112, b1.get(1));
+    assert.isEqual(67, b1.get(2));
+    assert.isEqual(10, b1.get(3));
+    assert.isEqual(43, b1.get(4));
+    
+    var b2 = new ByteArray();
+    assert.isEqual(5, b2.unshift.apply(b2, b1.toArray()));
+    assert.isEqual(5, b2.length);
+    assert.isEqual(9, b2.get(0));
+    assert.isEqual(112, b2.get(1));
+    assert.isEqual(67, b2.get(2));
+    assert.isEqual(10, b2.get(3));
+    assert.isEqual(43, b2.get(4));
+    assert.isEqual(6, b2.unshift.call(b2, 20));
+    assert.isEqual(20, b2.get(0));
+};
+
+exports.testByteArraySplice = function() {
+    var b1 = new ByteArray([1,2,3,4]);
+    var br = b1.splice(2, 0, 5);
+    assert.isEqual(0, br.length);
+    assert.isEqual(5, b1.length);
+    assert.isEqual(1, b1.get(0));
+    assert.isEqual(2, b1.get(1));
+    assert.isEqual(5, b1.get(2));
+    assert.isEqual(3, b1.get(3));
+    assert.isEqual(4, b1.get(4));
+    
+    br = b1.splice(3, 1);
+    assert.isEqual(1, br.length);
+    assert.isEqual(4, b1.length);
+    assert.isEqual(3, br.get(0));
+    assert.isEqual(1, b1.get(0));
+    assert.isEqual(2, b1.get(1));
+    assert.isEqual(5, b1.get(2));
+    assert.isEqual(4, b1.get(3));
+    
+    br = b1.splice(2, 1, 6);
+    assert.isEqual(1, br.length);
+    assert.isEqual(4, b1.length);
+    assert.isEqual(5, br.get(0));
+    assert.isEqual(1, b1.get(0));
+    assert.isEqual(2, b1.get(1));
+    assert.isEqual(6, b1.get(2));
+    assert.isEqual(4, b1.get(3));
+    
+    br = b1.splice(0, 2, 7, 8, 9);
+    assert.isEqual(2, br.length);
+    assert.isEqual(5, b1.length);
+    assert.isEqual(1, br.get(0));
+    assert.isEqual(2, br.get(1));
+    assert.isEqual(7, b1.get(0));
+    assert.isEqual(8, b1.get(1));
+    assert.isEqual(9, b1.get(2));
+    assert.isEqual(6, b1.get(3));
+    assert.isEqual(4, b1.get(4));
+    
+    br = b1.splice(-3, 1);
+    assert.isEqual(1, br.length);
+    assert.isEqual(4, b1.length);
+    assert.isEqual(9, br.get(0));
+    assert.isEqual(7, b1.get(0));
+    assert.isEqual(8, b1.get(1));
+    assert.isEqual(6, b1.get(2));
+    assert.isEqual(4, b1.get(3));
+    
+    br = b1.splice(-1,0,10,11);
+    assert.isEqual(0, br.length);
+    assert.isEqual(6, b1.length);
+    assert.isEqual(7, b1.get(0));
+    assert.isEqual(8, b1.get(1));
+    assert.isEqual(6, b1.get(2));
+    assert.isEqual(10, b1.get(3));
+    assert.isEqual(11, b1.get(4));
+    assert.isEqual(4, b1.get(5));
+    
+    br = b1.splice(-2);
+    assert.isEqual(2, br.length);
+    assert.isEqual(4, b1.length);
+    assert.isEqual(11, br.get(0));
+    assert.isEqual(4, br.get(1));
+    assert.isEqual(7, b1.get(0));
+    assert.isEqual(8, b1.get(1));
+    assert.isEqual(6, b1.get(2));
+    assert.isEqual(10, b1.get(3));
+    
+    br = b1.splice(3);
+    assert.isEqual(1, br.length);
+    assert.isEqual(3, b1.length);
+    assert.isEqual(10, br.get(0));
+    assert.isEqual(7, b1.get(0));
+    assert.isEqual(8, b1.get(1));
+    assert.isEqual(6, b1.get(2));
+    
+    br = b1.splice(-2, 2, 13, 14, 15);
+    assert.isEqual(2, br.length);
+    assert.isEqual(4, b1.length);
+    assert.isEqual(8, br.get(0));
+    assert.isEqual(6, br.get(1));
+    assert.isEqual(7, b1.get(0));
+    assert.isEqual(13, b1.get(1));
+    assert.isEqual(14, b1.get(2));
+    assert.isEqual(15, b1.get(3));
+    
+    br = b1.splice();
+    assert.isEqual(undefined, br);
+    assert.isEqual(4, b1.length);
+    assert.isEqual(7, b1.get(0));
+    assert.isEqual(13, b1.get(1));
+    assert.isEqual(14, b1.get(2));
+    assert.isEqual(15, b1.get(3));
+    
+    br = b1.splice(0);
+    assert.isEqual(4, br.length);
+    assert.isEqual(0, b1.length);
+    assert.isEqual(7, br.get(0));
+    assert.isEqual(13, br.get(1));
+    assert.isEqual(14, br.get(2));
+    assert.isEqual(15, br.get(3));
+}
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
