@@ -3,14 +3,15 @@ var io = require('io');
 
 var cLib;
 var getCLib = function () {
-    if (!cLib) {
-        var jna = Packages.com.sun.jna;
-        cLib = jna.NativeLibrary.getInstance(
-            jna.Platform.isWindows() ? "msvcrt" : "c"
-        );
-    }
+    var jna = Packages.com.sun.jna;
+    cLib = jna.NativeLibrary.getInstance(
+        jna.Platform.isWindows() ? "msvcrt" : "c"
+    );
+    getCLib = function () {
+        return cLib;
+    };
     return cLib;
-}
+};
 
 exports.exit = function (status) {
     Packages.java.lang.System.exit(status << 0);
@@ -28,8 +29,10 @@ exports.exec = function () {
 
 var cSystem;
 var getCSystem = function () {
-    if (!cSystem)
-        cSystem = getCLib().getFunction("system");
+    cSystem = getCLib().getFunction("system");
+    getCSystem = function () {
+        return cSystem;
+    };
     return cSystem;
 };
 
