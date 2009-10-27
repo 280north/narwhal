@@ -8,7 +8,12 @@ util.forEachApply([
     ['.', '.'],
     ['foo', '.'],
     //['foo/', '.'],
-    ['foo/bar', 'foo']
+    ['foo/bar', 'foo'],
+    ["/", "/"],
+    ["/a", "/a"],
+    ["/a/b", "/a"],
+    ["/a/b/", "/a"]
+
     // TODO: many more tests
 ], function (path, expected) {
     exports['test ' + util.repr(path)] = function () {
