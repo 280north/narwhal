@@ -18,6 +18,38 @@ exports.testArrayObject = function () {
     assert.eq([["a", 10], ["b", 20]], util.array({"a": 10, "b": 20}));
 };
 
+exports.testArrayPolymorphicToArray = function () {
+    var Type = function () {
+    };
+    Type.prototype.toArray = function () {
+        return [1];
+    };
+    assert.eq([1], util.array(new Type()));
+};
+
+exports.testArrayPolymorphicToArrayNegative = function () {
+    var toArray = function () {};
+    assert.eq([["toArray", toArray]], util.array({
+        "toArray": toArray
+    }));
+};
+
+exports.testArrayPolymorphicForEach = function () {
+    var Type = function () {
+    };
+    Type.prototype.forEach = function (block) {
+        block(1);
+    };
+    assert.eq([1], util.array(new Type()));
+};
+
+exports.testArrayPolymorphicForEachNegative = function () {
+    var forEach = function () {};
+    assert.eq([["forEach", forEach]], util.array({
+        "forEach": forEach
+    }));
+};
+
 exports.testIsArguments = require("./array/is-arguments");
 exports.testIsArrayLike = require("./array/is-array-like");
 
@@ -105,7 +137,22 @@ exports.testForEach = function () {
 
 exports.testForEachApply = function () {
 };
+*/
 
+exports.testForEachApplyPolymorphicForEach = function () {
+    var Type = function () {
+    };
+    Type.prototype.forEach = function (block) {
+        block([1]);
+    };
+    var collect = [];
+    util.forEachApply(new Type(), function (n) {
+        collect.push(n);
+    });
+    assert.eq([1], collect);
+};
+
+/*
 exports.testMap = function () {
 };
 

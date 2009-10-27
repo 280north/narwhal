@@ -617,7 +617,7 @@ ByteArray.prototype.reverse = function() {
 
 // slice()
 ByteArray.prototype.slice = function() {
-    return new ByteArray(ByteString.prototype.apply.slice(this, arguments));
+    return new ByteArray(ByteString.prototype.slice.apply(this, arguments));
 };
 
 var numericCompareFunction = function(o1, o2) { return o1 - o2; };
