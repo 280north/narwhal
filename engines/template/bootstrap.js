@@ -30,7 +30,7 @@
             isFile: isFile
         },
         prefix: prefix,
-        prefixes: [enginePrefix, prefix],
+        prefixes: [prefix, enginePrefix],
         debug: false,
         verbose: false
     });
