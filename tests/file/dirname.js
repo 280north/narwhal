@@ -6,8 +6,9 @@ var util = require("util");
 util.forEachApply([
     ["/", "/"],
     ["/a", "/a"],
-    ["/a/b", "/a"]
-
+    ["/a/b", "/a"],
+    ["/a/b/", "/a"]
+        
 ], function (path, expected) {
     exports['test ' + util.repr(arguments)] = function () {
         assert.eq(expected, file.dirname(path));
