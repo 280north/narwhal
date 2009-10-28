@@ -4,17 +4,21 @@ var assert = require('test/assert');
 var fs = require('file');
 
 util.forEachApply([
+    // relative
     ['', '.'],
     ['.', '.'],
     ['foo', '.'],
-    //['foo/', '.'],
+    ['foo/', '.'],
     ['foo/bar', 'foo'],
+    ['foo/bar/', 'foo'],
+    // absolute
     ["/", "/"],
-    ["/a", "/a"],
-    ["/a/b", "/a"],
-    ["/a/b/", "/a"]
-
+    ["/foo", "/"],
+    ["/foo/", "/"],
+    ["/foo/bar", "/foo"],
+    ["/foo/bar/", "/foo"]
     // TODO: many more tests
+    // TODO: Windows tests
 ], function (path, expected) {
     exports['test ' + util.repr(path)] = function () {
         var actual = fs.dirname(path);
