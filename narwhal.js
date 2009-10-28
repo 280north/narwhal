@@ -2,12 +2,37 @@
 
 if (modules.fs) {
     // XXX: migration step for deprecated engines
+    // the old arguments[0] was the system module and
+    //  {fs: {}, ...} == system
+    // the new arguments[0] is the primed modules memo
+    //  {system: system, file: file}
     var system = modules;
     var file = system.fs;
     var modules = {system: system, file: file};
 } else {
     var system = modules.system;
     var file = modules.file;
+}
+
+// XXX: migration step for deprecated engines
+// the old system.evaluate accepts a tuple and
+// the new system.evaluate accepts an object
+var canary = {};
+system.evaluate("exports.deprecated=true", "", 1)({exports:{}}, canary);
+if (canary.deprecated) {
+    var Factory = system.evaluate;
+    system.evaluate = function (text, name, lineNo) {
+        var factory = Factory(text, name, lineNo);
+        return function (inject) {
+            return factory(
+                inject.require,
+                inject.exports,
+                inject.module,
+                inject.system,
+                inject.print
+            );
+        }
+    };
 }
 
 // global reference
@@ -33,13 +58,13 @@ var requireFake = function(id, path, force) {
 
 
     var factory = system.evaluate(file.read(path), path, 1);
-    factory(
-        requireFake, // require
-        exports, // exports
-        module, // module
-        system, // system
-        system.print // print
-    );
+    factory({
+        require: requireFake,
+        exports: exports,
+        module: module,
+        system: system,
+        print: system.print
+    });
 
     return exports;
 };

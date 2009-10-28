@@ -49,21 +49,11 @@
             stream.close();
         }
     };
-    
+
     var evaluate = function (text, name, lineNo) {
-        var scope;
-        
-        if (moduleScopingEnabled) {
-            scope = new Object();
-            scope.__parent__ = null;
-            scope.__proto__ = global;
-        } else {
-            scope = global;
-        }
-        
         return context.compileFunction(
-            scope,
-            "function(require,exports,module,system,print){"+text+"\n// */\n}",
+            global,
+            "function(){with(arguments[0]){(function(){" + text + "\n//*/\n})()}}",
             name,
             lineNo,
             null
