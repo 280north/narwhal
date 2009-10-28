@@ -51,13 +51,21 @@
     };
 
     var evaluate = function (text, name, lineNo) {
-        return context.compileFunction(
-            global,
-            "function(){with(arguments[0]){(function(){" + text + "\n//*/\n})()}}",
-            name,
-            lineNo,
-            null
-        );
+        return function (inject) {
+            var names = [];
+            for (var name in inject)
+                if (Object.prototype.hasOwnProperty.call(inject, name))
+                    names.push(name);
+            return context.compileFunction(
+                global,
+                "function(" + names.join(",") + "){" + text + "\n//*/\n}",
+                name,
+                lineNo,
+                null
+            ).apply(null, names.map(function (name) {
+                return inject[name];
+            }));
+        };
     };
 
     delete global.print;
