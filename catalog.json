@@ -749,6 +749,27 @@
             "githubName": "narwhal-couchdb",
             "type": "zip",
             "location": "http://github.com/nrstott/narwhal-couchdb/zipball/master"
+        },
+        "mongodb": {
+            "name": "mongodb",
+            "description": "API to access MongoDB, a schema-free database of JSON documents",
+            "keywords": [
+                "mongo",
+                "database",
+                "document",
+                "mongodb",
+                "db"
+            ],
+            "author": "Sergi Mansilla (http://www.sergimansilla.com) <sergi.mansilla@gmail.com>",
+            "jars": [
+                "jars/mongo-0.11.jar"
+            ],
+            "email": "sergi.mansilla@gmail.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-mongodb",
+            "type": "zip",
+            "location": "http://github.com/mrclash/narwhal-mongodb/zipball/master"
         }
     }
 }

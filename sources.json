@@ -175,6 +175,11 @@
             "type": "github",
             "user": "nrstott",
             "name": "narwhal-couchdb"
+        },
+        "mongodb": {
+            "type": "github",
+            "user": "mrclash",
+            "name": "narwhal-mongodb"
         }
     }
 }
