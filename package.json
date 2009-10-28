@@ -21,7 +21,6 @@
         "Nathan Stott (http://nathan.whiteboard-it.com) <nathan.stott@whiteboard-it.com>",
         "Toby Ho (http://tobyho.com) <airportyh@gmail.com>"
     ],
-    "main": "examples/narwhal",
     "lib": ["lib"],
     "lean": ["lib", "engines"] 
 }
