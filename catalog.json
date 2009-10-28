@@ -100,6 +100,18 @@
         "narwhal-xulrunner": {
             "name": "narwhal-xulrunner",
             "engine": "xulrunner",
+            "dependencies": [
+                "narwhal"
+            ],
+            "author": "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
+            "description": "XULRunner engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "xulrunner",
+                "mozilla",
+                "extension"
+            ],
             "githubName": "narwhal-xulrunner",
             "type": "zip",
             "location": "http://github.com/Gozala/narwhal-xulrunner/zipball/master"
@@ -675,12 +687,33 @@
             "author": "Nathan Stott",
             "email": "nathan.stott@whiteboard-it.com",
             "dependencies": [
+                "jack",
                 "ejs"
             ],
             "lib": "lib",
             "githubName": "bogart",
             "type": "zip",
             "location": "http://github.com/nrstott/bogart/zipball/master"
+        },
+        "json-template": {
+            "name": "json-template",
+            "description": "Minimal but powerful templating language implemented in multiple languages.",
+            "keywords": [
+                "template",
+                "json"
+            ],
+            "author": "andychup (http://code.google.com/u/andychup/)",
+            "contributors": [
+                "Irakli Gozalishvili (http://rfobic.wordpress.com/)"
+            ],
+            "lib": "lib",
+            "license": [
+                "Apache License 2.0"
+            ],
+            "dependencies": [],
+            "githubName": "json-template",
+            "type": "zip",
+            "location": "http://github.com/Gozala/json-template/zipball/master"
         },
         "ejs": {
             "name": "ejs",
@@ -709,11 +742,34 @@
             ],
             "author": "Nathan Stott",
             "email": "nathan.stott@whiteboard-it.com",
-            "dependencies": [],
+            "dependencies": [
+                "browserjs"
+            ],
             "lib": "lib",
             "githubName": "narwhal-couchdb",
             "type": "zip",
             "location": "http://github.com/nrstott/narwhal-couchdb/zipball/master"
+        },
+        "mongodb": {
+            "name": "mongodb",
+            "description": "API to access MongoDB, a schema-free database of JSON documents",
+            "keywords": [
+                "mongo",
+                "database",
+                "document",
+                "mongodb",
+                "db"
+            ],
+            "author": "Sergi Mansilla (http://www.sergimansilla.com) <sergi.mansilla@gmail.com>",
+            "jars": [
+                "jars/mongo-0.11.jar"
+            ],
+            "email": "sergi.mansilla@gmail.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-mongodb",
+            "type": "zip",
+            "location": "http://github.com/mrclash/narwhal-mongodb/zipball/master"
         }
     }
 }

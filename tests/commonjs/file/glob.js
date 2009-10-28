@@ -437,3 +437,7 @@ exports["tests recursively matches directories with '**/<characters>'"] = functi
         assert.eq(expected, dir.glob('**/*fil?{,.}*').sort());
     });
 }
+
+if (require.main == module.id)
+    require("os").exit(require("test/runner").run(exports))
+
