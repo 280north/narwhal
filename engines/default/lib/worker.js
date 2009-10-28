@@ -3,15 +3,15 @@ var workerEngine = require("worker-engine");
 
 var Worker = exports.Worker = function(scriptName){
     var worker;
-    createWorker(scriptName, function(workerQueue, global){
-        worker = createPort(workerQueue, global);
-        createPort(queue, worker, global);
+    createWorker(scriptName, function(workerQueue, workerGlobal){
+        worker = createPort(workerQueue, workerGlobal, null, workerGlobal);
+        createPort(queue, worker, workerGlobal, global);
         return worker;
     });
     return worker;
 };
 
-function createPort(queue, target, port){
+function createPort(queue, target, port, global){
     target.onmessage = true; // give it something to feature detect off of
     port = port || {
             // allows for sending a message with a direct object reference.
@@ -30,31 +30,21 @@ function createPort(queue, target, port){
                 //when is supposed to be the target, and when the ports? The spec is confusing
                 target: target,
                 ports: [target],
-                data: message.toString(),
+                // this can be optimized to be much faster
+                data: typeof message == "string" ? message : 
+                    global.JSON.parse(JSON.stringify(message)),
             }
             if(typeof target.onmessage == "function"){
                 target.onmessage(event);
             }
         });
-        };
-    port.postData= function(message){
-        queue.enqueue(function(){
-            var event = {
-                ports: [target],
-                // this can be optimized to be much faster
-                data: target.JSON.parse(JSON.stringify(message)), 
-            }
-            if(typeof target.ondata == "function"){
-                target.ondata(event);
-            }
-        });
-        };
+    };
     port.isIdle= function(){
         return queue.isEmpty();
     };
     return port;
 }
-function createWorker(scriptName, setup){
+function createWorker(scriptName, setup, workerName){
     var workerQueue, 
         workerGlobal = workerEngine.createEnvironment();
     
@@ -106,7 +96,7 @@ function createWorker(scriptName, setup){
             
             }
         }
-    });
+    }, workerName || scriptName);
 };
 
 if(!system.__sharedWorkers__){
@@ -122,14 +112,14 @@ exports.SharedWorker = function(scriptName, workerName){
             shared.queue = queue;
             shared.global = global;
             global.onconnect = true;
-        });
+        }, workerName);
         system.__sharedWorkers__[workerName] = shared;
     }
     var port = {};
     
-    var returnPort = createPort(queue, port);
+    var returnPort = createPort(queue, port, null, global);
     
-    createPort(shared.queue, returnPort, port);
+    createPort(shared.queue, returnPort, port, shared.global);
     shared.queue.enqueue(function(){
         if(typeof shared.global.onconnect == "function"){
             shared.global.onconnect({
