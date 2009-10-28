@@ -14,8 +14,8 @@ exports.createEnvironment = function(){
     return workerGlobal;
 };
 
-exports.spawn = function(functionToRun){
-    (new java.lang.Thread(functionToRun)).start();
+exports.spawn = function(functionToRun, threadName){
+    (new java.lang.Thread(functionToRun, threadName)).start();
 };
 
 exports.defaultErrorReporter = function(e){
