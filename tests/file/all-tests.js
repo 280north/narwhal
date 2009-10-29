@@ -53,17 +53,8 @@ exports.testRmtreeDoesNotFollowSymlinks = function () {
     }
 };
 
-exports.testGlobStar = function () {
-};
-
-exports.testGlobQuestion = function () {
-};
-
-exports.testGlobStarStar = function () {
-};
-
-exports.testGlobDotDotDot = function () {
-};
+exports.testFileFNMatch = require("./fnmatch");
+exports.testFileMatch = require("./match");
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
