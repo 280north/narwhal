@@ -33,6 +33,10 @@ if [ "$(which cygpath 2>/dev/null)" ]; then
     export NARWHAL_ENGINE_HOME=$(cygpath -wa -- "$NARWHAL_ENGINE_HOME")
 fi
 
+if [ -z "$NARWHAL_JS_VERSION" ]; then
+    NARWHAL_JS_VERSION=170
+fi
+
 if [ -z "$NARWHAL_DEBUGGER" ] || [ "$NARWHAL_DEBUGGER" -eq 0 ]; then
     JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
 else
@@ -59,6 +63,6 @@ if [ $# -lt 1 ]; then
     fi
     $RLWRAP java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
-    java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" "$BOOTSTRAP" "$0" "$@"
+    java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -version "$NARWHAL_JS_VERSION" "$BOOTSTRAP" "$0" "$@"
 fi
 

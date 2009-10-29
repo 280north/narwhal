@@ -163,6 +163,10 @@ Environment Variables
     `SHLVL` (shell level) that is the number of instances
     of `sea` the present shell is running in.
 
+*   `NARWHAL_JS_VERSION` refers to the JavaScript version,
+    that defaults to `"170"` for "1.7.0", and is used by
+    Rhino on Java to determine the valid JavaScript syntax.
+
 
 Configuration Files
 -------------------
