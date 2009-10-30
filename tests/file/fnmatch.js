@@ -5,9 +5,11 @@ var util = require("util");
 var tests = [
     [true,  'cat',          'cat'],
     [false, 'cat',          'category'],
+    
     [false, 'c{at,ub}s',    'cats'],
     [false, 'c{at,ub}s',    'cubs'],
     [false, 'c{at,ub}s',    'cat'],
+    
     [true,  'c?t',          'cat'],
     [false, 'c\\?t',        'cat'],
     [false, 'c??t',         'cat'],
@@ -15,36 +17,15 @@ var tests = [
     [true,  'c/*/t',        'c/a/b/c/t'],
     [true,  'c\at',         'cat'],
     [false, 'c\\at',        'cat', fs.FNM_NOESCAPE],
+    
     [true,  'a?b',          'a/b'],
     [false, 'a?b',          'a/b', fs.FNM_PATHNAME],
+    
     [false, '*',            '.profile'],
     [false, '.*',           'profile'],
     [true,  '.*',           '.profile'],
     [true,  '*',            '.profile', fs.FNM_PERIOD],
-
-    [true,  'cat',          'cat'],
-    [false, 'cat',          'category'],
-
-    [false, 'c{at,ub}s',    'cats'],
-    [false, 'c{at,ub}s',    'cubs'],
-    [false, 'c{at,ub}s',    'cat'],
-
-    [true,  'c?t',          'cat'],
-    [false, 'c\\?t',        'cat'],
-    [false, 'c??t',         'cat'],
-    [true,  'c*',           'cats'],
-    [true,  'c/*/t',        'c/a/b/c/t'],
-    [true,  'c*t',          'cat'],
-    [true,  'c\at',         'cat'],
-    [false, 'c\\at',        'cat', fs.FNM_NOESCAPE],
-
-    [true,  'a?b',          'a/b'],
-    [false, 'a?b',          'a/b', fs.FNM_PATHNAME],
-
-    [false, '*',            '.profile'],
-    [false, '.*',           'profile'],
-    [true,  '.*',           '.profile'],
-    [true,  '*',            '.profile', fs.FNM_PERIOD],
+    
     [true,  '*',            'dave/.profile'],
     [true,  '*',            'dave/.profile', fs.FNM_PERIOD],
     [true,  '*',            'dave/profile'],
