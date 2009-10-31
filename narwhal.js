@@ -1,5 +1,6 @@
 (function (modules) {
 
+var deprecated;
 if (modules.fs) {
     // XXX: migration step for deprecated engines
     // the old arguments[0] was the system module and
@@ -9,6 +10,7 @@ if (modules.fs) {
     var system = modules;
     var file = system.fs;
     var modules = {system: system, file: file};
+    deprecated = true;
 } else {
     var system = modules.system;
     var file = modules.file;
@@ -140,8 +142,7 @@ if (options.verbose !== undefined) {
     require.verbose = system.verbose;
 }
 
-if (system.fs) {
-    delete system.fs;
+if (deprecated) {
     if (options.verbose) {
         system.print(
             "WARNING: this version of the " + system.engine + " engine \n" +
