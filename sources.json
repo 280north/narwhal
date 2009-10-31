@@ -180,6 +180,10 @@
             "type": "github",
             "user": "mrclash",
             "name": "narwhal-mongodb"
+        },
+        "silk": {
+            "type": "github",
+            "user": "kriskowal"
         }
     }
 }

@@ -770,6 +770,22 @@
             "githubName": "narwhal-mongodb",
             "type": "zip",
             "location": "http://github.com/mrclash/narwhal-mongodb/zipball/master"
+        },
+        "silk": {
+            "name": "silk",
+            "description": "A comprehensive set of 16x16px icons.",
+            "license": "CC-BY-2.5 (http://creativecommons.org/licenses/by/2.5/)",
+            "url": "http://www.famfamfam.com/lab/icons/silk/",
+            "keywords": [
+                "media",
+                "icons",
+                "silk",
+                "famfamfam"
+            ],
+            "author": "Mark James <mjames@gmail.com>",
+            "githubName": "silk",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/silk/zipball/master"
         }
     }
 }
