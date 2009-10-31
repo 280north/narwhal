@@ -6,8 +6,10 @@ var tests = [
     [true,  'cat',          'cat'],
     [false, 'cat',          'category'],
     
-    [false, 'c{at,ub}s',    'cats'],
-    [false, 'c{at,ub}s',    'cubs'],
+    //[false, 'c{at,ub}s',    'cats'],
+    //[false, 'c{at,ub}s',    'cubs'],
+    [true, 'c{at,ub}s',    'cats'],
+    [true, 'c{at,ub}s',    'cubs'],
     [false, 'c{at,ub}s',    'cat'],
     
     [true,  'c?t',          'cat'],
@@ -75,18 +77,18 @@ var tests = [
     [true,  '**.j',         'lib/main.j'],
     [true,  '*',            'dave/.profile'],
 
-    //[true,  '**/*.j',       'main.j', fs.FNM_PATHNAME],
+    [true,  '**/*.j',       'main.j', fs.FNM_PATHNAME],
     [true,  '**/*.j',       'one/two/three/main.j', fs.FNM_PATHNAME],
     [false, '**/*.j',       './main.j', fs.FNM_PATHNAME],
 
-    //[true,  '**/*.j',       './main.j', fs.FNM_PATHNAME|fs.FNM_DOTMATCH],
+    [true,  '**/*.j',       './main.j', fs.FNM_PATHNAME|fs.FNM_DOTMATCH],
     [true,  '**/*.j',       'one/two/.main.j', fs.FNM_PATHNAME|fs.FNM_DOTMATCH],
     [true,  '**/best/*',    'lib/my/best/song.j'],
 
     [false, '**/foo',       'a/.b/c/foo', fs.FNM_PATHNAME],
-    //[true,  '**/foo',       'a/b/c/foo', fs.FNM_PATHNAME],
-    //[true,  '**/foo',       '/a/b/c/foo', fs.FNM_PATHNAME],
-    //[true,  '**/foo',       'a/.b/c/foo', fs.FNM_PATHNAME|fs.FNM_PERIOD]
+    [true,  '**/foo',       'a/b/c/foo', fs.FNM_PATHNAME],
+    [true,  '**/foo',       '/a/b/c/foo', fs.FNM_PATHNAME],
+    [true,  '**/foo',       'a/.b/c/foo', fs.FNM_PATHNAME|fs.FNM_PERIOD]
 ];
 
 tests.forEach(function(test, n) {
