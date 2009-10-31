@@ -421,29 +421,45 @@ exports["tests matches special characters by escaping with a backslash with '\\<
     });
 }
 
-// exports["tests recursively matches directories with '**/<characters>'"] = function() {
-//     var expected = [
-//         "deeply/nested/directory/structure/file_one",
-//         "deeply/nested/directory/structure/file_one.ext",
-//         "deeply/nondotfile",
-//     
-//         "dir/filename_ordering",
-//         "dir_filename_ordering",
-//     
-//         "file_one.ext",
-//         "file_two.ext",
-//     
-//         "nondotfile",
-//     
-//         "subdir_one/nondotfile",
-//         "subdir_two/nondotfile",
-//         "subdir_two/nondotfile.ext"
-//     ]
-//     
-//     mockDirs(function(dir) {
-//         assert.eq(expected, dir.glob('**/*fil?{,.}*').sort());
-//     });
-// }
+exports["tests recursively matches directories with '**/<characters>'"] = function() {
+    var expected = [
+        "deeply/nested/directory/structure/file_one",
+        "deeply/nested/directory/structure/file_one.ext",
+        "deeply/nondotfile",
+    
+        "dir/filename_ordering",
+        "dir_filename_ordering",
+    
+        "file_one.ext",
+        "file_two.ext",
+    
+        "nondotfile",
+    
+        "subdir_one/nondotfile",
+        "subdir_two/nondotfile",
+        "subdir_two/nondotfile.ext"
+    ]
+    
+    mockDirs(function(dir) {
+        assert.eq(expected, dir.glob('**/*fil?{,.}*').sort());
+    });
+}
+
+exports["tests '**/*.ext'"] = function() {
+    // FIXME: exclude .dotfile?
+    var expected = [
+        "deeply/nested/.dotfile.ext",
+        "deeply/nested/directory/structure/.ext",
+        "deeply/nested/directory/structure/file_one.ext",
+        "file_one.ext",
+        "file_two.ext",
+        "subdir_two/nondotfile.ext"
+    ]
+    
+    mockDirs(function(dir) {
+        assert.eq(expected, dir.glob('**/*.ext').sort());
+    });
+}
 
 if (require.main === module.id)
     require("os").exit(require("test/runner").run(exports));
