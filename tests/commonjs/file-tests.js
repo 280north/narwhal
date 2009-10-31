@@ -286,6 +286,19 @@ exports.testsMtime = function () {
     }
 };
 
+exports.testEmptyStringIsDirectory = function() {
+    assert.isTrue(fs.isDirectory(""), "'' should be a directory");
+}
+exports.testDotIsDirectory = function() {
+    assert.isTrue(fs.isDirectory("."), "'.' should be a directory");
+}
+exports.testCwdIsDirectory = function() {
+    assert.isTrue(fs.isDirectory(fs.cwd()), fs.cwd() + " should be a directory");
+}
+exports.testIsNotDirectory = function() {
+    assert.isFalse(fs.isDirectory("hopefully-not-a-directory"), "'hopefully-not-a-directory' shouldn't be a directory");
+}
+
 exports.testCwd = function() {
     assert.eq(system.env["PWD"], fs.cwd(), "Ensure the PWD environment variable is set!");
 }

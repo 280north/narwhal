@@ -1,6 +1,8 @@
 var FILE = require("file"),
     assert = require("test/assert");
 
+// note: need doubled \\ to properly escape in JS
+
 // from RubySpec
 function create_mock_dirs(mock_dir) {
     mock_dir = FILE.path(mock_dir);
@@ -42,7 +44,12 @@ function create_mock_dirs(mock_dir) {
         "special/[",
         "special/]",
         "special/{",
-        "special/}"
+        "special/}",
+        
+        // these three (and corresponding tests) aren't valid on Windows
+        "special/*",
+        "special/?",
+        "special/|"
     ];
     
     files.forEach(function(file) {
@@ -96,7 +103,7 @@ exports["tests matches both dot and non-dotfiles with '*' and option File::FNM_D
     ];
     
     mockDirs(function(dir) {
-        assert.eq(expected, dir.glob("*").sort());
+        assert.eq(expected, dir.glob("*", FILE.FNM_DOTMATCH).sort());
     });
 }
 
@@ -104,13 +111,13 @@ exports["tests matches files with any beginning with '*<non-special characters>'
     var expected = [".dotfile", "nondotfile"];
     
     mockDirs(function(dir) {
-        assert.eq(expected, dir.glob("*file").sort());
+        assert.eq(expected, dir.glob("*file", FILE.FNM_DOTMATCH).sort());
     });
 }
 
 exports["tests matches any files in the current directory with '**' and option File::FNM_DOTMATCH"] = function() {
     mockDirs(function(dir) {
-        assert.eq(expected_paths, dir.glob("**").sort());
+        assert.eq(expected_paths, dir.glob("**", FILE.FNM_DOTMATCH).sort());
     });
 }
 
@@ -128,25 +135,24 @@ exports["tests recursively matches any subdirectories except './' or '../' with 
     ];
     
     mockDirs(function(dir) {
-        assert.eq(expected, dir.glob("**/").sort());
+        assert.eq(expected, dir.glob("**/", FILE.FNM_DOTMATCH).sort());
     });
 }
 
-// TODO: make sure the escaping of these is correct. need double "\\"?
 exports["tests matches the literal character '\\' with option File::FNM_NOESCAPE"] = function() {
     FILE.mkdirs('foo?bar');
     try {
-        assert.eq(["foo?bar"], FILE.glob('foo?bar'/*, File::FNM_NOESCAPE*/));
-        assert.eq([], FILE.glob('foo\?bar'/*, File::FNM_NOESCAPE*/));
+        assert.eq(["foo?bar"], FILE.glob('foo?bar', FILE.FNM_NOESCAPE));
+        assert.eq([], FILE.glob('foo\\?bar', FILE.FNM_NOESCAPE));
     } finally {
         FILE.rmdir('foo?bar');
     }
 
-    FILE.mkdir('foo\?bar');
+    FILE.mkdir('foo\\?bar');
     try {
-        assert.eq(["foo\\?bar"], FILE.glob('foo\?bar'/*, File::FNM_NOESCAPE*/));
+        assert.eq(["foo\\?bar"], FILE.glob('foo\\?bar', FILE.FNM_NOESCAPE));
     } finally {
-        FILE.rmdir('foo\?bar');
+        FILE.rmdir('foo\\?bar');
     }
 }
 
@@ -200,13 +206,13 @@ exports["tests matches regexp special +"] = function() {
 
 exports["tests matches regexp special *"] = function() {
     mockDirs(function(dir) {
-        assert.eq(['special/*'], dir.glob("special/\*").sort());
+        assert.eq(['special/*'], dir.glob("special/\\*").sort());
     });
 }
 
 exports["tests matches regexp special ?"] = function() {
     mockDirs(function(dir) {
-        assert.eq(['special/?'], dir.glob("special/\?").sort());
+        assert.eq(['special/?'], dir.glob("special/\\?").sort());
     });
 }
 
@@ -242,7 +248,7 @@ exports["tests matches regexp special )"] = function() {
 
 exports["tests matches regexp special ["] = function() {
     mockDirs(function(dir) {
-        assert.eq(['special/['], dir.glob("special/\[").sort());
+        assert.eq(['special/['], dir.glob("special/\\[").sort());
     });
 }
 
@@ -254,13 +260,13 @@ exports["tests matches regexp special ]"] = function() {
 
 exports["tests matches regexp special {"] = function() {
     mockDirs(function(dir) {
-        assert.eq(['special/{'], dir.glob("special/\{").sort());
+        assert.eq(['special/{'], dir.glob("special/\\{").sort());
     });
 }
 
 exports["tests matches regexp special }"] = function() {
     mockDirs(function(dir) {
-        assert.eq(['special/}'], dir.glob("special/\}").sort());
+        assert.eq(['special/}'], dir.glob("special/\\}").sort());
     });
 }
 
@@ -390,7 +396,11 @@ exports["tests matches any one of the strings in a set with '{<string>,<other>,.
 }
 
 exports["tests accepts string sets with empty strings with {<string>,,<other>}"] = function() {
-    var expected = ["deeply/nested/directory/structure/file_one.ext", "deeply/nested/directory/structure/file_one"].sort();
+    var expected = [
+        "deeply/nested/directory/structure/file_one.ext",
+        "deeply/nested/directory/structure/file_one"
+    ].sort();
+    
     mockDirs(function(dir) {
         assert.eq(expected, dir.glob('deeply/nested/directory/structure/file_one{.ext,}').sort());
     });
@@ -403,41 +413,38 @@ exports["tests matches dot or non-dotfiles with '{,.}*'"] = function() {
 }
 
 exports["tests matches special characters by escaping with a backslash with '\\<character>'"] = function() {
-    FILE.mkdirs('foo^bar');
-    try {
-        // FIXME: escape "\"?
-        assert.eq(["foo^bar"], FILE.glob('foo?bar'));
-        assert.eq([], FILE.glob('foo\?bar'));
-        assert.eq(["nondotfile"], FILE.glob('nond\otfile'));
-    } finally {
-        FILE.rmdir('foo^bar');
-    }
-}
-
-exports["tests recursively matches directories with '**/<characters>'"] = function() {
-    var expected = [
-        "deeply/nested/directory/structure/file_one",
-        "deeply/nested/directory/structure/file_one.ext",
-        "deeply/nondotfile",
-    
-        "dir/filename_ordering",
-        "dir_filename_ordering",
-    
-        "file_one.ext",
-        "file_two.ext",
-    
-        "nondotfile",
-    
-        "subdir_one/nondotfile",
-        "subdir_two/nondotfile",
-        "subdir_two/nondotfile.ext"
-    ]
-    
     mockDirs(function(dir) {
-        assert.eq(expected, dir.glob('**/*fil?{,.}*').sort());
+        dir.join('foo^bar').mkdir();
+        assert.eq(["foo^bar"], dir.glob('foo?bar'));
+        assert.eq([], dir.glob('foo\\?bar'));
+        assert.eq(["nondotfile"], dir.glob('nond\\otfile'));
     });
 }
 
-if (require.main == module.id)
-    require("os").exit(require("test/runner").run(exports))
+// exports["tests recursively matches directories with '**/<characters>'"] = function() {
+//     var expected = [
+//         "deeply/nested/directory/structure/file_one",
+//         "deeply/nested/directory/structure/file_one.ext",
+//         "deeply/nondotfile",
+//     
+//         "dir/filename_ordering",
+//         "dir_filename_ordering",
+//     
+//         "file_one.ext",
+//         "file_two.ext",
+//     
+//         "nondotfile",
+//     
+//         "subdir_one/nondotfile",
+//         "subdir_two/nondotfile",
+//         "subdir_two/nondotfile.ext"
+//     ]
+//     
+//     mockDirs(function(dir) {
+//         assert.eq(expected, dir.glob('**/*fil?{,.}*').sort());
+//     });
+// }
+
+if (require.main === module.id)
+    require("os").exit(require("test/runner").run(exports));
 
