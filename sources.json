@@ -184,6 +184,10 @@
         "underscore": {
             "type": "github",
             "user": "kriskowal"
+        },
+        "silk": {
+            "type": "github",
+            "user": "kriskowal"
         }
     }
 }
