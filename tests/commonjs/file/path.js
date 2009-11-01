@@ -6,7 +6,6 @@ var util = require("util");
 util.forEachApply([
     ["/", "a", "/a"],
     [".", "a", "./a"]
-        
 ], function (path, rel, expected) {
     exports['test path.join ' + util.repr(arguments)] = function () {
         assert.eq(expected, system.fs.path(path).join(rel));

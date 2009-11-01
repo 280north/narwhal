@@ -181,6 +181,10 @@
             "user": "mrclash",
             "name": "narwhal-mongodb"
         },
+        "underscore": {
+            "type": "github",
+            "user": "kriskowal"
+        },
         "silk": {
             "type": "github",
             "user": "kriskowal"

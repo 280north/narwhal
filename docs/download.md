@@ -19,22 +19,7 @@ Bleeding Edge
 Releases
 --------
 
-<div id="releases">Loading...</div>
-<script type="text/javascript" charset="utf-8">
-    function showreleases(response) {
-        var releases = [];
-        for (var tag in response.tags) {
-            var tar = "http://github.com/tlrobinson/narwhal/tarball/"+tag,
-                zip = "http://github.com/tlrobinson/narwhal/zipball/"+tag;
-                commit = "http://github.com/tlrobinson/narwhal/commit/"+response.tags[tag],
-                tree = "http://github.com/tlrobinson/narwhal/tree/"+response.tags[tag];
-            releases.push('<li>'+tag+': [<a href="'+zip+'">zip</a>][<a href="'+tar+'">tar</a>][<a href="'+tree+'">tree</a>][<a href="'+commit+'">commit</a>]</li>');
-        }
-        releases = releases.sort();
-        var reversed = [];
-        while (releases.length) reversed.push(releases.pop());
-        
-        document.getElementById("releases").innerHTML = "<ul>" + reversed.join("\n") + "</ul>";
-    }
-</script>
+<div id="releases-list">Loading...</div>
+<script type="text/javascript" charset="utf-8" src="js/releases.js"></script>
 <script type="text/javascript" charset="utf-8" src="http://github.com/api/v2/json/repos/show/tlrobinson/narwhal/tags?callback=showreleases"></script>
+
