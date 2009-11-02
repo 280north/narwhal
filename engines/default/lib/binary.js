@@ -347,10 +347,10 @@ ByteString.prototype.substr = function(start, length) {
 ByteString.prototype.substring = function(from, to) {
     if (from !== undefined) {
         if (to !== undefined)
-            return this.slice(Math.max(Math.min(begin, this._length), 0));
+            return this.slice(Math.max(Math.min(from, this._length), 0));
         else
-            return this.slice(Math.max(Math.min(begin, this._length), 0),
-                              Math.max(Math.min(end, this._length), 0));
+            return this.slice(Math.max(Math.min(from, this._length), 0),
+                              Math.max(Math.min(to, this._length), 0));
     }
     return this.slice();
 };
@@ -617,7 +617,7 @@ ByteArray.prototype.reverse = function() {
 
 // slice()
 ByteArray.prototype.slice = function() {
-    return new ByteArray(ByteString.prototype.apply.slice(this, arguments));
+    return new ByteArray(ByteString.prototype.slice.apply(this, arguments));
 };
 
 var numericCompareFunction = function(o1, o2) { return o1 - o2; };

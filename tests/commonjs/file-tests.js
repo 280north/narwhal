@@ -110,6 +110,17 @@ exports.testLittlePathOpenWriteRead = function () {
     }
 };
 
+exports.testWriteReadNewlineNotEnforced = function() {
+    try {
+        var path = "testWriteReadNewlineNotEnforced.txt";
+        var content = "testWriteReadNewlineNotEnforced.txt";
+        fs.write(path, content);
+        assert.is(content, fs.read(path));
+    } finally {
+        fs.remove(path);
+    }
+}; 
+/*
 exports.testWriteReadNewlineEnforced = function() {
     try {
         var path = "testWriteReadNewlineEnforced.txt";
@@ -119,7 +130,25 @@ exports.testWriteReadNewlineEnforced = function() {
     } finally {
         fs.remove(path);
     }
-}; 
+};
+*/
+
+exports.testOverwriteFile = function() {
+    var path = "testOverwriteFile.txt";
+    var a = "hello world";
+    var b = "hello";
+    try {
+        fs.write(path, a);
+        assert.is(a, fs.read(path));
+        assert.is(a.length, fs.size(path));
+        fs.write(path, b);
+        assert.is(b, fs.read(path));
+        assert.is(b.length, fs.size(path));
+    } finally {
+        if (fs.isFile(path))
+            fs.remove(path);
+    }
+}
 
 exports.testWriteReadBinaryWrongMode = function () {
     var path = "testWriteReadBinaryModeWrongMode.txt";
@@ -164,7 +193,7 @@ exports.testPrintRead = function () {
 
 exports.testCopy = function () {
     try {
-        fs.path("testCopyA.txt").write("testCopy").copy("testCopyB.txt");
+        fs.path("testCopyA.txt").write("testCopy\n").copy("testCopyB.txt");
         assert.is("testCopy\n", fs.read("testCopyB.txt"));
     } finally {
         fs.remove("testCopyA.txt");
@@ -174,7 +203,7 @@ exports.testCopy = function () {
 
 exports.testCopyChain = function () {
     try {
-        fs.path("testCopyA.txt").write("testCopy").copy("testCopyB.txt").copy("testCopyC.txt");
+        fs.path("testCopyA.txt").write("testCopy\n").copy("testCopyB.txt").copy("testCopyC.txt");
         assert.is("testCopy\n", fs.read("testCopyC.txt"));
     } finally {
         fs.remove("testCopyA.txt");
@@ -238,6 +267,37 @@ exports.testsRenameList = function () {
         fs.rmtree('testsRename');
     }
 };
+
+exports.testsMtime = function () {
+    try {
+        fs.mkdir('testsMtime');
+        
+        // add/subtract 1 second to account for lower precision of mtime
+        var before = new Date().getTime() - 1000;
+        fs.path('testsMtime', 'A.txt').touch();
+        var after = new Date().getTime() + 1000;
+        
+        var mtime = fs.path('testsMtime', 'A.txt').mtime().getTime();
+        
+        assert.isTrue(before <= mtime, "Expected " + before + " <= " + mtime);
+        assert.isTrue(mtime <= after, "Expected " + mtime + " <= " + after);
+    } finally {
+        fs.rmtree('testsMtime');
+    }
+};
+
+exports.testEmptyStringIsDirectory = function() {
+    assert.isTrue(fs.isDirectory(""), "'' should be a directory");
+}
+exports.testDotIsDirectory = function() {
+    assert.isTrue(fs.isDirectory("."), "'.' should be a directory");
+}
+exports.testCwdIsDirectory = function() {
+    assert.isTrue(fs.isDirectory(fs.cwd()), fs.cwd() + " should be a directory");
+}
+exports.testIsNotDirectory = function() {
+    assert.isFalse(fs.isDirectory("hopefully-not-a-directory"), "'hopefully-not-a-directory' shouldn't be a directory");
+}
 
 exports.testCwd = function() {
     assert.eq(system.env["PWD"], fs.cwd(), "Ensure the PWD environment variable is set!");

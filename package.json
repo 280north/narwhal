@@ -15,7 +15,10 @@
         "Zach Carter",
         "Nathan L. Smith",
         "Jan Varwig",
-        "Mark Porter"
+        "Mark Porter",
+        "Isaac Z. Schlueter (http://blog.izs.me/)",
+        "Kris Zyp (http://www.sitepen.com/blog/author/kzyp/)",
+        "Nathan Stott (http://nathan.whiteboard-it.com) <nathan.stott@whiteboard-it.com>"
     ],
     "main": "examples/narwhal",
     "lib": ["lib"],
