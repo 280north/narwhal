@@ -22,7 +22,7 @@ exports.testObjectArray = function () {
 exports.testObjectPolymorphism = function () {
     var Foo = function () {
     };
-    Foo.prototype.object = function () {
+    Foo.prototype.toObject = function () {
         return {"a": 10};
     };
     assert.eq({"a": 10}, util.object(new Foo()));
