@@ -22,7 +22,10 @@ function createPort(queue, target, port, global){
                         target[eventName].apply(target, args);
                     }
                 });
-            }
+            },
+            hasPendingEvents: function(){
+	        return queue.hasPendingEvents();
+	    }
         };
     port.postMessage = function(message){
         queue.enqueue(function(){
@@ -38,9 +41,6 @@ function createPort(queue, target, port, global){
                 target.onmessage(event);
             }
         });
-    };
-    port.isIdle= function(){
-        return queue.isEmpty();
     };
     return port;
 }
@@ -65,37 +65,13 @@ function createWorker(scriptName, setup, workerName){
     workerEngine.spawn(function(){
         workerGlobal.require(scriptName);
         // enter the event loop
-        while(true){
-            try{
-                workerQueue.nextEvent()();
-                if(workerQueue.isEmpty()){
-                    // fire onidle events when empty, this allows to do effective worker pooling
-                    queue.enqueue(function(){
-                       if(worker && worker.onidle){
-                           worker.onidle();
-                       }
-                    });
-                }
-            }catch(e){
-                workerQueue.enqueue(function(){
-                    if(typeof workerGlobal.onerror === "function"){
-                        // trigger the onerror event in the worker if an error occurs
-                        try{
-                            workerGlobal.onerror(e);
-                        }
-                        catch(e){
-                            // don't want an error here to go into an infinite loop!
-                            workerEngine.defaultErrorReporter(e);
-                        }
-                    }
-                    else{
-                        workerEngine.defaultErrorReporter(e);
-                    }
-                });
-            
-            
-            }
-        }
+        workerQueue.enterEventLoop(function(){
+	    queue.enqueue(function(){
+	       if(worker && worker.onidle){
+		   worker.onidle();
+	       }
+	    });
+	});
     }, workerName || scriptName);
 };
 
