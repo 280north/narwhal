@@ -100,6 +100,18 @@
         "narwhal-xulrunner": {
             "name": "narwhal-xulrunner",
             "engine": "xulrunner",
+            "dependencies": [
+                "narwhal"
+            ],
+            "author": "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
+            "description": "XULRunner engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "xulrunner",
+                "mozilla",
+                "extension"
+            ],
             "githubName": "narwhal-xulrunner",
             "type": "zip",
             "location": "http://github.com/Gozala/narwhal-xulrunner/zipball/master"
@@ -227,6 +239,7 @@
         },
         "browserjs": {
             "name": "browserjs",
+            "version": "0.1",
             "dependencies": [
                 "narwhal"
             ],
@@ -585,6 +598,7 @@
                 "rake",
                 "make"
             ],
+            "version": "0.1.1",
             "githubName": "jake",
             "type": "zip",
             "location": "http://github.com/280north/jake/zipball/master"
@@ -675,6 +689,7 @@
             "author": "Nathan Stott",
             "email": "nathan.stott@whiteboard-it.com",
             "dependencies": [
+                "jack",
                 "ejs"
             ],
             "lib": "lib",
@@ -709,11 +724,102 @@
             ],
             "author": "Nathan Stott",
             "email": "nathan.stott@whiteboard-it.com",
-            "dependencies": [],
+            "dependencies": [
+                "browserjs"
+            ],
             "lib": "lib",
             "githubName": "narwhal-couchdb",
             "type": "zip",
             "location": "http://github.com/nrstott/narwhal-couchdb/zipball/master"
+        },
+        "objective-j": {
+            "name": "objective-j",
+            "dependencies": [
+                "narwhal",
+                "browserjs",
+                "jake"
+            ],
+            "preload": [
+                "objective-j/loader"
+            ],
+            "description": "Objective-J and Cappuccino module",
+            "keywords": [
+                "objective-j",
+                "objj",
+                "objective j",
+                "cappuccino"
+            ],
+            "author": "280 North, Inc. (http://280north.com/)",
+            "version": "0.7.9",
+            "contributors": [
+                "Francisco Tolmasky (http://tolmasky.com/)",
+                "Ross Boucher (http://rossboucher.com/)",
+                "Tom Robinson (http://tlrobinson.net/)",
+                "Numerous others (http://contributors.cappuccino.org/)"
+            ],
+            "githubName": "objective-j-package",
+            "type": "zip",
+            "location": "http://github.com/280north/objective-j-package/zipball/master"
+        },
+        "cappuccino": {
+            "name": "cappuccino",
+            "dependencies": [
+                "narwhal",
+                "browserjs",
+                "jake",
+                "objective-j"
+            ],
+            "description": "Cappuccino module",
+            "keywords": [
+                "objective-j",
+                "objj",
+                "objective j",
+                "capp",
+                "cappuccino"
+            ],
+            "author": "280 North, Inc. (http://280north.com/)",
+            "version": "0.7.9",
+            "objj-frameworks": [
+                "Frameworks"
+            ],
+            "objj-debug-frameworks": [
+                "Frameworks/Debug"
+            ],
+            "contributors": [
+                "Francisco Tolmasky (http://tolmasky.com/)",
+                "Ross Boucher (http://rossboucher.com/)",
+                "Tom Robinson (http://tlrobinson.net/)",
+                "Numerous others (http://contributors.cappuccino.org/)"
+            ],
+            "githubName": "cappuccino-package",
+            "type": "zip",
+            "location": "http://github.com/280north/cappuccino-package/zipball/master"
+        },
+        "ojunit": {
+            "name": "ojunit",
+            "dependencies": [
+                "narwhal",
+                "objective-j",
+                "cappuccino"
+            ],
+            "author": "Tom Robinson (http://280north.com/)",
+            "contributors": [
+                "Ross Boucher",
+                "Martin Häcker"
+            ],
+            "description": "A simple Objective-J unit test framework.",
+            "keywords": [
+                "objective-j",
+                "unit test",
+                "testing",
+                "test"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "githubName": "ojunit",
+            "type": "zip",
+            "location": "http://github.com/280north/ojunit/zipball/master"
         }
     }
 }
