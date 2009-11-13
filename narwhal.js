@@ -79,15 +79,16 @@ var sandbox = requireFake("sandbox", system.prefix + "/lib/sandbox.js");
 // bootstrap file module
 requireFake("file", system.prefix + "/lib/file-bootstrap.js", "force");
 
-system.enginePrefix = system.enginePrefix || system.prefix + '/engines/' + system.engines[0];
-
 // construct the initial paths
 var paths = [];
 // XXX system.packagePrefixes deprecated in favor of system.prefixes
-var prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
-for (var i = 0; i < prefixes.length; i++) {
+system.prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
+var prefixes = system.prefixes.slice();
+if (system.enginePrefix)
+    prefixes.unshift(system.enginePrefix);
+for (var i = 0, ii = prefixes.length; i < ii; i++) {
     var prefix = prefixes[i];
-    for (var j = 0; j < system.engines.length; j++) {
+    for (var j = 0, jj = system.engines.length; j < jj; j++) {
         var engine = system.engines[j];
         paths.push(prefixes[i] + "/engines/" + engine + "/lib");
     }
@@ -124,7 +125,7 @@ require.force("file-engine");
 
 // augment the path search array with those provided in
 //  environment variables
-paths.push([
+paths.push.apply(paths, [
     system.env.JS_PATH || "",
     system.env.NARWHAL_PATH || ""
 ].join(":").split(":").filter(function (path) {
