@@ -3,6 +3,15 @@
 # this script is intended to work both in narwhal/bin and in
 # any project's bin dir; it's copied by tusk --init.
 
+function enquote_all () {
+    ARGS=""
+    for ARG in "$@"; do
+        [ -n "$ARGS" ] && ARGS="$ARGS "
+        ARGS="$ARGS'""$(echo " $ARG" | cut -c 2- | sed 's/'"'"'/'"'"'"'"'"'"'"'"'/g')""'"
+    done
+    echo "$ARGS"
+}
+
 # get the absolute path of the executable
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
 
@@ -27,7 +36,7 @@ if [ "$#" -lt 1 ]; then
     echo SEALVL="$SEALVL" >&2
     "$SHELL"
 else
-    "$SHELL" -c "$*"
+    "$SHELL" -c "$(enquote_all "$@")"
 fi
 if [ "$OLDSEA" != "" ]; then
     echo SEA="$OLDSEA" >&2
