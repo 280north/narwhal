@@ -135,6 +135,13 @@
             "type": "zip",
             "location": "http://github.com/smith/narwhal-jaxer/zipball/master"
         },
+        "narwhal-moar-monkeys": {
+            "name": "narwhal-moar-monkeys",
+            "preload": "global-moar-monkeys",
+            "githubName": "narwhal-moar-monkeys",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/narwhal-moar-monkeys/zipball/master"
+        },
         "jack": {
             "name": "jack",
             "dependencies": [
@@ -882,7 +889,7 @@
             "author": "Tom Robinson (http://280north.com/)",
             "contributors": [
                 "Ross Boucher",
-                "Martin Häcker"
+                "Martin Hacker"
             ],
             "description": "A simple Objective-J unit test framework.",
             "keywords": [
