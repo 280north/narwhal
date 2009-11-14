@@ -1,9 +1,25 @@
 
+/*!
+    Copyright (c) 2009, 280 North Inc. http://280north.com/
+    MIT License. http://github.com/280north/narwhal/blob/master/README.md
+*/
+
 // Brings an environment as close to ECMAScript 5 compliance
 // as is possible with the facilities of erstwhile engines.
 
-// ES5 draft:
+// ES5 Draft
+// http://www.ecma-international.org/publications/files/drafts/tc39-2009-050.pdf
+
+// NOTE: this is a draft, and as such, the URL is subject to change.  If the
+// link is broken, check in the parent directory for the latest TC39 PDF.
+// http://www.ecma-international.org/publications/files/drafts/
+
+// Previous ES5 Draft
 // http://www.ecma-international.org/publications/files/drafts/tc39-2009-025.pdf
+// This is a broken link to the previous draft of ES5 on which most of the
+// numbered specification references and quotes herein were taken.  Updating
+// these references and quotes to reflect the new document would be a welcome
+// volunteer project.
 
 //
 // Array
@@ -49,7 +65,6 @@ if (!Array.prototype.map) {
 }
 
 // ES5 15.4.4.20
-// filter
 if (!Array.prototype.filter) {
     Array.prototype.filter = function (block /*, thisp */) {
         var values = [];
@@ -62,7 +77,6 @@ if (!Array.prototype.filter) {
 }
 
 // ES5 15.4.4.16
-// every
 if (!Array.prototype.every) {
     Array.prototype.every = function (block /*, thisp */) {
         var thisp = arguments[1];
@@ -347,11 +361,19 @@ if (!Object.keys) {
 // ====
 //
 
+// ES5 15.9.5.43
 // Format a Date object as a string according to a subset of the ISO-8601 standard.
-// Useful in Atom.
+// Useful in Atom, among other things.
 if (!Date.prototype.toISOString) {
     Date.prototype.toISOString = function() {
-        return (this.getFullYear() + "-" + this.getMonth() + "-" + this.getDate() + "T" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds() + "Z"); 
+        return (
+            this.getFullYear() + "-" +
+            this.getMonth() + "-" +
+            this.getDate() + "T" +
+            this.getHours() + ":" +
+            this.getMinutes() + ":" +
+            this.getSeconds() + "Z"
+        ); 
     }
 }
 
@@ -512,6 +534,21 @@ if (!Function.prototype.bind) {
         // have a prototype property.
         // XXX can't delete it in pure-js.
         return bound;
+    };
+}
+
+//
+// String
+// ======
+//
+
+// ES5 15.5.4.20
+if (!String.prototype.trim) {
+    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
+    var trimBeginRegexp = /^\s\s*/;
+    var trimEndRegexp = /\s\s*$/;
+    String.prototype.trim = function () {
+        return String(this).replace(trimBeginRegexp, '').replace(trimEndRegexp, '');
     };
 }
 
