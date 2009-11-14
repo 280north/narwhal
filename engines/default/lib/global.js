@@ -1,11 +1,5 @@
-// extend the prototypes of builtin objects
 
-require("array");
-require("object");
-require("string");
-require("regexp");
-require("date");
-require("binary");
-require("function");
-require("json");
+require("./global-es5");
+require("./global-commonjs");
+require("./global-moar-monkeys");
 
