@@ -21,6 +21,11 @@ if [ -f "$NARWHAL_HOME/narwhal.conf" ]; then
     source "$NARWHAL_HOME"/narwhal.conf
 fi
 
+# load narwhal.local.conf in pwd if it exists
+if [ -f "narwhal.local.conf" ]; then
+    source "narwhal.local.conf"
+fi
+
 if [ -n "$NARWHAL_DEBUG" ]; then
     export NARWHAL_DEBUG
 fi
