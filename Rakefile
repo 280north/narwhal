@@ -46,7 +46,7 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.authors = 'Developed by Tom Robinson and contributors. Gem publish by Charles Jolley'
   gemspec.email = 'contact@sproutcore.com'
   gemspec.homepage = 'http://www.narwhaljs.org'
-  gemspec.summary = "JavaScript Command Line"
+  gemspec.summary = "CommonJS Command Line"
   
   gemspec.add_development_dependency 'extlib', ">= 0.9.9"
   gemspec.add_development_dependency 'gemcutter', ">= 0.1.0"
@@ -55,7 +55,7 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.rubyforge_project = "sproutit-narwhal"
     
   gemspec.files.include *%w[engines/jsc/**/* extconf.rb]
-  gemspec.files.exclude *%w[.gitignore .gitmodules .DS_Store tmp .hashinfo .svn .git narwhal.conf Makefile]
+  gemspec.files.exclude *%w[.gitignore .gitmodules .DS_Store tmp .hashinfo .svn .git narwhal.conf ./Makefile]
   gemspec.files.exclude *%w[engines/jsc/**/*.dylib engines/jsc/**/*.dylib.dSYM engines/jsc/**/*.so engines/jsc/**/*.dll engines/jsc/**/*.o engines/jsc/**/*.s engines/jsc/**/*.ii engines/jsc/bin/*]
   
   gemspec.description = File.read(ROOT_PATH / 'README.md')
