@@ -43,9 +43,9 @@ end
 
 Jeweler::Tasks.new do |gemspec|
   gemspec.name = 'sproutit-narwhal'
-  gemspec.authors = 'Published by Sprout Systems Inc.  Developed by Tom Robinson and contributors'
+  gemspec.authors = 'Developed by Tom Robinson and contributors. Gem publish by Charles Jolley'
   gemspec.email = 'contact@sproutcore.com'
-  gemspec.homepage = 'http://www.narwhaljs.com'
+  gemspec.homepage = 'http://www.narwhaljs.org'
   gemspec.summary = "JavaScript Command Line"
   
   gemspec.add_development_dependency 'extlib', ">= 0.9.9"
@@ -180,7 +180,8 @@ namespace :release do
   task :gemcutter => [:prepare, 'gemcutter:release']
   
   desc "one release to rule them all"
-  task :all => [:prepare, 'release:gemcutter', 'release:rubyforge']
+  task :all => [:prepare, 'release:gemcutter'] #gemcutter only for now
+  #task :all => [:prepare, 'release:gemcutter', 'release:rubyforge']
 
 end
 
