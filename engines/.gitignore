@@ -1,0 +1,13 @@
+# Ignore all
+
+/*
+
+# except for
+
+!/.gitignore
+
+!/browser
+!/default
+!/rhino
+!/secure
+!/template

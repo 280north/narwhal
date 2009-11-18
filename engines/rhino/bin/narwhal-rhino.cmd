@@ -18,10 +18,10 @@ if not "%NARWHAL_CLASSPATH%" == "" (
 	set CLASSPATH=%NARWHAL_CLASSPATH%;%CLASSPATH%
 )
 
-if not "%NARWHAL_DEBUGGER%" == "" (
+if "%NARWHAL_DEBUGGER%" == "" (
     set JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
 )
-if "%NARWHAL_DEBUGGER%" == "" (
+if not "%NARWHAL_DEBUGGER%" == "" (
     set JAVA_MAIN=org.mozilla.javascript.tools.debugger.Main
 )
 
