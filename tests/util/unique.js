@@ -7,6 +7,6 @@ exports.test = function () {
     assert.eq(['toString', 'hasOwnProperty'], util.unique(['toString', 'hasOwnProperty']));
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 

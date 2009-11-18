@@ -52,6 +52,6 @@ exports.testCurry = function () {
     assert.isFalse(util.eq(10)(20));
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 
