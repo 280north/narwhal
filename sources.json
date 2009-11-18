@@ -162,6 +162,10 @@
             "type": "github",
             "user": "nrstott"
         },
+        "json-template": {
+            "type": "github",
+            "user": "Gozala"
+        },
         "ejs": {
             "type": "github",
             "user": "nrstott",
@@ -185,6 +189,15 @@
         "ojunit": {
             "type": "github",
             "user": "280north"
+		},
+        "mongodb": {
+            "type": "github",
+            "user": "mrclash",
+            "name": "narwhal-mongodb"
+        },
+        "underscore": {
+            "type": "github",
+            "user": "kriskowal"
         }
     }
 }
