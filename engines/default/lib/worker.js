@@ -44,14 +44,22 @@ function createPort(queue, target, port, global){
     };
     return port;
 }
-function createWorker(scriptName, setup, workerName){
-    var workerQueue, 
-        workerGlobal = workerEngine.createEnvironment();
+var createEnvironment = exports.createEnvironment = function(){
+    var workerGlobal = workerEngine.createEnvironment();
     
     // add the module lookup paths from our environment
     var paths = workerGlobal.require.paths;
     paths.splice(0, paths.length);
     paths.push.apply(paths, require.paths);
+    
+    // there must be one and only one shared worker map amongst all workers
+    workerGlobal.require("system").__sharedWorkers__ = system.__sharedWorkers__;
+
+	return workerGlobal;	
+};
+function createWorker(scriptName, setup, workerName){
+    var workerQueue, 
+        workerGlobal = createEnvironment();
     
     // get the event queue
     workerQueue = workerGlobal.require("event-queue");
@@ -59,9 +67,6 @@ function createWorker(scriptName, setup, workerName){
     // calback for dedicated and shared workers to do their thing
     var worker = setup(workerQueue, workerGlobal);
     
-    // there must be one and only one shared worker map amongst all workers
-    workerGlobal.require("system").__sharedWorkers__ = system.__sharedWorkers__;
-
     workerEngine.spawn(function(){
         workerGlobal.require(scriptName);
         // enter the event loop
