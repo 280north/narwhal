@@ -97,6 +97,10 @@ exports.isAbsolute = function (path) {
 
 /* see: http://www.idiom.com/~zilla/Xfiles/javasymlinks.html */
 exports.isLink = function (path) {
+    if(java.io.File.separator == "\\"){
+        // these file separators result in different canonical vs absolute for non-links, and windows doesn't have symlinks anyway
+        return false;
+    }
     path = exports.path(path);
     var canonical = path.canonical().toString();
     var absolute = path.absolute().toString();
