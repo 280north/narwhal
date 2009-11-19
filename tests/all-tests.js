@@ -3,6 +3,7 @@ exports.testString = require("./string");
 exports.testURI = require("./uri");
 exports.testQS = require("./query-string");
 exports.testHashes = require("./hashes");
+exports.testIO = require("./io/all-tests");
 exports.testOS = require("./os/all-tests");
 exports.testFile = require("./file/all-tests");
 exports.testUtil = require("./util/all-tests");
