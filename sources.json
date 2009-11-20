@@ -202,6 +202,11 @@
         "ojunit": {
             "type": "github",
             "user": "280north"
+        },
+        "qxoo": {
+            "type": "github",
+            "user": "fjakobs",
+            "name": "qxoo"
         }
     }
 }
