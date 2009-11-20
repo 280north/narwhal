@@ -55,7 +55,7 @@ for (var name in system.fs) {
     }
 }
 system.fs = fs;
-system.enginePrefix = system.prefix + '/engines/' + system.engines[0];
+system.enginePrefix = system.enginePrefix || system.prefix + '/engines/' + system.engines[0];
 // construct the initial paths
 var paths = [];
 // XXX system.packagePrefixes deprecated in favor of system.prefixes

@@ -570,7 +570,15 @@ ByteArray.prototype.pop = function() {
 
 // push(...variadic Numbers...)-> count Number
 ByteArray.prototype.push = function() {
-    throw "NYI";
+    var length, newLength = this.length += length = arguments.length;
+    try {
+        for (var i = 0; i < length; i++)
+            this.set(newLength - length + i, arguments[i]);
+    } catch (e) {
+        this.length -= length;
+        throw e;
+    }
+    return newLength;
 };
 
 // extendRight(...variadic Numbers / Arrays / ByteArrays / ByteStrings ...)
@@ -591,7 +599,17 @@ ByteArray.prototype.shift = function() {
 
 // unshift(...variadic Numbers...) -> count Number
 ByteArray.prototype.unshift = function() {
-    throw "NYI";
+    var copy = this.slice();
+    this.length = 0;
+    try {
+        this.push.apply(this, arguments);
+        this.push.apply(this, copy.toArray());
+        return this.length;
+    } catch(e) {
+        B_COPY(copy._bytes, copy._offset, this._bytes, this._offset, copy.length);
+        this.length = copy.length;
+        throw e;
+    }
 };
 
 // extendLeft(...variadic Numbers / Arrays / ByteArrays / ByteStrings ...)
@@ -638,8 +656,18 @@ ByteArray.prototype.sort = function(compareFunction) {
 };
 
 // splice()
-ByteArray.prototype.splice = function() {
-    throw "NYI";
+ByteArray.prototype.splice = function(index, howMany /*, elem1, elem2 */) {
+    if (index === undefined) return;
+    if (index < 0) index += this.length;
+    if (howMany === undefined) howMany = this._length - index;
+    var end = index + howMany;
+    var remove = this.slice(index, end);
+    var keep = this.slice(end);
+    var inject = Array.prototype.slice.call(arguments, 2);
+    this._length = index;
+    this.push.apply(this, inject);
+    this.push.apply(this, keep.toArray());
+    return remove;
 };
 
 // indexOf() - implemented on Binary

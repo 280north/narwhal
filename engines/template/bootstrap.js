@@ -5,6 +5,7 @@
     var isFile = /*TODO*/; // function(path:string):boolean
 
     var prefix = "/path/to/narwhal"; /*TODO*/
+    var enginePrefix = "/path/to/engine"; /*TODO*/
     
     eval(read(prefix + "/narwhal.js"))({
         global: this,
@@ -29,6 +30,7 @@
             isFile: isFile
         },
         prefix: prefix,
+        prefixes: [prefix, enginePrefix],
         debug: false,
         verbose: false
     });
