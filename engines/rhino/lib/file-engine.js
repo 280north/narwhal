@@ -112,7 +112,9 @@ exports.isWritable = function (path) {
 };
 
 exports.chmod = function (path, mode) {
-    os.command(['chmod', mode.toString(8), path]);
+    if (!/\bwindows\b/i.test(system.os))
+        os.command(['chmod', mode.toString(8), path]);
+    // XXX Windows code-path
 };
 
 exports.chown = function (path, owner, group) {
