@@ -25,6 +25,10 @@
             "type": "github",
             "user": "smith"
         },
+        "narwhal-moar-monkeys": {
+            "type": "github",
+            "user": "kriskowal"
+        },
         "jack": {
             "type": "github",
             "user": "tlrobinson"
