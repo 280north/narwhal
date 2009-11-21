@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+BIN_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin'))
+exec File.join(BIN_ROOT, 'narwhal'), *ARGV
+ 

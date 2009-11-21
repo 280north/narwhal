@@ -42,7 +42,7 @@ exports.system = function (command) {
             return require("os").enquote(arg);
         }).join(" ");
     }
-    return getCSystem().invokeInt([command]);
+    return getCSystem().invokeInt([command]) >> 8;
 };
 
 exports.dup = function () {

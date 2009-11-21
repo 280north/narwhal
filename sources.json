@@ -25,6 +25,10 @@
             "type": "github",
             "user": "smith"
         },
+        "narwhal-moar-monkeys": {
+            "type": "github",
+            "user": "kriskowal"
+        },
         "jack": {
             "type": "github",
             "user": "tlrobinson"
@@ -184,6 +188,29 @@
         "underscore": {
             "type": "github",
             "user": "kriskowal"
+        },
+        "silk": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "objective-j": {
+            "type": "github",
+            "user": "280north",
+            "name": "objective-j-package"
+        },
+        "cappuccino": {
+            "type": "github",
+            "user": "280north",
+            "name": "cappuccino-package"
+        },
+        "ojunit": {
+            "type": "github",
+            "user": "280north"
+        },
+        "qxoo": {
+            "type": "github",
+            "user": "fjakobs",
+            "name": "qxoo"
         }
     }
 }
