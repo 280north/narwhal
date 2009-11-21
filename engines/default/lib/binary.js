@@ -85,7 +85,7 @@ Binary.prototype.decodeToString = function(charset) {
     if (charset) {
         if (typeof charset == "number")
             return require("base" + charset).encode(this);
-        else if (charset.begins("base"))
+        else if (/^base/.test(charset))
             return require(charset).encode(this);
         else
             return B_DECODE(this._bytes, this._offset, this._length, charset);
