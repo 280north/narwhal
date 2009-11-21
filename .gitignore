@@ -5,9 +5,11 @@ narwhal.conf
 zips
 .DS_Store
 ._*
+/build
+/.tmp
+gh-pages
 .hashinfo.yml
 Makefile
 engines/jsc
 pkg
 sproutit-narwhal.gemspec
-
