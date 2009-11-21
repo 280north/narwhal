@@ -1,5 +1,4 @@
 
-exports.testString = require("./string");
 exports.testURI = require("./uri");
 exports.testQS = require("./query-string");
 exports.testHashes = require("./hashes");
