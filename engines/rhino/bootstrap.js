@@ -23,16 +23,6 @@
         prefix = String(Packages.java.lang.System.getenv("NARWHAL_HOME") || "");
     }
 
-    var enginePrefix = "";
-    if (typeof NARWHAL_ENGINE_HOME != "undefined") {
-        enginePrefix = NARWHAL_ENGINE_HOME;
-        delete NARWHAL_ENGINE_HOME;
-    } else {
-        enginePrefix = String(Packages.java.lang.System.getenv("NARWHAL_ENGINE_HOME") || "");
-    }
-
-    var prefixes = [enginePrefix, prefix];
-
     var isFile = function (path) {
         try { return new java.io.File(path).isFile(); } catch (e) {}
         return false;
@@ -100,7 +90,6 @@
                 isFile: isFile
             },
             prefix: prefix,
-            prefixes: prefixes,
             evaluate: evaluate,
             debug: debug,
             verbose: verbose
