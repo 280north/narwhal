@@ -5,3 +5,9 @@ narwhal.conf
 zips
 .DS_Store
 ._*
+.hashinfo.yml
+Makefile
+engines/jsc
+pkg
+sproutit-narwhal.gemspec
+
