@@ -904,6 +904,15 @@
             "githubName": "ojunit",
             "type": "zip",
             "location": "http://github.com/280north/ojunit/zipball/master"
+        },
+        "qxoo": {
+            "name": "qxoo",
+            "author": "Fabian Jakobs",
+            "dependencies": [],
+            "contributors": [],
+            "githubName": "qxoo",
+            "type": "zip",
+            "location": "http://github.com/fjakobs/qxoo/zipball/master"
         }
     }
 }
