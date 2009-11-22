@@ -1,8 +1,4 @@
 
-
-function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
-
-
 var ASSERT = require("assert");
 var FILE = require("file");
 var UTIL = require("util");
@@ -21,7 +17,7 @@ exports.testAll = function() {
     });
     // everything goes through the sandbox from now on
     require = function(id, pkg) {
-        return sandbox(id, null, false, false, pkg);
+        return sandbox(id, null, pkg);
     }    
     
     require("global");
@@ -30,6 +26,22 @@ exports.testAll = function() {
         FILE.Path(module.path).dirname().join("_files", "test-sea").valueOf(),
         system.prefix
     ]);
+
+    ASSERT.deepEqual(
+        normalizePaths(sandbox.paths),
+        [
+            "../../packages/readline/engines/rhino/lib",
+            "../../packages/readline/engines/default/lib",
+            "../../packages/readline/lib",
+            "../../engines/rhino/lib",
+            "../../engines/default/lib",
+            "../../lib",
+            "_files/test-sea/lib",
+            "_files/test-sea/packages/test-package-1/lib",
+            "_files/test-sea/using/domain.com/path/to/package1/lib",
+            "_files/test-sea/packages/test-package-2/lib"
+        ]
+    );
 
     ASSERT.deepEqual(
         UTIL.keys(packages.catalog),
@@ -46,51 +58,51 @@ exports.testAll = function() {
     ASSERT.deepEqual(
         normalizeCatalog(packages.usingCatalog),
         {
-           "narwhal": {
-              "libPath": "irrelevant",
-              "directory": "irrelevant",
+            "narwhal": {
+              "libPath": "../../lib",
+              "directory": "../..",
               "packages": {}
-           },
-           "readline": {
-              "libPath": "irrelevant",
-              "directory": "irrelevant",
+            },
+            "readline": {
+              "libPath": "../../packages/readline/lib",
+              "directory": "../../packages/readline",
               "packages": {}
-           },
-           "domain.com/path/to/catalog/package2": {
+            },
+            "domain.com/path/to/catalog/package2": {
               "libPath": "_files/test-sea/using/domain.com/path/to/catalog/package2/lib",
               "directory": "_files/test-sea/using/domain.com/path/to/catalog/package2",
               "packages": {
                  "my-package-1": "domain.com/path/to/package1"
               }
-           },
-           "domain.com/path/to/package1": {
+            },
+            "domain.com/path/to/package1": {
               "libPath": "_files/test-sea/using/domain.com/path/to/package1/lib",
               "directory": "_files/test-sea/using/domain.com/path/to/package1",
               "packages": {
                  "my-package-a": "domain.com/path/to/catalog/package2"
               }
-           },
-           "test-sea": {
+            },
+            "test-sea": {
               "libPath": "_files/test-sea/lib",
               "directory": "_files/test-sea",
               "packages": {}
-           },
-           "test-package-1": {
+            },
+            "test-package-1": {
               "libPath": "_files/test-sea/packages/test-package-1/lib",
               "directory": "_files/test-sea/packages/test-package-1",
               "packages": {
                  "my-package-a": "domain.com/path/to/package1",
                  "my-package-b": "domain.com/path/to/catalog/package2"
               }
-           },
-           "test-package-2": {
+            },
+            "test-package-2": {
               "libPath": "_files/test-sea/packages/test-package-2/lib",
               "directory": "_files/test-sea/packages/test-package-2",
               "packages": {
                  "my-package-a": "domain.com/path/to/catalog/package2",
                  "my-package-b": "domain.com/path/to/package1"
               }
-           }
+            }
         }
     );
 
@@ -140,28 +152,20 @@ exports.testAll = function() {
     )
 }
 
+function normalizePaths(pathsIn) {
+    var paths = [];
+    UTIL.forEach(pathsIn, function(path) {
+        paths.push(FILE.Path(module.path).relative(path).valueOf());
+    });
+    return paths;
+}
+
 function normalizeCatalog(catalogIn) {
     var catalog = {}
     for( var id in catalogIn ) {
-        // only include packages we are testing for
-        switch(id) {
-            case "narwhal":
-            case "readline":
-                catalog[id] = UTIL.copy(catalogIn[id]);
-                catalog[id].libPath = "irrelevant";
-                catalog[id].directory = "irrelevant";
-                break;
-            case "test-sea":
-            case "test-package-1":
-            case "test-package-2":
-            case "domain.com/path/to/package1":
-            case "domain.com/path/to/catalog/package2":
-                catalog[id] = UTIL.copy(catalogIn[id]);
-                catalog[id].libPath = FILE.Path(module.path).relative(catalog[id].libPath).valueOf();
-                catalog[id].directory = FILE.Path(module.path).relative(catalog[id].directory).valueOf();
-                break;
-
-        }
+        catalog[id] = UTIL.copy(catalogIn[id]);
+        catalog[id].libPath = FILE.Path(module.path).relative(catalog[id].libPath).valueOf();
+        catalog[id].directory = FILE.Path(module.path).relative(catalog[id].directory).valueOf();
     }
     return catalog;
 }

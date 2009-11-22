@@ -1,8 +1,8 @@
 {
     "name": "test-package-1",
     "dependencies": [
-        "test-package-2",
-        "domain.com/path/to/package1"
+        "domain.com/path/to/package1",
+        "test-package-2"
     ],
     "using": {
         "my-package-a": {

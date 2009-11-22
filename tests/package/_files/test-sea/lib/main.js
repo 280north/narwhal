@@ -1,6 +1,7 @@
 
 var UTIL = require("util");
 var FILE = require("file");
+var ASSERT = require("assert");
 
 exports.getInfo = function(visited) {
     
@@ -10,7 +11,7 @@ exports.getInfo = function(visited) {
     while(basePath.basename()!="_files") {
         basePath = basePath.dirname();
     }
-    
+
     var info = {
         "id": basePath.relative(module.id).valueOf(),
         "path": basePath.relative(module.path).valueOf(),
@@ -26,7 +27,14 @@ exports.getInfo = function(visited) {
     if(UTIL.len(module.using)>0) {
         info.subInfo = {};
         UTIL.every(module.using, function(item) {
-            info.subInfo[item[0]] = require("main", item[1]).getInfo(visited);
+            var preVisited = UTIL.copy(visited);
+            var subInfo = require("main", item[0]).getInfo(visited);
+            ASSERT.deepEqual(
+                subInfo,
+                require("main", item[1]).getInfo(preVisited)
+            );
+            info.subInfo[item[0]] = subInfo;
+
         });
     } else {
         if(info.id=="_files/test-sea/lib/main") {
