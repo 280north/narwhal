@@ -71,13 +71,22 @@ var requireFake = function(id, path, force) {
     return exports;
 };
 
+var fakeJoin = function() {
+	var delim = "/";
+	if(/\bwindows\b/i.test(system.os) ||
+	   /\bwinnt\b/i.test(system.os)) {
+		delim = "\\";
+	}
+	return Array.prototype.join.call(arguments, delim);
+}
+
 // bootstrap sandbox and loader modules
-var loader = requireFake("loader", system.prefix + "/lib/loader.js");
-var multiLoader = requireFake("loader/multi", system.prefix + "/lib/loader/multi.js");
-var sandbox = requireFake("sandbox", system.prefix + "/lib/sandbox.js");
+var loader = requireFake("loader", fakeJoin(system.prefix, "lib", "loader.js"));
+var multiLoader = requireFake("loader/multi", fakeJoin(system.prefix, "lib", "loader", "multi.js"));
+var sandbox = requireFake("sandbox", fakeJoin(system.prefix, "lib", "sandbox.js"));
 
 // bootstrap file module
-requireFake("file", system.prefix + "/lib/file-bootstrap.js", "force");
+requireFake("file", fakeJoin(system.prefix, "lib", "file-bootstrap.js"), "force");
 
 // construct the initial paths
 var paths = [];
@@ -90,9 +99,9 @@ for (var i = 0, ii = prefixes.length; i < ii; i++) {
     var prefix = prefixes[i];
     for (var j = 0, jj = system.engines.length; j < jj; j++) {
         var engine = system.engines[j];
-        paths.push(prefixes[i] + "/engines/" + engine + "/lib");
+        paths.push(fakeJoin(prefixes[i], "engines", engine, "lib"));
     }
-    paths.push(prefixes[i] + "/lib");
+    paths.push(fakeJoin(prefixes[i], "lib"));
 }
 
 // create the primary Loader and Sandbox:
@@ -178,7 +187,6 @@ if (system.args.length && !options.interactive && !options.main) {
         if (file.isFile(packageJson))
             system.prefixes.unshift(path);
     }
-
 }
 
 // user package prefix

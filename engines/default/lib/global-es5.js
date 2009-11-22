@@ -244,7 +244,7 @@ if (!Object.getOwnPropertyNames) {
 if (!Object.create) {
     Object.create = function(prototype, properties) {
         if (typeof prototype != "object" || prototype === null)
-            throw new TypeError();
+            throw new TypeError("typeof prototype["+(typeof prototype)+"] != 'object'");
         function Type() {};
         Type.prototype = prototype;
         var object = new Type();
