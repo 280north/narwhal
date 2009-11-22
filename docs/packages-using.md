@@ -83,7 +83,7 @@ A catalog package descriptor gets mapped as follows:
 where `<url-path>` is the *dirname* of the path (no catalog.json). The content of the `catalog.json` file is irrelevant
 for the purpose of loading modules. Only package managers such as `tusk` need to work with catalog.json files.
 
-For Example:
+For example:
 
     {"catalog": "http://domain.com/path/to/catalog.json", "name": "package1"}
     
