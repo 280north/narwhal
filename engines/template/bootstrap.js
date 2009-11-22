@@ -27,7 +27,8 @@
                 );
             },
             prefix: prefix,
-            prefixes: [prefix, enginePrefix],
+            prefixes: [prefix],
+            enginePrefix: enginePrefix,
             debug: false,
             verbose: false
         },
