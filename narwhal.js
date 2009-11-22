@@ -241,6 +241,7 @@ options.todo.forEach(function (item) {
 if (options.interactive) {
     require("narwhal/repl").repl();
 } else if (options.main) {
+    options.args.unshift(options.main);
     require.main(options.main);
 } else if (program) {
     if (program.isDirectory()) {
