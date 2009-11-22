@@ -40,7 +40,7 @@
         }
     };
 
-    var evaluate = function (text, name, lineNo) {
+    var evaluate = function (text, fileName, lineNo) {
         return function (inject) {
             var names = [];
             for (var name in inject)
@@ -49,7 +49,7 @@
             return context.compileFunction(
                 global,
                 "function(" + names.join(",") + "){" + text + "\n//*/\n}",
-                name,
+                fileName,
                 lineNo,
                 null
             ).apply(null, names.map(function (name) {
