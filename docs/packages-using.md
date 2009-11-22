@@ -15,7 +15,7 @@ Using Packages
 
 When building programs it makes sense to separate different types of modules into packages. These packages may
 be tied (dependent on) to each other and to a program package. A dependency on another package is declared in
-the package.json file of a package:
+the `package.json` file of a package:
 
     {
         "using": {
@@ -35,7 +35,7 @@ and `<url>` is a URL pointing to the root of the `using` package:
     http://domain.com/path/to/package/      // Pointing to a zip archive
     file://path/to/package/                 // Pointing to the package root
 
-    http://domain.com/path/to/package.zip   // *Planned - NYI*
+    http://domain.com/path/to/package.zip   // Planned - NYI
 
 and `<path>` is an optional path to the root of the package from the end of the URL. This is useful to reference
 packages in archives where the package is not at the root of the archive.
@@ -49,14 +49,14 @@ map the `<url>` to a filesystem path:
     <sea>/using/<url-domain>/<url-path>/<path>/
     
 where `<sea>` is the path to the sea (program) package, `<url-domain>` is the domain part of the `<url>`, `<url-path>` is
-the path part of the `<url>` and '<path>' is from the package descriptor. e.g.
+the path part of the `<url>` and `<path>` is from the package descriptor. e.g.
 
     <sea>/using/domain.com/path/to/package/
     <sea>/using/path/to/package/
 
 As mentioned `tusk` will automate the package management but until that functionality is ready you can manually:
 
-  * Define package descriptors with URL's to github for example (http://github.com/cadorn/domplate/zipball/master/)
+  * Define package descriptors with URLs to github for example (http://github.com/cadorn/domplate/zipball/master/)
   * Manually download the package archive or clone the package repository
   * Copy or link the package root to the corresponding <sea>/using/ path
   
@@ -76,19 +76,26 @@ A second type of package descriptors is supported where packages are referenced 
     }
 
 where `<url>` is a URL pointing to a `catalog.json` file and `<name>` is the name of the package within the catalog.
-A catalog package descriptor gets matted as follows:
+A catalog package descriptor gets mapped as follows:
 
     <sea>/using/<url-domain>/<url-path>/<name>/
 
 where `<url-path>` is the *dirname* of the path (no catalog.json). The content of the `catalog.json` file is irrelevant
 for the purpose of loading modules. Only package managers such as `tusk` need to work with catalog.json files.
 
+For Example:
+
+    {"catalog": "http://domain.com/path/to/catalog.json", "name": "package1"}
+    
+maps to:
+
+    <sea>/using/domain.com/path/to/package1/
+
 
 Notes
 -----
 
-When loading modules the `require()` function has some specific behaviour depending on the calling context and what
-is requested.
+When loading modules the `require()` function has the following behaviour depending on what is requested:
 
     require('<module>')
 
