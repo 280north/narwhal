@@ -1,0 +1,12 @@
+{
+    "name": "test-package-2",
+    "using": {
+        "my-package-a": {
+            "catalog": "http://domain.com/path/to/catalog/catalog.json",
+            "name": "package2"
+        },
+        "my-package-b": {
+            "location": "http://domain.com/path/to/package1/"
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "name": "test-sea",
+    "dependencies": [
+        "test-package-1"
+    ]
+}
