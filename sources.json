@@ -202,6 +202,10 @@
         "ojunit": {
             "type": "github",
             "user": "280north"
-        }
+        },
+		"barista": {
+			"type": "github",
+			"user": "hammerdr"
+		}
     }
 }
