@@ -110,3 +110,15 @@ Loads `<module>` relative to the calling module.
 Loads `<module>` from the `<package-alias>` package.
 
 
+Notes
+-----
+
+  * By default all packages in `<sea>/packages` get loaded onto the system path (`require.paths`). This is a problem if
+    a package should only be used as a `using` package vs a `system` package. To declare that a package is to be used
+    as a `using` package only (and restrict it from being loaded onto `require.paths`) the `type` property in `package.json`
+    may be set to `using`. i.e.
+      {
+          "type": "using"
+      }
+
+  
