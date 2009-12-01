@@ -20,8 +20,7 @@ if not "%NARWHAL_CLASSPATH%" == "" (
 
 if "%NARWHAL_DEBUGGER%" == "" (
     set JAVA_MAIN=org.mozilla.javascript.tools.shell.Main
-)
-if not "%NARWHAL_DEBUGGER%" == "" (
+) else (
     set JAVA_MAIN=org.mozilla.javascript.tools.debugger.Main
 )
 
