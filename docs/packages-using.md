@@ -32,10 +32,9 @@ where `<package-alias>` is a package-local name used to identify the `using` pac
     
 and `<url>` is a URL pointing to the root of the `using` package:
 
-    http://domain.com/path/to/package/      // Pointing to a zip archive
-    file://path/to/package/                 // Pointing to the package root
-
-    http://domain.com/path/to/package.zip   // Planned - NYI
+    http://domain.com/path/to/package/         // Pointing to a zip archive
+    file://path/to/package/                    // Pointing to the package root
+    http://domain.com/path/to/package.zip      // Planned - NYI
 
 and `<path>` is an optional path to the root of the package from the end of the URL. This is useful to reference
 packages in archives where the package is not at the root of the archive.
@@ -49,10 +48,11 @@ map the `<url>` to a filesystem path:
     <sea>/using/<url-domain>/<url-path>/<path>/
     
 where `<sea>` is the path to the sea (program) package, `<url-domain>` is the domain part of the `<url>`, `<url-path>` is
-the path part of the `<url>` and `<path>` is from the package descriptor. e.g.
+the path part of the `<url>` and `<path>` is from the package descriptor. `<url>` example from above:
 
     <sea>/using/domain.com/path/to/package/
     <sea>/using/path/to/package/
+    <sea>/using/domain.com/path/to/package/    // Planned - NYI
 
 As mentioned `tusk` will automate the package management but until that functionality is ready you can manually:
 
@@ -92,10 +92,10 @@ maps to:
     <sea>/using/domain.com/path/to/package1/
 
 
-Notes
------
+Requiring Modules
+-----------------
 
-When loading modules the `require()` function has the following behaviour depending on what is requested:
+When loading modules the `require()` function has the following behaviour:
 
     require('<module>')
 
@@ -110,3 +110,15 @@ Loads `<module>` relative to the calling module.
 Loads `<module>` from the `<package-alias>` package.
 
 
+Notes
+-----
+
+  * By default all packages in `<sea>/packages` get loaded onto the system path (`require.paths`). This is a problem if
+    a package should only be used as a `using` package vs a `system` package. To declare that a package is to be used
+    as a `using` package only (and restrict it from being loaded onto `require.paths`) the `type` property in `package.json`
+    may be set to `using`. i.e.
+      {
+          "type": "using"
+      }
+
+  
