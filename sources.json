@@ -212,5 +212,9 @@
             "type": "github",
             "user": "hammerdr"
         }
+        "sizzle": {
+            "type": "github",
+            "user": "gmosx"
+        }
     }
 }
