@@ -913,6 +913,29 @@
             "githubName": "qxoo",
             "type": "zip",
             "location": "http://github.com/fjakobs/qxoo/zipball/master"
+        },
+        "barista": {
+            "name": "barista",
+            "dependencies": [
+                "narwhal",
+                "objective-j",
+                "cappuccino"
+            ],
+            "author": "Derek Hammer",
+            "description": "An automated user interface testing framework.",
+            "keywords": [
+                "objective-j",
+                "unit test",
+                "testing",
+                "test",
+                "user interface"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "githubName": "barista",
+            "type": "zip",
+            "location": "http://github.com/hammerdr/barista/zipball/master"
         }
     }
 }

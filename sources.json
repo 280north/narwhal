@@ -209,8 +209,11 @@
         },
         "qxoo": {
             "type": "github",
-            "user": "fjakobs",
-            "name": "qxoo"
+            "user": "fjakobs"
+        },
+        "barista": {
+            "type": "github",
+            "user": "hammerdr"
         }
     }
 }
