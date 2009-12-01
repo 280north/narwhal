@@ -160,6 +160,8 @@
 if(global.JSON){
     exports.parse = JSON.parse;
     exports.stringify = JSON.stringify;
+    exports.decode = JSON.parse;
+    exports.encode = JSON.stringify;
 }
 else{
     global.JSON = typeof exports == "undefined" ? {} : exports;
