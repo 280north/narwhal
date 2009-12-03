@@ -21,6 +21,13 @@ fi
 
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/jna.jar
 BOOTCLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar
+JAVA_OPTS=""
+isOpenJDK=`java -version 2>&1 | grep -i "OpenJDK" | wc -l`
+
+if [ $isOpenJDK -gt 0 ]; then
+    JAVA_OPTS="-Xbootclasspath:/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar"
+fi
+
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
 fi
@@ -61,8 +68,8 @@ if [ $# -lt 1 ]; then
         RLWRAP=""
         CLASSPATH="$CLASSPATH:$NARWHAL_ENGINE_HOME/jars/jline.jar"
     fi
-    $RLWRAP java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
+    $RLWRAP java $JAVA_OPTS $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
-    java $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -version "$NARWHAL_JS_VERSION" "$BOOTSTRAP" "$0" "$@"
+    java $JAVA_OPTS $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -version "$NARWHAL_JS_VERSION" "$BOOTSTRAP" "$0" "$@"
 fi
 
