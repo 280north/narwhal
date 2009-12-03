@@ -206,6 +206,10 @@
         "barista": {
             "type": "github",
             "user": "hammerdr"
+        },
+        "ojmoq": {
+            "type": "github",
+            "user": "hammerdr"
         }
     }
 }
