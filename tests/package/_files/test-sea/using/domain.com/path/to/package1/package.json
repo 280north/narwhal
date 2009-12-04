@@ -1,0 +1,9 @@
+{
+    "name": "package1",
+    "using": {
+        "my-package-a": {
+            "catalog": "http://domain.com/path/to/catalog/catalog.json",
+            "name": "package2"
+        }
+    }
+}

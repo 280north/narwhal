@@ -8,31 +8,34 @@
     var enginePrefix = "/path/to/engine"; /*TODO*/
     
     eval(read(prefix + "/narwhal.js"))({
-        global: this,
-        evalGlobal: evalGlobal,
-        engine: '<<<name>>>', /*TODO*/
-        engines: ['<<<name>>>', 'default'], /*TODO*/
-        os: "", /* TODO /\bwindows\b/i for Windows FS support */
-        // XXX engines may include any number of
-        // prioritized generic engines like:
-        // rhino, java, c, v8, default
-        print: print,
-        evaluate: function (text) {
-            // TODO maybe something better here:
-            return eval(
-                "(function(require,exports,module,system,print){" +
-                text +
-                "/**/\n})"
-            );
+        system: {
+            global: this,
+            evalGlobal: evalGlobal,
+            engine: '<<<name>>>', /*TODO*/
+            engines: ['<<<name>>>', 'default'], /*TODO*/
+            os: "", /* TODO /\bwindows\b/i for Windows FS support */
+            // XXX engines may include any number of
+            // prioritized generic engines like:
+            // rhino, java, c, v8, default
+            print: print,
+            evaluate: function (text) {
+                // TODO maybe something better here:
+                return eval(
+                    "(function(require,exports,module,system,print){" +
+                    text +
+                    "/**/\n})"
+                );
+            },
+            prefix: prefix,
+            prefixes: [prefix],
+            enginePrefix: enginePrefix,
+            debug: false,
+            verbose: false
         },
-        fs: {
+        file: {
             read: read,
             isFile: isFile
-        },
-        prefix: prefix,
-        prefixes: [prefix, enginePrefix],
-        debug: false,
-        verbose: false
+        }
     });
 
 }).call(this, function () {
