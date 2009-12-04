@@ -42,25 +42,23 @@
             stream.close();
         }
     };
-    
-    var evaluate = function (text, name, lineNo) {
-        var scope;
-        
-        if (moduleScopingEnabled) {
-            scope = new Object();
-            scope.__parent__ = null;
-            scope.__proto__ = global;
-        } else {
-            scope = global;
-        }
-        
-        return context.compileFunction(
-            scope,
-            "function(require,exports,module,system,print){"+text+"\n// */\n}",
-            name,
-            lineNo,
-            null
-        );
+
+    var evaluate = function (text, fileName, lineNo) {
+        return function (inject) {
+            var names = [];
+            for (var name in inject)
+                if (Object.prototype.hasOwnProperty.call(inject, name))
+                    names.push(name);
+            return context.compileFunction(
+                global,
+                "function(" + names.join(",") + "){" + text + "\n//*/\n}",
+                fileName,
+                lineNo,
+                null
+            ).apply(null, names.map(function (name) {
+                return inject[name];
+            }));
+        };
     };
 
     delete global.print;
@@ -82,27 +80,29 @@
 
     try {
         narwhal({
-            global: global,
-            evalGlobal: evalGlobal,
-            engine: 'rhino',
-            engines: ['rhino', 'default'],
-            os: os,
-            print: print,
-            fs: {
+            system: {
+                global: global,
+                evalGlobal: evalGlobal,
+                engine: 'rhino',
+                engines: ['rhino', 'default'],
+                os: os,
+                print: print,
+                prefix: prefix,
+                evaluate: evaluate,
+                debug: debug,
+                verbose: verbose
+            },
+            file: {
                 read: read,
                 isFile: isFile
-            },
-            prefix: prefix,
-            evaluate: evaluate,
-            debug: debug,
-            verbose: verbose
+            }
         });
     } catch (e) {
-        print(e);
         if (e.rhinoException)
             e.rhinoException.printStackTrace();
         if (e.javaException)
             e.javaException.printStackTrace();
+        print(e);
         Packages.java.lang.System.exit(1);
     }
         
