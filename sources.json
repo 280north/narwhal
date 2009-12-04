@@ -25,6 +25,10 @@
             "type": "github",
             "user": "smith"
         },
+        "narwhal-moar-monkeys": {
+            "type": "github",
+            "user": "kriskowal"
+        },
         "jack": {
             "type": "github",
             "user": "tlrobinson"
@@ -176,6 +180,22 @@
             "user": "nrstott",
             "name": "narwhal-couchdb"
         },
+<<<<<<< HEAD
+=======
+        "mongodb": {
+            "type": "github",
+            "user": "mrclash",
+            "name": "narwhal-mongodb"
+        },
+        "underscore": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+        "silk": {
+            "type": "github",
+            "user": "kriskowal"
+        },
+>>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
         "objective-j": {
             "type": "github",
             "user": "280north",
@@ -189,6 +209,7 @@
         "ojunit": {
             "type": "github",
             "user": "280north"
+<<<<<<< HEAD
 		},
         "mongodb": {
             "type": "github",
@@ -198,6 +219,16 @@
         "underscore": {
             "type": "github",
             "user": "kriskowal"
+=======
+        },
+        "qxoo": {
+            "type": "github",
+            "user": "fjakobs"
+        },
+        "barista": {
+            "type": "github",
+            "user": "hammerdr"
+>>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
         }
     }
 }
