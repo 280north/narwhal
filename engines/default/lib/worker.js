@@ -53,7 +53,7 @@ var createEnvironment = exports.createEnvironment = function(){
     paths.push.apply(paths, require.paths);
     
     // there must be one and only one shared worker map amongst all workers
-    workerGlobal.require("system").__sharedWorkers__ = system.__sharedWorkers__;
+    workerGlobal.system.__sharedWorkers__ = system.__sharedWorkers__;
 
 	return workerGlobal;	
 };

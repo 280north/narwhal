@@ -135,6 +135,13 @@
             "type": "zip",
             "location": "http://github.com/smith/narwhal-jaxer/zipball/master"
         },
+        "narwhal-moar-monkeys": {
+            "name": "narwhal-moar-monkeys",
+            "preload": "global-moar-monkeys",
+            "githubName": "narwhal-moar-monkeys",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/narwhal-moar-monkeys/zipball/master"
+        },
         "jack": {
             "name": "jack",
             "dependencies": [
@@ -897,7 +904,20 @@
             "githubName": "ojunit",
             "type": "zip",
             "location": "http://github.com/280north/ojunit/zipball/master"
+<<<<<<< HEAD
 		},
+=======
+        },
+        "qxoo": {
+            "name": "qxoo",
+            "author": "Fabian Jakobs",
+            "dependencies": [],
+            "contributors": [],
+            "githubName": "qxoo",
+            "type": "zip",
+            "location": "http://github.com/fjakobs/qxoo/zipball/master"
+        },
+>>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
         "barista": {
             "name": "barista",
             "dependencies": [
