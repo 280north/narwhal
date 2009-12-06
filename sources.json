@@ -207,6 +207,10 @@
             "type": "github",
             "user": "fjakobs",
             "name": "qxoo"
+        },
+        "barista": {
+            "type": "github",
+            "user": "hammerdr"
         }
     }
 }
