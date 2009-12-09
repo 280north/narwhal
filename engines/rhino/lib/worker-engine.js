@@ -4,9 +4,9 @@ exports.createEnvironment = function(){
     javaWorkerGlobal = new org.mozilla.javascript.NativeJavaObject(global, workerGlobal, null);
     javaWorkerGlobal.init(org.mozilla.javascript.tools.shell.Main.shellContextFactory);
     workerGlobal.NARWHAL_HOME = system.prefix;
-    workerGlobal.NARWHAL_ENGINE_HOME = system.enginePrefix;
+    workerGlobal.NARWHAL_ENGINE_HOME = system.prefix + '/engines/' + system.engine;
     // get the path to the bootstrap.js file
-    var bootstrapPath = system.enginePrefix + "/bootstrap.js";
+    var bootstrapPath = system.prefix + '/engines/' + system.engine + "/bootstrap.js";
     org.mozilla.javascript.tools.shell.Main.processFile(
         org.mozilla.javascript.Context.enter(), 
         workerGlobal,
