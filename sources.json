@@ -130,12 +130,6 @@
             "type": "github",
             "user": "past"
         },
-        "objj": {
-            "type": "github",
-            "name": "cappuccino",
-            "user": "280north",
-            "ref": "package"
-        },
         "jake": {
             "type": "github",
             "user": "280north"
