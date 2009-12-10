@@ -130,12 +130,6 @@
             "type": "github",
             "user": "past"
         },
-        "objj": {
-            "type": "github",
-            "name": "cappuccino",
-            "user": "280north",
-            "ref": "package"
-        },
         "jake": {
             "type": "github",
             "user": "280north"
@@ -203,9 +197,27 @@
             "type": "github",
             "user": "280north"
         },
+        "qxoo": {
+            "type": "github",
+            "user": "fjakobs",
+            "name": "qxoo"
+        },
         "barista": {
             "type": "github",
             "user": "hammerdr"
+        },
+        "ojmoq": {
+            "type": "github",
+            "user": "hammerdr"
+        },
+        "sizzle": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "observable": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "observable-js"
         }
         "sizzle": {
             "type": "github",
