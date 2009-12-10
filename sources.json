@@ -211,6 +211,10 @@
         "barista": {
             "type": "github",
             "user": "hammerdr"
+        },
+        "observable": {
+            "type": "github",
+            "user": "nrstott"
         }
     }
 }
