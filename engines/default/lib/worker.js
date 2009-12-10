@@ -95,6 +95,7 @@ exports.SharedWorker = function(scriptName, workerName){
             global.onconnect = true;
         }, workerName);
         system.__sharedWorkers__[workerName] = shared;
+        shared.require("worker").name = workerName;
     }
     var port = {};
     
