@@ -929,6 +929,68 @@
             "githubName": "barista",
             "type": "zip",
             "location": "http://github.com/hammerdr/barista/zipball/master"
+        },
+        "ojmoq": {
+            "name": "ojmoq",
+            "dependencies": [
+                "narwhal",
+                "objective-j"
+            ],
+            "author": "Derek Hammer",
+            "description": "A mocking library for Objective-J that is inspired by the Moq project.",
+            "keywords": [
+                "objective-j",
+                "unit test",
+                "testing",
+                "test",
+                "mocking"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "githubName": "ojmoq",
+            "type": "zip",
+            "location": "http://github.com/hammerdr/ojmoq/zipball/master"
+        },
+        "sizzle": {
+            "name": "sizzle",
+            "description": "A sizzlin' hot selector engine",
+            "keywords": [
+                "sizzle",
+                "selector",
+                "dom"
+            ],
+            "author": "John Resig (http://ejohn.org)",
+            "maintainer": [
+                "George Moschovitis (http://gmosx.com)"
+            ],
+            "dependencies": [],
+            "lib": [
+                "lib"
+            ],
+            "lean": [
+                "lib"
+            ],
+            "githubName": "sizzle",
+            "type": "zip",
+            "location": "http://github.com/gmosx/sizzle/zipball/master"
+        },
+        "observable": {
+            "name": "observable",
+            "description": "JavaScript framework for Observable mixins with plugin support",
+            "keywords": [
+                "observable",
+                "mixin",
+                "event",
+                "plugin"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "observable-js",
+            "type": "zip",
+            "location": "http://github.com/nrstott/observable-js/zipball/master"
         }
     }
 }
