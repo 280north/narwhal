@@ -53,7 +53,7 @@ var createEnvironment = exports.createEnvironment = function(){
     paths.push.apply(paths, require.paths);
     
     // there must be one and only one shared worker map amongst all workers
-    workerGlobal.require("system").__sharedWorkers__ = system.__sharedWorkers__;
+    workerGlobal.system.__sharedWorkers__ = system.__sharedWorkers__;
 
 	return workerGlobal;	
 };
@@ -61,19 +61,30 @@ function createWorker(scriptName, setup, workerName){
     var workerQueue, 
         workerGlobal = createEnvironment();
     
+    var sandbox = workerGlobal.require("sandbox").Sandbox({
+            "system": workerGlobal.system,
+            "loader": workerGlobal.require.loader,
+            modules: {
+            	"event-queue": workerGlobal.require("event-queue"),
+            	"packages": workerGlobal.require("packages")
+            },
+            "debug": workerGlobal.require.loader.debug
+        });
     // get the event queue
-    workerQueue = workerGlobal.require("event-queue");
+    workerQueue = sandbox("event-queue"); 
+    
+    sandbox("worker").name = workerName;
     
     // calback for dedicated and shared workers to do their thing
     var worker = setup(workerQueue, workerGlobal);
     
     workerEngine.spawn(function(){
-        workerGlobal.require(scriptName);
+        sandbox.main(scriptName);
         // enter the event loop
         workerQueue.enterEventLoop(function(){
 	    queue.enqueue(function(){
 	       if(worker && worker.onidle){
-		   worker.onidle();
+		       worker.onidle();
 	       }
 	    });
 	});
@@ -95,7 +106,6 @@ exports.SharedWorker = function(scriptName, workerName){
             global.onconnect = true;
         }, workerName);
         system.__sharedWorkers__[workerName] = shared;
-        shared.global.require("worker").name = workerName;
     }
     var port = {};
     
