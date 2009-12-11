@@ -1,5 +1,8 @@
 
 // From Node.js test/mjsunit/test-assert.js
+// Felix Geisendörfer (felixge), backported from NodeJS
+// Karl Guertin (greyrest), backported from NodeJS
+// Kris Kowal (kriskowal), conversion to CommonJS
 
 // strangely meta, no?
 
