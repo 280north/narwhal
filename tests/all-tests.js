@@ -1,5 +1,4 @@
 
-exports.testString = require("./string");
 exports.testURI = require("./uri");
 exports.testQS = require("./query-string");
 exports.testHashes = require("./hashes");
@@ -13,6 +12,6 @@ exports.testGlobal = require("./global");
 
 exports.testCommonjs = require("./commonjs/all-tests");
 
-if (require.main === module.id)
+if (require.main == module)
     require("os").exit(require("test/runner").run(exports));
 

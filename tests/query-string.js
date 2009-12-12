@@ -70,6 +70,7 @@ exports.testParseQuery = function() {
         assert.isSame(testCase[2], QueryString.parseQuery(testCase[1]));
     });
 }
+
 /*
 exports.testToQueryString = function () {
     qsTestCases.forEach(function (testCase) {
@@ -83,5 +84,6 @@ exports.testToQueryString = function () {
     });
 };
 */
-if (require.main === module.id)
+
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));

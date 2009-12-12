@@ -258,6 +258,6 @@ exports.testByteStringNewless = function () {
     assert.isEqual(2, ByteString([0, 1], 0, 2).length);
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 
