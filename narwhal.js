@@ -174,20 +174,20 @@ if (!wasVerbose && system.verbose) {
 
 // find the program module and its prefix
 var program;
-if (!program) {
-	if (system.args.length && !options.interactive && !options.main)
+if (system.args.length && !options.interactive && !options.main) {
+	if (!program) {
         program = file.path(system.args[0]).canonical();
+	}
+	// add package prefixes for all of the packages
+	// containing the program, from specific to general
+	var parts = file.split(program || file.path("").canonical());
+	for (var i = 0; i < parts.length; i++) {
+	    var path = file.join.apply(null, parts.slice(0, i));
+	    var packageJson = file.join(path, "package.json");
+	    if (file.isFile(packageJson))
+	        system.prefixes.unshift(path);
+	}
 }
-// add package prefixes for all of the packages
-// containing the program, from specific to general
-var parts = file.split(program || file.path("").canonical());
-for (var i = 0; i < parts.length; i++) {
-    var path = file.join.apply(null, parts.slice(0, i));
-    var packageJson = file.join(path, "package.json");
-    if (file.isFile(packageJson))
-        system.prefixes.unshift(path);
-}
-
 
 // user package prefix
 if (system.env.SEA)
