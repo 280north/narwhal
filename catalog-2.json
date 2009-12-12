@@ -1143,63 +1143,6 @@
             "dependencies": [],
             "version": []
         },
-        "objj": {
-            "name": "objj",
-            "dependencies": [
-                "narwhal",
-                "jack",
-                "browserjs"
-            ],
-            "lib": "lib-js",
-            "preload": [
-                "objj/loader"
-            ],
-            "description": "Objective-J and Cappuccino tools",
-            "keywords": [
-                "Objective-J",
-                "Cappuccino"
-            ],
-            "author": {
-                "name": "280 North",
-                "url": "http://280north.com/"
-            },
-            "contributors": [
-                {
-                    "name": "280 North",
-                    "url": "http://280north.com/"
-                },
-                {
-                    "name": "Francisco Tolmasky",
-                    "url": "http://tolmasky.com/"
-                },
-                {
-                    "name": "Ross Boucher",
-                    "url": "http://rossboucher.com/"
-                },
-                {
-                    "name": "Tom Robinson",
-                    "url": "http://tlrobinson.net/"
-                },
-                {
-                    "name": "Numerous others",
-                    "url": "http://contributors.cappuccino.org/"
-                }
-            ],
-            "descriptorUrl": "http://github.com/280north/cappuccino/raw/package/package.json",
-            "packageUrl": "http://github.com/280north/cappuccino/zipball/package",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "name": "cappuccino",
-                "user": "280north",
-                "ref": "package",
-                "packageName": "objj",
-                "descriptorUrl": "http://github.com/280north/cappuccino/raw/package/package.json",
-                "url": "http://github.com/280north/cappuccino/zipball/package",
-                "archive": "zip"
-            },
-            "version": []
-        },
         "jake": {
             "name": "jake",
             "author": {
@@ -1845,6 +1788,7 @@
             "source": {
                 "type": "github",
                 "user": "fjakobs",
+                "name": "qxoo",
                 "packageName": "qxoo",
                 "descriptorUrl": "http://github.com/fjakobs/qxoo/raw/master/package.json",
                 "url": "http://github.com/fjakobs/qxoo/zipball/master",
@@ -1887,6 +1831,118 @@
             "contributors": [
                 {
                     "name": "Derek Hammer"
+                }
+            ],
+            "version": []
+        },
+        "ojmoq": {
+            "name": "ojmoq",
+            "dependencies": [
+                "narwhal",
+                "objective-j"
+            ],
+            "author": {
+                "name": "Derek Hammer"
+            },
+            "description": "A mocking library for Objective-J that is inspired by the Moq project.",
+            "keywords": [
+                "objective-j",
+                "unit test",
+                "testing",
+                "test",
+                "mocking"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "descriptorUrl": "http://github.com/hammerdr/ojmoq/raw/master/package.json",
+            "packageUrl": "http://github.com/hammerdr/ojmoq/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "hammerdr",
+                "packageName": "ojmoq",
+                "descriptorUrl": "http://github.com/hammerdr/ojmoq/raw/master/package.json",
+                "url": "http://github.com/hammerdr/ojmoq/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Derek Hammer"
+                }
+            ],
+            "version": []
+        },
+        "sizzle": {
+            "name": "sizzle",
+            "description": "A sizzlin' hot selector engine",
+            "keywords": [
+                "sizzle",
+                "selector",
+                "dom"
+            ],
+            "author": {
+                "name": "John Resig",
+                "url": "http://ejohn.org"
+            },
+            "maintainer": {},
+            "dependencies": [],
+            "lib": [
+                "lib"
+            ],
+            "lean": [
+                "lib"
+            ],
+            "descriptorUrl": "http://github.com/gmosx/sizzle/raw/master/package.json",
+            "packageUrl": "http://github.com/gmosx/sizzle/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "gmosx",
+                "packageName": "sizzle",
+                "descriptorUrl": "http://github.com/gmosx/sizzle/raw/master/package.json",
+                "url": "http://github.com/gmosx/sizzle/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "John Resig",
+                    "url": "http://ejohn.org"
+                },
+                {}
+            ],
+            "version": []
+        },
+        "observable": {
+            "name": "observable",
+            "description": "JavaScript framework for Observable mixins with plugin support",
+            "keywords": [
+                "observable",
+                "mixin",
+                "event",
+                "plugin"
+            ],
+            "author": {
+                "name": "Nathan Stott"
+            },
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
+            "packageUrl": "http://github.com/nrstott/observable-js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "nrstott",
+                "name": "observable-js",
+                "packageName": "observable",
+                "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
+                "url": "http://github.com/nrstott/observable-js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Nathan Stott"
                 }
             ],
             "version": []
