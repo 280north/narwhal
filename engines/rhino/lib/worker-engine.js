@@ -11,13 +11,20 @@ exports.createEnvironment = function(){
         org.mozilla.javascript.Context.enter(), 
         workerGlobal,
         bootstrapPath);
+
     return workerGlobal;
 };
 
 exports.spawn = function(functionToRun, threadName){
-    (new java.lang.Thread(functionToRun, threadName)).start();
+    (new java.lang.Thread(function(){
+       	var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
+       	// TODO: this needs call something that will do the context/thread preparation
+        context.setOptimizationLevel(-1);
+            
+        context.setLanguageVersion(180);
+      	context.getWrapFactory().setJavaPrimitiveWrap(false);
+	
+	functionToRun();
+    }, threadName)).start();
 };
 
-exports.defaultErrorReporter = function(e){
-    print((e.rhinoException && e.rhinoException.printStackTrace()) || (e.name + ": " + e.message));
-};

@@ -22,7 +22,10 @@ function createPort(queue, target, port, global){
                         target[eventName].apply(target, args);
                     }
                 });
-            }
+            },
+            hasPendingEvents: function(){
+	        return queue.hasPendingEvents();
+	    }
         };
     port.postMessage = function(message){
         queue.enqueue(function(){
@@ -39,63 +42,46 @@ function createPort(queue, target, port, global){
             }
         });
     };
-    port.isIdle= function(){
-        return queue.isEmpty();
-    };
     return port;
 }
-function createWorker(scriptName, setup, workerName){
-    var workerQueue, 
-        workerGlobal = workerEngine.createEnvironment();
+var createEnvironment = exports.createEnvironment = function(){
+    var workerGlobal = workerEngine.createEnvironment();
     
     // add the module lookup paths from our environment
     var paths = workerGlobal.require.paths;
     paths.splice(0, paths.length);
     paths.push.apply(paths, require.paths);
     
+    // there must be one and only one shared worker map amongst all workers
+    workerGlobal.system.__sharedWorkers__ = system.__sharedWorkers__;
+
+	return workerGlobal;	
+};
+function createWorker(scriptName, setup, workerName){
+    var workerQueue, 
+        workerGlobal = createEnvironment();
+    
+    var sandbox = workerGlobal.require("sandbox").Sandbox({
+            "system": workerGlobal.system,
+            "loader": workerGlobal.require.loader,
+            "debug": workerGlobal.require.loader.debug
+        });
     // get the event queue
-    workerQueue = workerGlobal.require("event-queue");
+    workerQueue = sandbox("event-queue");
     
     // calback for dedicated and shared workers to do their thing
     var worker = setup(workerQueue, workerGlobal);
     
-    // there must be one and only one shared worker map amongst all workers
-    workerGlobal.require("system").__sharedWorkers__ = system.__sharedWorkers__;
-
     workerEngine.spawn(function(){
-        workerGlobal.require(scriptName);
+        sandbox.main(scriptName);
         // enter the event loop
-        while(true){
-            try{
-                workerQueue.nextEvent()();
-                if(workerQueue.isEmpty()){
-                    // fire onidle events when empty, this allows to do effective worker pooling
-                    queue.enqueue(function(){
-                       if(worker && worker.onidle){
-                           worker.onidle();
-                       }
-                    });
-                }
-            }catch(e){
-                workerQueue.enqueue(function(){
-                    if(typeof workerGlobal.onerror === "function"){
-                        // trigger the onerror event in the worker if an error occurs
-                        try{
-                            workerGlobal.onerror(e);
-                        }
-                        catch(e){
-                            // don't want an error here to go into an infinite loop!
-                            workerEngine.defaultErrorReporter(e);
-                        }
-                    }
-                    else{
-                        workerEngine.defaultErrorReporter(e);
-                    }
-                });
-            
-            
-            }
-        }
+        workerQueue.enterEventLoop(function(){
+	    queue.enqueue(function(){
+	       if(worker && worker.onidle){
+		   worker.onidle();
+	       }
+	    });
+	});
     }, workerName || scriptName);
 };
 
