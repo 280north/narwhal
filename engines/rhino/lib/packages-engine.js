@@ -46,7 +46,8 @@ exports.addJavaPaths = function addJavaPaths(javaPaths) {
     // after reinstalling Packages once, the Packages object
     // is no longer a Packages constructor function.
     // If that's the case, abandone hope.
-    if (typeof Packages == "object" || system.appEngine)
+    if (/*typeof Packages == "object"  this no longer works in latest builds of Rhino || */
+            system.appEngine)
         return;
         
     /* set up jar loader */
