@@ -877,9 +877,6 @@
             "githubName": "ojunit",
             "type": "zip",
             "location": "http://github.com/280north/ojunit/zipball/master"
-<<<<<<< HEAD
-		},
-=======
         },
         "qxoo": {
             "name": "qxoo",
@@ -890,7 +887,6 @@
             "type": "zip",
             "location": "http://github.com/fjakobs/qxoo/zipball/master"
         },
->>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
         "barista": {
             "name": "barista",
             "dependencies": [
