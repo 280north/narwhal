@@ -1,6 +1,6 @@
 {
-    "version": 1,
-    "packages": {
+    "version": 2,
+    "sources": {
         "narwhal": {
             "type": "github",
             "user": "tlrobinson"
@@ -71,7 +71,7 @@
         },
         "appengine-java-sdk": {
             "type": "inline",
-            "package.json": {
+            "descriptor": {
                 "name": "gae",
                 "title": "Google App Engine Java SDK",
                 "description": "Java components necessary for deploying applications on Google's App Engine.",
@@ -80,14 +80,14 @@
                 "dependencies": ["jack-servlet", "jack", "narwhal"],
                 "lib": [],
                 "type": "zip",
-                "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
+                "url": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
             }
         },
         "env": {
             "type": "github",
             "name": "env-js",
             "user": "kriskowal",
-            "package.json": {}
+            "descriptor": {}
         },
         "template": {
             "type": "github",
