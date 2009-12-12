@@ -223,9 +223,5 @@
             "user": "nrstott",
             "name": "observable-js"
         }
-        "sizzle": {
-            "type": "github",
-            "user": "gmosx"
-        }
     }
 }
