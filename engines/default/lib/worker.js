@@ -62,13 +62,13 @@ function createWorker(scriptName, setup, workerName){
         workerGlobal = createEnvironment();
     
     var sandbox = workerGlobal.require("sandbox").Sandbox({
-            "system": workerGlobal.system,
-            "loader": workerGlobal.require.loader,
+            system: workerGlobal.system,
+            loader: workerGlobal.require.loader,
             modules: {
             	"event-queue": workerGlobal.require("event-queue"),
-            	"packages": workerGlobal.require("packages")
+            	packages: workerGlobal.require("packages")
             },
-            "debug": workerGlobal.require.loader.debug
+            debug: workerGlobal.require.loader.debug
         });
     // get the event queue
     workerQueue = sandbox("event-queue"); 
