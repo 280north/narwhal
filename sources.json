@@ -25,6 +25,10 @@
             "type": "github",
             "user": "smith"
         },
+        "narwhal-moar-monkeys": {
+            "type": "github",
+            "user": "kriskowal"
+        },
         "jack": {
             "type": "github",
             "user": "tlrobinson"
@@ -203,9 +207,18 @@
             "type": "github",
             "user": "280north"
         },
+        "qxoo": {
+            "type": "github",
+            "user": "fjakobs",
+            "name": "qxoo"
+        },
         "barista": {
             "type": "github",
             "user": "hammerdr"
+        },
+        "observable": {
+            "type": "github",
+            "user": "nrstott"
         },
         "ojmoq": {
             "type": "github",

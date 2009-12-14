@@ -34,9 +34,9 @@ if [ "$#" -lt 1 ]; then
     echo PATH="$PATH" >&2
     echo SEA="$SEA" >&2
     echo SEALVL="$SEALVL" >&2
-    "$SHELL"
+    "$SHELL" --noprofile --norc
 else
-    "$SHELL" -c "$(enquote_all "$@")"
+    "$SHELL" --noprofile --norc -c "$(enquote_all "$@")"
 fi
 if [ "$OLDSEA" != "" ]; then
     echo SEA="$OLDSEA" >&2
