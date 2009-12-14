@@ -16,13 +16,14 @@ exports.createEnvironment = function(){
 };
 
 exports.spawn = function(functionToRun, threadName){
+	var sourceContext = Packages.org.mozilla.javascript.Context.getCurrentContext();
+	var classLoader = sourceContext.getApplicationClassLoader();
     (new java.lang.Thread(function(){
        	var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
-       	// TODO: this needs call something that will do the context/thread preparation
-        context.setOptimizationLevel(-1);
-            
-        context.setLanguageVersion(180);
-      	context.getWrapFactory().setJavaPrimitiveWrap(false);
+        context.setOptimizationLevel(sourceContext.getOptimizationLevel());
+        context.setLanguageVersion(sourceContext.getLanguageVersion());
+        context.setApplicationClassLoader(classLoader);
+      	context.getWrapFactory().setJavaPrimitiveWrap(sourceContext.getWrapFactory().isJavaPrimitiveWrap());
 	
 	functionToRun();
     }, threadName)).start();
