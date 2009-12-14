@@ -43,7 +43,7 @@
         },
         "narcissus": {
             "type": "github",
-            "user": "kriskowal"
+            "user": "andychu"
         },
         "creolejs": {
             "type": "github",
@@ -80,7 +80,7 @@
                 "dependencies": ["jack-servlet", "jack", "narwhal"],
                 "lib": [],
                 "type": "zip",
-                "url": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
+                "packageUrl": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
             }
         },
         "env": {
@@ -162,7 +162,7 @@
         },
         "json-template": {
             "type": "github",
-            "user": "Gozala"
+            "user": "andychu"
         },
         "ejs": {
             "type": "github",
@@ -209,6 +209,10 @@
         "barista": {
             "type": "github",
             "user": "hammerdr"
+        },
+        "observable": {
+            "type": "github",
+            "user": "nrstott"
         },
         "ojmoq": {
             "type": "github",

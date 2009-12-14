@@ -322,6 +322,11 @@
                 "rack",
                 "wsgi"
             ],
+            "version": [
+                "0",
+                "1",
+                "2"
+            ],
             "descriptorUrl": "http://github.com/tlrobinson/jack/raw/master/package.json",
             "packageUrl": "http://github.com/tlrobinson/jack/zipball/master",
             "packageArchive": "zip",
@@ -338,8 +343,7 @@
                     "name": "Tom Robinson",
                     "url": "http://tlrobinson.net/"
                 }
-            ],
-            "version": []
+            ]
         },
         "nitro": {
             "name": "nitro",
@@ -439,19 +443,23 @@
                 {
                     "name": "Kris Kowal",
                     "email": "kris@cixar.com"
+                },
+                {
+                    "name": "Andy Chu",
+                    "email": "andy@chubot.org"
                 }
             ],
             "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
             "name": "narcissus",
-            "descriptorUrl": "http://github.com/kriskowal/narcissus/raw/master/package.json",
-            "packageUrl": "http://github.com/kriskowal/narcissus/zipball/master",
+            "descriptorUrl": "http://github.com/andychu/narcissus/raw/master/package.json",
+            "packageUrl": "http://github.com/andychu/narcissus/zipball/master",
             "packageArchive": "zip",
             "source": {
                 "type": "github",
-                "user": "kriskowal",
+                "user": "andychu",
                 "packageName": "narcissus",
-                "descriptorUrl": "http://github.com/kriskowal/narcissus/raw/master/package.json",
-                "url": "http://github.com/kriskowal/narcissus/zipball/master",
+                "descriptorUrl": "http://github.com/andychu/narcissus/raw/master/package.json",
+                "url": "http://github.com/andychu/narcissus/zipball/master",
                 "archive": "zip"
             },
             "dependencies": [],
@@ -684,7 +692,6 @@
             ],
             "lib": [],
             "type": "zip",
-            "url": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip",
             "source": {
                 "type": "inline",
                 "packageName": "appengine-java-sdk"
@@ -1401,15 +1408,15 @@
                 "Apache License 2.0"
             ],
             "dependencies": [],
-            "descriptorUrl": "http://github.com/Gozala/json-template/raw/master/package.json",
-            "packageUrl": "http://github.com/Gozala/json-template/zipball/master",
+            "descriptorUrl": "http://github.com/andychu/json-template/raw/master/package.json",
+            "packageUrl": "http://github.com/andychu/json-template/zipball/master",
             "packageArchive": "zip",
             "source": {
                 "type": "github",
-                "user": "Gozala",
+                "user": "andychu",
                 "packageName": "json-template",
-                "descriptorUrl": "http://github.com/Gozala/json-template/raw/master/package.json",
-                "url": "http://github.com/Gozala/json-template/zipball/master",
+                "descriptorUrl": "http://github.com/andychu/json-template/raw/master/package.json",
+                "url": "http://github.com/andychu/json-template/zipball/master",
                 "archive": "zip"
             },
             "version": []
@@ -1835,6 +1842,40 @@
             ],
             "version": []
         },
+        "observable": {
+            "name": "observable",
+            "description": "JavaScript framework for Observable mixins with plugin support",
+            "keywords": [
+                "observable",
+                "mixin",
+                "event",
+                "plugin"
+            ],
+            "author": {
+                "name": "Nathan Stott"
+            },
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
+            "packageUrl": "http://github.com/nrstott/observable-js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "nrstott",
+                "name": "observable-js",
+                "packageName": "observable",
+                "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
+                "url": "http://github.com/nrstott/observable-js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Nathan Stott"
+                }
+            ],
+            "version": []
+        },
         "ojmoq": {
             "name": "ojmoq",
             "dependencies": [
@@ -1910,40 +1951,6 @@
                     "url": "http://ejohn.org"
                 },
                 {}
-            ],
-            "version": []
-        },
-        "observable": {
-            "name": "observable",
-            "description": "JavaScript framework for Observable mixins with plugin support",
-            "keywords": [
-                "observable",
-                "mixin",
-                "event",
-                "plugin"
-            ],
-            "author": {
-                "name": "Nathan Stott"
-            },
-            "email": "nathan.stott@whiteboard-it.com",
-            "dependencies": [],
-            "lib": "lib",
-            "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
-            "packageUrl": "http://github.com/nrstott/observable-js/zipball/master",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "nrstott",
-                "name": "observable-js",
-                "packageName": "observable",
-                "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
-                "url": "http://github.com/nrstott/observable-js/zipball/master",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Nathan Stott"
-                }
             ],
             "version": []
         }
