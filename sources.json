@@ -1,6 +1,6 @@
 {
-    "version": 1,
-    "packages": {
+    "version": 2,
+    "sources": {
         "narwhal": {
             "type": "github",
             "user": "tlrobinson"
@@ -43,7 +43,7 @@
         },
         "narcissus": {
             "type": "github",
-            "user": "kriskowal"
+            "user": "andychu"
         },
         "creolejs": {
             "type": "github",
@@ -71,7 +71,7 @@
         },
         "appengine-java-sdk": {
             "type": "inline",
-            "package.json": {
+            "descriptor": {
                 "name": "gae",
                 "title": "Google App Engine Java SDK",
                 "description": "Java components necessary for deploying applications on Google's App Engine.",
@@ -80,14 +80,14 @@
                 "dependencies": ["jack-servlet", "jack", "narwhal"],
                 "lib": [],
                 "type": "zip",
-                "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
+                "packageUrl": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
             }
         },
         "env": {
             "type": "github",
             "name": "env-js",
             "user": "kriskowal",
-            "package.json": {}
+            "descriptor": {}
         },
         "template": {
             "type": "github",
@@ -134,12 +134,6 @@
             "type": "github",
             "user": "past"
         },
-        "objj": {
-            "type": "github",
-            "name": "cappuccino",
-            "user": "280north",
-            "ref": "package"
-        },
         "jake": {
             "type": "github",
             "user": "280north"
@@ -168,7 +162,7 @@
         },
         "json-template": {
             "type": "github",
-            "user": "Gozala"
+            "user": "andychu"
         },
         "ejs": {
             "type": "github",
@@ -180,8 +174,6 @@
             "user": "nrstott",
             "name": "narwhal-couchdb"
         },
-<<<<<<< HEAD
-=======
         "mongodb": {
             "type": "github",
             "user": "mrclash",
@@ -195,7 +187,6 @@
             "type": "github",
             "user": "kriskowal"
         },
->>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
         "objective-j": {
             "type": "github",
             "user": "280north",
@@ -209,26 +200,33 @@
         "ojunit": {
             "type": "github",
             "user": "280north"
-<<<<<<< HEAD
-		},
-        "mongodb": {
-            "type": "github",
-            "user": "mrclash",
-            "name": "narwhal-mongodb"
-        },
-        "underscore": {
-            "type": "github",
-            "user": "kriskowal"
-=======
         },
         "qxoo": {
             "type": "github",
-            "user": "fjakobs"
+            "user": "fjakobs",
+            "name": "qxoo"
         },
         "barista": {
             "type": "github",
             "user": "hammerdr"
->>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
-        }
+        },
+        "ojmoq": {
+            "type": "github",
+            "user": "hammerdr"
+        },
+        "sizzle": {
+            "type": "github",
+            "user": "gmosx"
+        },
+        "observable": {
+            "type": "github",
+            "user": "nrstott",
+            "name": "observable-js"
+        },
+		"commonjs-utils": {
+		    "type": "github",
+			"user": "kriszyp",
+			"name": "commonjs-utils"
+		}
     }
 }

@@ -65,8 +65,8 @@ function createWorker(scriptName, setup, workerName){
             system: workerGlobal.system,
             loader: workerGlobal.require.loader,
             modules: {
-            	"event-queue": workerGlobal.require("event-queue"),
-            	packages: workerGlobal.require("packages")
+                "event-queue": workerGlobal.require("event-queue"),
+                packages: workerGlobal.require("packages")
             },
             debug: workerGlobal.require.loader.debug
         });

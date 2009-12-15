@@ -568,33 +568,6 @@
             "type": "zip",
             "location": "http://github.com/past/speller/zipball/master"
         },
-        "objj": {
-            "name": "objj",
-            "dependencies": [
-                "narwhal",
-                "jack",
-                "browserjs"
-            ],
-            "lib": "lib-js",
-            "preload": [
-                "objj/loader"
-            ],
-            "description": "Objective-J and Cappuccino tools",
-            "keywords": [
-                "Objective-J",
-                "Cappuccino"
-            ],
-            "author": "280 North (http://280north.com/)",
-            "contributors": [
-                "Francisco Tolmasky (http://tolmasky.com/)",
-                "Ross Boucher (http://rossboucher.com/)",
-                "Tom Robinson (http://tlrobinson.net/)",
-                "Numerous others (http://contributors.cappuccino.org/)"
-            ],
-            "githubName": "cappuccino",
-            "type": "zip",
-            "location": "http://github.com/280north/cappuccino/zipball/package"
-        },
         "jake": {
             "name": "jake",
             "author": "Francisco Tolmasky (http://tolmasky.com/)",
@@ -759,8 +732,6 @@
             "type": "zip",
             "location": "http://github.com/nrstott/narwhal-couchdb/zipball/master"
         },
-<<<<<<< HEAD
-=======
         "mongodb": {
             "name": "mongodb",
             "description": "API to access MongoDB, a schema-free database of JSON documents",
@@ -818,7 +789,6 @@
             "type": "zip",
             "location": "http://github.com/kriskowal/silk/zipball/master"
         },
->>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
         "objective-j": {
             "name": "objective-j",
             "dependencies": [
@@ -907,7 +877,6 @@
             "githubName": "ojunit",
             "type": "zip",
             "location": "http://github.com/280north/ojunit/zipball/master"
-<<<<<<< HEAD
 		},
         "mongodb": {
             "name": "mongodb",
@@ -948,7 +917,6 @@
             "githubName": "underscore",
             "type": "zip",
             "location": "http://github.com/kriskowal/underscore/zipball/master"
-=======
         },
         "qxoo": {
             "name": "qxoo",
@@ -981,7 +949,68 @@
             "githubName": "barista",
             "type": "zip",
             "location": "http://github.com/hammerdr/barista/zipball/master"
->>>>>>> c4e116a70c9fbb319cc064159e2940e3dc0f6ea3
+        },
+        "ojmoq": {
+            "name": "ojmoq",
+            "dependencies": [
+                "narwhal",
+                "objective-j"
+            ],
+            "author": "Derek Hammer",
+            "description": "A mocking library for Objective-J that is inspired by the Moq project.",
+            "keywords": [
+                "objective-j",
+                "unit test",
+                "testing",
+                "test",
+                "mocking"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "githubName": "ojmoq",
+            "type": "zip",
+            "location": "http://github.com/hammerdr/ojmoq/zipball/master"
+        },
+        "sizzle": {
+            "name": "sizzle",
+            "description": "A sizzlin' hot selector engine",
+            "keywords": [
+                "sizzle",
+                "selector",
+                "dom"
+            ],
+            "author": "John Resig (http://ejohn.org)",
+            "maintainer": [
+                "George Moschovitis (http://gmosx.com)"
+            ],
+            "dependencies": [],
+            "lib": [
+                "lib"
+            ],
+            "lean": [
+                "lib"
+            ],
+            "githubName": "sizzle",
+            "type": "zip",
+            "location": "http://github.com/gmosx/sizzle/zipball/master"
+        },
+        "observable": {
+            "name": "observable",
+            "description": "JavaScript framework for Observable mixins with plugin support",
+            "keywords": [
+                "observable",
+                "mixin",
+                "event",
+                "plugin"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "observable-js",
+            "type": "zip",
+            "location": "http://github.com/nrstott/observable-js/zipball/master"
         }
     }
 }
