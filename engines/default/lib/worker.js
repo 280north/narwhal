@@ -62,12 +62,18 @@ function createWorker(scriptName, setup, workerName){
         workerGlobal = createEnvironment();
     
     var sandbox = workerGlobal.require("sandbox").Sandbox({
-            "system": workerGlobal.system,
-            "loader": workerGlobal.require.loader,
-            "debug": workerGlobal.require.loader.debug
+            system: workerGlobal.system,
+            loader: workerGlobal.require.loader,
+            modules: {
+                "event-queue": workerGlobal.require("event-queue"),
+                packages: workerGlobal.require("packages")
+            },
+            debug: workerGlobal.require.loader.debug
         });
     // get the event queue
-    workerQueue = sandbox("event-queue");
+    workerQueue = sandbox("event-queue"); 
+    
+    sandbox("worker").name = workerName;
     
     // calback for dedicated and shared workers to do their thing
     var worker = setup(workerQueue, workerGlobal);
@@ -78,7 +84,7 @@ function createWorker(scriptName, setup, workerName){
         workerQueue.enterEventLoop(function(){
 	    queue.enqueue(function(){
 	       if(worker && worker.onidle){
-		   worker.onidle();
+		       worker.onidle();
 	       }
 	    });
 	});

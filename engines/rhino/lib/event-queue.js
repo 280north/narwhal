@@ -17,7 +17,8 @@ exports.processNextEvent = function(mayWait){
         return false;
     }
     try{
-        queue.take()();
+        var next = queue.take();
+        next();
     }catch(e){
         exports.enqueue(function(){
             if(typeof onerror === "function"){
