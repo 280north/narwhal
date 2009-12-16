@@ -1,3 +1,7 @@
+
+// Kris Zyp
+
 exports.randomUUID = function(){
-    return java.util.UUID.randomUUID().toString()
+    return String(java.util.UUID.randomUUID())
 };
+

@@ -1,4 +1,6 @@
 
+// Tom Robinson
+
 require("./global-es5");
 require("./global-commonjs");
 

@@ -1,3 +1,6 @@
+
+// Kris Zyp
+
 /**
 * Represents the event queue for a vat
 * The API is modeled after https://developer.mozilla.org/en/nsIThread

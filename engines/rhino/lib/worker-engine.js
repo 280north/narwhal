@@ -1,3 +1,6 @@
+
+// Kris Zyp
+
 exports.createEnvironment = function(){
     var workerQueue, 
         workerGlobal = new org.mozilla.javascript.tools.shell.Global();

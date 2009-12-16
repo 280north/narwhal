@@ -1,4 +1,6 @@
 (function(global, evalGlobal) {
+// Tom Robinson
+// Kris Kowal
 
     /*
         this is a minimal engine-specific thunk for narwhal.js

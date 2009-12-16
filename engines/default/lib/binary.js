@@ -1,4 +1,6 @@
+
 /* Binary */
+// Tom Robinson
 
 var engine = require("binary-engine"),
     B_ALLOC = engine.B_ALLOC,

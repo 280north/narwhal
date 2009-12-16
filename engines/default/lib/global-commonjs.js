@@ -1,4 +1,6 @@
 
+// Kris Kowal
+
 // https://wiki.mozilla.org/ServerJS/Binary/B
 if (!String.prototype.toByteString)
     String.prototype.toByteString = function(charset) {

@@ -1,4 +1,6 @@
 
+// Kris Kowal
+
 var fs = require('./file');
 var system = require('./system');
 

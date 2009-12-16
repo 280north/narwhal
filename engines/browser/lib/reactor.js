@@ -1,4 +1,6 @@
 
+// Kris Kowal
+
 var active = false;
 var pending = [];
 var run = function () {

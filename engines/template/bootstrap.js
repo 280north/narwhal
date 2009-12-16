@@ -1,4 +1,5 @@
 (function (evalGlobal) {
+// Kris Kowal
 
     var read = /*TODO*/; // function(path:string):string
 
