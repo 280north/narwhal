@@ -210,10 +210,6 @@
             "type": "github",
             "user": "hammerdr"
         },
-        "observable": {
-            "type": "github",
-            "user": "nrstott"
-        },
         "ojmoq": {
             "type": "github",
             "user": "hammerdr"
@@ -226,6 +222,11 @@
             "type": "github",
             "user": "nrstott",
             "name": "observable-js"
-        }
+        },
+		"commonjs-utils": {
+		    "type": "github",
+			"user": "kriszyp",
+			"name": "commonjs-utils"
+		}
     }
 }

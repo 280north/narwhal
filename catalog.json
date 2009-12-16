@@ -877,6 +877,46 @@
             "githubName": "ojunit",
             "type": "zip",
             "location": "http://github.com/280north/ojunit/zipball/master"
+		},
+        "mongodb": {
+            "name": "mongodb",
+            "description": "API to access MongoDB, a schema-free database of JSON documents",
+            "keywords": [
+                "mongo",
+                "database",
+                "document",
+                "mongodb",
+                "db"
+            ],
+            "author": "Sergi Mansilla (http://www.sergimansilla.com) <sergi.mansilla@gmail.com>",
+            "jars": [
+                "jars/mongo-0.11.jar"
+            ],
+            "email": "sergi.mansilla@gmail.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "narwhal-mongodb",
+            "type": "zip",
+            "location": "http://github.com/mrclash/narwhal-mongodb/zipball/master"
+        },
+        "underscore": {
+            "name": "underscore",
+            "description": "Underscore is a utility-belt library for Javascript that provides a lot of the functional programming support.",
+            "url": "http://documentcloud.github.com/underscore/",
+            "keywords": [
+                "util",
+                "functional",
+                "server",
+                "client",
+                "browser"
+            ],
+            "author": "Jeremy Ashkenas <jashkenas@gmail.com>",
+            "maintainer": "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
+            "contributors": [],
+            "dependencies": [],
+            "githubName": "underscore",
+            "type": "zip",
+            "location": "http://github.com/kriskowal/underscore/zipball/master"
         },
         "qxoo": {
             "name": "qxoo",
