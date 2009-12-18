@@ -568,33 +568,6 @@
             "type": "zip",
             "location": "http://github.com/past/speller/zipball/master"
         },
-        "objj": {
-            "name": "objj",
-            "dependencies": [
-                "narwhal",
-                "jack",
-                "browserjs"
-            ],
-            "lib": "lib-js",
-            "preload": [
-                "objj/loader"
-            ],
-            "description": "Objective-J and Cappuccino tools",
-            "keywords": [
-                "Objective-J",
-                "Cappuccino"
-            ],
-            "author": "280 North (http://280north.com/)",
-            "contributors": [
-                "Francisco Tolmasky (http://tolmasky.com/)",
-                "Ross Boucher (http://rossboucher.com/)",
-                "Tom Robinson (http://tlrobinson.net/)",
-                "Numerous others (http://contributors.cappuccino.org/)"
-            ],
-            "githubName": "cappuccino",
-            "type": "zip",
-            "location": "http://github.com/280north/cappuccino/zipball/package"
-        },
         "jake": {
             "name": "jake",
             "author": "Francisco Tolmasky (http://tolmasky.com/)",
@@ -913,6 +886,91 @@
             "githubName": "qxoo",
             "type": "zip",
             "location": "http://github.com/fjakobs/qxoo/zipball/master"
+        },
+        "barista": {
+            "name": "barista",
+            "dependencies": [
+                "narwhal",
+                "objective-j",
+                "cappuccino"
+            ],
+            "author": "Derek Hammer",
+            "description": "An automated user interface testing framework.",
+            "keywords": [
+                "objective-j",
+                "unit test",
+                "testing",
+                "test",
+                "user interface"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "githubName": "barista",
+            "type": "zip",
+            "location": "http://github.com/hammerdr/barista/zipball/master"
+        },
+        "ojmoq": {
+            "name": "ojmoq",
+            "dependencies": [
+                "narwhal",
+                "objective-j"
+            ],
+            "author": "Derek Hammer",
+            "description": "A mocking library for Objective-J that is inspired by the Moq project.",
+            "keywords": [
+                "objective-j",
+                "unit test",
+                "testing",
+                "test",
+                "mocking"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "githubName": "ojmoq",
+            "type": "zip",
+            "location": "http://github.com/hammerdr/ojmoq/zipball/master"
+        },
+        "sizzle": {
+            "name": "sizzle",
+            "description": "A sizzlin' hot selector engine",
+            "keywords": [
+                "sizzle",
+                "selector",
+                "dom"
+            ],
+            "author": "John Resig (http://ejohn.org)",
+            "maintainer": [
+                "George Moschovitis (http://gmosx.com)"
+            ],
+            "dependencies": [],
+            "lib": [
+                "lib"
+            ],
+            "lean": [
+                "lib"
+            ],
+            "githubName": "sizzle",
+            "type": "zip",
+            "location": "http://github.com/gmosx/sizzle/zipball/master"
+        },
+        "observable": {
+            "name": "observable",
+            "description": "JavaScript framework for Observable mixins with plugin support",
+            "keywords": [
+                "observable",
+                "mixin",
+                "event",
+                "plugin"
+            ],
+            "author": "Nathan Stott",
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "observable-js",
+            "type": "zip",
+            "location": "http://github.com/nrstott/observable-js/zipball/master"
         }
     }
 }
