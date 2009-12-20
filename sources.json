@@ -218,6 +218,10 @@
             "type": "github",
             "user": "nrstott",
             "name": "observable-js"
+        },
+        "cappruby": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }
