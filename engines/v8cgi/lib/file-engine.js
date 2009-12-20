@@ -106,5 +106,3 @@ exports.FileIO = function (path, mode, permissions) {
         throw new Error("Files must be opened either for read, write, or update mode.");
     }
 };
-
-exports.bla = 'ablabl';
