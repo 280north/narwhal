@@ -79,7 +79,7 @@ if (system.loaders) {
     delete system.loaders;
 }
 var modules = {system: system, sandbox: sandbox};
-global.require = sandbox.Sandbox({
+var require = global.require = sandbox.Sandbox({
     loader: loader,
     modules: modules,
     debug: system.verbose
