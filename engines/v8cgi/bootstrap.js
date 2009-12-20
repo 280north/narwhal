@@ -58,6 +58,7 @@
         },
         stderr: {
             write: function(data) { system.stderr(data) },
+            print: function(data) { system.stderr(data) },
             flush: function() {}
         },
         debug: false,
