@@ -15,7 +15,7 @@ exports.list = function (path) {
 
 // TODO necessary for package loading
 exports.canonical = function (path) {
-    return system.getcwd() + '/' + path;
+    return (exports.isAbsolute(path) ? '' : system.getcwd() + '/') + path;
 };
 
 exports.open = system.fs.open;
