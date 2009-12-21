@@ -92,15 +92,16 @@ exports.FileIO = function (path, mode, permissions) {
     if (update) {
         throw new Error("Updating IO not yet implemented.");
     } else if (write || append) {
-        throw new Error("Writing IO not yet implemented.");
-    } else if (read) {
-        // FIXME temporary hack
+        var f = new File(path).open(mode);
         return {
-            'read': function () {
-                return function(path){ return new File(path).open('r').read() };
-            },
-            'close': function () {
-            }
+            write: function(data) { return f.write(data) },
+            close: function() { f.close() }
+        };
+    } else if (read) {
+        var f = new File(path).open(mode);
+        return {
+            read: function() { return f.read() },
+            close: function() { f.close() }
         };
     } else {
         throw new Error("Files must be opened either for read, write, or update mode.");
