@@ -2,9 +2,9 @@
 // Kris Zyp
 
 /**
-* Represents the event queue for a vat
-* The API is modeled after https://developer.mozilla.org/en/nsIThread
-*/
+ * Represents the event queue for a vat
+ * The API is modeled after https://developer.mozilla.org/en/nsIThread
+ */
 
 // we could eventually upgrade to PriorityBlockingQueye with FIFOEntry tie breaking
 var shuttingDown, 
@@ -45,18 +45,21 @@ exports.processNextEvent = function(mayWait){
 };
 
 exports.enterEventLoop = function(onidle){
+    shuttingDown = false;
     while(true){
-        exports.processNextEvent(true);
 
-        if(queue.isEmpty()){
-            if(shuttingDown){
-                return;
-            }
+        if (queue.isEmpty()) {
             // fire onidle events if a callback is provided
-            if(onidle){
+            if (onidle) {
                 onidle();
             }
+            if (shuttingDown) {
+                return;
+            }
         }
+
+        exports.processNextEvent(true);
+
     }
 
 };
@@ -83,3 +86,4 @@ exports.shutdown = function(){
 exports.defaultErrorReporter = function(e){
     print((e.rhinoException && e.rhinoException.printStackTrace()) || (e.name + ": " + e.message));
 };
+
