@@ -62,7 +62,10 @@
             flush: function() {}
         },
         debug: false,
-        verbose: false
+        verbose: false,
+        v8cgi: {
+            require: require
+        }
     });
 
 }).call(this, function () {

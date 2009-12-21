@@ -1,6 +1,8 @@
 
 var exports = require('./file');
 
+var Process = system.v8cgi.require('process').Process;
+
 exports.SEPARATOR = '/';
 
 exports.cwd = function () {
@@ -55,7 +57,8 @@ exports.isReadable = function (path) {
 };
 
 exports.isWritable = function (path) {
-    throw Error("isWritable not yet implemented.");
+    // FIXME hack
+    return new Process().exec("bash -c 'if [ -w " + path + " ]; then echo '1'; else echo '0'; fi'") == 1;
 };
 
 exports.rename = exports.move = function (source, target) {
