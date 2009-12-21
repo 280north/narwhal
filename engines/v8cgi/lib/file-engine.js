@@ -58,28 +58,24 @@ exports.isWritable = function (path) {
     throw Error("isWritable not yet implemented.");
 };
 
-exports.rename = function (source, target) {
-    throw Error("rename not yet implemented.");
-};
-
-exports.move = function (source, target) {
-    throw Error("move not yet implemented.");
+exports.rename = exports.move = function (source, target) {
+    new File(source).move(target);
 };
 
 exports.remove = function (path) {
-    throw Error("remove not yet implemented.");
+    new File(path).remove();
 };
 
 exports.mkdir = function (path) {
-    throw Error("mkdir not yet implemented.");
+    new Directory(path).create();
 };
 
 exports.rmdir = function(path) {
-    throw Error("rmdir not yet implemented.");
+    new Directory(path).remove();
 };
 
 exports.touch = function (path, mtime) {
-    throw Error("touch not yet implemented.");
+    new File('bla1').open('w').write('').close();
 };
 
 exports.FileIO = function (path, mode, permissions) {
