@@ -1,5 +1,6 @@
 
 var assert = require("assert");
+var UTIL = require("util");
 var Q = require("events");
 
 exports["test NodeJS API"] = function () {
@@ -103,9 +104,9 @@ exports["test Dojo API"] = function () {
     });
 
     var eventually;
-    d.addCallback = function (value) {
+    d.addCallback(function (value) {
         eventually = value;
-    };
+    });
 
     Q.enterEventLoop(function () {
         Q.shutdown();
@@ -223,6 +224,202 @@ exports["test chained deferrence"] = function () {
     assert.equal(y, 3);
 };
 
+var permute = function (setup, teardown, order, resolution) {
+    return function () {
+
+        var chronicle = [];
+        var print = function (message) {
+            chronicle.push(message);
+        };
+
+        var deferred = Q.defer();
+
+        setup = ({
+
+            "PromiseWhen": function () {
+
+                Q.when(deferred.promise, function () {
+                    print('ok');
+                }, function () {
+                    print('error');
+                }, function (n) {
+                    print('progress ' + (n * 100).toFixed() + "%");
+                });
+
+            },
+
+            "DeferredWhen": function () {
+
+                Q.when(deferred, function () {
+                    print('ok');
+                }, function () {
+                    print('error');
+                }, function (n) {
+                    print('progress ' + (n * 100).toFixed() + "%");
+                });
+
+            },
+
+            "PromiseObservers": function () {
+
+                deferred.promise.observe('ok', function () {
+                    print('ok');
+                });
+                deferred.promise.observe('error', function () {
+                    print('error');
+                });
+                deferred.promise.observe('progress', function (n) {
+                    print('progress ' + (n * 100).toFixed() + '%');
+                });
+
+            },
+
+            "DeferredObservers": function () {
+
+                deferred.observe('ok', function () {
+                    print('ok');
+                });
+                deferred.observe('error', function () {
+                    print('error');
+                });
+                deferred.observe('progress', function (n) {
+                    print('progress ' + (n * 100).toFixed() + '%');
+                });
+
+            },
+
+            "PromiseThen": function () {
+
+                deferred.promise.then(function () {
+                    print('ok');
+                }, function () {
+                    print('error');
+                }, function (n) {
+                    print('progress ' + (n * 100).toFixed() + "%");
+                });
+
+            },
+
+            "DeferredThen": function () {
+
+                deferred.then(function () {
+                    print('ok');
+                }, function () {
+                    print('error');
+                }, function (n) {
+                    print('progress ' + (n * 100).toFixed() + "%");
+                });
+
+            },
+
+            "Callback/Errback": function () {
+
+                deferred.addCallback(function (value) {
+                    print('ok');
+                }).addErrback(function (value) {
+                    print('error');
+                });
+
+                // no analog, use observer
+                deferred.observe("progress", function (n) {
+                    print('progress ' + (n * 100).toFixed() + "%");
+                });
+
+            },
+
+            "Both": function () {
+
+                deferred.addBoth(function (value) {
+                    print('ok');
+                }, function (value) {
+                    print('error');
+                });
+
+                // no analog, use observer
+                deferred.observe("progress", function (n) {
+                    print('progress ' + (n * 100).toFixed() + "%");
+                });
+
+            },
+
+        })[setup];
+
+        teardown = ({
+            "Resolve/Reject": function () {
+                if (resolution == "ok") {
+                    deferred.resolve();
+                } else {
+                    deferred.reject();
+                }
+            },
+            "Callback/Errback": function () {
+                if (resolution == "ok") {
+                    deferred.callback();
+                } else {
+                    deferred.errback();
+                }
+            }
+        })[teardown];
+
+        order = ({
+            "Observe->Resolve": function () {
+                setup();
+                teardown();
+            },
+            "Resolve->Observe": function () {
+                teardown();
+                setup();
+            }
+        })[order];
+
+        order();
+
+        Q.enterEventLoop(function () {
+            Q.shutdown();
+        });
+
+        if (resolution == "ok") {
+            assert.deepEqual(chronicle, [
+                'ok',
+                'progress 100%'
+            ]);
+        } else {
+            assert.deepEqual(chronicle, [
+                'error',
+                'progress 0%'
+            ]);
+        }
+
+    };
+};
+
+var permutations = exports['test API permutations'] = {};
+
+UTIL.forEach([
+    "Observe->Resolve",
+    "Resolve->Observe",
+], function (order) {
+    var orderPermutations = permutations['test ' + order] = {};
+    UTIL.forEach([
+        "DeferredObservers",
+        "PromiseObservers",
+        "DeferredThen",
+        "PromiseThen",
+        "DeferredWhen",
+        "PromiseWhen",
+        "Callback/Errback",
+        "Both"
+    ], function (setup) {
+        var setupPermutations = orderPermutations['test ' + setup] = {};
+        UTIL.forEach(["Resolve/Reject", "Callback/Errback"], function (teardown) {
+            var teardownPermutations = setupPermutations['test ' + teardown] = {};
+            UTIL.forEach(["ok", "error"], function (result) {
+                teardownPermutations['test ' + result] =
+                    permute(setup, teardown, order, result);
+            });
+        });
+    });
+});
 
 if (module == require.main) {
     require("os").exit(require("test").run(exports));
