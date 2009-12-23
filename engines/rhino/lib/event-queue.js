@@ -7,7 +7,8 @@
  */
 
 // we could eventually upgrade to PriorityBlockingQueye with FIFOEntry tie breaking
-var shuttingDown, 
+var loopLevel = 0,
+    shuttingDown, 
     queue = new java.util.concurrent.LinkedBlockingQueue();
     
 
@@ -46,6 +47,8 @@ exports.processNextEvent = function(mayWait){
 
 exports.enterEventLoop = function(onidle){
     shuttingDown = false;
+    loopLevel++;
+    var currentLoopLevel = loopLevel;
     while(true){
 
         if (queue.isEmpty()) {
@@ -53,9 +56,12 @@ exports.enterEventLoop = function(onidle){
             if (onidle) {
                 onidle();
             }
-            if (shuttingDown) {
+            if(shuttingDown){
                 return;
             }
+        }
+        if (loopLevel < currentLoopLevel) {
+            return;
         }
 
         exports.processNextEvent(true);
@@ -65,7 +71,7 @@ exports.enterEventLoop = function(onidle){
 };
 
 exports.enqueue = function(task, priority){
-    if(!shuttingDown){
+    if(loopLevel > -1){
         queue.put(task); // priority is ignored for now until PriorityBlockingQueue is used
     }
 };
@@ -73,6 +79,11 @@ exports.enqueue = function(task, priority){
 exports.hasPendingEvents = function(){
     return !queue.isEmpty();    
 }
+
+// based on Node's process.unloop();
+exports.unloop = function(){
+    loopLevel--;
+};
 
 exports.shutdown = function(){
     shuttingDown = true;
