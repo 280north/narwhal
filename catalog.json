@@ -993,6 +993,23 @@
             "githubName": "cappruby",
             "type": "zip",
             "location": "http://github.com/tlrobinson/cappruby/zipball/master"
+        },
+        "coffee-script": {
+            "name": "coffee-script",
+            "lib": "lib-js",
+            "preload": [
+                "coffee-script/loader"
+            ],
+            "description": "Unfancy JavaScript",
+            "keywords": [
+                "javascript",
+                "language"
+            ],
+            "author": "Jeremy Ashkenas",
+            "version": "0.1.1",
+            "githubName": "coffee-script",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/coffee-script/zipball/master"
         }
     }
 }

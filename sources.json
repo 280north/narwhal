@@ -222,6 +222,10 @@
         "cappruby": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "coffee-script": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }
