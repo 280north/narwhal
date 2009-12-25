@@ -218,6 +218,14 @@
             "type": "github",
             "user": "nrstott",
             "name": "observable-js"
+        },
+        "cappruby": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "coffee-script": {
+            "type": "github",
+            "user": "tlrobinson"
         }
         "sizzle": {
             "type": "github",
