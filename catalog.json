@@ -1025,7 +1025,7 @@
             "type": "zip",
             "location": "http://github.com/kriszyp/commonjs-utils/zipball/master"
 		},
-		{
+		"pintura": {
 			"name": "pintura",
 			"author": "Kris Zyp",
             "email": "kriszyp@gmail.com",
