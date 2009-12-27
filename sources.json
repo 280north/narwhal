@@ -226,6 +226,11 @@
         "coffee-script": {
             "type": "github",
             "user": "tlrobinson"
+        },
+        "parenscript": {
+            "type": "github",
+            "user": "fitzgen",
+            "name": "parenscript-narwhal"
         }
     }
 }
