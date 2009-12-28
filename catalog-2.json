@@ -1842,40 +1842,6 @@
             ],
             "version": []
         },
-        "observable": {
-            "name": "observable",
-            "description": "JavaScript framework for Observable mixins with plugin support",
-            "keywords": [
-                "observable",
-                "mixin",
-                "event",
-                "plugin"
-            ],
-            "author": {
-                "name": "Nathan Stott"
-            },
-            "email": "nathan.stott@whiteboard-it.com",
-            "dependencies": [],
-            "lib": "lib",
-            "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
-            "packageUrl": "http://github.com/nrstott/observable-js/zipball/master",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "nrstott",
-                "name": "observable-js",
-                "packageName": "observable",
-                "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
-                "url": "http://github.com/nrstott/observable-js/zipball/master",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Nathan Stott"
-                }
-            ],
-            "version": []
-        },
         "ojmoq": {
             "name": "ojmoq",
             "dependencies": [
@@ -1952,6 +1918,199 @@
                 },
                 {}
             ],
+            "version": []
+        },
+        "observable": {
+            "name": "observable",
+            "description": "JavaScript framework for Observable mixins with plugin support",
+            "keywords": [
+                "observable",
+                "mixin",
+                "event",
+                "plugin"
+            ],
+            "author": {
+                "name": "Nathan Stott"
+            },
+            "email": "nathan.stott@whiteboard-it.com",
+            "dependencies": [],
+            "lib": "lib",
+            "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
+            "packageUrl": "http://github.com/nrstott/observable-js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "nrstott",
+                "name": "observable-js",
+                "packageName": "observable",
+                "descriptorUrl": "http://github.com/nrstott/observable-js/raw/master/package.json",
+                "url": "http://github.com/nrstott/observable-js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Nathan Stott"
+                }
+            ],
+            "version": []
+        },
+        "commonjs-utils": {
+            "name": "commonjs-utils",
+            "author": {
+                "name": "Kris Zyp"
+            },
+            "dependencies": [],
+            "contributors": [
+                {
+                    "name": "Kris Zyp"
+                }
+            ],
+            "keywords": [
+                "json",
+                "schema",
+                "query"
+            ],
+            "githubName": "commonjs-utils",
+            "type": "zip",
+            "location": "http://github.com/kriszyp/commonjs-utils/zipball/master",
+            "descriptorUrl": "http://github.com/kriszyp/commonjs-utils/raw/master/package.json",
+            "packageUrl": "http://github.com/kriszyp/commonjs-utils/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "kriszyp",
+                "name": "commonjs-utils",
+                "packageName": "commonjs-utils",
+                "descriptorUrl": "http://github.com/kriszyp/commonjs-utils/raw/master/package.json",
+                "url": "http://github.com/kriszyp/commonjs-utils/zipball/master",
+                "archive": "zip"
+            },
+            "version": []
+        },
+        "cappruby": {
+            "name": "cappruby",
+            "dependencies": [
+                "objective-j",
+                "cappuccino"
+            ],
+            "preload": [
+                "cappruby/loader"
+            ],
+            "objj-frameworks": [
+                "Frameworks"
+            ],
+            "description": "Experimental Ruby implementation on top of the Objective-J runtime / JavaScript",
+            "keywords": [
+                "cappruby",
+                "ruby",
+                "objective-j",
+                "objj",
+                "objective j",
+                "cappuccino"
+            ],
+            "author": {
+                "name": "Tom Robinson",
+                "url": "http://tlrobinson.net/"
+            },
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/cappruby/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/cappruby/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "packageName": "cappruby",
+                "descriptorUrl": "http://github.com/tlrobinson/cappruby/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/cappruby/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/"
+                }
+            ]
+        },
+        "coffee-script": {
+            "name": "coffee-script",
+            "lib": "lib/coffee_script/narwhal/lib",
+            "preload": [
+                "coffee-script/loader"
+            ],
+            "description": "Unfancy JavaScript",
+            "keywords": [
+                "javascript",
+                "language"
+            ],
+            "author": {
+                "name": "Jeremy Ashkenas"
+            },
+            "version": [
+                "0",
+                "1",
+                "6"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/coffee-script/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/coffee-script/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "packageName": "coffee-script",
+                "descriptorUrl": "http://github.com/tlrobinson/coffee-script/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/coffee-script/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Jeremy Ashkenas"
+                }
+            ],
+            "dependencies": []
+        },
+        "parenscript": {
+            "name": "parenscript",
+            "preload": [
+                "parenscript/loader"
+            ],
+            "description": "Parenscript is a small Lispy language that compiles to JavaScript. This is the Narwhal module that integrates ParenScript with Narwhal.",
+            "keywords": [
+                "javascript",
+                "language",
+                "lisp",
+                "macros",
+                "macro"
+            ],
+            "author": {
+                "name": "Nick Fitzgerald",
+                "url": "http://fitzgeraldnick.com",
+                "email": "fitzgen@gmail.com"
+            },
+            "license": "MIT",
+            "descriptorUrl": "http://github.com/fitzgen/parenscript-narwhal/raw/master/package.json",
+            "packageUrl": "http://github.com/fitzgen/parenscript-narwhal/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "fitzgen",
+                "name": "parenscript-narwhal",
+                "packageName": "parenscript",
+                "descriptorUrl": "http://github.com/fitzgen/parenscript-narwhal/raw/master/package.json",
+                "url": "http://github.com/fitzgen/parenscript-narwhal/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Nick Fitzgerald",
+                    "url": "http://fitzgeraldnick.com",
+                    "email": "fitzgen@gmail.com"
+                }
+            ],
+            "dependencies": [],
             "version": []
         }
     }
