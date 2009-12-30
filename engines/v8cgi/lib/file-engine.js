@@ -20,9 +20,10 @@ exports.canonical = function (path) {
     return (exports.isAbsolute(path) ? '' : system.getcwd() + '/') + path;
 };
 
-exports.open = system.fs.open;
+exports.open = function(path, mode) { return new File(path).open(mode) }
 
-exports.read = system.fs.read;
+exports.read = function(path){ return new File(path).open('r').read() }; // function(path:string):string
+
 
 exports.exists = function (path) {
     return new File(path).exists()
@@ -46,7 +47,8 @@ exports.isDirectory = function (path) {
     return new Directory(path).isDirectory();
 };
 
-exports.isFile = system.fs.isFile;
+exports.isFile = function(path){ return new File(path).isFile() }; // function(path:string):boolean
+
 
 exports.isLink = function (path) {
     throw Error("isLink not yet implemented.");

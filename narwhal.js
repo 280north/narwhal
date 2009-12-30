@@ -113,7 +113,6 @@ if (system.loaders) {
     loader.loaders.unshift.apply(loader.loaders, system.loaders);
     delete system.loaders;
 }
-var modules = {system: system, sandbox: sandbox};
 var require = global.require = sandbox.Sandbox({
     loader: loader,
     modules: modules,

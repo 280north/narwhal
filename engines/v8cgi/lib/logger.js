@@ -8,11 +8,12 @@
 // (Stolen from Ruby)
 //
 
-var system = require("system");
+var system = require("system"),
+    file = require("file");
 
 var Logger = exports.Logger = function(output) {
     if (typeof output === "string")
-        this.output = system.fs.open(output, "a");
+        this.output = file.open(output, "a");
     else if (typeof output === 'undefined')
         this.output = { write: system.print };
     else this.output = { write: function(s) { output(s) } };
