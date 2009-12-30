@@ -78,7 +78,7 @@ exports.rmdir = function(path) {
 };
 
 exports.touch = function (path, mtime) {
-    new File('bla1').open('w').write('').close();
+    new File(path).open('w').write('').close();
 };
 
 exports.FileIO = function (path, mode, permissions) {
