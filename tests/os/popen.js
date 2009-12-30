@@ -36,6 +36,6 @@ exports.testCommunicateStdin = function () {
     assert.eq("", os.popen("exit 0").communicate("hi").stdin.read());
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     os.exit(require("test/runner").run(exports));
 

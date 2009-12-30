@@ -1,4 +1,6 @@
 
+// Kris Kowal
+
 var io = require('io');
 
 var cLib;

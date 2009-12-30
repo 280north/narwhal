@@ -1,5 +1,5 @@
 
-var assert = require('test/assert');
+var assert = require('assert');
 var struct = require('struct');
 var util = require('util');
 
@@ -11,27 +11,27 @@ var sha256 = require('sha256');
 var crc32 = require('crc32');
 
 exports.testMd4 = function () {
-    assert.eq(md4.hash("test hash").toString(16), "549089516e75bd13c41ff098fbb58d5e");
-    assert.eq(md4.hash("abc").toString(16), "a448017aaf21d8525fc10ae87aa6729d");
+    assert.equal(md4.hash("test hash").toString(16), "549089516e75bd13c41ff098fbb58d5e");
+    assert.equal(md4.hash("abc").toString(16), "a448017aaf21d8525fc10ae87aa6729d");
 };
 
 exports.testMd5 = function () {
-    assert.eq(md5.hash(raw).toString(16), "65a8e27d8879283831b664bd8b7f0ad4", 'md5');
-    assert.eq(md5.hash("message digest").toString(16), "f96b697d7cb7938d525a2f31aaf161d0");
-    assert.eq(md5.hash("abc").toString(16), "900150983cd24fb0d6963f7d28e17f72");
+    assert.equal(md5.hash(raw).toString(16), "65a8e27d8879283831b664bd8b7f0ad4", 'md5');
+    assert.equal(md5.hash("message digest").toString(16), "f96b697d7cb7938d525a2f31aaf161d0");
+    assert.equal(md5.hash("abc").toString(16), "900150983cd24fb0d6963f7d28e17f72");
 };
 
 exports.testSha = function () {
-    assert.eq(sha.hash(raw).toString(16), "0a0a9f2a6772942557ab5355d76af442f8f65e01", 'sha1');
-    assert.eq(sha.hash("160-bit hash").toString(16), "90d925d853c3d35cd54070bb75280fefad9de9e7");
+    assert.equal(sha.hash(raw).toString(16), "0a0a9f2a6772942557ab5355d76af442f8f65e01", 'sha1');
+    assert.equal(sha.hash("160-bit hash").toString(16), "90d925d853c3d35cd54070bb75280fefad9de9e7");
 };
 
 exports.testSha256 = function () {
-    assert.eq(sha256.hash(raw).toString(16), "dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f", 'sha256');
+    assert.equal(sha256.hash(raw).toString(16), "dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f", 'sha256');
 };
 
 exports.testCrc32 = function () {
-    assert.eq(crc32.hash(raw), -(parseInt("ec4ac3d0", 16) + 1) ^ -1, 'crc32');
+    assert.equal(crc32.hash(raw), -(parseInt("ec4ac3d0", 16) + 1) ^ -1, 'crc32');
 };
 
 /*
@@ -64,18 +64,20 @@ exports.testCrc32 = function () {
 /* test the consistency attribute of each algorithm
  * (always returns the same value for the same input) */
 
-var consistency = function (algorithm) {
+var consistency = function (algorithm, name) {
     return function () {
         // the returned hash should be consistent for the same input.
         var s1 = algorithm.hash("test");
         var s2 = algorithm.hash("test");
         if (s1.decodeToString) {
-            assert.eq(
+            assert.equal(
                 s1.decodeToString(64),
-                s2.decodeToString(64)
+                s2.decodeToString(64),
+                name + "(x) == " + name + "(x)"
             );
+        } else {
+            assert.equal(s1, s2);
         }
-        assert.eq(s1, s2);
     };
 };
 
@@ -86,9 +88,9 @@ util.forEachApply([
     [sha256, 'Sha256'],
     [crc32, 'Crc32']
 ], function (algorithm, name) {
-    exports['testConsistency' + name] = consistency(algorithm);
+    exports['testConsistency' + name] = consistency(algorithm, name);
 });
 
-if (require.main === module.id)
-    require("os").exit(require("test/runner").run(exports));
+if (require.main == module)
+    require("os").exit(require("test").run(exports));
 

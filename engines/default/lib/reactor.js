@@ -1,4 +1,6 @@
 
+// Kris Kowal
+
 var tasks = [];
 
 require('unload').when(function () {

@@ -1,4 +1,6 @@
 
+// Kris Kowal
+
 var io = require('io');
 
 var javaZip = Packages.java.util.zip;
@@ -9,13 +11,19 @@ exports.unzip = function (source, target) {
     if (!target)
         target = system.fs.path(source).absolute().dirname();
     target = system.fs.path(target);
-    return new exports.Unzip(source).forEach(function (entry) {
-        var targetPath = target.join(entry.getName());
-        if (entry.isDirectory())
-            return;
-        targetPath.dirname().mkdirs();
-        targetPath.write(entry.read('b'), 'b');
-    });
+    var unzip = new exports.Unzip(source);
+    try{
+        return unzip.forEach(function (entry) {
+            var targetPath = target.join(entry.getName());
+            if (entry.isDirectory())
+                return;
+            targetPath.dirname().mkdirs();
+            targetPath.write(entry.read('b'), 'b');
+        });
+    }
+    finally{
+        unzip.close();
+    }
 };
 
 exports.Unzip = function (path) {
@@ -48,6 +56,10 @@ exports.Unzip.prototype.forEach = function (block, context) {
         }
         block.call(context, next);
     }
+};
+
+exports.Unzip.prototype.close = function (mode, options) {
+    this._javaZipFile.close();
 };
 
 exports.Entry = function (javaZipFile, javaZipEntry) {

@@ -14,6 +14,6 @@ exports.testIsArrayNegativeObject = function () {
     assert.isFalse(Array.isArray({"length": 0}));
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 

@@ -1,8 +1,10 @@
 *
+!.gitignore
 !activate
 !activate.bash
 !activate.cmd
 !js
+!js.cmd
 !json
 !narwhal
 !narwhal.cmd

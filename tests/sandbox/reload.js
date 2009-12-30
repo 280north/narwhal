@@ -3,6 +3,7 @@ var util = require("util");
 var assert = require("test/assert");
 var args = require("args");
 var sandboxing = require("sandbox");
+var loader = require("loader");
 var os = require("os");
 
 exports.test = function () {
@@ -21,7 +22,7 @@ exports.test = function () {
     var id = path.toString();
     var subsandboxing = supersandbox('sandbox');
 
-    var subloader = subsandboxing.Loader({
+    var subloader = loader.Loader({
         'paths': require.loader.paths,
         'debug': true
     });
@@ -74,6 +75,6 @@ exports.test = function () {
 
 }
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 

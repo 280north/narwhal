@@ -1,4 +1,6 @@
 
+// George Moschovitis
+
 var binary = require("./binary");
 
 var JString = Packages.java.lang.String,

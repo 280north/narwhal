@@ -57,5 +57,5 @@ exports.testFileFNMatch = require("./fnmatch");
 exports.testFileMatch = require("./match");
 exports.testFileMatch = require("./glob");
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
