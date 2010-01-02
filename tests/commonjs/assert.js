@@ -119,6 +119,18 @@ exports['test deepEqual "a" {}'] = function () {
     assert['throws'](makeBlock(assert.deepEqual, 'a', {}), assert.AssertionError);
 };
 
+exports['test deepEqual "" ""'] = function () {
+    assert.deepEqual("", "");
+};
+
+exports['test deepEqual "" [""]'] = function () {
+    assert['throws'](makeBlock(assert.deepEqual, '', ['']), assert.AssertionError);
+};
+
+exports['test deepEqual [""] [""]'] = function () {
+    assert.deepEqual([""], [""]);
+};
+
 exports['test throw AssertionError'] = function () {
 
     //Testing the throwing
@@ -145,4 +157,7 @@ exports['test throw AssertionError'] = function () {
     threw = false;
 
 };
+
+if (module === require.main)
+    require("os").exit(require("test").run(exports));
 
