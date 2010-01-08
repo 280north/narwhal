@@ -16,6 +16,10 @@ var getCLib = function () {
 };
 
 exports.exit = function (status) {
+    // send an unload event if that module has been required
+    if (require.loader.isLoaded("unload")) {
+        require("unload").send();
+    }
     Packages.java.lang.System.exit(status << 0);
 };
 
