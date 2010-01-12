@@ -75,7 +75,7 @@ exports.testOptionNumberError = function () {
     var option = parser.option('-o').number();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', 'TEXT']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionInteger = function () {
@@ -92,7 +92,7 @@ exports.testOptionIntegerDomainRationalError = function () {
     var option = parser.option('-o').integer();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', '1.1']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionIntegerDomainParseError = function () {
@@ -100,7 +100,7 @@ exports.testOptionIntegerDomainParseError = function () {
     var option = parser.option('-o').integer();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', 'TEXT']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionNatural = function () {
@@ -115,7 +115,7 @@ exports.testOptionNaturalDomainPositiveError = function () {
     var option = parser.option('-o').natural();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', '-1']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionNaturalDomainRationalError = function () {
@@ -123,7 +123,7 @@ exports.testOptionNaturalDomainRationalError = function () {
     var option = parser.option('-o').natural();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', '1.1']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionNaturalParseError = function () {
@@ -131,7 +131,7 @@ exports.testOptionNaturalParseError = function () {
     var option = parser.option('-o').natural();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', 'TEXT']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionOct = function () {
@@ -146,7 +146,7 @@ exports.testOptionOctError = function () {
     var option = parser.option('-o').oct();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', 'TEXT']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionHex = function () {
@@ -161,7 +161,7 @@ exports.testOptionHexError = function () {
     var option = parser.option('-o').hex();
     assert.throwsError(function () {
         var options = parser.parse(['command', '-o', 'TEXT']);
-    }, test.Exit);
+    }, test.UsageError);
 };
 
 exports.testOptionNatural = function () {
@@ -210,6 +210,6 @@ exports.testNoActionForOptionError = function () {
     }, args.ConfigurationError);
 };
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 

@@ -1,76 +1,111 @@
-(function (system) {
+(function (modules) {
+
+var deprecated;
+if (modules.fs) {
+    // XXX: migration step for deprecated engines
+    // the old arguments[0] was the system module and
+    //  {fs: {}, ...} == system
+    // the new arguments[0] is the primed modules memo
+    //  {system: system, file: file}
+    var system = modules;
+    var file = system.fs;
+    var modules = {system: system, file: file};
+    deprecated = true;
+} else {
+    var system = modules.system;
+    var file = modules.file;
+}
+
+// XXX: migration step for deprecated engines
+// the old system.evaluate accepts a tuple and
+// the new system.evaluate accepts an object
+var canary = {};
+system.evaluate("exports.deprecated=true", "", 1)({exports:{}}, canary);
+if (canary.deprecated) {
+    var Factory = system.evaluate;
+    system.evaluate = function (text, name, lineNo) {
+        var factory = Factory(text, name, lineNo);
+        return function (inject) {
+            return factory(
+                inject.require,
+                inject.exports,
+                inject.module,
+                inject.system,
+                inject.print
+            );
+        }
+    };
+}
 
 // global reference
+// XXX: beyond-compliance with CommonJS
 global = system.global;
 global.global = global;
 global.system = system;
 global.print = system.print;
 
-// logger shim
-var logFake = function () {
-    if (system.debug) {
-        system.print(Array.prototype.join.apply(arguments, [" "]));
-    }
-};
-var log = {fatal:logFake, error:logFake, warn:logFake, info:logFake, debug:logFake};
-system.log = log;
-
 // this only works for modules with no dependencies and a known absolute path
-var requireFake = function(id, path, modules) {
-    modules = modules || {};
-    var exports = {};
+var requireFake = function(id, path, force) {
+    // when a real require is ready, use it instead
+    if (require)
+        require(id);
+    // if the module has already been loaded,
+    //  and this isn't a forced reload,
+    //  return the memoized exports
+    if (modules[id] && !force)
+        return modules[id];
+
+    var exports = modules[id] = modules[id] || {};
     var module = {id: id, path: path};
 
-    var factory = system.evaluate(system.fs.read(path), path, 1);
-    factory(
-        function(id) { return modules[id]; }, // require
-        exports, // exports
-        module, // module
-        system, // system
-        system.print // print
-    );
+
+    var factory = system.evaluate(file.read(path), path, 1);
+    factory({
+        require: requireFake,
+        exports: exports,
+        module: module,
+        system: system,
+        print: system.print
+    });
 
     return exports;
 };
 
-// bootstrap sandbox module
-var sandbox = requireFake(
-    "sandbox",
-    system.prefix + "/lib/sandbox.js",
-    {"system": system}
-);
+var fakeJoin = function() {
+	var delim = "/";
+	if(/\bwindows\b/i.test(system.os) ||
+	   /\bwinnt\b/i.test(system.os)) {
+		delim = "\\";
+	}
+	return Array.prototype.join.call(arguments, delim);
+}
+
+// bootstrap sandbox and loader modules
+var loader = requireFake("loader", fakeJoin(system.prefix, "lib", "loader.js"));
+var multiLoader = requireFake("loader/multi", fakeJoin(system.prefix, "lib", "loader", "multi.js"));
+var sandbox = requireFake("sandbox", fakeJoin(system.prefix, "lib", "sandbox.js"));
 
 // bootstrap file module
-var fs = {};
-requireFake(
-    "sandbox",
-    system.prefix + "/lib/file-bootstrap.js",
-    {"file" : fs, "system": system}
-);
-// override generic bootstrapping methods with those provided
-//  by the engine bootstrap system.fs object
-for (var name in system.fs) {
-    if (Object.prototype.hasOwnProperty.call(system.fs, name)) {
-        fs[name] = system.fs[name];
-    }
-}
-system.fs = fs;
-system.enginePrefix = system.enginePrefix || system.prefix + '/engines/' + system.engines[0];
+requireFake("file", fakeJoin(system.prefix, "lib", "file-bootstrap.js"), "force");
+
 // construct the initial paths
 var paths = [];
 // XXX system.packagePrefixes deprecated in favor of system.prefixes
-var prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
-for (var i = 0; i < prefixes.length; i++) {
+system.prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
+var prefixes = system.prefixes.slice();
+if (system.enginePrefix)
+    prefixes.unshift(system.enginePrefix);
+for (var i = 0, ii = prefixes.length; i < ii; i++) {
     var prefix = prefixes[i];
-    for (var j = 0; j < system.engines.length; j++) {
+    for (var j = 0, jj = system.engines.length; j < jj; j++) {
         var engine = system.engines[j];
-        paths.push(prefixes[i] + "/engines/" + engine + "/lib");
+        paths.push(fakeJoin(prefixes[i], "engines", engine, "lib"));
     }
-    paths.push(prefixes[i] + "/lib");
+    paths.push(fakeJoin(prefixes[i], "lib"));
 }
 
 // create the primary Loader and Sandbox:
-var loader = sandbox.MultiLoader({
+var loader = multiLoader.MultiLoader({
     paths: paths,
     debug: system.verbose
 });
@@ -78,8 +113,7 @@ if (system.loaders) {
     loader.loaders.unshift.apply(loader.loaders, system.loaders);
     delete system.loaders;
 }
-var modules = {system: system, sandbox: sandbox};
-global.require = sandbox.Sandbox({
+var require = global.require = sandbox.Sandbox({
     loader: loader,
     modules: modules,
     debug: system.verbose
@@ -90,20 +124,26 @@ global.require = sandbox.Sandbox({
 try {
     require("global");
 } catch (e) {
-    system.log.error("Couldn't load global/primordial patches ("+e+")");
+    system.print("Couldn't load global/primordial patches ("+e+")");
 }
 
 // load the complete system module
-global.require.force("system");
+require.force("system");
+require.force("file");
+require.force("file-engine");
 
 // augment the path search array with those provided in
 //  environment variables
-paths.push([
+paths.push.apply(paths, [
     system.env.JS_PATH || "",
     system.env.NARWHAL_PATH || ""
 ].join(":").split(":").filter(function (path) {
     return !!path;
 }));
+
+// FIXME: splitting on spaces is not correct. needs more robust parsing.
+if (system.env.NARWHALOPT)
+    system.args.splice.apply(system.args, [1,0].concat(system.env.NARWHALOPT.split(" ")));
 
 // parse command line options
 var parser = require("narwhal").parser;
@@ -116,32 +156,41 @@ if (options.verbose !== undefined) {
     require.verbose = system.verbose;
 }
 
+if (deprecated) {
+    if (options.verbose) {
+        system.print(
+            "WARNING: this version of the " + system.engine + " engine \n" +
+            "         is deprecated because it injects the system module \n" +
+            "         instead of a modules memo in the narwhal bootstrap system."
+        );
+    }
+}
+
 // enable loader tracing
 global.require.debug = options.verbose;
 // in verbose mode, list all the modules that are 
 // already loaded
 if (!wasVerbose && system.verbose) {
     Object.keys(modules).forEach(function (name) {
-        print("| " + name);
+        system.print("| " + name);
     });
 }
 
 // find the program module and its prefix
 var program;
 if (system.args.length && !options.interactive && !options.main) {
-    if (!program)
-        program = system.fs.path(system.args[0]).canonical();
-
-    // add package prefixes for all of the packages
-    // containing the program, from specific to general
-    var parts = system.fs.split(program);
-    for (var i = 0; i < parts.length; i++) {
-        var path = system.fs.join.apply(null, parts.slice(0, i));
-        var packageJson = system.fs.join(path, "package.json");
-        if (system.fs.isFile(packageJson))
-            system.prefixes.unshift(path);
-    }
-
+	if (!program) {
+        program = file.path(system.args[0]).canonical();
+	}
+	// add package prefixes for all of the packages
+	// containing the program, from specific to general
+	var parts = file.split(program || file.path("").canonical());
+	for (var i = 0; i < parts.length; i++) {
+	    var path = file.join.apply(null, parts.slice(0, i));
+	    var packageJson = file.join(path, "package.json");
+	    if (file.isFile(packageJson))
+	        system.prefixes.unshift(path);
+	}
 }
 
 // user package prefix
@@ -188,7 +237,7 @@ options.todo.forEach(function (item) {
             if (paths.indexOf(path) < 0)
                 paths.push(path);
         }
-        print(paths.join(value));
+        system.print(paths.join(value));
     }
 });
 

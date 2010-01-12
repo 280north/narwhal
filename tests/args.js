@@ -25,7 +25,8 @@ Exit.prototype = Object.create(Error.prototype);
 exports.testOptions = require("./args/options");
 exports.testDomain = require("./args/domain");
 exports.testShifting = require("./args/shifting");
+exports.testChoices = require("./args/choices");
 
-if (require.main === module.id)
+if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 

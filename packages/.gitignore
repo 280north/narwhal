@@ -1,10 +1,9 @@
-!.gitignore
-!narwhal-helma
-!narwhal-jaxer
-!narwhal-test
-!narwhal-k7
-!narwhal-v8cgi
-!narwhal-xulrunner
-# only ignore other directories in this directory
-# (does not ignore files within checked-in directories)
+# Ignore all
+
 /*
+
+# except for
+
+!/.gitignore
+
+!/readline

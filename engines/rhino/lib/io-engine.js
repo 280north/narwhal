@@ -1,3 +1,7 @@
+
+// Tom Robinson
+// Kris Kowal
+
 // IO: Rhino
 
 var IO = exports.IO = function(inputStream, outputStream) {

@@ -1,4 +1,7 @@
 
+// Kris Kowal
+// STATUS: never really worked.
+
 /* shared, sealed global context */
 
 var blacklist = [

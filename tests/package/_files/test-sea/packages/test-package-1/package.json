@@ -1,0 +1,16 @@
+{
+    "name": "test-package-1",
+    "dependencies": [
+        "domain.com/path/to/package1",
+        "test-package-2"
+    ],
+    "using": {
+        "my-package-a": {
+            "location": "http://domain.com/path/to/package1/"
+        },
+        "my-package-b": {
+            "catalog": "http://domain.com/path/to/catalog/catalog.json",
+            "name": "package2"
+        }
+    }
+}

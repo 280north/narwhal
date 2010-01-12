@@ -1,0 +1,8 @@
+{
+    "name": "package2",
+    "using": {
+        "my-package-1": {
+            "location": "http://domain.com/path/to/package1/"
+        }
+    }
+}

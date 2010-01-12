@@ -7,7 +7,12 @@ set NARWHAL_HOME=%~dp0..
 :: use Rhino as the default if none is specified in narwhal.conf
 set NARWHAL_DEFAULT_ENGINE=rhino
 
-:: TODO: load narwhal.conf if it exists
+:: load narwhal.conf if it exists
+:: TODO: Doesn't fully mimicks the linux `source` command,
+::       but should be enough for loading narwhal.conf
+if exist "%NARWHAL_HOME%\narwhal.conf" (
+    for /f "eol=# tokens=1,2 delims==" %%i in (%NARWHAL_HOME%\narwhal.conf) do set %%i=%%j
+)
 
 :: if NARWHAL_ENGINE isn't yet set, set it to the default engine, and export it
 if not defined NARWHAL_ENGINE (

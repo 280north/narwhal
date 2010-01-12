@@ -1,6 +1,6 @@
 {
-    "version": 1,
-    "packages": {
+    "version": 2,
+    "sources": {
         "narwhal": {
             "type": "github",
             "user": "tlrobinson"
@@ -25,6 +25,10 @@
             "type": "github",
             "user": "smith"
         },
+        "narwhal-moar-monkeys": {
+            "type": "github",
+            "user": "kriskowal"
+        },
         "jack": {
             "type": "github",
             "user": "tlrobinson"
@@ -39,7 +43,7 @@
         },
         "narcissus": {
             "type": "github",
-            "user": "kriskowal"
+            "user": "andychu"
         },
         "creolejs": {
             "type": "github",
@@ -67,7 +71,7 @@
         },
         "appengine-java-sdk": {
             "type": "inline",
-            "package.json": {
+            "descriptor": {
                 "name": "gae",
                 "title": "Google App Engine Java SDK",
                 "description": "Java components necessary for deploying applications on Google's App Engine.",
@@ -76,14 +80,14 @@
                 "dependencies": ["jack-servlet", "jack", "narwhal"],
                 "lib": [],
                 "type": "zip",
-                "location": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
+                "packageUrl": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
             }
         },
         "env": {
             "type": "github",
             "name": "env-js",
             "user": "kriskowal",
-            "package.json": {}
+            "descriptor": {}
         },
         "template": {
             "type": "github",
@@ -158,7 +162,7 @@
         },
         "json-template": {
             "type": "github",
-            "user": "Gozala"
+            "user": "andychu"
         },
         "ejs": {
             "type": "github",
@@ -219,6 +223,11 @@
             "user": "nrstott",
             "name": "observable-js"
         },
+		"commonjs-utils": {
+		    "type": "github",
+			"user": "kriszyp",
+			"name": "commonjs-utils"
+		},
         "cappruby": {
             "type": "github",
             "user": "tlrobinson"
@@ -226,10 +235,11 @@
         "coffee-script": {
             "type": "github",
             "user": "tlrobinson"
-        }
-        "sizzle": {
+        },
+        "parenscript": {
             "type": "github",
-            "user": "gmosx"
+            "user": "fitzgen",
+            "name": "parenscript-narwhal"
         }
     }
 }

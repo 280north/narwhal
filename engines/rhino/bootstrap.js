@@ -1,4 +1,6 @@
 (function(global, evalGlobal) {
+// Tom Robinson
+// Kris Kowal
 
     /*
         this is a minimal engine-specific thunk for narwhal.js
@@ -10,10 +12,13 @@
 
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
-    context.getWrapFactory().setJavaPrimitiveWrap(false); 
 
     // TODO: enable this via a command line switch
     context.setOptimizationLevel(-1);
+    
+    
+    context.setLanguageVersion(180);
+    context.getWrapFactory().setJavaPrimitiveWrap(false);
     
     var prefix = "";
     if (typeof NARWHAL_HOME != "undefined") {
@@ -22,16 +27,6 @@
     } else {
         prefix = String(Packages.java.lang.System.getenv("NARWHAL_HOME") || "");
     }
-
-    var enginePrefix = "";
-    if (typeof NARWHAL_ENGINE_HOME != "undefined") {
-        enginePrefix = NARWHAL_ENGINE_HOME;
-        delete NARWHAL_ENGINE_HOME;
-    } else {
-        enginePrefix = String(Packages.java.lang.System.getenv("NARWHAL_ENGINE_HOME") || "");
-    }
-
-    var prefixes = [prefix, enginePrefix];
 
     var isFile = function (path) {
         try { return new java.io.File(path).isFile(); } catch (e) {}
@@ -49,25 +44,23 @@
             stream.close();
         }
     };
-    
-    var evaluate = function (text, name, lineNo) {
-        var scope;
-        
-        if (moduleScopingEnabled) {
-            scope = new Object();
-            scope.__parent__ = null;
-            scope.__proto__ = global;
-        } else {
-            scope = global;
-        }
-        
-        return context.compileFunction(
-            scope,
-            "function(require,exports,module,system,print){"+text+"\n// */\n}",
-            name,
-            lineNo,
-            null
-        );
+
+    var evaluate = function (text, fileName, lineNo) {
+        return function (inject) {
+            var names = [];
+            for (var name in inject)
+                if (Object.prototype.hasOwnProperty.call(inject, name))
+                    names.push(name);
+            return context.compileFunction(
+                global,
+                "function(" + names.join(",") + "){" + text + "\n//*/\n}",
+                fileName,
+                lineNo,
+                null
+            ).apply(null, names.map(function (name) {
+                return inject[name];
+            }));
+        };
     };
 
     delete global.print;
@@ -89,28 +82,29 @@
 
     try {
         narwhal({
-            global: global,
-            evalGlobal: evalGlobal,
-            engine: 'rhino',
-            engines: ['rhino', 'default'],
-            os: os,
-            print: print,
-            fs: {
+            system: {
+                global: global,
+                evalGlobal: evalGlobal,
+                engine: 'rhino',
+                engines: ['rhino', 'default'],
+                os: os,
+                print: print,
+                prefix: prefix,
+                evaluate: evaluate,
+                debug: debug,
+                verbose: verbose
+            },
+            file: {
                 read: read,
                 isFile: isFile
-            },
-            prefix: prefix,
-            prefixes: prefixes,
-            evaluate: evaluate,
-            debug: debug,
-            verbose: verbose
+            }
         });
     } catch (e) {
-        print(e);
         if (e.rhinoException)
             e.rhinoException.printStackTrace();
         if (e.javaException)
             e.javaException.printStackTrace();
+        print(e);
         Packages.java.lang.System.exit(1);
     }
         

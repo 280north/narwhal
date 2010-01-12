@@ -1,5 +1,6 @@
 {
     "name": "narwhal",
+    "version": "0.2.1",
     "description": "A general purpose JavaScript platform",
     "keywords": ["javascript", "engine", "platform"],
     "author": "Tom Robinson (http://tlrobinson.net/)",
@@ -22,5 +23,5 @@
         "Toby Ho (http://tobyho.com) <airportyh@gmail.com>"
     ],
     "lib": ["lib"],
-    "lean": ["lib", "engines"] 
+    "lean": ["lib", "engines"]
 }

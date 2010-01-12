@@ -1,4 +1,7 @@
 
+// Kris Kowal
+// Christoph Dorn
+
 var exports = require('./file');
 
 exports.SEPARATOR = '/';
