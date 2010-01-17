@@ -1186,6 +1186,42 @@
             "dependencies": [],
             "version": []
         },
+        "ometajs": {
+            "name": "ometajs",
+            "author": {
+                "name": "Alessandro Warth",
+                "url": "http://awarth.blogspot.com/"
+            },
+            "description": "A object-oriented language for pattern matching",
+            "keywords": [
+                "ometa",
+                "parser",
+                "peg"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/ometa-js/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "ometajs",
+                "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
+                "url": "http://github.com/veged/ometa-js/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": []
+        },
         "jake": {
             "name": "jake",
             "author": {
