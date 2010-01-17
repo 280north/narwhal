@@ -1258,6 +1258,43 @@
             ],
             "dependencies": ["ometajs"]
         },
+        "shmakowiki":{
+            "name": "shmakowiki",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "Yet another wiki dialect, inspired by WackoWiki and WikiCreole",
+            "keywords": [
+                "wiki",
+                "creole",
+                "wikicreole",
+                "wackowiki"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/shmakowiki/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "shmakowiki",
+                "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
+                "url": "http://github.com/veged/shmakowiki/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": ["ometajs", "ometa-highlighter"]
+        },
         "jake": {
             "name": "jake",
             "author": {
