@@ -1222,6 +1222,42 @@
             ],
             "dependencies": []
         },
+        "ometa-highlighter" : {
+            "name": "ometa-highlighter",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "Code highlighter based on Ometa/JS (little inspired by Pygments)",
+            "keywords": [
+                "highlighter",
+                "code",
+                "pygments"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "ometa-highlighter",
+                "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
+                "url": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": ["ometajs"]
+        },
         "jake": {
             "name": "jake",
             "author": {
