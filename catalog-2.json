@@ -136,6 +136,42 @@
             ],
             "version": []
         },
+        "narwhal-v8cgi": {
+            "name": "narwhal-v8cgi",
+            "dependencies": [
+                "narwhal"
+            ],
+            "engine": "v8cgi",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "JavaScriptCore engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "v8cgi",
+                "v8"
+            ],
+            "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
+            "packageUrl": "http://github.com/veged/narwhal-v8cgi/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "narwhal-v8cgi",
+                "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
+                "url": "http://github.com/veged/narwhal-v8cgi/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "version": []
+        },
         "narwhal-v8": {
             "name": "narwhal-v8",
             "dependencies": [
