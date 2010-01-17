@@ -76,7 +76,8 @@ exports.stat = function (path) {
 };
 
 exports.exists = function (path) {
-    return JavaPath(path).exists();
+    try { return JavaPath(path).exists(); } catch(e) {}
+    return false;
 };
 
 exports.linkExists = function (path) {

@@ -16,12 +16,22 @@ exports.originalArgs = exports.args.slice(0);
 
 exports.env = {};
 
+// fetch ENV variables
 var env = Packages.java.lang.System.getenv(),
     keyIterator = env.keySet().iterator();
 while (keyIterator.hasNext()) {
     var key = keyIterator.next();
     exports.env[String(key)] = String(env.get(key));
 }
+
+// merge properties over top
+var properties = Packages.java.lang.System.getProperties();
+keyIterator = properties.keySet().iterator();
+while (keyIterator.hasNext()) {
+    var key = keyIterator.next();
+    exports.env[String(key)] = String(properties.getProperty(key));
+}
+
 
 var securityManager = Packages.java.lang.System.getSecurityManager()
 if (securityManager) {
