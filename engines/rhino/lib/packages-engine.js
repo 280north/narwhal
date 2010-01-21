@@ -60,7 +60,7 @@ exports.addJavaPaths = function addJavaPaths(javaPaths) {
     /* set up jar loader */
     var urls = Packages.java.lang.reflect.Array.newInstance(java.net.URL, javaPaths.length);
     for (var i = 0; i < javaPaths.length; i++) {
-        urls[i] = new Packages.java.net.URL('file://' + javaPaths[i]);
+        urls[i] = new Packages.java.net.URL('file:///' + javaPaths[i]);
     };
     loader = new Packages.java.net.URLClassLoader(urls, loader);
 
