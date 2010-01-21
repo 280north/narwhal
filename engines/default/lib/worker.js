@@ -16,20 +16,19 @@ var Worker = exports.Worker = function(scriptName){
 
 function createPort(queue, target, port, global){
     target.onmessage = true; // give it something to feature detect off of
-    port = port || {
+    port = port || {};
             // allows for sending a message with a direct object reference.
             // this is not part of CommonJS, and must be used with great care.
-            __enqueue__: function(eventName, args){
-                queue.enqueue(function(){
-                    if(typeof target[eventName] == "function"){
-                        target[eventName].apply(target, args);
-                    }
-                });
-            },
-            hasPendingEvents: function(){
-	        return queue.hasPendingEvents();
-	    }
-        };
+    port.__enqueue__= function(eventName, args){
+        queue.enqueue(function(){
+            if(typeof global[eventName] == "function"){
+                global[eventName].apply(target, args);
+            }
+        });
+    };
+    port.hasPendingEvents = function(){
+        return queue.hasPendingEvents();
+    };
     port.postMessage = function(message){
         queue.enqueue(function(){
             var event = {
