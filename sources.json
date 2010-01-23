@@ -292,6 +292,10 @@
             "type": "github",
             "user": "280north",
             "name": "commonjs-shrinksafe"
+        },
+        "haml-js": {
+            "type": "github",
+            "user": "creationix"
         }
     }
 }

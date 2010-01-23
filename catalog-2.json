@@ -2521,6 +2521,39 @@
             },
             "contributors": [],
             "dependencies": []
+        },
+        "haml-js": {
+            "name": "haml-js",
+            "description": "Haml ported to server-side Javascript. This is a traditional server-side templating language.",
+            "keywords": [
+                "haml",
+                "template"
+            ],
+            "author": {
+                "name": "Tim Caswell"
+            },
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/creationix/haml-js/raw/master/package.json",
+            "packageUrl": "http://github.com/creationix/haml-js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "creationix",
+                "packageName": "haml-js",
+                "descriptorUrl": "http://github.com/creationix/haml-js/raw/master/package.json",
+                "url": "http://github.com/creationix/haml-js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Tim Caswell"
+                }
+            ],
+            "dependencies": []
         }
     }
 }
