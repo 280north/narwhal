@@ -2467,6 +2467,60 @@
             "dependencies": [
                 "ometajs"
             ]
+        },
+        "closure-compiler": {
+            "name": "closure-compiler",
+            "description": "Closure Compiler",
+            "keywords": [
+                "minify",
+                "compress"
+            ],
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/280north/commonjs-closure-compiler/raw/master/package.json",
+            "packageUrl": "http://github.com/280north/commonjs-closure-compiler/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "280north",
+                "name": "commonjs-closure-compiler",
+                "packageName": "closure-compiler",
+                "descriptorUrl": "http://github.com/280north/commonjs-closure-compiler/raw/master/package.json",
+                "url": "http://github.com/280north/commonjs-closure-compiler/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [],
+            "dependencies": []
+        },
+        "shrinksafe": {
+            "name": "shrinksafe",
+            "description": "ShrinkSafe",
+            "keywords": [
+                "minify",
+                "compress"
+            ],
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/280north/commonjs-shrinksafe/raw/master/package.json",
+            "packageUrl": "http://github.com/280north/commonjs-shrinksafe/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "280north",
+                "name": "commonjs-shrinksafe",
+                "packageName": "shrinksafe",
+                "descriptorUrl": "http://github.com/280north/commonjs-shrinksafe/raw/master/package.json",
+                "url": "http://github.com/280north/commonjs-shrinksafe/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [],
+            "dependencies": []
         }
     }
 }

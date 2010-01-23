@@ -277,6 +277,21 @@
             "type": "github",
             "user": "veged",
             "ref": "narwhal"
+        },
+        "closure-compiler": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-closure-compiler"
+        },
+        "yuicompressor": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-yuicompressor"
+        },
+        "shrinksafe": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-shrinksafe"
         }
     }
 }
