@@ -1,4 +1,4 @@
-(function (modules) {
+(function narwhal(modules) {
 
 var deprecated;
 if (modules.fs) {
