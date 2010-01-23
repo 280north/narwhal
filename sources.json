@@ -252,6 +252,10 @@
         "narwhal-v8cgi": {
             "type": "github",
             "user": "veged"
+        },
+        "CappuccinoResource": {
+            "type": "github",
+            "user": "sant0sk1"
         }
     }
 }

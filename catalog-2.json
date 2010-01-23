@@ -2107,7 +2107,7 @@
             },
             "version": [
                 "0",
-                "1",
+                "2",
                 "6"
             ],
             "descriptorUrl": "http://github.com/tlrobinson/coffee-script/raw/master/package.json",
@@ -2277,6 +2277,44 @@
                 {
                     "name": "Sergey Berezhnoy",
                     "url": "http://http://github.com/veged/"
+                }
+            ],
+            "version": []
+        },
+        "CappuccinoResource": {
+            "name": "CappuccinoResource",
+            "dependencies": [
+                "narwhal",
+                "objective-j",
+                "cappuccino"
+            ],
+            "author": {
+                "name": "Jerod Santo"
+            },
+            "description": "Cappuccino on Rails",
+            "keywords": [
+                "objective-j",
+                "cappuccino",
+                "rails",
+                "resource"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "descriptorUrl": "http://github.com/sant0sk1/CappuccinoResource/raw/master/package.json",
+            "packageUrl": "http://github.com/sant0sk1/CappuccinoResource/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "sant0sk1",
+                "packageName": "CappuccinoResource",
+                "descriptorUrl": "http://github.com/sant0sk1/CappuccinoResource/raw/master/package.json",
+                "url": "http://github.com/sant0sk1/CappuccinoResource/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Jerod Santo"
                 }
             ],
             "version": []
