@@ -2168,6 +2168,118 @@
             ],
             "dependencies": [],
             "version": []
+        },
+        "jaml": {
+            "name": "jaml",
+            "description": "A library of JSGI middleware, handlers, and utilities, based on Rack",
+            "keywords": [
+                "haml",
+                "template"
+            ],
+            "author": {
+                "name": "Ed Spencer",
+                "url": "http://edspencer.net/"
+            },
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/jaml/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/jaml/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "packageName": "jaml",
+                "descriptorUrl": "http://github.com/tlrobinson/jaml/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/jaml/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Ed Spencer",
+                    "url": "http://edspencer.net/"
+                }
+            ],
+            "dependencies": []
+        },
+        "jscrypto": {
+            "name": "jscrypto",
+            "homepage": "http://crypto.stanford.edu/sjcl/",
+            "description": "Fast symmetric cryptography in Javascript",
+            "keywords": [
+                "crypto",
+                "cryptography"
+            ],
+            "contributors": [
+                {
+                    "name": "Emily Stark"
+                },
+                {
+                    "name": "Mike Hamburg"
+                },
+                {
+                    "name": "Dan Boneh"
+                }
+            ],
+            "licenses": [
+                {
+                    "type": "public domain"
+                }
+            ],
+            "version": [
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/jscrypto/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/jscrypto/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "packageName": "jscrypto",
+                "descriptorUrl": "http://github.com/tlrobinson/jscrypto/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/jscrypto/zipball/master",
+                "archive": "zip"
+            },
+            "dependencies": []
+        },
+        "narwhal-v8cgi": {
+            "name": "narwhal-v8cgi",
+            "dependencies": [
+                "narwhal"
+            ],
+            "engine": "v8cgi",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://http://github.com/veged/"
+            },
+            "description": "v8cgi engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "v8cgi",
+                "v8"
+            ],
+            "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
+            "packageUrl": "http://github.com/veged/narwhal-v8cgi/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "narwhal-v8cgi",
+                "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
+                "url": "http://github.com/veged/narwhal-v8cgi/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://http://github.com/veged/"
+                }
+            ],
+            "version": []
         }
     }
 }

@@ -223,11 +223,11 @@
             "user": "nrstott",
             "name": "observable-js"
         },
-		"commonjs-utils": {
-		    "type": "github",
-			"user": "kriszyp",
-			"name": "commonjs-utils"
-		},
+        "commonjs-utils": {
+            "type": "github",
+            "user": "kriszyp",
+            "name": "commonjs-utils"
+        },
         "cappruby": {
             "type": "github",
             "user": "tlrobinson"
@@ -240,6 +240,18 @@
             "type": "github",
             "user": "fitzgen",
             "name": "parenscript-narwhal"
+        },
+        "jaml": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "jscrypto": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "narwhal-v8cgi": {
+            "type": "github",
+            "user": "veged"
         }
     }
 }
