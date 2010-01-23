@@ -2318,6 +2318,155 @@
                 }
             ],
             "version": []
+        },
+        "yuicompressor": {
+            "name": "yuicompressor",
+            "description": "YUI Compressor",
+            "keywords": [
+                "minify",
+                "compress"
+            ],
+            "version": [
+                "2",
+                "4",
+                "2"
+            ],
+            "descriptorUrl": "http://github.com/280north/commonjs-yuicompressor/raw/master/package.json",
+            "packageUrl": "http://github.com/280north/commonjs-yuicompressor/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "280north",
+                "name": "commonjs-yuicompressor",
+                "packageName": "yuicompressor",
+                "descriptorUrl": "http://github.com/280north/commonjs-yuicompressor/raw/master/package.json",
+                "url": "http://github.com/280north/commonjs-yuicompressor/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [],
+            "dependencies": []
+        },
+        "shmakowiki": {
+            "name": "shmakowiki",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "Yet another wiki dialect, inspired by WackoWiki and WikiCreole",
+            "keywords": [
+                "wiki",
+                "creole",
+                "wikicreole",
+                "wackowiki"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/shmakowiki/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "ref": "narwhal",
+                "packageName": "shmakowiki",
+                "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
+                "url": "http://github.com/veged/shmakowiki/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": [
+                "ometajs",
+                "ometa-highlighter"
+            ]
+        },
+        "ometajs": {
+            "name": "ometajs",
+            "author": {
+                "name": "Alessandro Warth",
+                "url": "http://awarth.blogspot.com/"
+            },
+            "description": "A object-oriented language for pattern matching",
+            "keywords": [
+                "ometa",
+                "parser",
+                "peg"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/ometa-js/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "name": "ometa-js",
+                "ref": "narwhal",
+                "packageName": "ometajs",
+                "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
+                "url": "http://github.com/veged/ometa-js/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Alessandro Warth",
+                    "url": "http://awarth.blogspot.com/"
+                },
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": []
+        },
+        "ometa-highlighter": {
+            "name": "ometa-highlighter",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "Code highlighter based on Ometa/JS (little inspired by Pygments)",
+            "keywords": [
+                "highlighter",
+                "code",
+                "pygments"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "ref": "narwhal",
+                "packageName": "ometa-highlighter",
+                "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
+                "url": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": [
+                "ometajs"
+            ]
         }
     }
 }

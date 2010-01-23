@@ -256,6 +256,27 @@
         "CappuccinoResource": {
             "type": "github",
             "user": "sant0sk1"
+        },
+        "yuicompressor": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-yuicompressor"
+        },
+        "shmakowiki": {
+            "type": "github",
+            "user": "veged",
+            "ref": "narwhal"
+        },
+        "ometajs": {
+            "type": "github",
+            "user": "veged",
+            "name": "ometa-js",
+            "ref": "narwhal"
+        },
+        "ometa-highlighter": {
+            "type": "github",
+            "user": "veged",
+            "ref": "narwhal"
         }
     }
 }
