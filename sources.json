@@ -296,6 +296,16 @@
         "haml-js": {
             "type": "github",
             "user": "creationix"
+        },
+        "htmlparser": {
+            "type": "github",
+            "user": "gmosx",
+            "name": "htmlparser"
+        },
+        "normal-template": {
+            "type": "github",
+            "user": "gmosx",
+            "name": "normal-template"
         }
     }
 }
