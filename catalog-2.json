@@ -2554,6 +2554,39 @@
                 }
             ],
             "dependencies": []
+        },
+        "mustache": {
+            "name": "mustache",
+            "author": {
+                "name": "Jan Lehnardt"
+            },
+            "description": "{{mustaches}} in JavaScript — shameless port from @defunkt",
+            "keywords": [
+                "template"
+            ],
+            "version": [
+                "0",
+                "2",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/mustache.js/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/mustache.js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "name": "mustache.js",
+                "packageName": "mustache",
+                "descriptorUrl": "http://github.com/tlrobinson/mustache.js/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/mustache.js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Jan Lehnardt"
+                }
+            ],
+            "dependencies": []
         }
     }
 }

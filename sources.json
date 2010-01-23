@@ -296,6 +296,11 @@
         "haml-js": {
             "type": "github",
             "user": "creationix"
+        },
+        "mustache": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "mustache.js"
         }
     }
 }
