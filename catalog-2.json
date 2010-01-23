@@ -4,6 +4,11 @@
     "packages": {
         "narwhal": {
             "name": "narwhal",
+            "version": [
+                "0",
+                "2",
+                "1"
+            ],
             "description": "A general purpose JavaScript platform",
             "keywords": [
                 "javascript",
@@ -12,13 +17,14 @@
             ],
             "author": {
                 "name": "Tom Robinson",
-                "url": "http://tlrobinson.net/"
+                "url": "http://tlrobinson.net/",
+                "email": "tom@280north.com"
             },
             "contributors": [
                 {
                     "name": "Tom Robinson",
                     "url": "http://tlrobinson.net/",
-                    "email": "tlrobinson@280north.com"
+                    "email": "tom@280north.com"
                 },
                 {
                     "name": "Kris Kowal",
@@ -96,8 +102,7 @@
                 "url": "http://github.com/tlrobinson/narwhal/zipball/master",
                 "archive": "zip"
             },
-            "dependencies": [],
-            "version": []
+            "dependencies": []
         },
         "narwhal-jsc": {
             "name": "narwhal-jsc",
@@ -117,6 +122,11 @@
                 "javascriptcore",
                 "webkit"
             ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
             "descriptorUrl": "http://github.com/tlrobinson/narwhal-jsc/raw/master/package.json",
             "packageUrl": "http://github.com/tlrobinson/narwhal-jsc/zipball/master",
             "packageArchive": "zip",
@@ -133,8 +143,7 @@
                     "name": "Tom Robinson",
                     "url": "http://tlrobinson.net/"
                 }
-            ],
-            "version": []
+            ]
         },
         "narwhal-v8": {
             "name": "narwhal-v8",
@@ -304,16 +313,6 @@
         },
         "jack": {
             "name": "jack",
-            "dependencies": [
-                "narwhal"
-            ],
-            "jars": [
-                "jars/simple-4.1.10.jar"
-            ],
-            "author": {
-                "name": "Tom Robinson",
-                "url": "http://tlrobinson.net/"
-            },
             "description": "A library of JSGI middleware, handlers, and utilities, based on Rack",
             "keywords": [
                 "web server",
@@ -321,6 +320,60 @@
                 "jsgi",
                 "rack",
                 "wsgi"
+            ],
+            "author": {
+                "name": "Tom Robinson",
+                "url": "http://tlrobinson.net/"
+            },
+            "contributors": [
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/",
+                    "email": "tom@280north.com"
+                },
+                {
+                    "name": "George Moschovitis",
+                    "url": "http://blog.gmosx.com/"
+                },
+                {
+                    "name": "Kris Kowal",
+                    "url": "http://askawizard.blogspot.com/",
+                    "email": "kris.kowal@cixar.com"
+                },
+                {
+                    "name": "Neville Burnell"
+                },
+                {
+                    "name": "Isaac Z. Schlueter",
+                    "url": "http://blog.izs.me/"
+                },
+                {
+                    "name": "Jan Varwig"
+                },
+                {
+                    "name": "Irakli Gozalishvili",
+                    "url": "http://rfobic.wordpress.com/"
+                },
+                {
+                    "name": "Kris Zyp",
+                    "url": "http://www.sitepen.com/blog/author/kzyp/"
+                },
+                {
+                    "name": "Kevin Dangoor",
+                    "url": "http://www.blueskyonmars.com/"
+                },
+                {
+                    "name": "Antti Holvikari"
+                },
+                {
+                    "name": "Tim Schaub"
+                }
+            ],
+            "dependencies": [
+                "narwhal"
+            ],
+            "jars": [
+                "jars/simple-4.1.10.jar"
             ],
             "version": [
                 "0",
@@ -337,13 +390,7 @@
                 "descriptorUrl": "http://github.com/tlrobinson/jack/raw/master/package.json",
                 "url": "http://github.com/tlrobinson/jack/zipball/master",
                 "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Tom Robinson",
-                    "url": "http://tlrobinson.net/"
-                }
-            ]
+            }
         },
         "nitro": {
             "name": "nitro",
@@ -509,6 +556,7 @@
             "name": "browserjs",
             "version": [
                 "0",
+                "1",
                 "1"
             ],
             "dependencies": [
@@ -606,20 +654,28 @@
         },
         "appengine": {
             "name": "appengine",
-            "description": "A port of the Python AppEngine API to JavaScript",
+            "description": "A port of the Python Google App Engine SDK to JavaScript",
             "keywords": [
                 "google",
                 "appengine",
                 "cloud",
                 "datastore"
             ],
-            "author": {
-                "name": "George Moschovitis"
-            },
-            "email": "george.moschovitis@gmail.com",
+            "maintainers": [
+                {
+                    "name": "George Moschovitis",
+                    "email": "george.moschovitis@gmail.com",
+                    "web": "http://www.gmosx.com"
+                }
+            ],
             "contributors": [
                 {
-                    "name": "George Moschovitis"
+                    "name": "George Moschovitis",
+                    "email": "george.moschovitis@gmail.com"
+                },
+                {
+                    "name": "Christoph Dorn",
+                    "email": "christoph@christophdorn.com"
                 }
             ],
             "lib": "lib",
@@ -1166,7 +1222,7 @@
             "version": [
                 "0",
                 "1",
-                "1"
+                "2"
             ],
             "descriptorUrl": "http://github.com/280north/jake/raw/master/package.json",
             "packageUrl": "http://github.com/280north/jake/zipball/master",
