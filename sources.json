@@ -301,6 +301,16 @@
             "type": "github",
             "user": "tlrobinson",
             "name": "mustache.js"
+        },
+        "htmlparser": {
+            "type": "github",
+            "user": "gmosx",
+            "name": "htmlparser"
+        },
+        "normal-template": {
+            "type": "github",
+            "user": "gmosx",
+            "name": "normal-template"
         }
     }
 }

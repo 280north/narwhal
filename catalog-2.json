@@ -2587,6 +2587,82 @@
                 }
             ],
             "dependencies": []
+        },
+        "htmlparser": {
+            "name": "htmlparser",
+            "description": "An HTML parser",
+            "keywords": [
+                "html",
+                "parser",
+                "dom"
+            ],
+            "author": {
+                "name": "George Moschovitis",
+                "url": "http://www.gmosx.com/"
+            },
+            "contributors": [
+                {
+                    "name": "George Moschovitis",
+                    "url": "http://www.gmosx.com/"
+                }
+            ],
+            "lib": [
+                "lib"
+            ],
+            "jars": [
+                "engines/rhino/jars/htmlparser-1.2.1.jar"
+            ],
+            "lean": [
+                "lib",
+                "engines"
+            ],
+            "descriptorUrl": "http://github.com/gmosx/htmlparser/raw/master/package.json",
+            "packageUrl": "http://github.com/gmosx/htmlparser/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "gmosx",
+                "name": "htmlparser",
+                "packageName": "htmlparser",
+                "descriptorUrl": "http://github.com/gmosx/htmlparser/raw/master/package.json",
+                "url": "http://github.com/gmosx/htmlparser/zipball/master",
+                "archive": "zip"
+            },
+            "dependencies": [],
+            "version": []
+        },
+        "normal-template": {
+            "name": "normal-template",
+            "description": "A simple, powerful and safe templating engine",
+            "keywords": [
+                "template",
+                "text",
+                "json"
+            ],
+            "author": {
+                "name": "George Moschovitis"
+            },
+            "email": "george.moschovitis@gmail.com",
+            "dependencies": [],
+            "lib": "lib",
+            "descriptorUrl": "http://github.com/gmosx/normal-template/raw/master/package.json",
+            "packageUrl": "http://github.com/gmosx/normal-template/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "gmosx",
+                "name": "normal-template",
+                "packageName": "normal-template",
+                "descriptorUrl": "http://github.com/gmosx/normal-template/raw/master/package.json",
+                "url": "http://github.com/gmosx/normal-template/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "George Moschovitis"
+                }
+            ],
+            "version": []
         }
     }
 }
