@@ -4,6 +4,11 @@
     "packages": {
         "narwhal": {
             "name": "narwhal",
+            "version": [
+                "0",
+                "2",
+                "1"
+            ],
             "description": "A general purpose JavaScript platform",
             "keywords": [
                 "javascript",
@@ -12,13 +17,14 @@
             ],
             "author": {
                 "name": "Tom Robinson",
-                "url": "http://tlrobinson.net/"
+                "url": "http://tlrobinson.net/",
+                "email": "tom@280north.com"
             },
             "contributors": [
                 {
                     "name": "Tom Robinson",
                     "url": "http://tlrobinson.net/",
-                    "email": "tlrobinson@280north.com"
+                    "email": "tom@280north.com"
                 },
                 {
                     "name": "Kris Kowal",
@@ -96,8 +102,7 @@
                 "url": "http://github.com/tlrobinson/narwhal/zipball/master",
                 "archive": "zip"
             },
-            "dependencies": [],
-            "version": []
+            "dependencies": []
         },
         "narwhal-jsc": {
             "name": "narwhal-jsc",
@@ -117,6 +122,11 @@
                 "javascriptcore",
                 "webkit"
             ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
             "descriptorUrl": "http://github.com/tlrobinson/narwhal-jsc/raw/master/package.json",
             "packageUrl": "http://github.com/tlrobinson/narwhal-jsc/zipball/master",
             "packageArchive": "zip",
@@ -133,8 +143,7 @@
                     "name": "Tom Robinson",
                     "url": "http://tlrobinson.net/"
                 }
-            ],
-            "version": []
+            ]
         },
         "narwhal-v8": {
             "name": "narwhal-v8",
@@ -304,16 +313,6 @@
         },
         "jack": {
             "name": "jack",
-            "dependencies": [
-                "narwhal"
-            ],
-            "jars": [
-                "jars/simple-4.1.10.jar"
-            ],
-            "author": {
-                "name": "Tom Robinson",
-                "url": "http://tlrobinson.net/"
-            },
             "description": "A library of JSGI middleware, handlers, and utilities, based on Rack",
             "keywords": [
                 "web server",
@@ -321,6 +320,60 @@
                 "jsgi",
                 "rack",
                 "wsgi"
+            ],
+            "author": {
+                "name": "Tom Robinson",
+                "url": "http://tlrobinson.net/"
+            },
+            "contributors": [
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/",
+                    "email": "tom@280north.com"
+                },
+                {
+                    "name": "George Moschovitis",
+                    "url": "http://blog.gmosx.com/"
+                },
+                {
+                    "name": "Kris Kowal",
+                    "url": "http://askawizard.blogspot.com/",
+                    "email": "kris.kowal@cixar.com"
+                },
+                {
+                    "name": "Neville Burnell"
+                },
+                {
+                    "name": "Isaac Z. Schlueter",
+                    "url": "http://blog.izs.me/"
+                },
+                {
+                    "name": "Jan Varwig"
+                },
+                {
+                    "name": "Irakli Gozalishvili",
+                    "url": "http://rfobic.wordpress.com/"
+                },
+                {
+                    "name": "Kris Zyp",
+                    "url": "http://www.sitepen.com/blog/author/kzyp/"
+                },
+                {
+                    "name": "Kevin Dangoor",
+                    "url": "http://www.blueskyonmars.com/"
+                },
+                {
+                    "name": "Antti Holvikari"
+                },
+                {
+                    "name": "Tim Schaub"
+                }
+            ],
+            "dependencies": [
+                "narwhal"
+            ],
+            "jars": [
+                "jars/simple-4.1.10.jar"
             ],
             "version": [
                 "0",
@@ -337,13 +390,7 @@
                 "descriptorUrl": "http://github.com/tlrobinson/jack/raw/master/package.json",
                 "url": "http://github.com/tlrobinson/jack/zipball/master",
                 "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Tom Robinson",
-                    "url": "http://tlrobinson.net/"
-                }
-            ]
+            }
         },
         "nitro": {
             "name": "nitro",
@@ -509,6 +556,7 @@
             "name": "browserjs",
             "version": [
                 "0",
+                "1",
                 "1"
             ],
             "dependencies": [
@@ -606,20 +654,28 @@
         },
         "appengine": {
             "name": "appengine",
-            "description": "A port of the Python AppEngine API to JavaScript",
+            "description": "A port of the Python Google App Engine SDK to JavaScript",
             "keywords": [
                 "google",
                 "appengine",
                 "cloud",
                 "datastore"
             ],
-            "author": {
-                "name": "George Moschovitis"
-            },
-            "email": "george.moschovitis@gmail.com",
+            "maintainers": [
+                {
+                    "name": "George Moschovitis",
+                    "email": "george.moschovitis@gmail.com",
+                    "web": "http://www.gmosx.com"
+                }
+            ],
             "contributors": [
                 {
-                    "name": "George Moschovitis"
+                    "name": "George Moschovitis",
+                    "email": "george.moschovitis@gmail.com"
+                },
+                {
+                    "name": "Christoph Dorn",
+                    "email": "christoph@christophdorn.com"
                 }
             ],
             "lib": "lib",
@@ -1166,7 +1222,7 @@
             "version": [
                 "0",
                 "1",
-                "1"
+                "2"
             ],
             "descriptorUrl": "http://github.com/280north/jake/raw/master/package.json",
             "packageUrl": "http://github.com/280north/jake/zipball/master",
@@ -2051,7 +2107,7 @@
             },
             "version": [
                 "0",
-                "1",
+                "2",
                 "6"
             ],
             "descriptorUrl": "http://github.com/tlrobinson/coffee-script/raw/master/package.json",
@@ -2112,6 +2168,392 @@
             ],
             "dependencies": [],
             "version": []
+        },
+        "jaml": {
+            "name": "jaml",
+            "description": "A library of JSGI middleware, handlers, and utilities, based on Rack",
+            "keywords": [
+                "haml",
+                "template"
+            ],
+            "author": {
+                "name": "Ed Spencer",
+                "url": "http://edspencer.net/"
+            },
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/jaml/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/jaml/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "packageName": "jaml",
+                "descriptorUrl": "http://github.com/tlrobinson/jaml/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/jaml/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Ed Spencer",
+                    "url": "http://edspencer.net/"
+                }
+            ],
+            "dependencies": []
+        },
+        "jscrypto": {
+            "name": "jscrypto",
+            "homepage": "http://crypto.stanford.edu/sjcl/",
+            "description": "Fast symmetric cryptography in Javascript",
+            "keywords": [
+                "crypto",
+                "cryptography"
+            ],
+            "contributors": [
+                {
+                    "name": "Emily Stark"
+                },
+                {
+                    "name": "Mike Hamburg"
+                },
+                {
+                    "name": "Dan Boneh"
+                }
+            ],
+            "licenses": [
+                {
+                    "type": "public domain"
+                }
+            ],
+            "version": [
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/jscrypto/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/jscrypto/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "packageName": "jscrypto",
+                "descriptorUrl": "http://github.com/tlrobinson/jscrypto/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/jscrypto/zipball/master",
+                "archive": "zip"
+            },
+            "dependencies": []
+        },
+        "narwhal-v8cgi": {
+            "name": "narwhal-v8cgi",
+            "dependencies": [
+                "narwhal"
+            ],
+            "engine": "v8cgi",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://http://github.com/veged/"
+            },
+            "description": "v8cgi engine support for Narwhal",
+            "keywords": [
+                "narwhal",
+                "engine",
+                "v8cgi",
+                "v8"
+            ],
+            "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
+            "packageUrl": "http://github.com/veged/narwhal-v8cgi/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "narwhal-v8cgi",
+                "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
+                "url": "http://github.com/veged/narwhal-v8cgi/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://http://github.com/veged/"
+                }
+            ],
+            "version": []
+        },
+        "CappuccinoResource": {
+            "name": "CappuccinoResource",
+            "dependencies": [
+                "narwhal",
+                "objective-j",
+                "cappuccino"
+            ],
+            "author": {
+                "name": "Jerod Santo"
+            },
+            "description": "Cappuccino on Rails",
+            "keywords": [
+                "objective-j",
+                "cappuccino",
+                "rails",
+                "resource"
+            ],
+            "objj-frameworks": [
+                "Framework"
+            ],
+            "descriptorUrl": "http://github.com/sant0sk1/CappuccinoResource/raw/master/package.json",
+            "packageUrl": "http://github.com/sant0sk1/CappuccinoResource/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "sant0sk1",
+                "packageName": "CappuccinoResource",
+                "descriptorUrl": "http://github.com/sant0sk1/CappuccinoResource/raw/master/package.json",
+                "url": "http://github.com/sant0sk1/CappuccinoResource/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Jerod Santo"
+                }
+            ],
+            "version": []
+        },
+        "yuicompressor": {
+            "name": "yuicompressor",
+            "description": "YUI Compressor",
+            "keywords": [
+                "minify",
+                "compress"
+            ],
+            "version": [
+                "2",
+                "4",
+                "2"
+            ],
+            "descriptorUrl": "http://github.com/280north/commonjs-yuicompressor/raw/master/package.json",
+            "packageUrl": "http://github.com/280north/commonjs-yuicompressor/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "280north",
+                "name": "commonjs-yuicompressor",
+                "packageName": "yuicompressor",
+                "descriptorUrl": "http://github.com/280north/commonjs-yuicompressor/raw/master/package.json",
+                "url": "http://github.com/280north/commonjs-yuicompressor/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [],
+            "dependencies": []
+        },
+        "shmakowiki": {
+            "name": "shmakowiki",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "Yet another wiki dialect, inspired by WackoWiki and WikiCreole",
+            "keywords": [
+                "wiki",
+                "creole",
+                "wikicreole",
+                "wackowiki"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/shmakowiki/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "ref": "narwhal",
+                "packageName": "shmakowiki",
+                "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
+                "url": "http://github.com/veged/shmakowiki/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": [
+                "ometajs",
+                "ometa-highlighter"
+            ]
+        },
+        "ometajs": {
+            "name": "ometajs",
+            "author": {
+                "name": "Alessandro Warth",
+                "url": "http://awarth.blogspot.com/"
+            },
+            "description": "A object-oriented language for pattern matching",
+            "keywords": [
+                "ometa",
+                "parser",
+                "peg"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/ometa-js/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "name": "ometa-js",
+                "ref": "narwhal",
+                "packageName": "ometajs",
+                "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
+                "url": "http://github.com/veged/ometa-js/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Alessandro Warth",
+                    "url": "http://awarth.blogspot.com/"
+                },
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": []
+        },
+        "ometa-highlighter": {
+            "name": "ometa-highlighter",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "Code highlighter based on Ometa/JS (little inspired by Pygments)",
+            "keywords": [
+                "highlighter",
+                "code",
+                "pygments"
+            ],
+            "version": [
+                "0",
+                "1",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
+            "packageUrl": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "ref": "narwhal",
+                "packageName": "ometa-highlighter",
+                "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
+                "url": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": [
+                "ometajs"
+            ]
+        },
+        "closure-compiler": {
+            "name": "closure-compiler",
+            "description": "Closure Compiler",
+            "keywords": [
+                "minify",
+                "compress"
+            ],
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/280north/commonjs-closure-compiler/raw/master/package.json",
+            "packageUrl": "http://github.com/280north/commonjs-closure-compiler/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "280north",
+                "name": "commonjs-closure-compiler",
+                "packageName": "closure-compiler",
+                "descriptorUrl": "http://github.com/280north/commonjs-closure-compiler/raw/master/package.json",
+                "url": "http://github.com/280north/commonjs-closure-compiler/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [],
+            "dependencies": []
+        },
+        "shrinksafe": {
+            "name": "shrinksafe",
+            "description": "ShrinkSafe",
+            "keywords": [
+                "minify",
+                "compress"
+            ],
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/280north/commonjs-shrinksafe/raw/master/package.json",
+            "packageUrl": "http://github.com/280north/commonjs-shrinksafe/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "280north",
+                "name": "commonjs-shrinksafe",
+                "packageName": "shrinksafe",
+                "descriptorUrl": "http://github.com/280north/commonjs-shrinksafe/raw/master/package.json",
+                "url": "http://github.com/280north/commonjs-shrinksafe/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [],
+            "dependencies": []
+        },
+        "haml-js": {
+            "name": "haml-js",
+            "description": "Haml ported to server-side Javascript. This is a traditional server-side templating language.",
+            "keywords": [
+                "haml",
+                "template"
+            ],
+            "author": {
+                "name": "Tim Caswell"
+            },
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/creationix/haml-js/raw/master/package.json",
+            "packageUrl": "http://github.com/creationix/haml-js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "creationix",
+                "packageName": "haml-js",
+                "descriptorUrl": "http://github.com/creationix/haml-js/raw/master/package.json",
+                "url": "http://github.com/creationix/haml-js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Tim Caswell"
+                }
+            ],
+            "dependencies": []
         }
     }
 }

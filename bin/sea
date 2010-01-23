@@ -34,6 +34,7 @@ if [ "$#" -lt 1 ]; then
     echo PATH="$PATH" >&2
     echo SEA="$SEA" >&2
     echo SEALVL="$SEALVL" >&2
+    # __SHELL_CUSTOMIZATIONS__
     "$SHELL"
 else
     "$SHELL" -c "$(enquote_all "$@")"

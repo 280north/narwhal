@@ -223,11 +223,11 @@
             "user": "nrstott",
             "name": "observable-js"
         },
-		"commonjs-utils": {
-		    "type": "github",
-			"user": "kriszyp",
-			"name": "commonjs-utils"
-		},
+        "commonjs-utils": {
+            "type": "github",
+            "user": "kriszyp",
+            "name": "commonjs-utils"
+        },
         "cappruby": {
             "type": "github",
             "user": "tlrobinson"
@@ -240,6 +240,62 @@
             "type": "github",
             "user": "fitzgen",
             "name": "parenscript-narwhal"
+        },
+        "jaml": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "jscrypto": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "narwhal-v8cgi": {
+            "type": "github",
+            "user": "veged"
+        },
+        "CappuccinoResource": {
+            "type": "github",
+            "user": "sant0sk1"
+        },
+        "yuicompressor": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-yuicompressor"
+        },
+        "shmakowiki": {
+            "type": "github",
+            "user": "veged",
+            "ref": "narwhal"
+        },
+        "ometajs": {
+            "type": "github",
+            "user": "veged",
+            "name": "ometa-js",
+            "ref": "narwhal"
+        },
+        "ometa-highlighter": {
+            "type": "github",
+            "user": "veged",
+            "ref": "narwhal"
+        },
+        "closure-compiler": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-closure-compiler"
+        },
+        "yuicompressor": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-yuicompressor"
+        },
+        "shrinksafe": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-shrinksafe"
+        },
+        "haml-js": {
+            "type": "github",
+            "user": "creationix"
         }
     }
 }
