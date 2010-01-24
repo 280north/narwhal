@@ -28,6 +28,11 @@
         prefix = String(Packages.java.lang.System.getenv("NARWHAL_HOME") || "");
     }
 
+    if (typeof SEA != "undefined") {
+        Packages.java.lang.System.setProperty("SEA", SEA);
+        delete SEA;
+    }
+
     var isFile = function (path) {
         try { return new java.io.File(path).isFile(); } catch (e) {}
         return false;

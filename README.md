@@ -1,3 +1,23 @@
+<script>
+function addEvent(obj, evType, fn) { 
+ if (obj.addEventListener){ 
+   obj.addEventListener(evType, fn, false); 
+   return true; 
+ } else if (obj.attachEvent){ 
+   var r = obj.attachEvent("on"+evType, fn); 
+   return r; 
+ } else { 
+   return false; 
+ } 
+}
+
+addEvent(window, 'load',
+    function() {
+        document.getElementById('github_notice').style.display='none';
+    }
+);
+</script>
+
 Narwhal
 =======
 
@@ -31,6 +51,9 @@ Combined with [Jack](http://jackjs.org/), a [Rack](http://rack.rubyforge.org/)-l
 Documentation
 -------------
 
+<div id="github_notice">
+<strong>Note:</strong> If you are viewing this on GitHub, the links below will not work. Find the pages listed below in the <strong>docs/</strong> directory of this repository.
+</div>
 * [Quick Start](quick-start.html)
 * [Packages](packages.html)
 * [How to Install Packages](packages.html)
@@ -46,7 +69,7 @@ Contributors
 
 * [Tom Robinson](http://tlrobinson.net/)
 * [Kris Kowal](http://askawizard.blogspot.com/)
-* [George Moschovitis](http://blog.gmosx.com/)
+* [George Moschovitis](http://www.gmosx.com/)
 * [Kevin Dangoor](http://www.blueskyonmars.com/)
 * Hannes Wallnöfer
 * Sébastien Pierre
