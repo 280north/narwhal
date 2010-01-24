@@ -415,15 +415,15 @@ System Module
 -------------
 
 The system module provides the ServerJS
-[System](https://wiki.mozilla.org/ServerJS/System) module
-standard, for standard IO streams, arguments, and environment
-variables.  The system module goes beyond spec by being
-a free variable available in all modules, and by providing
-`print`, `fs`, and `log` variables (at the time of this
-writing).  `print` is a late-bound alias for
-`system.stdout.print`, which is to say that replacing
-`system.stdout` will cause `print` to redirect to the new output
-stream.  `fs` is an alias for the `file` module, while `log` is a `Logger` instance from the `logger` module that prints time-stamped log messages to `system.stderr`. 
+[System](https://wiki.mozilla.org/ServerJS/System) module standard, for
+standard IO streams, arguments, and environment variables.  The system module
+goes beyond spec by being a free variable available in all modules, and by
+providing `print`, `fs`, and `log` variables (at the time of this writing).
+`print` is a late-bound alias for `system.stdout.print`, which is to say that
+replacing `system.stdout` will cause `print` to redirect to the new output
+stream.  `fs` is an alias for the `file` module, while `log` is a `Logger`
+instance from the `logger` module that prints time-stamped log messages to
+`system.stderr`. 
 
 
 Narwhal Module
@@ -436,7 +436,10 @@ for Narwhal, and an Easter egg.
 Packages Module
 ---------------
 
-The packages module analyzes and installs packages, such that their libraries are available in the module search path, and also installs some engine-specific package components like Java archives at run-time.  The package loader uses a five pass algorithm:
+The packages module analyzes and installs packages, such that their libraries
+are available in the module search path, and also installs some engine-specific
+package components like Java archives at run-time.  The package loader uses a
+five pass algorithm:
 
 *   find and read package.json for every accessible package,
     collating them into a catalog.  This involves a breadth
