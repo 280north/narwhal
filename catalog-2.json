@@ -257,15 +257,13 @@
         },
         "narwhal-xulrunner": {
             "name": "narwhal-xulrunner",
-            "engine": "xulrunner",
-            "dependencies": [
-                "narwhal"
-            ],
-            "author": {
-                "name": "Irakli Gozalishvili",
-                "url": "http://rfobic.wordpress.com/"
-            },
             "description": "XULRunner engine support for Narwhal",
+            "engine": "xulrunner",
+            "version": [
+                "0",
+                "1",
+                "0"
+            ],
             "keywords": [
                 "narwhal",
                 "engine",
@@ -273,6 +271,60 @@
                 "mozilla",
                 "extension"
             ],
+            "maintainers": [
+                {
+                    "name": "Irakli Gozalishvili",
+                    "email": "rfobic@gmail.com",
+                    "web": "http://rfobic.wordpress.com/"
+                }
+            ],
+            "contributors": [
+                {
+                    "name": "Irakli Gozalishvili",
+                    "email": "rfobic@gmail.com"
+                },
+                {
+                    "name": "Christoph Dorn"
+                },
+                {
+                    "name": "Kris Kowal",
+                    "email": "kris.kowal@cixar.com"
+                },
+                {
+                    "name": "Zach Carter"
+                }
+            ],
+            "bugs": {
+                "web": "http://github.com/Gozala/narwhal-xulrunner/issues/"
+            },
+            "licenses": [
+                {
+                    "type": "MPL"
+                },
+                {
+                    "type": "MIT"
+                }
+            ],
+            "repositories": [
+                {
+                    "type": "git",
+                    "url": "git://github.com/Gozala/narwhal-xulrunner.git"
+                }
+            ],
+            "os": [
+                "linux",
+                "macos",
+                "win"
+            ],
+            "cpu": [
+                "x86",
+                "ppc",
+                "x86_64"
+            ],
+            "directories": {
+                "lib": "lib",
+                "bin": "bin"
+            },
             "descriptorUrl": "http://github.com/Gozala/narwhal-xulrunner/raw/master/package.json",
             "packageUrl": "http://github.com/Gozala/narwhal-xulrunner/zipball/master",
             "packageArchive": "zip",
@@ -284,13 +336,7 @@
                 "url": "http://github.com/Gozala/narwhal-xulrunner/zipball/master",
                 "archive": "zip"
             },
-            "contributors": [
-                {
-                    "name": "Irakli Gozalishvili",
-                    "url": "http://rfobic.wordpress.com/"
-                }
-            ],
-            "version": []
+            "dependencies": []
         },
         "narwhal-jaxer": {
             "name": "narwhal-jaxer",
@@ -746,6 +792,14 @@
                 "servlet",
                 "jsgi"
             ],
+            "lean": {
+                "include": [
+                    "build.xml",
+                    "src/**/*",
+                    "war/WEB-INF/appengine-web.xml",
+                    "war/WEB-INF/web.xml"
+                ]
+            },
             "descriptorUrl": "http://github.com/tlrobinson/jack-servlet/raw/master/package.json",
             "packageUrl": "http://github.com/tlrobinson/jack-servlet/zipball/master",
             "packageArchive": "zip",
@@ -774,8 +828,8 @@
             },
             "version": [
                 "1",
-                "2",
-                "2"
+                "3",
+                "0"
             ],
             "dependencies": [
                 "jack-servlet",
