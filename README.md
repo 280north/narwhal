@@ -69,7 +69,7 @@ Contributors
 
 * [Tom Robinson](http://tlrobinson.net/)
 * [Kris Kowal](http://askawizard.blogspot.com/)
-* [George Moschovitis](http://blog.gmosx.com/)
+* [George Moschovitis](http://www.gmosx.com/)
 * [Kevin Dangoor](http://www.blueskyonmars.com/)
 * Hannes Wallnöfer
 * Sébastien Pierre
