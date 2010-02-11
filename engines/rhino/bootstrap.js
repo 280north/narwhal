@@ -13,11 +13,14 @@
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
 
-    // TODO: enable this via a command line switch
-    context.setOptimizationLevel(-1);
+    context.setOptimizationLevel(+String(Packages.java.lang.System.getenv("NARWHAL_OPTIMIZATION") || -1));
     
     
-    context.setLanguageVersion(180);
+    try{
+    	context.setLanguageVersion(180);
+    }catch(e){
+    	// squelch language upgrades
+    }
     context.getWrapFactory().setJavaPrimitiveWrap(false);
     
     var prefix = "";
