@@ -68,18 +68,28 @@
         };
     };
 
+    var importScript = function (script) {
+        return context.evaluateReader(
+            global,
+            new Packages.java.io.FileReader(script),
+            script,
+            1,
+            null
+        );
+    };
+
+    var importScripts = function () {
+        for (var i = 0, ii = arguments.length; i < ii; i++) {
+            importScript(arguments[i]);
+        };
+    };
+
     delete global.print;
     var print = function (string) {
         Packages.java.lang.System.out.println(String(string));
     };
 
-    var narwhal = context.evaluateReader(
-        global,
-        new Packages.java.io.FileReader(prefix + "/narwhal.js"),
-        "narwhal.js",
-        1,
-        null
-    );
+    var narwhal = importScript(prefix + "/narwhal.js");
 
     var debug = +String(Packages.java.lang.System.getenv("NARWHAL_DEBUG"));
     var verbose = +String(Packages.java.lang.System.getenv("NARWHAL_VERBOSE"));
@@ -90,6 +100,7 @@
             system: {
                 global: global,
                 evalGlobal: evalGlobal,
+                importScripts: importScripts,
                 engine: 'rhino',
                 engines: ['rhino', 'default'],
                 os: os,

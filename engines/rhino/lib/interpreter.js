@@ -1,13 +1,14 @@
 var Context = exports.Context = function() {
     var self = this;
-    
-    self.global = currentContext().initStandardObjects();
-    
+
+    var context = new Packages.org.mozilla.javascript.Context();
+    self.global = context.initStandardObjects();
+
     self.eval = function(source) {
         source = source || "";
         var sourceURL = findSourceURL(source) || "<eval>";
-    
-        return currentContext().evaluateString(
+
+        return context.evaluateString(
             self.global,
             source,
             sourceURL,
@@ -15,8 +16,9 @@ var Context = exports.Context = function() {
             null
         );
     };
-    self.evalFile = function(sourceURL) {
-        return currentContext().evaluateReader(
+
+    self.importScript = function (sourceURL) {
+        return context.evaluateReader(
             self.global,
             new Packages.java.io.FileReader(sourceURL),
             sourceURL,
@@ -24,13 +26,38 @@ var Context = exports.Context = function() {
             null
         );
     };
+
+    self.importScripts = function () {
+        for (var i = 0, ii = arguments.length; i < ii; i++) {
+            self.importScript(arguments[i]);
+        }
+    };
+
+    self.Module = function (text, fileName, lineNo) {
+        return function (inject) {
+            var names = [];
+            for (var name in inject)
+                if (Object.prototype.hasOwnProperty.call(inject, name))
+                    names.push(name);
+            return context.compileFunction(
+                self.global,
+                "function(" + names.join(",") + "){" + text + "\n}",
+                String(fileName),
+                Number(lineNo) || 1,
+                null
+            ).apply(null, names.map(function (name) {
+                return inject[name];
+            }));
+        };
+    };
+
     self.Function = function() {
         var args = Array.prototype.slice.call(arguments);
         var body = args.pop() || "";
         var source = "function("+args.join(",")+"){"+body+"/**/\n}";
         var sourceURL = findSourceURL(body) || "<function>";
         
-        return currentContext().compileFunction(
+        return context.compileFunction(
             self.global,
             source,
             sourceURL,
@@ -42,10 +69,6 @@ var Context = exports.Context = function() {
     return self;
 };
 
-function currentContext() {
-    return Packages.org.mozilla.javascript.Context.getCurrentContext();
-};
-
 function findSourceURL(source) {
     // based on https://bugs.webkit.org/show_bug.cgi?id=25475#c4
     var match = source.match(/.*\s*\/\/\s*@\s*sourceURL\s*=\s*(\S+)\s*/);
@@ -53,3 +76,4 @@ function findSourceURL(source) {
         return match[1];
     return null;
 }
+
