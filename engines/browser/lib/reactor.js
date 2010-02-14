@@ -1,5 +1,6 @@
 
-// Kris Kowal
+// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
+// cadorn Christoph Dorn
 
 var active = false;
 var pending = [];

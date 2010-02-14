@@ -1,3 +1,11 @@
+
+// tlrobinson Tom Robinson
+// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
+
+// Prototyping and expermenting with Context Creation and Module
+// evaluation, per ECMAScript strawman proposal:
+// http://wiki.ecmascript.org/doku.php?id=strawman:modules_primordials
+
 var Context = exports.Context = function() {
     var self = this;
 

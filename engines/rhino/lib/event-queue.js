@@ -1,5 +1,5 @@
 
-// Kris Zyp
+// kriszyp Kris Zyp
 
 /**
  * Represents the event queue for a vat

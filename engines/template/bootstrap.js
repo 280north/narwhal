@@ -1,5 +1,5 @@
 (function (evalGlobal) {
-// Kris Kowal
+// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
 
     var read = /*TODO*/; // function(path:string):string
 

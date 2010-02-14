@@ -1,5 +1,5 @@
 
-// Kris Kowal
+// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
 // STATUS: never really worked.
 
 /* shared, sealed global context */

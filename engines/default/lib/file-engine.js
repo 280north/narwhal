@@ -1,6 +1,6 @@
 
-// Tom Robinson
-// Kris Kowal
+// tlrobinson Tom Robinson
+// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
 
 // HACK: use "fs.read" and "fs.isFile" until properly implemented.
 // save "fs" here since it will be replaced in "system" later.

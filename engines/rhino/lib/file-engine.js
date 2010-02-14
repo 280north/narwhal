@@ -1,6 +1,6 @@
 
-// Tom Robinson
-// Kris Kowal
+// tlrobinson Tom Robinson
+// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
 
 // use the "file" module as the exports object.
 var exports = require('./file');
