@@ -1,6 +1,6 @@
 
 // -- tlrobinson Tom Robinson
-// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
+// -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
 // IO: Rhino
 

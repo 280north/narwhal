@@ -1,5 +1,5 @@
 
-// isaacs Isaac Schleuter
+// -- isaacs Isaac Schlueter
 
 var IO = require("io").IO,
     HashP = require("hashp").HashP;

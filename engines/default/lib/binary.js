@@ -1,6 +1,9 @@
 
 /* Binary */
 // -- tlrobinson Tom Robinson
+// -- gozala Irakli Gozalishvili
+// -- tschaub
+// -- nrstott Nathan Stott
 
 var engine = require("binary-engine"),
     B_ALLOC = engine.B_ALLOC,

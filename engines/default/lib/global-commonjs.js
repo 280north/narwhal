@@ -1,5 +1,5 @@
 
-// -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
+// -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
 // https://wiki.mozilla.org/ServerJS/Binary/B
 if (!String.prototype.toByteString)
