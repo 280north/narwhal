@@ -221,15 +221,13 @@
         },
         "narwhal-xulrunner": {
             "name": "narwhal-xulrunner",
-            "engine": "xulrunner",
-            "dependencies": [
-                "narwhal"
-            ],
-            "author": {
-                "name": "Irakli Gozalishvili",
-                "url": "http://rfobic.wordpress.com/"
-            },
             "description": "XULRunner engine support for Narwhal",
+            "engine": "xulrunner",
+            "version": [
+                "0",
+                "1",
+                "0"
+            ],
             "keywords": [
                 "narwhal",
                 "engine",
@@ -237,6 +235,60 @@
                 "mozilla",
                 "extension"
             ],
+            "maintainers": [
+                {
+                    "name": "Irakli Gozalishvili",
+                    "email": "rfobic@gmail.com",
+                    "web": "http://rfobic.wordpress.com/"
+                }
+            ],
+            "contributors": [
+                {
+                    "name": "Irakli Gozalishvili",
+                    "email": "rfobic@gmail.com"
+                },
+                {
+                    "name": "Christoph Dorn"
+                },
+                {
+                    "name": "Kris Kowal",
+                    "email": "kris.kowal@cixar.com"
+                },
+                {
+                    "name": "Zach Carter"
+                }
+            ],
+            "bugs": {
+                "web": "http://github.com/Gozala/narwhal-xulrunner/issues/"
+            },
+            "licenses": [
+                {
+                    "type": "MPL"
+                },
+                {
+                    "type": "MIT"
+                }
+            ],
+            "repositories": [
+                {
+                    "type": "git",
+                    "url": "git://github.com/Gozala/narwhal-xulrunner.git"
+                }
+            ],
+            "os": [
+                "linux",
+                "macos",
+                "win"
+            ],
+            "cpu": [
+                "x86",
+                "ppc",
+                "x86_64"
+            ],
+            "directories": {
+                "lib": "lib",
+                "bin": "bin"
+            },
             "descriptorUrl": "http://github.com/Gozala/narwhal-xulrunner/raw/master/package.json",
             "packageUrl": "http://github.com/Gozala/narwhal-xulrunner/zipball/master",
             "packageArchive": "zip",
@@ -248,13 +300,7 @@
                 "url": "http://github.com/Gozala/narwhal-xulrunner/zipball/master",
                 "archive": "zip"
             },
-            "contributors": [
-                {
-                    "name": "Irakli Gozalishvili",
-                    "url": "http://rfobic.wordpress.com/"
-                }
-            ],
-            "version": []
+            "dependencies": []
         },
         "narwhal-jaxer": {
             "name": "narwhal-jaxer",
@@ -710,6 +756,14 @@
                 "servlet",
                 "jsgi"
             ],
+            "lean": {
+                "include": [
+                    "build.xml",
+                    "src/**/*",
+                    "war/WEB-INF/appengine-web.xml",
+                    "war/WEB-INF/web.xml"
+                ]
+            },
             "descriptorUrl": "http://github.com/tlrobinson/jack-servlet/raw/master/package.json",
             "packageUrl": "http://github.com/tlrobinson/jack-servlet/zipball/master",
             "packageArchive": "zip",
@@ -738,8 +792,8 @@
             },
             "version": [
                 "1",
-                "2",
-                "2"
+                "3",
+                "0"
             ],
             "dependencies": [
                 "jack-servlet",
@@ -2554,6 +2608,115 @@
                 }
             ],
             "dependencies": []
+        },
+        "mustache": {
+            "name": "mustache",
+            "author": {
+                "name": "Jan Lehnardt"
+            },
+            "description": "{{mustaches}} in JavaScript — shameless port from @defunkt",
+            "keywords": [
+                "template"
+            ],
+            "version": [
+                "0",
+                "2",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/mustache.js/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/mustache.js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "name": "mustache.js",
+                "packageName": "mustache",
+                "descriptorUrl": "http://github.com/tlrobinson/mustache.js/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/mustache.js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Jan Lehnardt"
+                }
+            ],
+            "dependencies": []
+        },
+        "htmlparser": {
+            "name": "htmlparser",
+            "description": "An HTML parser",
+            "keywords": [
+                "html",
+                "parser",
+                "dom"
+            ],
+            "author": {
+                "name": "George Moschovitis",
+                "url": "http://www.gmosx.com/"
+            },
+            "contributors": [
+                {
+                    "name": "George Moschovitis",
+                    "url": "http://www.gmosx.com/"
+                }
+            ],
+            "lib": [
+                "lib"
+            ],
+            "jars": [
+                "engines/rhino/jars/htmlparser-1.2.1.jar"
+            ],
+            "lean": [
+                "lib",
+                "engines"
+            ],
+            "descriptorUrl": "http://github.com/gmosx/htmlparser/raw/master/package.json",
+            "packageUrl": "http://github.com/gmosx/htmlparser/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "gmosx",
+                "name": "htmlparser",
+                "packageName": "htmlparser",
+                "descriptorUrl": "http://github.com/gmosx/htmlparser/raw/master/package.json",
+                "url": "http://github.com/gmosx/htmlparser/zipball/master",
+                "archive": "zip"
+            },
+            "dependencies": [],
+            "version": []
+        },
+        "normal-template": {
+            "name": "normal-template",
+            "description": "A simple, powerful and safe templating engine",
+            "keywords": [
+                "template",
+                "text",
+                "json"
+            ],
+            "author": {
+                "name": "George Moschovitis"
+            },
+            "email": "george.moschovitis@gmail.com",
+            "dependencies": [],
+            "lib": "lib",
+            "descriptorUrl": "http://github.com/gmosx/normal-template/raw/master/package.json",
+            "packageUrl": "http://github.com/gmosx/normal-template/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "gmosx",
+                "name": "normal-template",
+                "packageName": "normal-template",
+                "descriptorUrl": "http://github.com/gmosx/normal-template/raw/master/package.json",
+                "url": "http://github.com/gmosx/normal-template/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "George Moschovitis"
+                }
+            ],
+            "version": []
         }
     }
 }
