@@ -1,5 +1,5 @@
 
-// Kris Zyp
+// -- kriszyp Kris Zyp
 
 var queue = require("event-queue");
 var workerEngine = require("worker-engine");

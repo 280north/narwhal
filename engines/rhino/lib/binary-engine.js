@@ -1,5 +1,5 @@
 
-// tlrobinson Tom Robinson
+// -- tlrobinson Tom Robinson
 
 exports.B_LENGTH = function(bytes) {
     return bytes.length;

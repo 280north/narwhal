@@ -1,6 +1,6 @@
 
 // -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
-// Christoph Dorn
+// -- cadorn Christoph Dorn
 
 var exports = require('./file');
 

@@ -1,6 +1,6 @@
 
 // -- kriskowal Kris Kowal Copyright 2009-2010 MIT License
-// tlrobinson Tom Robinson
+// -- tlrobinson Tom Robinson
 // dantman Daniel Friesen
 
 /*!

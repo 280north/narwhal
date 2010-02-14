@@ -1,6 +1,6 @@
 
 // IO: default
-// Tom Robinson
+// -- tlrobinson Tom Robinson
 
 var IO = exports.IO = function(inputStream, outputStream) {
     this.inputStream = inputStream;

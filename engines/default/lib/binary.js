@@ -1,6 +1,6 @@
 
 /* Binary */
-// Tom Robinson
+// -- tlrobinson Tom Robinson
 
 var engine = require("binary-engine"),
     B_ALLOC = engine.B_ALLOC,

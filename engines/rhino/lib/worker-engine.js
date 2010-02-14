@@ -1,5 +1,5 @@
 
-// Kris Zyp
+// -- kriszyp Kris Zyp
 
 exports.createEnvironment = function(){
     var workerQueue, 
