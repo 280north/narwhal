@@ -141,9 +141,49 @@ paths.push.apply(paths, [
     return !!path;
 }));
 
-// FIXME: splitting on spaces is not correct. needs more robust parsing.
+function path_parseArguments(arguments)
+{
+  var startsWith = function(self, str) { return (self.match("^"+str.replace('\\', '\\\\'))==str) }
+  var endsWith = function(self, str) { return (self.match(str.replace('\\', '\\\\')+"$")==str) }
+  var results = [], quoteType = null, quotedElement = null;
+  arguments.split(' ').forEach(function(element) {
+    if (quoteType || endsWith(element, '\\') || startsWith(element, '\'') || startsWith(element, '"')) {
+      if (quoteType) {
+        if (endsWith(element, quoteType)) {
+          results.push(quotedElement + " " + element.substring(0, element.length - 1));
+          quotedElement = null;
+          quoteType = null;
+          return;
+        }
+        else { quotedElement += " " + element; return; }
+      }
+      if (!quoteType && startsWith(element, '\'')) {
+        quoteType = '\'';
+        quotedElement = element.substring(1, element.length);
+        return;
+      }
+      if (!quoteType && startsWith(element, '"')) {
+        quoteType = '"';
+        quotedElement = element.substring(1, element.length);
+        return;
+      }
+      if (!quoteType) {
+        if (endsWith(element, '\\')) {
+          if (quotedElement) { quotedElement += " " + element; }
+          else { quotedElement = element; }
+        }
+        else { results.push(quotedElement + ' ' + element); quotedElement = null; return; }
+      }
+    }
+    else {
+     if (quotedElement) { results.push(quotedElement+' '+element); quotedElement = null;}
+     else { results.push(element); }
+    }
+  });
+  return results;
+}
 if (system.env.NARWHALOPT)
-    system.args.splice.apply(system.args, [1,0].concat(system.env.NARWHALOPT.split(" ")));
+    system.args.splice.apply(system.args, [1,0].concat(path_parseArguments(system.env.NARWHALOPT)));
 
 // parse command line options
 var parser = require("narwhal").parser;
