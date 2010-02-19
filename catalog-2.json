@@ -2717,6 +2717,36 @@
                 }
             ],
             "version": []
+        },
+        "reform": {
+            "name": "reform",
+            "author": {
+                "name": "Nick Fitzgerald"
+            },
+            "description": "A Narwhal module for working with HTML forms, similar to Django's forms.",
+            "dependencies": [],
+            "contributors": [
+                {
+                    "name": "Nick Fitzgerald"
+                }
+            ],
+            "keywords": [
+                "html",
+                "form",
+                "forms"
+            ],
+            "descriptorUrl": "http://github.com/fitzgen/reform/raw/master/package.json",
+            "packageUrl": "http://github.com/fitzgen/reform/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "fitzgen",
+                "packageName": "reform",
+                "descriptorUrl": "http://github.com/fitzgen/reform/raw/master/package.json",
+                "url": "http://github.com/fitzgen/reform/zipball/master",
+                "archive": "zip"
+            },
+            "version": []
         }
     }
 }
