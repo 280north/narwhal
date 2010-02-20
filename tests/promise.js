@@ -121,13 +121,13 @@ exports["test reject"] = function () {
 };
 
 exports["test all"] = function () {
-	var promises = [];
-	var deferreds = [];
-	for(var i = 0; i<10; i++){
-		var deferred = promiseModule.defer();
-		deferreds[i] = deferred;
-		promises[i] = deferred.promise;
-	}
+    var promises = [];
+    var deferreds = [];
+    for(var i = 0; i<10; i++){
+        var deferred = promiseModule.defer();
+        deferreds[i] = deferred;
+        promises[i] = deferred.promise;
+    }
     
 
     var ok, error;
@@ -138,8 +138,8 @@ exports["test all"] = function () {
         error = exception;
     });
     for(var i = 0; i<10; i++){
-		deferreds[i].resolve(i);
-	}
+        deferreds[i].resolve(i);
+    }
 
     processEvents();
     assert.ok(ok.length == 10);
@@ -147,13 +147,13 @@ exports["test all"] = function () {
 };
 
 exports["test first"] = function () {
-	var promises = [];
-	var deferreds = [];
-	for(var i = 0; i<10; i++){
-		var deferred = promiseModule.defer();
-		deferreds[i] = deferred;
-		promises[i] = deferred.promise;
-	}
+    var promises = [];
+    var deferreds = [];
+    for(var i = 0; i<10; i++){
+        var deferred = promiseModule.defer();
+        deferreds[i] = deferred;
+        promises[i] = deferred.promise;
+    }
     
 
     var ok, error;
@@ -164,23 +164,23 @@ exports["test first"] = function () {
         error = exception;
     });
     for(var i = 0; i<10; i++){
-		deferreds[i].resolve(i+1);
-	}
+        deferreds[i].resolve(i+1);
+    }
 
     processEvents();
     assert.ok(ok== 1);
 };
 
 exports["test seq"] = function () {
-	var actions = [];
-	var deferreds = [];
-	for(var i = 0; i<10; i++){
-		actions[i] = function(value){
-			var deferred = promiseModule.defer();
-			deferred.resolve(value + 1);
-			return deferred.promise;
-		}
-	}
+    var actions = [];
+    var deferreds = [];
+    for(var i = 0; i<10; i++){
+        actions[i] = function(value){
+            var deferred = promiseModule.defer();
+            deferred.resolve(value + 1);
+            return deferred.promise;
+        }
+    }
     
 
     var ok, error;
@@ -197,21 +197,21 @@ exports["test seq"] = function () {
 
 
 exports["test convertNode"] = function () {
-	var callback,passedIn;
-	var nodeAsyncFunc = function(a, c){
-		passedIn = a;
-		callback = c;
-	}
-	var convertedFunc = promiseModule.convertNodeAsyncFunction(nodeAsyncFunc);
-	var promise = convertedFunc(5);
-	assert.ok(passedIn, 5);
+    var callback,passedIn;
+    var nodeAsyncFunc = function(a, c){
+        passedIn = a;
+        callback = c;
+    }
+    var convertedFunc = promiseModule.convertNodeAsyncFunction(nodeAsyncFunc);
+    var promise = convertedFunc(5);
+    assert.ok(passedIn, 5);
     var ok, error;
     promiseModule.when(promise, function (value) {
         ok = value;
     }, function (exception) {
         error = exception;
     });
-	callback(null,10);
+    callback(null,10);
     processEvents();
     assert.ok(ok== 10);
 };
