@@ -24,12 +24,12 @@ var Binary = exports.Binary = function() {
     // this._length
 };
 
-// XXX non interoperable: create and use an Object.defineProperty stub.
-Binary.prototype.__defineGetter__("length", function() {
-    return this._length;
-});
-Binary.prototype.__defineSetter__("length", function(length) {
-    print("x trying to set length: " + length);
+Object.defineProperty(Binary.prototype, "length", {
+    "get": function () {
+        return this._length;
+    },
+    "enumerable": false,
+    "configurable": false
 });
 
 // toArray() - n array of the byte values

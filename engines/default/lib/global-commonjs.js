@@ -1,44 +1,64 @@
 
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
+require("global-es5");
+
 // https://wiki.mozilla.org/ServerJS/Binary/B
 if (!String.prototype.toByteString)
-    String.prototype.toByteString = function(charset) {
-        // RHINO bug: it thinks "this" is a Java string (?!)
-        var binary = require("binary");
-        return new binary.ByteString(String(this), charset);
-    };
+    Object.defineProperty(String.prototype, "toByteString", {
+        "value": function(charset) {
+            // RHINO bug: it thinks "this" is a Java string (?!)
+            var binary = require("binary");
+            return new binary.ByteString(String(this), charset);
+        },
+        "enumerable": false
+    });
 
 // https://wiki.mozilla.org/ServerJS/Binary/B
 if (!String.prototype.toByteArray)
-    String.prototype.toByteArray = function(charset) {
-        // RHINO bug: it thinks "this" is a Java string (?!)
-        var binary = require("binary");
-        return new binary.ByteArray(String(this), charset);
-    };
+    Object.defineProperty(String.prototype, 'toByteArray', {
+        "value": function(charset) {
+            // RHINO bug: it thinks "this" is a Java string (?!)
+            var binary = require("binary");
+            return new binary.ByteArray(String(this), charset);
+        },
+        "enumerable": false
+    });
 
 // https://wiki.mozilla.org/ServerJS/Binary/B
 if (!String.prototype.charCodes)
-    String.prototype.charCodes = function() {
-        return Array.prototype.map.call(this, function (c) {
-            return c.charCodeAt();
-        });
-    };
+    Object.defineProperty(String.prototype, 'charCodes', {
+        "value": function () {
+            return Array.prototype.map.call(this, function (c) {
+                return c.charCodeAt();
+            });
+        },
+        "enumerable": false
+    });
 
 // https://wiki.mozilla.org/ServerJS/Binary/B
-if (!String.prototype.fromCharCodes)
-    String.fromCharCodes = function (codes) {
-        return codes.map(String.fromCharCode).join('');
-    };
+if (!String.fromCharCodes)
+    Object.defineProperty(String, 'fromCharCodes', {
+        "value": function (codes) {
+            return codes.map(String.fromCharCode).join('');
+        },
+        "enumerable": false
+    });
 
 // https://wiki.mozilla.org/ServerJS/Binary/B
 if (!Array.prototype.toByteString)
-    Array.prototype.toByteString = function(charset) {
-        return new require("binary").ByteString(this);
-    };
+    Object.defineProperty(Array.prototype, 'toByteString', {
+        "value": function(charset) {
+            return new require("binary").ByteString(this);
+        },
+        "enumerable": false
+    });
 
 if (!Array.prototype.toByteArray)
-    Array.prototype.toByteArray = function(charset) {
-        return new ByteArray(this);
-    };
+    Object.defineProperty(Array.prototype, 'toByteArray', {
+        "value": function(charset) {
+            return new ByteArray(this);
+        },
+        "enumerable": false
+    });
 
