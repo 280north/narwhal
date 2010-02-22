@@ -441,29 +441,22 @@ if (isNaN(Date.parse("T00:00"))) {
     Date = (function(NativeDate) {
 
         // Date.length === 7
-        var Date = function(y, m, d, h, m, s, ms) {
+        var Date = function(Y, M, D, h, m, s, ms) {
             var length = arguments.length;
             if (this instanceof NativeDate) {
-                var date = length === 1 && String(y) === y ? // isString(y)
+                var date = length === 1 && String(Y) === Y ? // isString(Y)
                     // We explicitly pass it through parse:
-                    new NativeDate(Date.parse(y)) :
+                    new NativeDate(Date.parse(Y)) :
                     // We have to manually make calls depending on argument
                     // length here
-                    length >= 7 ?
-                        new NativeDate(y, m, d, h, m, s, ms) :
-                    length >= 6 ?
-                        new NativeDate(y, m, d, h, m, s) :
-                    length >= 5 ?
-                        new NativeDate(y, m, d, h, m) :
-                    length >= 4 ?
-                        new NativeDate(y, m, d, h) :
-                    length >= 3 ?
-                        new NativeDate(y, m, d) :
-                    length >= 2 ?
-                        new NativeDate(y, m) :
-                    length >= 1 ?
-                        new NativeDate(y) :
-                        new NativeDate();
+                    length >= 7 ? new NativeDate(Y, M, D, h, m, s, ms) :
+                    length >= 6 ? new NativeDate(Y, M, D, h, m, s) :
+                    length >= 5 ? new NativeDate(Y, M, D, h, m) :
+                    length >= 4 ? new NativeDate(Y, M, D, h) :
+                    length >= 3 ? new NativeDate(Y, M, D) :
+                    length >= 2 ? new NativeDate(Y, M) :
+                    length >= 1 ? new NativeDate(Y) :
+                                  new NativeDate();
                 // Prevent mixups with unfixed Date object
                 date.constructor = Date;
                 return date;
@@ -514,12 +507,12 @@ if (isNaN(Date.parse("T00:00"))) {
         // TODO review specification to ascertain whether it is
         // necessary to implement partial ISO date strings.
         Date.parse = function(string) {
-            var m = isoDateExpression.exec(string);
-            if (m) {
-                m.shift(); // kill m[0], the full match
+            var match = isoDateExpression.exec(string);
+            if (match) {
+                match.shift(); // kill match[0], the full match
                 // recognize times without dates before normalizing the
                 // numeric values, for later use
-                var timeOnly = m[0] === undefined;
+                var timeOnly = match[0] === undefined;
                 // parse numerics
                 for (var i = 0; i < 10; i++) {
                     // skip + or - for the timezone offset
@@ -528,24 +521,24 @@ if (isNaN(Date.parse("T00:00"))) {
                     // Note: parseInt would read 0-prefix numbers as
                     // octal.  Number constructor or unary + work better
                     // here:
-                    m[i] = +(m[i] || (i < 3 ? 1 : 0));
-                    // m[1] is the month. Months are 0-11 in JavaScript
+                    match[i] = +(match[i] || (i < 3 ? 1 : 0));
+                    // match[1] is the month. Months are 0-11 in JavaScript
                     // Date objects, but 1-12 in ISO notation, so we
                     // decrement.
                     if (i === 1)
-                        m[i]--;
+                        match[i]--;
                 }
                 // if no year-month-date is provided, return a milisecond
                 // quantity instead of a UTC date number value.
                 if (timeOnly)
-                    return ((m[3] * 60 + m[4]) * 60 + m[5]) * 1000 + m[6];
+                    return ((match[3] * 60 + match[4]) * 60 + match[5]) * 1000 + match[6];
 
                 // account for an explicit time zone offset if provided
-                var offset = (m[8] * 60 + m[9]) * 60 * 1000;
-                if (m[6] === "-")
+                var offset = (match[8] * 60 + match[9]) * 60 * 1000;
+                if (match[6] === "-")
                     offset = -offset;
 
-                return NativeDate.UTC.apply(this, m.slice(0, 7)) + offset;
+                return NativeDate.UTC.apply(this, match.slice(0, 7)) + offset;
             }
             return NativeDate.parse.apply(this, arguments);
         };
