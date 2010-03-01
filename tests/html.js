@@ -1,3 +1,5 @@
+// -- gmosx George Moschovitis Copyright (C) 2009-2010 MIT License
+
 var assert = require("test/assert"),
     HTML = require("html");
 
