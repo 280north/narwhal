@@ -109,7 +109,8 @@
                 evaluate: evaluate,
                 debug: debug,
                 verbose: verbose,
-                setOptimizationLevel: setOptimizationLevel
+                setOptimizationLevel: setOptimizationLevel,
+                supportsTusk: true
             },
             file: {
                 read: read,
