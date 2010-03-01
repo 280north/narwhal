@@ -3,11 +3,11 @@
     "sources": {
         "narwhal": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "narwhal-jsc": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "narwhal-v8": {
             "type": "github",
@@ -31,7 +31,7 @@
         },
         "jack": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "nitro": {
             "type": "github",
@@ -51,7 +51,7 @@
         },
         "browserjs": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "inspec": {
             "type": "github",
