@@ -1,3 +1,4 @@
+// Richard Penwell (penwellr) MIT Licence - March 1, 2010
 var assert = require("test/assert");
 var os = require("os");
 var io = require("io");
