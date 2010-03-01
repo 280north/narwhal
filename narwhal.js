@@ -83,7 +83,6 @@ var fakeJoin = function() {
 var loader = requireFake("loader", fakeJoin(system.prefix, "lib", "loader.js"));
 var multiLoader = requireFake("loader/multi", fakeJoin(system.prefix, "lib", "loader", "multi.js"));
 var sandbox = requireFake("sandbox", fakeJoin(system.prefix, "lib", "sandbox.js"));
-
 // bootstrap file module
 requireFake("file", fakeJoin(system.prefix, "lib", "file-bootstrap.js"), "force");
 
@@ -140,9 +139,12 @@ paths.push.apply(paths, [
     return !!path;
 }));
 
-// FIXME: splitting on spaces is not correct. needs more robust parsing.
+var OS = require("os");
 if (system.env.NARWHALOPT)
-    system.args.splice.apply(system.args, [1,0].concat(system.env.NARWHALOPT.split(" ")));
+    system.args.splice.apply(
+        system.args,
+        [1,0].concat(OS.parse(system.env.NARWHALOPT))
+    );
 
 // parse command line options
 var parser = require("narwhal").parser;
