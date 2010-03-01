@@ -14,7 +14,7 @@
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
 
     // TODO: enable this via a command line switch
-    context.setOptimizationLevel(-1);
+//    context.setOptimizationLevel(-1);
     
     
     context.setLanguageVersion(180);
