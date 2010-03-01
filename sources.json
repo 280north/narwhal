@@ -311,6 +311,10 @@
             "type": "github",
             "user": "gmosx",
             "name": "normal-template"
+        },
+        "reform": {
+            "type": "github",
+            "user": "fitzgen"
         }
     }
 }
