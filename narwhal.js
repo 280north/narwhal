@@ -58,7 +58,6 @@ var requireFake = function(id, path, force) {
     var exports = modules[id] = modules[id] || {};
     var module = {id: id, path: path};
 
-
     var factory = system.evaluate(file.read(path), path, 1);
     factory({
         require: requireFake,
@@ -128,9 +127,9 @@ try {
 }
 
 // load the complete system module
-require.force("system");
 require.force("file");
 require.force("file-engine");
+require.force("system");
 
 // augment the path search array with those provided in
 //  environment variables
