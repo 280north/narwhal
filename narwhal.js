@@ -155,6 +155,10 @@ if (options.verbose !== undefined) {
     require.verbose = system.verbose;
 }
 
+// if the engine provides an optimization level, like Rhino, call it through.
+if (system.setOptimizationLevel)
+    system.setOptimizationLevel(options.optimize);
+
 if (deprecated) {
     if (options.verbose) {
         system.print(
