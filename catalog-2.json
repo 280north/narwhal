@@ -2752,6 +2752,82 @@
                 }
             ],
             "version": []
+        },
+        "jdbc": {
+            "name": "jdbc",
+            "contributors": [
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/",
+                    "email": "tlrobinson@280north.com"
+                }
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/commonjs-jdbc/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/commonjs-jdbc/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "name": "commonjs-jdbc",
+                "packageName": "jdbc",
+                "descriptorUrl": "http://github.com/tlrobinson/commonjs-jdbc/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/commonjs-jdbc/zipball/master",
+                "archive": "zip"
+            },
+            "dependencies": [],
+            "version": []
+        },
+        "mysql-jdbc": {
+            "name": "mysql-jdbc",
+            "dependencies": [
+                "jdbc"
+            ],
+            "contributors": [
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/",
+                    "email": "tlrobinson@280north.com"
+                }
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/commonjs-mysql-jdbc/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/commonjs-mysql-jdbc/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "name": "commonjs-mysql-jdbc",
+                "packageName": "mysql-jdbc",
+                "descriptorUrl": "http://github.com/tlrobinson/commonjs-mysql-jdbc/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/commonjs-mysql-jdbc/zipball/master",
+                "archive": "zip"
+            },
+            "version": []
+        },
+        "sqlite-jdbc": {
+            "name": "sqlite-jdbc",
+            "dependencies": [
+                "jdbc"
+            ],
+            "contributors": [
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/",
+                    "email": "tlrobinson@280north.com"
+                }
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/commonjs-sqlite-jdbc/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/commonjs-sqlite-jdbc/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "name": "commonjs-sqlite-jdbc",
+                "packageName": "sqlite-jdbc",
+                "descriptorUrl": "http://github.com/tlrobinson/commonjs-sqlite-jdbc/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/commonjs-sqlite-jdbc/zipball/master",
+                "archive": "zip"
+            },
+            "version": []
         }
     }
 }
