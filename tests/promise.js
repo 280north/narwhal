@@ -120,6 +120,41 @@ exports["test reject"] = function () {
 
 };
 
+exports["test split then"] = function () {
+
+    var p = promiseModule.Promise();
+	var p2 = p.then(
+	  function () {
+	    return '1';
+	  })
+	 .then(
+	  function () {
+	    return '2';
+	  });
+    var ok,ok2;
+ 
+	promiseModule.when(p, function(value) {
+		print("p " + value);
+	    ok = value;
+	  });
+	promiseModule.when(p2, function(value) {
+	    ok2 = value;
+	  });
+ 
+	p.resolve(0);
+    processEvents();
+    assert.equal(ok, '0');
+    assert.equal(ok2, '2');
+};
+
+exports["test wait"] = function () {
+
+    var deferred = promiseModule.defer();
+    var promise = deferred.promise;
+    deferred.resolve(3);
+    promiseModule.wait(promise);
+};
+
 exports["test all"] = function () {
     var promises = [];
     var deferreds = [];
