@@ -9,7 +9,7 @@
 var Context = exports.Context = function() {
     var self = this;
 
-    var context = new Packages.org.mozilla.javascript.Context();
+    var context = currentContext();
     self.global = context.initStandardObjects();
 
     self.eval = function(source) {
@@ -76,6 +76,10 @@ var Context = exports.Context = function() {
     
     return self;
 };
+
+function currentContext() {
+    return Packages.org.mozilla.javascript.Context.getCurrentContext();
+}
 
 function findSourceURL(source) {
     // based on https://bugs.webkit.org/show_bug.cgi?id=25475#c4
