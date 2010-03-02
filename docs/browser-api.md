@@ -61,7 +61,7 @@ example:
 
 Or, with a higher level API that could be implemented to look like:
 
-    {% script.require "main" %}
+    { % script.require "main" % }
 
 If you intend to use modules in inline scripts, you will need to wait for the
 desired modules to load before you execute your code.  The `require.when`
