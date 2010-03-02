@@ -14,8 +14,11 @@
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
 
     // TODO: enable this via a command line switch
-//    context.setOptimizationLevel(-1);
-    
+    if (typeof RHINO_OPTIMIZATION_LEVEL != "undefined") {
+        context.setOptimizationLevel(RHINO_OPTIMIZATION_LEVEL);
+    } else {
+        context.setOptimizationLevel(-1);
+    }
     
     context.setLanguageVersion(180);
     context.getWrapFactory().setJavaPrimitiveWrap(false);
