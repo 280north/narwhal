@@ -8,8 +8,8 @@ Narwhal Quick Start
 
 Download Narwhal.
 
-* download and extract the [zip](http://github.com/tlrobinson/narwhal/zipball/master) or [tar](http://github.com/tlrobinson/narwhal/tarball/master) archive, or
-* `git clone git://github.com/tlrobinson/narwhal.git`
+* download and extract the [zip](http://github.com/280north/narwhal/zipball/master) or [tar](http://github.com/280north/narwhal/tarball/master) archive, or
+* `git clone git://github.com/280north/narwhal.git`
 
 Put Narwhal on your PATH environment variable.
 
