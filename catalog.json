@@ -159,9 +159,10 @@
                 "rack",
                 "wsgi"
             ],
+            "version": "0.1.2",
             "githubName": "jack",
             "type": "zip",
-            "location": "http://github.com/kriszyp/jack/zipball/master"
+            "location": "http://github.com/tlrobinson/jack/zipball/master"
         },
         "nitro": {
             "name": "nitro",
@@ -217,7 +218,8 @@
                 "parser"
             ],
             "contributors": [
-                "Kris Kowal <kris@cixar.com>"
+                "Kris Kowal <kris@cixar.com>",
+                "Andy Chu <andy@chubot.org>"
             ],
             "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
             "githubName": "narcissus",
@@ -1043,6 +1045,69 @@
 			"type": "zip",
 			"location": "http://github.com/kriszyp/pintura/zipball/master",
 			"license":"AFL/BSD"
-		}
+		},
+        "cappruby": {
+            "name": "cappruby",
+            "dependencies": [
+                "objective-j",
+                "cappuccino"
+            ],
+            "preload": [
+                "cappruby/loader"
+            ],
+            "objj-frameworks": [
+                "Frameworks"
+            ],
+            "description": "Experimental Ruby implementation on top of the Objective-J runtime / JavaScript",
+            "keywords": [
+                "cappruby",
+                "ruby",
+                "objective-j",
+                "objj",
+                "objective j",
+                "cappuccino"
+            ],
+            "author": "Tom Robinson (http://tlrobinson.net/)",
+            "version": "0.0.1",
+            "githubName": "cappruby",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/cappruby/zipball/master"
+        },
+        "coffee-script": {
+            "name": "coffee-script",
+            "lib": "lib-js",
+            "preload": [
+                "coffee-script/loader"
+            ],
+            "description": "Unfancy JavaScript",
+            "keywords": [
+                "javascript",
+                "language"
+            ],
+            "author": "Jeremy Ashkenas",
+            "version": "0.1.2",
+            "githubName": "coffee-script",
+            "type": "zip",
+            "location": "http://github.com/tlrobinson/coffee-script/zipball/master"
+        },
+        "parenscript": {
+            "name": "parenscript",
+            "preload": [
+                "parenscript/loader"
+            ],
+            "description": "Parenscript is a small Lispy language that compiles to JavaScript. This is the Narwhal module that integrates ParenScript with Narwhal.",
+            "keywords": [
+                "javascript",
+                "language",
+                "lisp",
+                "macros",
+                "macro"
+            ],
+            "author": "Nick Fitzgerald (http://fitzgeraldnick.com) <fitzgen@gmail.com>",
+            "license": "MIT",
+            "githubName": "parenscript-narwhal",
+            "type": "zip",
+            "location": "http://github.com/fitzgen/parenscript-narwhal/zipball/master"
+        }
     }
 }

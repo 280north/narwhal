@@ -1,4 +1,4 @@
-(function (modules) {
+(function narwhal(modules) {
 
 var deprecated;
 if (modules.fs) {
@@ -141,6 +141,10 @@ paths.push.apply(paths, [
     return !!path;
 }));
 
+// FIXME: splitting on spaces is not correct. needs more robust parsing.
+if (system.env.NARWHALOPT)
+    system.args.splice.apply(system.args, [1,0].concat(system.env.NARWHALOPT.split(" ")));
+
 // parse command line options
 var parser = require("narwhal").parser;
 var options = parser.parse(system.args);
@@ -192,7 +196,8 @@ if (system.args.length && !options.interactive && !options.main) {
 // user package prefix
 if (system.env.SEA)
     system.prefixes.unshift(system.env.SEA);
-system.prefixes.unshift.apply(system.prefixes, options.prefixes);
+
+system.packages = options.packages;
 
 // load packages
 var packages;

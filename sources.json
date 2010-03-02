@@ -3,11 +3,11 @@
     "sources": {
         "narwhal": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "narwhal-jsc": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "narwhal-v8": {
             "type": "github",
@@ -31,7 +31,7 @@
         },
         "jack": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "nitro": {
             "type": "github",
@@ -51,7 +51,7 @@
         },
         "browserjs": {
             "type": "github",
-            "user": "tlrobinson"
+            "user": "280north"
         },
         "inspec": {
             "type": "github",
@@ -72,15 +72,15 @@
         "appengine-java-sdk": {
             "type": "inline",
             "descriptor": {
-                "name": "gae",
+                "name": "appengine-java-sdk",
                 "title": "Google App Engine Java SDK",
                 "description": "Java components necessary for deploying applications on Google's App Engine.",
                 "author": "Google",
-                "version": "1.2.2",
+                "version": "1.3.0",
                 "dependencies": ["jack-servlet", "jack", "narwhal"],
                 "lib": [],
                 "type": "zip",
-                "packageUrl": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.2.zip"
+                "packageUrl": "http://googleappengine.googlecode.com/files/appengine-java-sdk-1.3.0.zip"
             }
         },
         "env": {
@@ -223,10 +223,109 @@
             "user": "nrstott",
             "name": "observable-js"
         },
-		"commonjs-utils": {
-		    "type": "github",
-			"user": "kriszyp",
-			"name": "commonjs-utils"
-		}
+        "commonjs-utils": {
+            "type": "github",
+            "user": "kriszyp",
+            "name": "commonjs-utils"
+        },
+        "cappruby": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "coffee-script": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "parenscript": {
+            "type": "github",
+            "user": "fitzgen",
+            "name": "parenscript-narwhal"
+        },
+        "jaml": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "jscrypto": {
+            "type": "github",
+            "user": "tlrobinson"
+        },
+        "narwhal-v8cgi": {
+            "type": "github",
+            "user": "veged"
+        },
+        "CappuccinoResource": {
+            "type": "github",
+            "user": "sant0sk1"
+        },
+        "yuicompressor": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-yuicompressor"
+        },
+        "shmakowiki": {
+            "type": "github",
+            "user": "veged",
+            "ref": "narwhal"
+        },
+        "ometajs": {
+            "type": "github",
+            "user": "veged",
+            "name": "ometa-js",
+            "ref": "narwhal"
+        },
+        "ometa-highlighter": {
+            "type": "github",
+            "user": "veged",
+            "ref": "narwhal"
+        },
+        "closure-compiler": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-closure-compiler"
+        },
+        "yuicompressor": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-yuicompressor"
+        },
+        "shrinksafe": {
+            "type": "github",
+            "user": "280north",
+            "name": "commonjs-shrinksafe"
+        },
+        "haml-js": {
+            "type": "github",
+            "user": "creationix"
+        },
+        "mustache": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "mustache.js"
+        },
+        "htmlparser": {
+            "type": "github",
+            "user": "gmosx",
+            "name": "htmlparser"
+        },
+        "normal-template": {
+            "type": "github",
+            "user": "gmosx",
+            "name": "normal-template"
+        },
+        "jdbc": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "commonjs-jdbc"
+        },
+        "mysql-jdbc": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "commonjs-mysql-jdbc"
+        },
+        "sqlite-jdbc": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "commonjs-sqlite-jdbc"
+        }
     }
 }
