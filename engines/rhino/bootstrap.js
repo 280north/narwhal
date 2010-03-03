@@ -2,6 +2,7 @@
 // -- tlrobinson Tom Robinson TODO
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 // -- kriszyp Kris Zyp TODO
+// -- gmosx George Moschovitis TODO
 
     /*
         this is a minimal engine-specific thunk for narwhal.js
@@ -18,9 +19,14 @@
         context.setOptimizationLevel(Number(n));
     };
 
-    context.setOptimizationLevel(+String(
-        Packages.java.lang.System.getenv("NARWHAL_OPTIMIZATION") || -1
-    ));
+    // TODO reconcile these names RHINO_OPTI... and NARWHAL_OPT...
+    if (typeof RHINO_OPTIMIZATION_LEVEL != "undefined") {
+        context.setOptimizationLevel(RHINO_OPTIMIZATION_LEVEL);
+    } else {
+        context.setOptimizationLevel(+String(
+            Packages.java.lang.System.getenv("NARWHAL_OPTIMIZATION") || -1
+        ));
+    }
 
     try{
     	context.setLanguageVersion(180);
