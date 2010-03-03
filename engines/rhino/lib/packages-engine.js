@@ -1,5 +1,6 @@
 
-// Kris Kowal
+// -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
+// -- tschaub
 
 var fs = require('./file');
 var system = require('./system');

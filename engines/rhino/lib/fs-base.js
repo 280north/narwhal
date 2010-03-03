@@ -1,7 +1,18 @@
 
-// Kris Kowal
+// -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
-/*spec http://wiki.commonjs.org/wiki/Filesystem/A/0
+// vim: ft=javascript ts=2 sw=2 et:
+
+/**
+ * Low-level file system API.
+ *
+ * An implementation of the CommonJS specification,
+ * http://wiki.commonjs.org/wiki/Filesystem/A/0.
+ */
+
+/*spec
+
+http://wiki.commonjs.org/wiki/Filesystem/A/0
 
 Version: http://wiki.commonjs.org/index.php?title=Filesystem/A/0&oldid=1995
 
@@ -41,8 +52,6 @@ var getCLib = function () {
     };
     return cLib;
 };
-
-
 
 /*spec
 
@@ -169,18 +178,9 @@ exports.Permissions.prototype.toUnix = function () {
     );
 };
 
-if (/\bwindows\b/i.test(SYSTEM.os)) {
-    exports.Permissions['default'] = {
-        "owner": {
-            "read": true,
-            "write": true
-        }
-    };
-} else {
-    exports.Permissions['default'] = new exports.Permissions(
-        ~parseInt(OS.command("umask"), 8) & 0777
-    );
-}
+exports.Permissions['default'] = new exports.Permissions(
+    ~parseInt(getCLib().getFunction("umask").invokeInt([]), 8) & 0777
+);
 
 /*spec
 
@@ -216,6 +216,15 @@ used as the argument to the Permissions constructor. The resultant Permissions
 instance is used to open this file.
 
 */
+
+/**
+ *  fs_base.openRaw(name[, mode[, perms]]) -> io.File
+ *  - name (String): filename
+ *  - mode (String | Object): file open mode (read/write etc)
+ *  - perms (?): file creation permissions -- not currently supported.
+ *
+ *  Open a file for reading
+ **/
 
 exports.openRaw = function (path, mode, permissions) {
     path = javaPath(path);
@@ -267,6 +276,15 @@ not throw)
 
 */
 
+/**
+ * fs_base.move(source, target) -> undefined
+ * - source (String): source file or directory
+ * - target (String): target destination
+ *
+ * Move the file or directory `source` to `target` using the underlying OS
+ * semantics (atomicity, file -> directory etc.)
+ **/
+
 exports.move = function (source, target) {
     source = exports.path(source);
     target = exports.path(target);
@@ -284,6 +302,13 @@ corresponds to anything that is not a file or a symbolic link.  If "path"
 refers to a symbolic link, removes the symbolic link.
 
 */
+
+/**
+ * fs_base.remove(file) -> undefined
+ * - file (String): file to remove
+ *
+ * Attempt to remove the `file` from disk. To remove directories use [[fs_base#removeDirectory]]
+ **/
 
 exports.remove = function (path) {
     if (!javaPath(path)['delete']())
@@ -305,6 +330,15 @@ time stamp modification are transactionally related to the same file, rather
 than the same directory entry.
 
 */
+
+/**
+ * fs_base.touch(path[, mtime]) -> undefined
+ * - path (String): File or directory to touch
+ * - mtime (Date): Date to change last modified date to.
+ *
+ * 'touch' the path, setting the last modified date to `mtime` or now. If there
+ * is no file or directory at `path`, an empty file will be created.
+ **/
 
 exports.touch = function (path, mtime) {
     if (mtime === undefined || mtime === null)
@@ -335,6 +369,14 @@ will be used to relax them.
 
 */
 
+/**
+ * fs_base.makeDirectory(dir) -> undefined
+ * - dir (String): directory to create
+ *
+ * Creates a (single) directory. If parent directories do not exist they will
+ * not be created by this method.
+ **/
+
 exports.makeDirectory = function (path) {
     if (!javaPath(path).mkdir())
         throw new Error("failed to make directory " + path);
@@ -348,6 +390,14 @@ cannot be removed for another reason an exception must be thrown. If path is a
 link and refers canonically to a directory, the link must be removed.
 
 */
+
+/**
+ * fs_base.removeDirectory(dir) -> undefined
+ * - dir (String): directory to remove
+ *
+ * Removes an empty directory. A symbolic link is itself removed, rather than
+ * the directory it resolves to being removed.
+ **/
 
 exports.removeDirectory = function(path) {
     if (!javaPath(String(path))['delete']())
@@ -399,6 +449,14 @@ be determined.''
 
 */
 
+/**
+ * fs_base.canonial(path) -> String
+ * - path (String):
+ *
+ * Resolve symlinks and canonicalize `path`. If it is a directory, the returned
+ * string will be guarenteed to have a trailing '/'
+ **/
+
 exports.canonical = function (path) {
     return String(javaPath(path).getCanonicalPath());
 };
@@ -411,14 +469,21 @@ with a toString method)
 
 */
 
-var workingDirectory = String(
-    Packages.java.lang.System.getProperty("user.dir")
-);
+/**
+ * fs_base.workingDirectory() -> String
+ *
+ * Get the process's current working directory.
+ **/
+
 exports.workingDirectory = function () {
-    // XXX TODO for someone with more JNI fu
-    //var cwd = getCLib().getFunction("getcwd");
-    //var error = cwd.invokeFunction([buffer, size]);
-    return workingDirectory;
+    var jna = Packages.com.sun.jna;
+    var cwd = getCLib().getFunction("getcwd");
+    var size = 4097;
+    var memory = jna.Memory(size);
+    var pointer = cwd.invokeInt([memory, size]);
+    if (!pointer)
+        throw new Error("Could not get working directory: getcwd");
+    return memory.getString(0, false);
 };
 
 /*spec
@@ -436,12 +501,18 @@ interoperating with this module.''
 
 */
 
+/**
+ * fs_base.changeWorkingDirectory(dir) -> undefined
+ * - dir (String): new working directory
+ *
+ * Change the process's current working directory to `dir`.
+ **/
+
 exports.changeWorkingDirectory = function (path) {
     path = String(path);
     var error = getCLib().getFunction("chdir").invokeInt([path]);
     if (error)
         throw new Error("Could not change working directory: " + path);
-    workingDirectory = path;
 };
 
 /*spec
@@ -590,6 +661,15 @@ filesystem and maintain internal referential integrity.''
 
 */
 
+/**
+ * fs_base.symbolicLink(link_target, name) -> undefined
+ * - link_target (String): path the symbolic link should point to
+ * - name (String): name of symbolic link to create
+ *
+ * Create a symbolic link in the same manner as `ln -s link_target name` (this
+ * function doesn't shell out, this is just an indicator of behaviour.)
+ **/
+
 // TODO support Windows with a Junction, presumably using JNI and some DLL
 exports.symbolicLink = function (source, target) {
     if (/\bwindows\b/i.test(SYSTEM.os))
@@ -606,6 +686,15 @@ target are on separate logical volumes or hard links are not supported by the
 volume.
 
 */
+
+/**
+ * fs_base.hardLink(link_target, name) -> undefined
+ * - link_target (String): path the hard link should point to
+ * - name (String): name of hard link to create
+ *
+ * Create a hard link in the same manner as `ln link_target name` (this
+ * function doesn't shell out, this is just an indicator of behaviour.)
+ **/
 
 // TODO windows compatibility, if possible
 exports.hardLink = function (source, target) {
@@ -624,6 +713,16 @@ itself is a symbolic link.
 
 */
 
+/**
+ * fs_base.readLink(link) -> String
+ * - link (String): symbolic link to read
+ *
+ * Read the symbolic link and return the (relative) path it links to. Uses
+ * [readlink] for the underlying implementation.
+ *
+ * [readlink]: http://www.opengroup.org/onlinepubs/000095399/functions/readlink.html "POSIX readlink function"
+ **/
+
 // XXX TODO use JNI or something to not make a system call
 exports.readLink = function (path) {
     return OS.command(['readlink', path]);
@@ -639,6 +738,14 @@ If the file is a broken symbolic link, returns false.
 
 */
 
+/**
+ * fs_base.exists(path) -> Boolean
+ * - path (String): path to test
+ *
+ * Returns true if something exists on the filesystem at the given path, be it
+ * a directory, normal file, symlink or special file.
+ **/
+
 exports.exists = function (path) {
     return javaPath(path).exists();
 };
@@ -651,6 +758,13 @@ exports.exists = function (path) {
 links, corresponds to a regular file.
 
 */
+
+/**
+ * fs_base.isFile(path) -> Boolean
+ * - path (String): path to test
+ *
+ * Test if `path` is a ordinary file.
+ **/
 
 exports.isFile = function (path) {
     try {
@@ -666,6 +780,13 @@ exports.isFile = function (path) {
 : returns whether a path exists and that it, after resolution of symbolic links, corresponds to a directory.
 
 */
+
+/**
+ * fs_base.isDirectory(path) -> Boolean
+ * - path (String): path to test
+ *
+ * Test if `path` is a directory.
+ **/
 
 exports.isDirectory = function (path) {
     try {
@@ -684,6 +805,13 @@ symbolic links.
 
 */
 
+/**
+ * fs_base.isLink(path) -> Boolean
+ * - path (String): path to test
+ *
+ * Test if `path` is a symbolic link.
+ **/
+
 exports.isLink = function (path) {
     if (/\bwindows\b/i.test(SYSTEM.os))
         return false;
@@ -697,6 +825,13 @@ exports.isLink = function (path) {
 time of the call using "openRaw" for files or "list" for directories.
 
 */
+
+/**
+ * fs_base.isReadable(path) -> Boolean
+ * - path (String): path to test
+ *
+ * Test if `path` is readable.
+ **/
 
 exports.isReadable = function (path) {
     return javaPath(path).canRead();
@@ -712,6 +847,13 @@ at its location.
 
 */
 
+/**
+ * fs_base.isWriteable(path) -> Boolean
+ * - path (String): path to test
+ *
+ * Test if `path` is readable.
+ **/
+
 exports.isWritable = function (path) {
     return javaPath(path).canWrite();
 };
@@ -726,6 +868,14 @@ return false. If we are unable to verify if the storage is the same (such as by
 having insufficient permissions), an exception is thrown.
 
 */
+
+/**
+ * fs_base.same(path1, path2) -> Boolean
+ * - path1 (String): path to compare
+ * - path2 (String): path to compare
+ *
+ * Compare if the two paths are identical.
+ **/
 
 // TODO use JNI stat
 exports.same = function (pathA, pathB) {
@@ -771,6 +921,14 @@ RangeError.
 
 */
 
+/**
+ * fs_base.size(path) -> Number
+ * - path (String): path
+ *
+ * Return the size of the file in bytes. Due to the way that ECMAScript
+ * behaves, if the file is larger than 65,536 terabytes accuracy will be lost.
+ **/
+
 exports.size = function (path) {
     path = javaPath(path);
     return path.length();
@@ -782,6 +940,13 @@ exports.size = function (path) {
 : returns the time that a file was last modified as a Date object.
 
 */
+
+/**
+ * fs_base.lastModified(path) -> Date
+ * - path (String): path
+ *
+ * Get the last modification time of `path` as a javascript [[Date]] object.
+ **/
 
 exports.lastModified = function (path) {
     path = javaPath(path);
@@ -804,6 +969,19 @@ directory).
 <code>["x/a", "x/b"]</code>.''
 
 */
+
+/**
+ * fs_base.list(dir) -> Array
+ * - dir (String): directory to list
+ *
+ * Return an array of the contents of the directory. The elements of the
+ * returned list will be prefixed with the directory name, for example:
+ *
+ *     fs.list('a/b');
+ *     // -> ['a/b/c.txt', 'a/b/d.js']
+ *
+ * The self ('.') and parent ('..') directory entries will not be returned.
+ **/
 
 exports.list = function (path) {
     path = javaPath(String(path));
@@ -924,4 +1102,5 @@ permissions of the parent directory would be necessary for the operation to
 succeed.
 
 */
+
 

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+GITHUB_USER_NAME=$1
+FIRST_NAME=$2
+LAST_NAME=$3
+cat | while read FILE_NAME; do
+    cat "$FILE_NAME" \
+    | sed "s/^"'\/\/'" -- $1.*/"'\/\/'" -- $*/" \
+    | sed "s/^"'\/\/'" -- $2 $3.*/"'\/\/'" -- $*/" \
+    > "$FILE_NAME.$1"
+    mv "$FILE_NAME.$1" "$FILE_NAME"
+done

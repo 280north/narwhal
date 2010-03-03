@@ -1,6 +1,6 @@
 #!/usr/bin/env narwhal
 
-// FIXME: allow an engine to specify whether it is compatible with tusk.
-require("narwhal").ensureEngine("rhino");
+if (!system.supportsTusk)
+    require("narwhal").ensureEngine("rhino");
 
 require('narwhal/tusk').main(system.args);

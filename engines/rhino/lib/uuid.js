@@ -1,6 +1,6 @@
 
-// Kris Zyp
-// Tom Robinson
+// -- kriszyp Kris Zyp
+// -- tlrobinson Tom Robinson
 
 exports.randomUUID = function(){
     require("narwhal").deprecated("randomUUID is deprecated in favor of uuid");
@@ -11,3 +11,4 @@ exports.randomUUID = function(){
 exports.uuid = function(){
     return String(java.util.UUID.randomUUID()).toUpperCase();
 };
+

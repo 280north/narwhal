@@ -1,6 +1,6 @@
 (function(global, evalGlobal) {
-// Tom Robinson
-// Kris Kowal
+// -- tlrobinson Tom Robinson
+// -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
     /*
         this is a minimal engine-specific thunk for narwhal.js
@@ -13,13 +13,13 @@
     /* this gets used for several fixtures */
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
 
-    // TODO: enable this via a command line switch
-    context.setOptimizationLevel(-1);
-    
-    
+    var setOptimizationLevel = function (n) {
+        context.setOptimizationLevel(Number(n));
+    };
+
     context.setLanguageVersion(180);
     context.getWrapFactory().setJavaPrimitiveWrap(false);
-    
+
     var prefix = "";
     if (typeof NARWHAL_HOME != "undefined") {
         prefix = NARWHAL_HOME;
@@ -68,18 +68,28 @@
         };
     };
 
+    var importScript = function (script) {
+        return context.evaluateReader(
+            global,
+            new Packages.java.io.FileReader(script),
+            script,
+            1,
+            null
+        );
+    };
+
+    var importScripts = function () {
+        for (var i = 0, ii = arguments.length; i < ii; i++) {
+            importScript(arguments[i]);
+        };
+    };
+
     delete global.print;
     var print = function (string) {
         Packages.java.lang.System.out.println(String(string));
     };
 
-    var narwhal = context.evaluateReader(
-        global,
-        new Packages.java.io.FileReader(prefix + "/narwhal.js"),
-        "narwhal.js",
-        1,
-        null
-    );
+    var narwhal = importScript(prefix + "/narwhal.js");
 
     var debug = +String(Packages.java.lang.System.getenv("NARWHAL_DEBUG"));
     var verbose = +String(Packages.java.lang.System.getenv("NARWHAL_VERBOSE"));
@@ -90,6 +100,7 @@
             system: {
                 global: global,
                 evalGlobal: evalGlobal,
+                importScripts: importScripts,
                 engine: 'rhino',
                 engines: ['rhino', 'default'],
                 os: os,
@@ -97,7 +108,9 @@
                 prefix: prefix,
                 evaluate: evaluate,
                 debug: debug,
-                verbose: verbose
+                verbose: verbose,
+                setOptimizationLevel: setOptimizationLevel,
+                supportsTusk: true
             },
             file: {
                 read: read,
@@ -112,7 +125,7 @@
         print(e);
         Packages.java.lang.System.exit(1);
     }
-        
+
 })(this, function () {
     return eval(arguments[0]);
 });

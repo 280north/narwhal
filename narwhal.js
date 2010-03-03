@@ -59,7 +59,6 @@ var requireFake = function(id, path, force) {
     var exports = modules[id] = modules[id] || {};
     var module = {id: id, path: path};
 
-
     var factory = system.evaluate(file.read(path), path, 1);
     factory({
         require: requireFake,
@@ -128,10 +127,9 @@ try {
 }
 
 // load the complete system module
-require.force("system");
 require.force("file");
 require.force("file-engine");
-var os = require.force("os");
+require.force("system");
 
 // augment the path search array with those provided in
 //  environment variables
@@ -142,9 +140,12 @@ paths.push.apply(paths, [
     return !!path;
 }));
 
-
+var OS = require("os");
 if (system.env.NARWHALOPT)
-    system.args.splice.apply(system.args, [1,0].concat(os.parse(system.env.NARWHALOPT)));
+    system.args.splice.apply(
+        system.args,
+        [1,0].concat(OS.parse(system.env.NARWHALOPT))
+    );
 
 // parse command line options
 var parser = require("narwhal").parser;
@@ -156,6 +157,10 @@ if (options.verbose !== undefined) {
     system.verbose = options.verbose;
     require.verbose = system.verbose;
 }
+
+// if the engine provides an optimization level, like Rhino, call it through.
+if (system.setOptimizationLevel)
+    system.setOptimizationLevel(options.optimize);
 
 if (deprecated) {
     if (options.verbose) {
