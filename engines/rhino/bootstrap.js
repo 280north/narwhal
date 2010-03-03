@@ -18,11 +18,13 @@
         context.setOptimizationLevel(Number(n));
     };
 
-    context.setOptimizationLevel(+String(Packages.java.lang.System.getenv("NARWHAL_OPTIMIZATION") || -1));
+    context.setOptimizationLevel(+String(
+        Packages.java.lang.System.getenv("NARWHAL_OPTIMIZATION") || -1
+    ));
 
     try{
     	context.setLanguageVersion(180);
-    }catch(e){
+    } catch (exception) {
     	// squelch language upgrades
     }
 
