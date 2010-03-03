@@ -1,6 +1,7 @@
 (function(global, evalGlobal) {
-// -- tlrobinson Tom Robinson
+// -- tlrobinson Tom Robinson TODO
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
+// -- kriszyp Kris Zyp TODO
 
     /*
         this is a minimal engine-specific thunk for narwhal.js
@@ -17,7 +18,14 @@
         context.setOptimizationLevel(Number(n));
     };
 
-    context.setLanguageVersion(180);
+    context.setOptimizationLevel(+String(Packages.java.lang.System.getenv("NARWHAL_OPTIMIZATION") || -1));
+
+    try{
+    	context.setLanguageVersion(180);
+    }catch(e){
+    	// squelch language upgrades
+    }
+
     context.getWrapFactory().setJavaPrimitiveWrap(false);
 
     var prefix = "";
