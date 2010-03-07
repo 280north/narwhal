@@ -10,7 +10,13 @@
 var loopLevel = 0,
     shuttingDown, 
     queue = new java.util.concurrent.LinkedBlockingQueue();
-    
+
+require("unload").when(function () {
+    if (exports.hasPendingEvents())
+        exports.enterEventLoop(function () {
+            exports.shutdown();
+        });
+});
 
 exports.getNextEvent = function(){
     return queue.take();
