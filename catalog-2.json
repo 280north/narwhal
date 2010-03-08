@@ -1336,7 +1336,7 @@
             "version": [
                 "0",
                 "1",
-                "2"
+                "3"
             ],
             "descriptorUrl": "http://github.com/280north/jake/raw/master/package.json",
             "packageUrl": "http://github.com/280north/jake/zipball/master",
