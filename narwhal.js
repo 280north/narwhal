@@ -159,8 +159,12 @@ if (options.verbose !== undefined) {
 }
 
 // if the engine provides an optimization level, like Rhino, call it through.
-if (system.setOptimizationLevel)
-    system.setOptimizationLevel(options.optimize);
+if (system.setOptimizationLevel) {
+    if (system.env.NARWHAL_OPTIMIZATION !== undefined)
+        system.setOptimizationLevel(system.env.NARWHAL_OPTIMIZATION);
+    else
+        system.setOptimizationLevel(options.optimize);
+}
 
 if (deprecated) {
     if (options.verbose) {
