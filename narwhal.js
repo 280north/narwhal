@@ -45,7 +45,7 @@ global.system = system;
 global.print = system.print;
 
 // this only works for modules with no dependencies and a known absolute path
-var requireFake = function(id, path, force) {
+var requireFake = function (id, path, force) {
     // when a real require is ready, use it instead
     if (require)
         require(id);
@@ -70,26 +70,33 @@ var requireFake = function(id, path, force) {
     return exports;
 };
 
-var fakeJoin = function() {
+var fakeJoin = function () {
 	var delim = "/";
-	if(/\bwindows\b/i.test(system.os) ||
-	   /\bwinnt\b/i.test(system.os)) {
+	if (/\bwin(dows|nt)\b/i.test(system.os))
 		delim = "\\";
-	}
 	return Array.prototype.join.call(arguments, delim);
 }
 
 // bootstrap sandbox and loader modules
-var loader = requireFake("loader", fakeJoin(system.prefix, "lib", "loader.js"));
-var multiLoader = requireFake("loader/multi", fakeJoin(system.prefix, "lib", "loader", "multi.js"));
-var sandbox = requireFake("sandbox", fakeJoin(system.prefix, "lib", "sandbox.js"));
+var loader = requireFake("loader", fakeJoin(
+    system.prefix, "packages", "narwhal-util", "lib", "loader.js"
+));
+var multiLoader = requireFake("loader/multi", fakeJoin(
+    system.prefix, "packages", "narwhal-util", "lib", "loader", "multi.js"
+));
+var sandbox = requireFake("sandbox", fakeJoin(
+    system.prefix, "packages", "narwhal-util", "lib", "sandbox.js"
+));
 // bootstrap file module
-requireFake("file", fakeJoin(system.prefix, "lib", "file-bootstrap.js"), "force");
+requireFake("file", fakeJoin(
+    system.prefix, "lib", "file-bootstrap.js"
+), "force");
 
 // construct the initial paths
 var paths = [];
 // XXX system.packagePrefixes deprecated in favor of system.prefixes
 system.prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
+system.prefixes.push(fakeJoin(system.prefix, "packages", "narwhal-util"));
 var prefixes = system.prefixes.slice();
 if (system.enginePrefix)
     prefixes.unshift(system.enginePrefix);
