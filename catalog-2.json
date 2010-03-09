@@ -7,7 +7,7 @@
             "version": [
                 "0",
                 "2",
-                "1"
+                "2"
             ],
             "description": "A general purpose JavaScript platform",
             "keywords": [
@@ -407,15 +407,6 @@
             "version": []
         },
         "jack": {
-            "name": "jack",
-            "description": "A library of JSGI middleware, handlers, and utilities, based on Rack",
-            "keywords": [
-                "web server",
-                "server",
-                "jsgi",
-                "rack",
-                "wsgi"
-            ],
             "author": {
                 "name": "Tom Robinson",
                 "url": "http://tlrobinson.net/"
@@ -472,9 +463,10 @@
             ],
             "version": [
                 "0",
-                "1",
-                "2"
+                "2",
+                "3"
             ],
+            "name": "jack",
             "descriptorUrl": "http://github.com/280north/jack/raw/master/package.json",
             "packageUrl": "http://github.com/280north/jack/zipball/master",
             "packageArchive": "zip",
@@ -1324,8 +1316,21 @@
             "name": "jake",
             "author": {
                 "name": "Francisco Tolmasky",
-                "url": "http://tolmasky.com/"
+                "url": "http://tolmasky.com/",
+                "email": "francisco@280north.com"
             },
+            "contributors": [
+                {
+                    "name": "Francisco Tolmasky",
+                    "url": "http://tolmasky.com/",
+                    "email": "francisco@280north.com"
+                },
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/",
+                    "email": "tom@280north.com"
+                }
+            ],
             "description": "A build system for CommonJS, lifted from Rake",
             "keywords": [
                 "build",
@@ -1335,8 +1340,8 @@
             ],
             "version": [
                 "0",
-                "1",
-                "3"
+                "2",
+                "1"
             ],
             "descriptorUrl": "http://github.com/280north/jake/raw/master/package.json",
             "packageUrl": "http://github.com/280north/jake/zipball/master",
@@ -1349,12 +1354,6 @@
                 "url": "http://github.com/280north/jake/zipball/master",
                 "archive": "zip"
             },
-            "contributors": [
-                {
-                    "name": "Francisco Tolmasky",
-                    "url": "http://tolmasky.com/"
-                }
-            ],
             "dependencies": []
         },
         "json-rpc": {
@@ -2858,6 +2857,41 @@
                 "archive": "zip"
             },
             "version": []
+        },
+        "zip": {
+            "name": "zip",
+            "author": {
+                "name": "Tom Robinson",
+                "url": "http://tlrobinson.net/"
+            },
+            "description": "An implementation of zip for JavaScript",
+            "keywords": [
+                "zip",
+                "compression"
+            ],
+            "version": [
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/tlrobinson/zipjs/raw/master/package.json",
+            "packageUrl": "http://github.com/tlrobinson/zipjs/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "tlrobinson",
+                "name": "zipjs",
+                "packageName": "zip",
+                "descriptorUrl": "http://github.com/tlrobinson/zipjs/raw/master/package.json",
+                "url": "http://github.com/tlrobinson/zipjs/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Tom Robinson",
+                    "url": "http://tlrobinson.net/"
+                }
+            ],
+            "dependencies": []
         }
     }
 }

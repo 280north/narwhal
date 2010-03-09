@@ -334,6 +334,11 @@
             "type": "github",
             "user": "tlrobinson",
             "name": "commonjs-sqlite-jdbc"
+        },
+        "zip": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "zipjs"
         }
     }
 }
