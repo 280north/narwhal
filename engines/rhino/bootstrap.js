@@ -14,7 +14,9 @@
     var context = Packages.org.mozilla.javascript.Context.getCurrentContext();
 
     var setOptimizationLevel = function (n) {
-        context.setOptimizationLevel(Number(n));
+        if (Packages.java.lang.System.getenv("NARWHAL_DEBUGGER") !== "1") {
+            context.setOptimizationLevel(Number(n));
+        }
     };
 
     context.setLanguageVersion(180);
