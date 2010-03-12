@@ -36,7 +36,7 @@ exports.Unzip.prototype.iterator = function () {
     return {
         next: function () {
             if (!enumeration.hasMoreElements())
-                throw new StopIteration();
+                throw StopIteration;
             return new exports.Entry(
                 self._javaZipFile,
                 enumeration.nextElement()
