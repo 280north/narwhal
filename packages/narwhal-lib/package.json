@@ -1,5 +1,5 @@
 {
-    "name": "narwhal-util",
+    "name": "narwhal-lib",
     "version": "0.2.2",
     "description": "A general purpose JavaScript platform",
     "keywords": ["javascript", "engine", "platform"],

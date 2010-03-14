@@ -23,7 +23,7 @@
         "Toby Ho (http://tobyho.com) <airportyh@gmail.com>"
     ],
     "dependencies": [
-        "narwhal-util"
+        "narwhal-lib"
     ],
     "lib": ["lib"],
     "lean": {

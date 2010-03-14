@@ -79,13 +79,13 @@ var fakeJoin = function () {
 
 // bootstrap sandbox and loader modules
 var loader = requireFake("loader", fakeJoin(
-    system.prefix, "packages", "narwhal-util", "lib", "loader.js"
+    system.prefix, "packages", "narwhal-lib", "lib", "loader.js"
 ));
 var multiLoader = requireFake("loader/multi", fakeJoin(
-    system.prefix, "packages", "narwhal-util", "lib", "loader", "multi.js"
+    system.prefix, "packages", "narwhal-lib", "lib", "loader", "multi.js"
 ));
 var sandbox = requireFake("sandbox", fakeJoin(
-    system.prefix, "packages", "narwhal-util", "lib", "sandbox.js"
+    system.prefix, "packages", "narwhal-lib", "lib", "sandbox.js"
 ));
 // bootstrap file module
 requireFake("file", fakeJoin(
@@ -96,7 +96,7 @@ requireFake("file", fakeJoin(
 var paths = [];
 // XXX system.packagePrefixes deprecated in favor of system.prefixes
 system.prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
-system.prefixes.push(fakeJoin(system.prefix, "packages", "narwhal-util"));
+system.prefixes.push(fakeJoin(system.prefix, "packages", "narwhal-lib"));
 var prefixes = system.prefixes.slice();
 if (system.enginePrefix)
     prefixes.unshift(system.enginePrefix);
