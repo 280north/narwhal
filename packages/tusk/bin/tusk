@@ -1,0 +1,7 @@
+#!/usr/bin/env narwhal
+
+if (!system.supportsTusk)
+    require("narwhal").ensureEngine("rhino");
+
+require('tusk').main(system.args);
+

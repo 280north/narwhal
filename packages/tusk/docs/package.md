@@ -2,7 +2,7 @@
 How to make Packages
 ====================
 
-A package consists of a directory of modules conforming to the ServerJS [Securable Modules](https://wiki.mozilla.org/ServerJS/Modules/SecurableModules) specification, and a "package.json" file in the root of the package containing the location of the modules, depedencies, and other metadata.
+A package consists of a directory of modules conforming to the CommonJS [Modules](http://wiki.commonjs.org/wiki/Modules/1.1) specification, and a "package.json" file in the root of the package containing the location of the modules, depedencies, and other metadata.
 
 A package directory might have the following files and directories:
 
@@ -30,4 +30,5 @@ A package directory might have the following files and directories:
 * `packages` - a path or array of paths to directories containing additional packages, defaults to `["packages"]`.
 * `engines` - a path or array of paths to directories containing engine-specific packages, defaults to `["engines"]`.  These engine packages will be loaded if and in the prioritized order they appear in the `system.engines` array, and with higher priority that those in this package's generic `js` path so that they can override engine-specific modules.
 
-For more information on how packages are composed into catalogs, see the [catalog](catalog.html) reference.
+For more information on how packages are composed into catalogs, see the [catalog](catalog.md) reference.
+

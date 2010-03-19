@@ -1,5 +1,5 @@
 {
-    "name": "zipjs",
+    "name": "zip",
     "author": "Tom Robinson (http://tlrobinson.net/)",
     "description": "An implementation of zip for JavaScript",
     "keywords": [
