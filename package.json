@@ -1,0 +1,35 @@
+{
+    "name": "tusk",
+    "version": "0.2.2",
+    "description": "A package manager",
+    "keywords": ["javascript", "packages", "package-manager"],
+    "author": "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
+    "contributors": [
+        "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
+        "Tom Robinson (http://tlrobinson.net/) <tom@280north.com>",
+        "George Moschovitis (http://blog.gmosx.com/)",
+        "Kevin Dangoor (http://www.blueskyonmars.com/)",
+        "Hannes Wallnöfer",
+        "Sébastien Pierre",
+        "Irakli Gozalishvili (http://rfobic.wordpress.com/)",
+        "Christoph Dorn (http://www.christophdorn.com/)",
+        "Zach Carter",
+        "Nathan L. Smith",
+        "Jan Varwig",
+        "Mark Porter",
+        "Isaac Z. Schlueter (http://blog.izs.me/)",
+        "Kris Zyp (http://www.sitepen.com/blog/author/kzyp/)",
+        "Nathan Stott (http://nathan.whiteboard-it.com) <nathan.stott@whiteboard-it.com>",
+        "Toby Ho (http://tobyho.com) <airportyh@gmail.com>"
+    ],
+    "dependencies": [
+        "narwhal-lib",
+        "zip"
+    ],
+    "lean": {
+        "include" : [
+            "lib/**/*",
+            "package.json"
+        ]
+    }
+}
