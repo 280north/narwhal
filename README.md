@@ -15,6 +15,10 @@ Tusk provides a `tusk` command with the following subcommands:
 * `clone`: clones a package from its version control system.
 * `catalog`: lists all packages in the catalog
 
+<strong>Note:</strong> on Github, relative links on this page will only work
+when viewing this page at the [canonical](tusk/blob/master/README.md) location
+of this file.
+
 Creating [packages](docs/package.md) and [catalogs](docs/catalog.md) for Tusk
 is simple.  Tusk supports alternate and multiple-catalogs and seamless
 independent package installations ([seas](docs/sea.md), similar to Python
