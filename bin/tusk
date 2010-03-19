@@ -3,4 +3,5 @@
 if (!system.supportsTusk)
     require("narwhal").ensureEngine("rhino");
 
-require('narwhal/tusk').main(system.args);
+require('tusk').main(system.args);
+

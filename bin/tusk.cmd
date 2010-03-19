@@ -1,5 +1,4 @@
 @echo off
 setlocal
 set HERE=%~dp0
-call "%HERE%narwhal.cmd" -m "narwhal/tusk" tusk %*
-
+call "%HERE%narwhal.cmd" -m tusk tusk %*

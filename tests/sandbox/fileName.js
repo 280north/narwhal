@@ -1,3 +1,0 @@
-
-print(module.path);
-

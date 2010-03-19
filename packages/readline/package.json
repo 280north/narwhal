@@ -1,5 +1,0 @@
-{
-    "name": "readline",
-    "author": "Tom Robinson",
-    "dependencies": ["narwhal"]
-}
