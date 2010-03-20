@@ -262,7 +262,7 @@
             ],
             "githubName": "browserjs",
             "type": "zip",
-            "location": "http://github.com/tlrobinson/browserjs/zipball/master"
+            "location": "http://github.com/kriszyp/browserjs/zipball/master"
         },
         "inspec": {
             "name": "inspec",
@@ -1014,6 +1014,38 @@
             "type": "zip",
             "location": "http://github.com/nrstott/observable-js/zipball/master"
         },
+		"commonjs-utils": {
+            "name": "commonjs-utils",
+            "description": "CommonJS utility modules",
+            "keywords": [
+            ],
+            "author": "Kris Zyp",
+            "email": "kriszyp@gmail.com",
+            "dependencies": [],
+            "lib": "lib",
+            "githubName": "commonjs-utils",
+            "type": "zip",
+            "location": "http://github.com/kriszyp/commonjs-utils/zipball/master"
+		},
+		"pintura": {
+			"name": "pintura",
+			"author": "Kris Zyp",
+            "email": "kriszyp@gmail.com",
+			"dependencies": ["narwhal", "jack", "commonjs-utils", "narcissus", "wiky"],
+			"contributors": [],
+			"keywords": [
+				"rest",
+				"database",
+				"web",
+				"json",
+				"persevere"
+			],
+			"githubName": "pintura",
+            "lib": "lib",
+			"type": "zip",
+			"location": "http://github.com/kriszyp/pintura/zipball/master",
+			"license":"AFL/BSD"
+		},
         "cappruby": {
             "name": "cappruby",
             "dependencies": [

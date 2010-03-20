@@ -8,6 +8,7 @@ exports.testFile = require("./file/all-tests");
 exports.testUtil = require("./util/all-tests");
 exports.testArgs = require("./args");
 exports.testEvents = require("./events");
+exports.testHTML = require("./html");
 
 exports.testGlobal = require("./global");
 

@@ -1,3 +1,4 @@
+// Richard Penwell (penwellr) MIT Licence - March 1, 2010
 (function narwhal(modules) {
 
 var deprecated;

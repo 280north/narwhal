@@ -132,7 +132,7 @@
             "version": [
                 "0",
                 "1",
-                "1"
+                "3"
             ],
             "descriptorUrl": "http://github.com/280north/narwhal-jsc/raw/master/package.json",
             "packageUrl": "http://github.com/280north/narwhal-jsc/zipball/master",
@@ -464,7 +464,7 @@
             "version": [
                 "0",
                 "2",
-                "3"
+                "4"
             ],
             "name": "jack",
             "descriptorUrl": "http://github.com/280north/jack/raw/master/package.json",

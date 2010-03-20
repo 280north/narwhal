@@ -1,6 +1,7 @@
 
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
-// -- tlrobinson Tom Robinson
+// -- tlrobinson Tom Robinson TODO
+// -- veged Sergey Berezhnoy TODO
 
 var tusk = require("../../tusk");
 var util = require("util");
@@ -241,7 +242,7 @@ exports.install = function (options, names) {
                     {'charset': 'UTF-8'}
                 );
 
-            exports.finishInstall(targetPath);
+            exports.finish(targetPath);
 
             notes[name].finished = true;
         } catch (exception) {
@@ -302,7 +303,9 @@ exports.missing = function (catalog, names) {
     });
 };
 
-exports.finishInstall = function(targetPath) {
+// TODO use package.json bin directories list if available to finish configured
+// bin directories instead of conventional bin directories.
+exports.finish = function(targetPath) {
     // make bins executable and make symlinks
     //  in $SEA/bin
     var bin = targetPath.join('bin');
@@ -318,3 +321,4 @@ exports.finishInstall = function(targetPath) {
             }
         });
 };
+

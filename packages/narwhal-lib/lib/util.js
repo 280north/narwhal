@@ -398,7 +398,7 @@ exports.repr = exports.operator('repr', 1, function (object) {
         return String(object);
     if (exports.isArrayLike(object))
         return exports.array.repr(object);
-    if (typeof object == 'object')
+    if (typeof object == 'object' && !(object instanceof Date))
         return exports.object.repr(object);
     if (typeof object == 'string')
         return exports.enquote(object);

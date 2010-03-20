@@ -1,8 +1,7 @@
+// Richard Penwell (penwellr) MIT Licence - March 1, 2010
 
 var ASSERT = require("assert");
 var OS = require("os");
-
-// TODO parameterize on whether the system.os is Win(nt|dows).
 
 exports.testNoEscapedPaths = function() {
     var result = OS.parse('command -option -with other option');
