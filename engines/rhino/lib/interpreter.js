@@ -9,14 +9,20 @@
 var Context = exports.Context = function() {
     var self = this;
 
-    var context = new Packages.org.mozilla.javascript.Context();
-    self.global = context.initStandardObjects();
+    // TODO: verify this is the correct way to obtain a Context. 
+    // var context = new Packages.org.mozilla.javascript.Context();
+    function getContext() {
+        // return context;
+        return Packages.org.mozilla.javascript.Context.getCurrentContext();
+    }
+
+    self.global = getContext().initStandardObjects();
 
     self.eval = function(source) {
         source = source || "";
         var sourceURL = findSourceURL(source) || "<eval>";
 
-        return context.evaluateString(
+        return getContext().evaluateString(
             self.global,
             source,
             sourceURL,
@@ -25,8 +31,13 @@ var Context = exports.Context = function() {
         );
     };
 
+    self.evalFile = function(sourceURL) {
+        require("narwhal").deprecated("Context's evalFile() is deprecated in favor of importScript().");
+        return self.importScript.apply(self, arguments);
+    };
+
     self.importScript = function (sourceURL) {
-        return context.evaluateReader(
+        return getContext().evaluateReader(
             self.global,
             new Packages.java.io.FileReader(sourceURL),
             sourceURL,
@@ -47,7 +58,7 @@ var Context = exports.Context = function() {
             for (var name in inject)
                 if (Object.prototype.hasOwnProperty.call(inject, name))
                     names.push(name);
-            return context.compileFunction(
+            return getContext().compileFunction(
                 self.global,
                 "function(" + names.join(",") + "){" + text + "\n}",
                 String(fileName),
@@ -64,8 +75,8 @@ var Context = exports.Context = function() {
         var body = args.pop() || "";
         var source = "function("+args.join(",")+"){"+body+"/**/\n}";
         var sourceURL = findSourceURL(body) || "<function>";
-        
-        return context.compileFunction(
+
+        return getContext().compileFunction(
             self.global,
             source,
             sourceURL,
@@ -73,7 +84,7 @@ var Context = exports.Context = function() {
             null
         );
     };
-    
+
     return self;
 };
 

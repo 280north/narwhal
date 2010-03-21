@@ -13,6 +13,10 @@
             "type": "github",
             "user": "tlrobinson"
         },
+        "narwhal-v8cgi": {
+            "type": "github",
+            "user": "veged"
+        },
         "narwhal-johnson": {
             "type": "github",
             "user": "tlrobinson"
@@ -278,6 +282,10 @@
             "user": "veged",
             "ref": "narwhal"
         },
+        "bem-tools" : {
+            "type": "github",
+            "user": "veged",
+        },
         "closure-compiler": {
             "type": "github",
             "user": "280north",
@@ -311,6 +319,29 @@
             "type": "github",
             "user": "gmosx",
             "name": "normal-template"
+        },
+        "reform": {
+            "type": "github",
+            "user": "fitzgen"
+        },
+        "jdbc": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "commonjs-jdbc"
+        },
+        "mysql-jdbc": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "commonjs-mysql-jdbc"
+        },
+        "sqlite-jdbc": {
+            "type": "github",
+            "user": "tlrobinson",
+            "name": "commonjs-sqlite-jdbc"
+        },
+        "zipjs": {
+            "type": "github",
+            "user": "tlrobinson"
         }
     }
 }
