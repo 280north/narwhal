@@ -152,42 +152,6 @@
                 }
             ]
         },
-        "narwhal-v8cgi": {
-            "name": "narwhal-v8cgi",
-            "dependencies": [
-                "narwhal"
-            ],
-            "engine": "v8cgi",
-            "author": {
-                "name": "Sergey Berezhnoy",
-                "url": "http://github.com/veged/"
-            },
-            "description": "JavaScriptCore engine support for Narwhal",
-            "keywords": [
-                "narwhal",
-                "engine",
-                "v8cgi",
-                "v8"
-            ],
-            "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
-            "packageUrl": "http://github.com/veged/narwhal-v8cgi/zipball/master",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "veged",
-                "packageName": "narwhal-v8cgi",
-                "descriptorUrl": "http://github.com/veged/narwhal-v8cgi/raw/master/package.json",
-                "url": "http://github.com/veged/narwhal-v8cgi/zipball/master",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Sergey Berezhnoy",
-                    "url": "http://github.com/veged/"
-                }
-            ],
-            "version": []
-        },
         "narwhal-v8": {
             "name": "narwhal-v8",
             "dependencies": [
@@ -500,7 +464,7 @@
             "version": [
                 "0",
                 "2",
-                "3"
+                "4"
             ],
             "name": "jack",
             "descriptorUrl": "http://github.com/280north/jack/raw/master/package.json",
@@ -1347,115 +1311,6 @@
             ],
             "dependencies": [],
             "version": []
-        },
-        "ometajs": {
-            "name": "ometajs",
-            "author": {
-                "name": "Alessandro Warth",
-                "url": "http://awarth.blogspot.com/"
-            },
-            "description": "A object-oriented language for pattern matching",
-            "keywords": [
-                "ometa",
-                "parser",
-                "peg"
-            ],
-            "version": [
-                "0",
-                "1",
-                "1"
-            ],
-            "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
-            "packageUrl": "http://github.com/veged/ometa-js/zipball/narwhal",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "veged",
-                "packageName": "ometajs",
-                "descriptorUrl": "http://github.com/veged/ometa-js/raw/narwhal/package.json",
-                "url": "http://github.com/veged/ometa-js/zipball/narwhal",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Sergey Berezhnoy",
-                    "url": "http://github.com/veged/"
-                }
-            ],
-            "dependencies": []
-        },
-        "ometa-highlighter" : {
-            "name": "ometa-highlighter",
-            "author": {
-                "name": "Sergey Berezhnoy",
-                "url": "http://github.com/veged/"
-            },
-            "description": "Code highlighter based on Ometa/JS (little inspired by Pygments)",
-            "keywords": [
-                "highlighter",
-                "code",
-                "pygments"
-            ],
-            "version": [
-                "0",
-                "1",
-                "1"
-            ],
-            "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
-            "packageUrl": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "veged",
-                "packageName": "ometa-highlighter",
-                "descriptorUrl": "http://github.com/veged/ometa-highlighter/raw/narwhal/package.json",
-                "url": "http://github.com/veged/ometa-highlighter/zipball/narwhal",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Sergey Berezhnoy",
-                    "url": "http://github.com/veged/"
-                }
-            ],
-            "dependencies": ["ometajs"]
-        },
-        "shmakowiki":{
-            "name": "shmakowiki",
-            "author": {
-                "name": "Sergey Berezhnoy",
-                "url": "http://github.com/veged/"
-            },
-            "description": "Yet another wiki dialect, inspired by WackoWiki and WikiCreole",
-            "keywords": [
-                "wiki",
-                "creole",
-                "wikicreole",
-                "wackowiki"
-            ],
-            "version": [
-                "0",
-                "1",
-                "1"
-            ],
-            "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
-            "packageUrl": "http://github.com/veged/shmakowiki/zipball/narwhal",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "veged",
-                "packageName": "shmakowiki",
-                "descriptorUrl": "http://github.com/veged/shmakowiki/raw/narwhal/package.json",
-                "url": "http://github.com/veged/shmakowiki/zipball/narwhal",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Sergey Berezhnoy",
-                    "url": "http://github.com/veged/"
-                }
-            ],
-            "dependencies": ["ometajs", "ometa-highlighter"]
         },
         "jake": {
             "name": "jake",
@@ -2700,6 +2555,41 @@
             "dependencies": [
                 "ometajs"
             ]
+        },
+        "bem-tools": {
+            "name": "bem-tools",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "BEM Tools",
+            "keywords": [
+                "tools",
+                "bem"
+            ],
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/bem-tools/raw/master/package.json",
+            "packageUrl": "http://github.com/veged/bem-tools/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "bem-tools",
+                "descriptorUrl": "http://github.com/veged/bem-tools/raw/master/package.json",
+                "url": "http://github.com/veged/bem-tools/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": []
         },
         "closure-compiler": {
             "name": "closure-compiler",
