@@ -1,13 +1,19 @@
-var assert = require("test/assert");
+// -- gmosx George Moschovitis Copyright (C) 2009-2010 MIT License
 
-var html = require("nitro/utils/html"),
-    escapeHTML = html.escapeHTML,
-    stripTags = html.stripTags;
+var assert = require("test/assert"),
+    HTML = require("html");
 
-exports.testEscapeHTML = function() {
+exports.testEscape = function () {
     var str = '<p class="text">hello</p>';
-    assert.isEqual(escapeHTML(str), '&lt;p class="text"&gt;hello&lt;/p&gt;');
+    assert.isEqual(HTML.escape(str), '&lt;p class="text"&gt;hello&lt;/p&gt;');
 }
 
-exports.testStripTags = function() {
+exports.testUnescape = function () {
+    var str = '&lt;p class="text"&gt;hello&lt;/p&gt;';
+    assert.isEqual(HTML.unescape(str), '<p class="text">hello</p>');
+}
+
+exports.testStripTags = function () {
+    var str = '<span>hello <b>user</b></span>';
+    assert.isEqual(HTML.stripTags(str), 'hello user');
 }

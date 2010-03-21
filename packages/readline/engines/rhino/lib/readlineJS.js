@@ -1,4 +1,5 @@
-var reader = new Packages.jline.ConsoleReader();
+// use the Rhino shell, in case stdin is coming from the debugger GUI (this will still use jline)
+var reader = system.stdin;
 
 exports.readline = function() {
     var line = reader.readLine();
