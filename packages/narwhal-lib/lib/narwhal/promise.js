@@ -16,6 +16,8 @@
  * ref_send.js version: 2009-05-11
  */
 
+/*whatsupdoc*/
+
 // - the enclosure ensures that this module will function properly both as a
 // CommonJS module and as a script in the browser.  In CommonJS, this module
 // exports the "Q" API.  In the browser, this script creates a "Q" object in
@@ -37,8 +39,8 @@ if (typeof setTimeout === "function") {
 }
 
 /**
- * Enqueues a task to be run in a future turn.
- * @param task function to invoke later
+ * Performs a task in a future turn of the event loop.
+ * @param {Function} task
  */
 exports.enqueue = enqueue;
 
@@ -62,17 +64,17 @@ function Deferred() {
     // resolved values and other promises gracefully.
     var pending = [], value;
     return {
-        "promise": seal(function () {
+        "promise": function () {
             var args = Array.prototype.slice.call(arguments);
             if (pending) {
                 pending.push(args);
             } else {
                 forward.apply(undefined, [value].concat(args));
             }
-        }),
+        },
         "resolve": function (resolvedValue) {
             var i, ii, task;
-            if (!pending) 
+            if (!pending)
                 return;
             value = Reference(resolvedValue);
             for (i = 0, ii = pending.length; i < ii; ++i) {
@@ -104,7 +106,9 @@ function Promise(descriptor, fallback) {
         };
     }
 
-    var promise = seal(function (op, resolved /* ...args */) {
+    var promise = Object.create(Promise.prototype);
+
+    promise.emit = function (op, resolved /* ...args */) {
         var args = Array.prototype.slice.call(arguments, 2);
         var result;
         if (descriptor[op])
@@ -114,19 +118,27 @@ function Promise(descriptor, fallback) {
         if (resolved)
             return resolved(result);
         return result;
-    });
+    };
 
     promise.toSource = promise.toString = function () {
         return '[object Promise]';
     };
 
     promise.valueOf = function () {
-        return unseal(promise)("valueOf");
+        return promise.emit("valueOf");
     };
 
     return promise;
 };
 
+/**
+ * @returns whether the given object is a promise.
+ * Otherwise it is a resolved value.
+ */
+exports.isPromise = isPromise;
+function isPromise(object) {
+    return object instanceof Promise;
+};
 
 /**
  * Constructs a rejected promise.
@@ -156,7 +168,7 @@ function Reference(object) {
     // the Reference function to both be used to created references from
     // objects, but to tolerably coerce non-promises to References if they are
     // not already Promises.
-    if (typeof object === "function")
+    if (isPromise(object))
         return object;
     return Promise({
         "when": function (rejected) {
@@ -220,12 +232,12 @@ exports.when = function (value, resolved, rejected) {
     var done = false;   // ensure the untrusted promise makes at most a
                         // single call to one of the callbacks
     forward(Reference(value), "when", function (value) {
-        if (done) 
+        if (done)
             throw new Error("A promise just attempted to resolve again");
         done = true;
-        deferred.resolve(unseal(Reference(value))("when", resolved, rejected));
+        deferred.resolve(Reference(value).emit("when", resolved, rejected));
     }, function (reason) {
-        if (done) 
+        if (done)
             throw new Error("A promise just attempted to resolve again");
         done = true;
         deferred.resolve(rejected ? rejected(reason) : Rejection(reason));
@@ -237,11 +249,11 @@ exports.asap = function (value, resolved, rejected) {
     var deferred = Deferred();
     var done = false;   // ensure the untrusted promise makes at most a
                         // single call to one of the callbacks
-    unseal(Reference(value))("when", function (value) {
-        if (done) 
+    Reference(value).emit("when", function (value) {
+        if (done)
             throw new Error("A promise just attempted to resolve again");
         done = true;
-        deferred.resolve(unseal(Reference(value))("when", resolved, rejected));
+        deferred.resolve(Reference(value).emit("when", resolved, rejected));
     }, function (reason) {
         if (done)
             throw new Error("A promise just attempted to resolve again");
@@ -258,15 +270,6 @@ exports.asap = function (value, resolved, rejected) {
  * @return promise for the property value
  */
 exports.get = Method("get");
-
-/**
- * Invokes a method in a future turn.
- * @param object    promise or immediate reference for target object
- * @param name      name of method to invoke
- * @param argv      array of invocation arguments
- * @return promise for the return value
- */
-exports.post = Method("post");
 
 /**
  * Sets the value of a property in a future turn.
@@ -286,6 +289,15 @@ exports.put = Method("put");
 exports.del = Method("del");
 
 /**
+ * Invokes a method in a future turn.
+ * @param object    promise or immediate reference for target object
+ * @param name      name of method to invoke
+ * @param argv      array of invocation arguments
+ * @return promise for the return value
+ */
+exports.post = Method("post");
+
+/**
  * Guarantees that the give promise resolves to a defined, non-null value.
  */
 exports.defined = function (value) {
@@ -296,42 +308,14 @@ exports.defined = function (value) {
     });
 };
 
-/**
+/*
  * Enqueues a promise operation for a future turn.
  */
 function forward(promise /*, op, resolved, ... */) {
     var args = Array.prototype.slice.call(arguments, 1);
     enqueue(function () {
-        unseal(promise).apply(undefined, args);
+        promise.emit.apply(promise, args);
     });
-}
-
-/**
- * seal(value) returns an object that can be passed to a third party and back
- * to this API without giving the third party access to the value.  The only
- * way to get the value out of the sealed value is to call unseal(sealed),
- * which is only accessible within this closure.  This is an application of
- * Marc Stiegler's [seal, unseal] pairs.
- */
-
-var secret;
-
-function seal(value) {
-    return function () {
-        if (secret)
-            return value;
-        else
-            throw new Error("Value is sealed.");
-    };
-}
-
-function unseal(sealed) {
-    try {
-        secret = true;
-        return sealed();
-    } finally {
-        secret = false;
-    }
 }
 
 // Complete the closure: use either CommonJS exports or browser global Q object
