@@ -2556,6 +2556,41 @@
                 "ometajs"
             ]
         },
+        "bem-tools": {
+            "name": "bem-tools",
+            "author": {
+                "name": "Sergey Berezhnoy",
+                "url": "http://github.com/veged/"
+            },
+            "description": "BEM Tools",
+            "keywords": [
+                "tools",
+                "bem"
+            ],
+            "version": [
+                "0",
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/veged/bem-tools/raw/master/package.json",
+            "packageUrl": "http://github.com/veged/bem-tools/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "veged",
+                "packageName": "bem-tools",
+                "descriptorUrl": "http://github.com/veged/bem-tools/raw/master/package.json",
+                "url": "http://github.com/veged/bem-tools/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Sergey Berezhnoy",
+                    "url": "http://github.com/veged/"
+                }
+            ],
+            "dependencies": []
+        },
         "closure-compiler": {
             "name": "closure-compiler",
             "description": "Closure Compiler",

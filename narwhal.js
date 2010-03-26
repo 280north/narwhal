@@ -274,7 +274,7 @@ if (options.interactive) {
 
 // send an unload event if that module has been required
 if (require.loader.isLoaded("unload")) {
-    require("unload").send();
+    require("unload").emit();
 }
 
 })

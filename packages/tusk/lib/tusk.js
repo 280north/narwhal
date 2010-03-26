@@ -7,7 +7,7 @@ var fs = require("file");
 var packages = require("packages");
 var util = require("util");
 var json = require("json");
-var http = require("http");
+var http = require("http-client");
 
 exports.catalogVersion = 2;
 exports.minCatalogVersion = 2;

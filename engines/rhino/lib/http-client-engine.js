@@ -1,22 +1,28 @@
 
 // -- isaacs Isaac Schlueter
+// -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
 var IO = require("io").IO,
-    HashP = require("hashp").HashP;
+    UTIL = require("util");
 
-var engine = exports;
+exports.IO = function (url) {
+    return new IO(
+        new java.net.URL(url).openStream(),
+        null
+    );
+};
 
-engine.connect = function HttpClient_engine_connect (tx) {
+exports.connect = function HttpClient_engine_connect (tx) {
     if (tx._isConnected) return;
     
     var con = java.net.HttpURLConnection(new java.net.URL(tx.url).openConnection());
     con.setRequestMethod(tx.method.toUpperCase());
     
-    HashP.forEach(tx.headers, function (h, v) {
+    UTIL.forEach(tx.headers, function (h, v) {
         con.setRequestProperty(h, v);
     });
     if (!tx.headers) tx.headers = {};
-    var cl = HashP.get(tx.headers, "Content-Length") || 0;
+    var cl = UTIL.get(tx.headers, "Content-Length") || 0;
     if (cl > 0) {
         con.setDoOutput(true);
         var os = null;
@@ -61,12 +67,12 @@ engine.connect = function HttpClient_engine_connect (tx) {
         var fieldName = fieldKeys[i];
         if (fieldName === null) {
             // Something like: HTTP/1.1 200 OK
-            HashP.set(resp, "status", +(/HTTP\/1\.[01] ([0-9]{3})/.exec(fieldValue)[1]));
+            UTIL.set(resp, "status", +(/HTTP\/1\.[01] ([0-9]{3})/.exec(fieldValue)[1]));
             // fieldName = "Status";
             resp.statusText = fieldValue;
             continue;
         }
-        HashP.set(resp.headers, fieldName, fieldValue);
+        UTIL.set(resp.headers, fieldName, fieldValue);
     }
 
     // TODO: Restructure using non-blocking IO to support asynchronous interactions.
