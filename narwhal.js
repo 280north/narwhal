@@ -80,13 +80,13 @@ var fakeJoin = function () {
 
 // bootstrap sandbox and loader modules
 var loader = requireFake("loader", fakeJoin(
-    system.prefix, "packages", "narwhal-lib", "lib", "loader.js"
+    system.prefix, "packages", "narwhal-lib", "lib", "narwhal", "loader.js"
 ));
 var multiLoader = requireFake("loader/multi", fakeJoin(
-    system.prefix, "packages", "narwhal-lib", "lib", "loader", "multi.js"
+    system.prefix, "packages", "narwhal-lib", "lib", "narwhal", "loader", "multi.js"
 ));
 var sandbox = requireFake("sandbox", fakeJoin(
-    system.prefix, "packages", "narwhal-lib", "lib", "sandbox.js"
+    system.prefix, "packages", "narwhal-lib", "lib", "narwhal", "sandbox.js"
 ));
 // bootstrap file module
 requireFake("file", fakeJoin(
@@ -219,7 +219,7 @@ system.packages = options.packages;
 // load packages
 var packages;
 if (!options.noPackages) {
-    packages = require("packages");
+    packages = require("narwhal/packages");
     packages.main();
 } else {
     packages = {

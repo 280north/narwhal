@@ -2,8 +2,8 @@
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 // reference: http://ascii-table.com/ansi-escape-sequences-vt-100.php
 
-var system = require('system');
-var util = require('util');
+var SYSTEM = require('system');
+var UTIL = require('util');
 
 var terms = [
     'ansi',
@@ -23,7 +23,7 @@ exports.Stream = function (system) {
     var back = "";
     var bold = "0";
     var stack = [];
-    var enabled = util.has(terms, env.TERM);
+    var enabled = UTIL.has(terms, env.TERM);
 
     self.enable = function () {
         enabled = true;
@@ -186,7 +186,7 @@ exports.colors = {
     "white": "7"
 }
 
-exports.stream = new exports.Stream(system);
+exports.stream = new exports.Stream(SYSTEM);
 
 if (module.id == require.main) {
     exports.stream.print("white\0red(red\0blue(blue\0)red\0)white");

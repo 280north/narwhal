@@ -2,11 +2,10 @@
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 // -- cadorn Christoph Dorn
 
-var system = require('./system');
-var util = require('./util');
-var json = require('./json');
-var fs = require('./file');
-var URI = require('./uri');
+var SYSTEM = require('system');
+var FILE = require('file');
+var URI = require('uri');
+var UTIL = require('./util');
 
 exports.resourceIfExists = function (path) {
     for (var i = 0, length = exports.order.length; i < length; i++) {
@@ -35,15 +34,15 @@ exports.main = function main() {
     // synthesis.
 
 
-    if (system.prefixes === undefined)
+    if (SYSTEM.prefixes === undefined)
         throw new Error(
-            "system.prefixes is undefined in packages loader. " +
-            "(engine=" + system.engine + ")"
+            "SYSTEM.prefixes is undefined in packages loader. " +
+            "(engine=" + SYSTEM.engine + ")"
         );
 
-    system.packages = system.packages || [];
+    SYSTEM.packages = SYSTEM.packages || [];
 
-    exports.load(system.packages.concat(system.prefixes));
+    exports.load(SYSTEM.packages.concat(SYSTEM.prefixes));
 
 };
 
@@ -91,11 +90,11 @@ exports.load = function (prefixes, options) {
 
     // preload modules
     analysis.preloadModules.forEach(function(id) {
-        system.log.debug("Preloading module: "+id);
+        SYSTEM.log.debug("Preloading module: "+id);
         try {
             require(id);
         } catch (e) {
-            system.log.warn("Error preloading module: " + id + " " + e);
+            SYSTEM.log.warn("Error preloading module: " + id + " " + e);
         }
     });
 
@@ -124,14 +123,14 @@ exports.read = function read(prefixes, catalog, usingCatalog, options) {
     var visitedPackages = {};
     var root;
 
-    prefixes = util.copy(prefixes);
+    prefixes = UTIL.copy(prefixes);
     if (typeof prefixes == 'string')
         prefixes = [prefixes];
 
     // queue-based breadth-first-search of the package
     // tree starting with the "root"
     while (prefixes.length) {
-        var queue = [fs.path(prefixes.shift())];
+        var queue = [FILE.path(prefixes.shift())];
         while (queue.length) {
 
             var item = queue.shift(),
@@ -139,7 +138,7 @@ exports.read = function read(prefixes, catalog, usingCatalog, options) {
                 name,
                 dependencyInfo = null;
 
-            if(util.isArrayLike(item)) {
+            if(UTIL.isArrayLike(item)) {
                 packageDirectory = item[0];
                 dependencyInfo = item[1];
                 name = dependencyInfo.name;
@@ -160,19 +159,19 @@ exports.read = function read(prefixes, catalog, usingCatalog, options) {
             }
 
             if (!packageDirectory.join('package.json').isFile()) {
-                //system.log.warn('No package.json in ' + packageDirectory);
+                //SYSTEM.log.warn('No package.json in ' + packageDirectory);
                 continue;
             }
 
             var packageDatum;
             try {
                 var packageDatumJson = packageDirectory.join('package.json').read({"charset": "UTF-8"});
-                packageDatum = json.parse(packageDatumJson || '{}');
+                packageDatum = JSON.parse(packageDatumJson || '{}');
                 
                 // look for local, user overrides
                 var local = packageDirectory.join('local.json');
                 if (local.isFile()) {
-                    local = json.parse(local.read({"charset": "UTF-8"}));
+                    local = JSON.parse(local.read({"charset": "UTF-8"}));
                     for (var name in local) {
                         if (Object.prototype.hasOwnProperty.call(local, name)) {
                             packageDatum[name] = local[name];
@@ -183,13 +182,13 @@ exports.read = function read(prefixes, catalog, usingCatalog, options) {
                 // overlay local package file
                 var localOverlay = packageDirectory.join('package.local.json');
                 if (localOverlay.isFile()) {
-                    util.deepUpdate(packageDatum, json.parse(localOverlay.read().toString()));
+                    UTIL.deepUpdate(packageDatum, JSON.parse(localOverlay.read().toString()));
                 }
                 
                 // If package declares it is a "using" package we do not load it into the system catalog.
                 // This feature is important as using packages do not namespace their modules in a way
                 // that is compatible with system packages.
-                if(util.has(packageDatum, "type") && packageDatum.type=="using") {
+                if(UTIL.has(packageDatum, "type") && packageDatum.type=="using") {
                     continue;
                 }
                 
@@ -262,7 +261,7 @@ exports.read = function read(prefixes, catalog, usingCatalog, options) {
                     root = packageDatum;
 
             } catch (exception) {
-                system.log.error("Could not load package '" + name + "'. " + exception);
+                SYSTEM.log.error("Could not load package '" + name + "'. " + exception);
             }
 
         }
@@ -303,7 +302,7 @@ var scan = function scan(catalog, name) {
     } catch (exception) {
         if (require.debug) {
             if (typeof exception == "string")
-                system.log.error(
+                SYSTEM.log.error(
                     "Threw away package " + name +
                     " because it depends on " + exception +
                     "."
@@ -413,10 +412,10 @@ exports.analyze = function analyze(analysis, catalog) {
             if (info.engines)
                 engines = info.engines;
                 
-            if(!system.engines)
-                throw "No system.engines set";
+            if(!SYSTEM.engines)
+                throw "No SYSTEM.engines set";
 
-            system.engines.forEach(function (engine) {
+            SYSTEM.engines.forEach(function (engine) {
                 var engineDir = info.directory.join(engines, engine, 'lib');
                 if (engineDir.isDirectory()) 
                     engineLibs.push(engineDir);
@@ -437,7 +436,7 @@ exports.analyze = function analyze(analysis, catalog) {
 
             var name = info.engine || info.name;
             analysis.engines[name] = info;
-            if (util.has(system.engines, name)) {
+            if (UTIL.has(SYSTEM.engines, name)) {
                 analysis.libPaths.unshift.apply(
                     analysis.libPaths,
                     info.lib
@@ -479,7 +478,7 @@ exports.normalizePackageDescriptor = function(descriptor) {
     if(!descriptor) return descriptor;
     var uri,
         path = "";
-    if(util.has(descriptor, "location") && descriptor.location) {
+    if(UTIL.has(descriptor, "location") && descriptor.location) {
         uri = URI.parse(descriptor.location);
         // location URL without trailing "/"
         // this will convert http://.../package to http://.../package/
@@ -487,15 +486,15 @@ exports.normalizePackageDescriptor = function(descriptor) {
         if(uri.file) {
             uri = URI.parse(descriptor.location + "/");
         }
-        if(util.has(descriptor, "path")) path = descriptor.path;
+        if(UTIL.has(descriptor, "path")) path = descriptor.path;
     } else
-    if(util.has(descriptor, "catalog") && descriptor.catalog) {
+    if(UTIL.has(descriptor, "catalog") && descriptor.catalog) {
         uri = URI.parse(descriptor.catalog);
-        if(util.has(descriptor, "name")) path = descriptor.name;
+        if(UTIL.has(descriptor, "name")) path = descriptor.name;
     } else {
         throw new Error("invalid package descriptor");
     }
-    var id = fs.Path(uri.domain + uri.path).dirname();
+    var id = FILE.Path(uri.domain + uri.path).dirname();
     if(path) id = id.join(path);
     id = id.valueOf();
     if(id.charAt(0)=="/") id = id.substr(1);
@@ -503,7 +502,7 @@ exports.normalizePackageDescriptor = function(descriptor) {
 }
 
 exports.readUsing = function(options, usingCatalog, basePath, subPath) {
-    subPath = subPath || fs.Path("./");
+    subPath = subPath || FILE.Path("./");
 
     var path = basePath.join(subPath);
 
@@ -516,12 +515,12 @@ exports.readUsing = function(options, usingCatalog, basePath, subPath) {
     if(path.join("package.json").exists()) {
 
         var packageDatumJson = path.join("package.json").read().toString();
-        var packageDatum = json.parse(packageDatumJson || '{}');
+        var packageDatum = JSON.parse(packageDatumJson || '{}');
 
         // overlay local package file
         var localOverlay = path.join('package.local.json');
         if (localOverlay.isFile()) {
-            util.deepUpdate(packageDatum, json.parse(localOverlay.read().toString()));
+            UTIL.deepUpdate(packageDatum, JSON.parse(localOverlay.read().toString()));
         }
         
         var id = subPath.valueOf().replace(/\\/g, "/");	// windows compatibility
@@ -538,24 +537,24 @@ exports.readUsing = function(options, usingCatalog, basePath, subPath) {
 }
 
 exports.updateUsingCatalog = function(options, usingCatalog, path, id, packageDatum) {
-    if(!util.has(usingCatalog, id)) {
+    if(!UTIL.has(usingCatalog, id)) {
         usingCatalog[id] = {
             "libPath": path.join("lib"),
             "directory": path,
             "packages": {}
         };
     }
-    if(util.has(packageDatum, "using")) {
-        util.every(packageDatum.using, function(pair) {
+    if(UTIL.has(packageDatum, "using")) {
+        UTIL.every(packageDatum.using, function(pair) {
             usingCatalog[id]["packages"][pair[0]] = exports.normalizePackageDescriptor(pair[1]);
         });
     }
-    if(util.has(options, "includeBuildDependencies") &&
+    if(UTIL.has(options, "includeBuildDependencies") &&
        options.includeBuildDependencies &&
-       util.has(packageDatum, "build") &&
-       util.has(packageDatum.build, "using")) {
+       UTIL.has(packageDatum, "build") &&
+       UTIL.has(packageDatum.build, "using")) {
 
-        util.every(packageDatum.build.using, function(pair) {
+        UTIL.every(packageDatum.build.using, function(pair) {
             usingCatalog[id]["packages"][pair[0]] = exports.normalizePackageDescriptor(pair[1]);
         });
     }
@@ -607,7 +606,7 @@ exports.Author = function (author) {
         return new exports.Author(author);
     if (typeof author == "string") {
         var match = author.match(exports.Author.regexp);
-        this.name = util.trim(match[1]);
+        this.name = UTIL.trim(match[1]);
         this.url = match[2];
         this.email = match[3];
     } else {

@@ -1,4 +1,9 @@
 
+var SYSTEM = require("system");
+SYSTEM.stderr.print(
+"Warning: the promise module is deprecated. Please contact Kris Zyp for\n" +
+"information about packages that provide alternatives.");
+
 // -- kriszyp Kris Zyp
 
 // this is based on the CommonJS spec for promises: 
@@ -515,3 +520,4 @@ exports.convertNodeAsyncFunction = function(asyncFunction){
         return deferred.promise;
     };
 };
+
