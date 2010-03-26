@@ -11,7 +11,7 @@
 // -- ashb Ash Berlin 
 //   contributions annotated
 
-var util = require("util");
+var util = require("narwhal/util");
 var system = require("system");
 
 // 1. The assert module provides functions that throw

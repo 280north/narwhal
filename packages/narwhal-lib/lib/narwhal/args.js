@@ -3,10 +3,10 @@
 // -- tlrobinson Tom Robinson
 
 var os = require('os');
-var util = require('util');
-var stream = require('term').stream;
 var system = require('system');
 var file = require('file');
+var util = require('narwhal/util');
+var stream = require('narwhal/term').stream;
 
 exports.UsageError = function (message) {
     this.name = "UsageError";

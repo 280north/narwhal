@@ -3,7 +3,7 @@
 // reference: http://ascii-table.com/ansi-escape-sequences-vt-100.php
 
 var SYSTEM = require('system');
-var UTIL = require('util');
+var UTIL = require('narwhal/util');
 
 var terms = [
     'ansi',

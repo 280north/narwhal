@@ -20,7 +20,7 @@
 // ported to Chiron and Narwhal by:
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
-var util = require("util");
+var util = require("narwhal/util");
 
 /*** parseMimeType
     Carves up a mime-type and returns an Array of the

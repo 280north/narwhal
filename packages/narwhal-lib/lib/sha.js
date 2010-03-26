@@ -9,7 +9,7 @@
     Ported to Chiron and Narwhal by Kris Kowal
 
 */
-var util = require('./util');
+var util = require('narwhal/util');
 var struct = require('./struct');
 
 /*** hash

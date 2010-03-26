@@ -27,7 +27,7 @@
 
 */
 
-var util = require('./util');
+var util = require('narwhal/util');
 var struct = require('./struct');
 
 /*** hash

@@ -74,7 +74,7 @@ URI.prototype.toString = function () {
 }
 
 URI.parse = function(uri) {
-    require("narwhal").deprecated("URI.parse is deprecated, use require('uri').parse");
+    require("narwhal/deprecated").deprecated("URI.parse is deprecated, use require('uri').parse");
     return new URI(uri);
 }
 

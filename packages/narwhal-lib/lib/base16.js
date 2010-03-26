@@ -2,7 +2,7 @@
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 // -- cadorn Christoph Dorn
 
-var util = require('util');
+var util = require('narwhal/util');
 var binary = require('binary');
 var struct = require('struct');
 

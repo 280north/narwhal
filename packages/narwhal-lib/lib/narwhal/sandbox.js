@@ -322,7 +322,7 @@ exports.sandbox = function(main, system, options) {
         "sandbox's 'loader' object."
     );
     if (prefix)
-        loader = require("loader/prefix").PrefixLoader(prefix, loader);
+        loader = require("narwhal/loader/prefix").PrefixLoader(prefix, loader);
     var sandbox = exports.Sandbox({
         modules: modules,
         loader: loader,

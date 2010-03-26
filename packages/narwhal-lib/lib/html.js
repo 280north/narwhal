@@ -31,7 +31,7 @@ exports.stripTags = function (str) {
 
 // deprecated
 exports.escapeHTML = function (str) {
-    require("narwhal").deprecation("html.escapeHTML is deprecated.");
+    require("narwhal/deprecated").deprecated("html.escapeHTML is deprecated.");
     return exports.escape(str);
 };
 

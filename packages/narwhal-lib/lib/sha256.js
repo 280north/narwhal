@@ -3,7 +3,7 @@
 // Ported to Chiron and Narwhal by Kris Kowal
 
 var struct = require('./struct');
-var util = require('./util');
+var util = require('./narwhal/util');
 
 /*** hash
 */

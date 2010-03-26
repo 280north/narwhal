@@ -4,9 +4,9 @@
 
 var SYSTEM = require('system');
 var FS = require('file');
-var UTIL = require('util');
 var ASSERT = require("assert");
-var TERM = require("term");
+var UTIL = require('narwhal/util');
+var TERM = require("narwhal/term");
 var jsDump = require("test/jsdump").jsDump;
 
 var ARGS = require('args');

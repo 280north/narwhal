@@ -5,7 +5,7 @@
 // with contributions:
 // -- cadorn Christoph Dorn
 
-var util = require('./util');
+var util = require('narwhal/util');
 
 /*** polynomials
 */

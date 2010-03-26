@@ -1,7 +1,7 @@
 
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
-var util = require("util");
+var util = require("narwhal/util");
 var binary = require("binary");
 
 /*** alphabet16Upper

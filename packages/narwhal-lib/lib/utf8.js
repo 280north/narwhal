@@ -1,7 +1,7 @@
 
 // ported by Kris Kowal
 
-var binary = require('./binary');
+var binary = require('binary');
 
 /*** encode
     converts a Unicode character string into a UTF-8
