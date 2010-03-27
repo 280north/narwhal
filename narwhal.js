@@ -17,6 +17,16 @@ if (modules.fs) {
     var file = modules.file;
 }
 
+// XXX: migration for the split between engine and system
+if (modules.engine) {
+    var engine = modules.engine;
+    for (var name in engine) {
+        system[name] = engine[name];
+    }
+}
+// XXX: migration for the rename of evaluate to Module
+system.evaluate = system.evaluate || system.Module;
+
 // XXX: migration step for deprecated engines
 // the old system.evaluate accepts a tuple and
 // the new system.evaluate accepts an object
