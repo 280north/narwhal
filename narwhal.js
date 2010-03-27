@@ -18,14 +18,18 @@ if (modules.fs) {
 }
 
 // XXX: migration for the split between engine and system
+// is the engine splits system/engine
 if (modules.engine) {
     var engine = modules.engine;
     for (var name in engine) {
         system[name] = engine[name];
     }
 }
+// if the engine does not split system/engine
+modules.engine = modules.engine || modules.system;
 // XXX: migration for the rename of evaluate to Module
 system.evaluate = system.evaluate || system.Module;
+system.Module = system.Module || system.evaluate;
 
 // XXX: migration step for deprecated engines
 // the old system.evaluate accepts a tuple and
@@ -202,6 +206,11 @@ if (!wasVerbose && system.verbose) {
         system.print("| " + name);
     });
 }
+
+// strict mode causes deprecation errors (as registered with the
+// narwhal/deprecation module) to throw errors so they can be
+// traced.
+modules.engine.strict = options.strict;
 
 // find the program module and its prefix
 var program;
