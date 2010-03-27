@@ -5,7 +5,6 @@ var FS = require("file");
 var TUSK = require("../tusk");
 var UTIL = require("util");
 var URI = require("uri");
-var HTTP = require("http-client");
 var JSON = require("json");
 var ASSERT = require("assert");
 var PACKAGES = require("packages");
