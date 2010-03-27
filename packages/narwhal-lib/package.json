@@ -1,5 +1,5 @@
 {
-    "name": "narwhal",
+    "name": "narwhal-lib",
     "version": "0.2.2",
     "description": "A general purpose JavaScript platform",
     "keywords": ["javascript", "engine", "platform"],
@@ -22,10 +22,6 @@
         "Nathan Stott (http://nathan.whiteboard-it.com) <nathan.stott@whiteboard-it.com>",
         "Toby Ho (http://tobyho.com) <airportyh@gmail.com>"
     ],
-    "dependencies": [
-        "narwhal-lib"
-    ],
-    "lib": ["lib"],
     "lean": {
         "include" : [
             "engines/default/**/*",

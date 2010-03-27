@@ -1,0 +1,10 @@
+{
+    "name": "zip",
+    "author": "Tom Robinson (http://tlrobinson.net/)",
+    "description": "An implementation of zip for JavaScript",
+    "keywords": [
+        "zip",
+        "compression"
+    ],
+    "version": "0.1"
+}

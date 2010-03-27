@@ -2914,12 +2914,8 @@
             "source": {
                 "type": "github",
                 "user": "tlrobinson",
-<<<<<<< HEAD
                 "name": "zipjs",
                 "packageName": "zip",
-=======
-                "packageName": "zipjs",
->>>>>>> experimental
                 "descriptorUrl": "http://github.com/tlrobinson/zipjs/raw/master/package.json",
                 "url": "http://github.com/tlrobinson/zipjs/zipball/master",
                 "archive": "zip"

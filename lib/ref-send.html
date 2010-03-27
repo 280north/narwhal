@@ -1,0 +1,44 @@
+<script src="ref-send.js"></script>
+<script>
+    (function () {
+
+        var deferred = Q.Deferred();
+        var promise = deferred.promise; 
+        
+
+        /*
+        var delay = function (timeout) {
+            var deferred = Q.Deferred();
+            setTimeout(deferred.resolve, timeout);
+            return deferred.promise;
+        };
+
+        Q.when(delay(1000), function () {
+            console.log('here');
+        });
+
+        Q.when(Q.Method("get")({"a": 10}, "a"), function (value) {
+            console.log('indirect: ' + value);
+        });
+
+        var p = Q.get({a:10}, "a");
+        Q.when(p, function (value) {
+            console.log('direct: ' + value);
+        });
+        */
+
+        // this should be an error to prevent it from being performed
+        Q.Method("when")(delay(1000), function () {
+            console.log('there');
+        });
+
+        /*
+        // Q prevents promises from being unsafely observed without the use of
+        // a Q.Method like Q.when or Q.get.
+        delay(1000)("when", function () {
+            console.log('here');
+        });
+        */
+
+    })();
+</script>

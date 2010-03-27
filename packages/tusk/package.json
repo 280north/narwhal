@@ -1,12 +1,12 @@
 {
-    "name": "narwhal",
+    "name": "tusk",
     "version": "0.2.2",
-    "description": "A general purpose JavaScript platform",
-    "keywords": ["javascript", "engine", "platform"],
-    "author": "Tom Robinson (http://tlrobinson.net/) <tom@280north.com>",
+    "description": "A package manager",
+    "keywords": ["javascript", "packages", "package-manager"],
+    "author": "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
     "contributors": [
-        "Tom Robinson (http://tlrobinson.net/) <tom@280north.com>",
         "Kris Kowal (http://askawizard.blogspot.com/) <kris.kowal@cixar.com>",
+        "Tom Robinson (http://tlrobinson.net/) <tom@280north.com>",
         "George Moschovitis (http://blog.gmosx.com/)",
         "Kevin Dangoor (http://www.blueskyonmars.com/)",
         "Hannes Wallnöfer",
@@ -23,17 +23,12 @@
         "Toby Ho (http://tobyho.com) <airportyh@gmail.com>"
     ],
     "dependencies": [
-        "narwhal-lib"
+        "narwhal-lib",
+        "zip"
     ],
-    "lib": ["lib"],
     "lean": {
         "include" : [
-            "engines/default/**/*",
-            "engines/rhino/bootstrap.js",
-            "engines/rhino/lib/**/*",
-            "engines/rhino/package.json",
             "lib/**/*",
-            "narwhal.js",
             "package.json"
         ]
     }

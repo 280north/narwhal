@@ -17,6 +17,20 @@ if (modules.fs) {
     var file = modules.file;
 }
 
+// XXX: migration for the split between engine and system
+// is the engine splits system/engine
+if (modules.engine) {
+    var engine = modules.engine;
+    for (var name in engine) {
+        system[name] = engine[name];
+    }
+}
+// if the engine does not split system/engine
+modules.engine = modules.engine || modules.system;
+// XXX: migration for the rename of evaluate to Module
+system.evaluate = system.evaluate || system.Module;
+system.Module = system.Module || system.evaluate;
+
 // XXX: migration step for deprecated engines
 // the old system.evaluate accepts a tuple and
 // the new system.evaluate accepts an object
@@ -46,7 +60,7 @@ global.system = system;
 global.print = system.print;
 
 // this only works for modules with no dependencies and a known absolute path
-var requireFake = function(id, path, force) {
+var requireFake = function (id, path, force) {
     // when a real require is ready, use it instead
     if (require)
         require(id);
@@ -71,26 +85,33 @@ var requireFake = function(id, path, force) {
     return exports;
 };
 
-var fakeJoin = function() {
+var fakeJoin = function () {
 	var delim = "/";
-	if(/\bwindows\b/i.test(system.os) ||
-	   /\bwinnt\b/i.test(system.os)) {
+	if (/\bwin(dows|nt)\b/i.test(system.os))
 		delim = "\\";
-	}
 	return Array.prototype.join.call(arguments, delim);
 }
 
 // bootstrap sandbox and loader modules
-var loader = requireFake("loader", fakeJoin(system.prefix, "lib", "loader.js"));
-var multiLoader = requireFake("loader/multi", fakeJoin(system.prefix, "lib", "loader", "multi.js"));
-var sandbox = requireFake("sandbox", fakeJoin(system.prefix, "lib", "sandbox.js"));
+var loader = requireFake("loader", fakeJoin(
+    system.prefix, "packages", "narwhal-lib", "lib", "narwhal", "loader.js"
+));
+var multiLoader = requireFake("loader/multi", fakeJoin(
+    system.prefix, "packages", "narwhal-lib", "lib", "narwhal", "loader", "multi.js"
+));
+var sandbox = requireFake("sandbox", fakeJoin(
+    system.prefix, "packages", "narwhal-lib", "lib", "narwhal", "sandbox.js"
+));
 // bootstrap file module
-requireFake("file", fakeJoin(system.prefix, "lib", "file-bootstrap.js"), "force");
+requireFake("file", fakeJoin(
+    system.prefix, "lib", "file-bootstrap.js"
+), "force");
 
 // construct the initial paths
 var paths = [];
 // XXX system.packagePrefixes deprecated in favor of system.prefixes
 system.prefixes = system.prefixes || system.packagePrefixes || [system.prefix];
+system.prefixes.push(fakeJoin(system.prefix, "packages", "narwhal-lib"));
 var prefixes = system.prefixes.slice();
 if (system.enginePrefix)
     prefixes.unshift(system.enginePrefix);
@@ -186,6 +207,11 @@ if (!wasVerbose && system.verbose) {
     });
 }
 
+// strict mode causes deprecation errors (as registered with the
+// narwhal/deprecation module) to throw errors so they can be
+// traced.
+modules.engine.strict = options.strict;
+
 // find the program module and its prefix
 var program;
 if (system.args.length && !options.interactive && !options.main) {
@@ -212,7 +238,7 @@ system.packages = options.packages;
 // load packages
 var packages;
 if (!options.noPackages) {
-    packages = require("packages");
+    packages = require("narwhal/packages");
     packages.main();
 } else {
     packages = {
@@ -265,9 +291,9 @@ if (options.interactive) {
     }
 }
 
-// send an unload event if that module has been required
-if (require.loader.isLoaded("unload")) {
-    require("unload").send();
+// send an event-loop-hook event if that module has been required
+if (require.loader.isLoaded("event-loop-hook")) {
+    require("event-loop-hook").emit();
 }
 
 })
