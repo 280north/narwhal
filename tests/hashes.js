@@ -1,7 +1,7 @@
 
 var assert = require('assert');
 var struct = require('struct');
-var util = require('util');
+var util = require('narwhal/util');
 
 var raw = "Hello, World!";
 var md4 = require('md4');
@@ -11,27 +11,27 @@ var sha256 = require('sha256');
 var crc32 = require('crc32');
 
 exports.testMd4 = function () {
-    assert.equal(md4.hash("test hash").toString(16), "549089516e75bd13c41ff098fbb58d5e");
-    assert.equal(md4.hash("abc").toString(16), "a448017aaf21d8525fc10ae87aa6729d");
+    assert.equal(md4.hash("test hash").toString(16), "549089516E75BD13C41FF098FBB58D5E");
+    assert.equal(md4.hash("abc").toString(16), "A448017AAF21D8525FC10AE87AA6729D");
 };
 
 exports.testMd5 = function () {
-    assert.equal(md5.hash(raw).toString(16), "65a8e27d8879283831b664bd8b7f0ad4", 'md5');
-    assert.equal(md5.hash("message digest").toString(16), "f96b697d7cb7938d525a2f31aaf161d0");
-    assert.equal(md5.hash("abc").toString(16), "900150983cd24fb0d6963f7d28e17f72");
+    assert.equal(md5.hash(raw).toString(16), "65A8E27D8879283831B664BD8B7F0AD4", 'md5');
+    assert.equal(md5.hash("message digest").toString(16), "F96B697D7CB7938D525A2F31AAF161D0");
+    assert.equal(md5.hash("abc").toString(16), "900150983CD24FB0D6963F7D28E17F72");
 };
 
 exports.testSha = function () {
-    assert.equal(sha.hash(raw).toString(16), "0a0a9f2a6772942557ab5355d76af442f8f65e01", 'sha1');
-    assert.equal(sha.hash("160-bit hash").toString(16), "90d925d853c3d35cd54070bb75280fefad9de9e7");
+    assert.equal(sha.hash(raw).toString(16), "0A0A9F2A6772942557AB5355D76AF442F8F65E01", 'sha1');
+    assert.equal(sha.hash("160-bit hash").toString(16), "90D925D853C3D35CD54070BB75280FEFAD9DE9E7");
 };
 
 exports.testSha256 = function () {
-    assert.equal(sha256.hash(raw).toString(16), "dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f", 'sha256');
+    assert.equal(sha256.hash(raw).toString(16), "DFFD6021BB2BD5B0AF676290809EC3A53191DD81C7F70A4B28688A362182986F", 'sha256');
 };
 
 exports.testCrc32 = function () {
-    assert.equal(crc32.hash(raw), -(parseInt("ec4ac3d0", 16) + 1) ^ -1, 'crc32');
+    assert.equal(crc32.hash(raw), -(parseInt("EC4AC3D0", 16) + 1) ^ -1, 'crc32');
 };
 
 /*
