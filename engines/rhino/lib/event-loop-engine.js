@@ -11,7 +11,7 @@ var loopLevel = 0,
     shuttingDown, 
     queue = new java.util.concurrent.LinkedBlockingQueue();
 
-require("unload").when(function () {
+require("event-loop-hook").when(function () {
     if (exports.hasPendingEvents())
         exports.enterEventLoop(function () {
             exports.shutdown();

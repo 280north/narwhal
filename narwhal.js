@@ -272,9 +272,9 @@ if (options.interactive) {
     }
 }
 
-// send an unload event if that module has been required
-if (require.loader.isLoaded("unload")) {
-    require("unload").emit();
+// send an event-loop-hook event if that module has been required
+if (require.loader.isLoaded("event-loop-hook")) {
+    require("event-loop-hook").emit();
 }
 
 })
