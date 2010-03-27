@@ -67,10 +67,12 @@ exports.addJavaPaths = function addJavaPaths(javaPaths) {
 
     try {
         /* intall jar loader */
-        //Packages.java.lang.Thread.currentThread().setContextClassLoader(loader);
+        Packages.java.lang.Thread.currentThread().setContextClassLoader(loader);
         context.setApplicationClassLoader(loader);
         // must explicitly be made global when each module has it's own scope
-        global.Packages = new Packages(loader);
+        // global.Packages = new Packages(loader);
+        // re-init the top-level java packages objects with the new classloader
+        Packages.org.mozilla.javascript.NativeJavaTopPackage.init(context, global, false);
         installed = true;
     } catch (e) {
         print("warning: couldn't install jar loader: " + e);
