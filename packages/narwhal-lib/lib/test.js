@@ -41,7 +41,12 @@ function getStackTrace(e) {
 exports.run = function(test, log) {
     var options = parser.parse([module.path].concat(SYSTEM.args));
     if (!test) {
-        var id = FS.canonical(options.args.shift());
+        var fileName = options.args.shift();
+        if (!fileName) {
+            parser.error(options, "You must specify a file to run as a test module.");
+            parser.exit(-1);
+        }
+        var id = FS.canonical(fileName);
         test = require(id);
     }
 
