@@ -464,7 +464,7 @@
             "version": [
                 "0",
                 "2",
-                "3"
+                "4"
             ],
             "name": "jack",
             "descriptorUrl": "http://github.com/280north/jack/raw/master/package.json",
@@ -505,9 +505,12 @@
             ],
             "lib": "lib",
             "main": "examples/simple/jackconfig",
-            "lean": [
-                "lib"
-            ],
+            "lean": {
+                "include": [
+                    "lib/**/*",
+                    "package.json"
+                ]
+            },
             "descriptorUrl": "http://github.com/gmosx/nitro/raw/master/package.json",
             "packageUrl": "http://github.com/gmosx/nitro/zipball/master",
             "packageArchive": "zip",
@@ -765,6 +768,12 @@
                 }
             ],
             "lib": "lib",
+            "lean": {
+                "include": [
+                    "lib/**/*",
+                    "package.json"
+                ]
+            },
             "descriptorUrl": "http://github.com/gmosx/appengine/raw/master/package.json",
             "packageUrl": "http://github.com/gmosx/appengine/zipball/master",
             "packageArchive": "zip",
@@ -1653,48 +1662,6 @@
             ],
             "version": []
         },
-        "mongodb": {
-            "name": "mongodb",
-            "description": "API to access MongoDB, a schema-free database of JSON documents",
-            "keywords": [
-                "mongo",
-                "database",
-                "document",
-                "mongodb",
-                "db"
-            ],
-            "author": {
-                "name": "Sergi Mansilla",
-                "url": "http://www.sergimansilla.com",
-                "email": "sergi.mansilla@gmail.com"
-            },
-            "jars": [
-                "mongo-1.2.jar"
-            ],
-            "email": "sergi.mansilla@gmail.com",
-            "dependencies": [],
-            "lib": "lib",
-            "descriptorUrl": "http://github.com/mrclash/narwhal-mongodb/raw/master/package.json",
-            "packageUrl": "http://github.com/mrclash/narwhal-mongodb/zipball/master",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "mrclash",
-                "name": "narwhal-mongodb",
-                "packageName": "mongodb",
-                "descriptorUrl": "http://github.com/mrclash/narwhal-mongodb/raw/master/package.json",
-                "url": "http://github.com/mrclash/narwhal-mongodb/zipball/master",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "Sergi Mansilla",
-                    "url": "http://www.sergimansilla.com",
-                    "email": "sergi.mansilla@gmail.com"
-                }
-            ],
-            "version": []
-        },
         "underscore": {
             "name": "underscore",
             "description": "Functional programming aid for JavaScript. Works well with jQuery.",
@@ -1795,11 +1762,6 @@
                 "name": "280 North, Inc.",
                 "url": "http://280north.com/"
             },
-            "version": [
-                "0",
-                "7",
-                "9"
-            ],
             "contributors": [
                 {
                     "name": "280 North, Inc.",
@@ -1822,17 +1784,20 @@
                     "url": "http://contributors.cappuccino.org/"
                 }
             ],
+            "cappuccino-revision": "e7199780799d27389752a038fc55c3211e740ead",
+            "cappuccino-timestamp": 1270590371528,
+            "version": [
+                "0",
+                "8",
+                "0"
+            ],
             "descriptorUrl": "http://github.com/280north/objective-j-package/raw/master/package.json",
-            "packageUrl": "http://github.com/280north/objective-j-package/zipball/master",
-            "packageArchive": "zip",
+            "packageUrl": "http://cappuccino.org/packages/objective-j",
             "source": {
-                "type": "github",
-                "user": "280north",
-                "name": "objective-j-package",
-                "packageName": "objective-j",
+                "type": "inline",
                 "descriptorUrl": "http://github.com/280north/objective-j-package/raw/master/package.json",
-                "url": "http://github.com/280north/objective-j-package/zipball/master",
-                "archive": "zip"
+                "url": "http://cappuccino.org/packages/objective-j",
+                "packageName": "objective-j"
             }
         },
         "cappuccino": {
@@ -1855,11 +1820,6 @@
                 "name": "280 North, Inc.",
                 "url": "http://280north.com/"
             },
-            "version": [
-                "0",
-                "7",
-                "9"
-            ],
             "objj-frameworks": [
                 "Frameworks"
             ],
@@ -1888,17 +1848,20 @@
                     "url": "http://contributors.cappuccino.org/"
                 }
             ],
+            "cappuccino-revision": "e7199780799d27389752a038fc55c3211e740ead",
+            "cappuccino-timestamp": 1270590371812,
+            "version": [
+                "0",
+                "8",
+                "0"
+            ],
             "descriptorUrl": "http://github.com/280north/cappuccino-package/raw/master/package.json",
-            "packageUrl": "http://github.com/280north/cappuccino-package/zipball/master",
-            "packageArchive": "zip",
+            "packageUrl": "http://cappuccino.org/packages/cappuccino",
             "source": {
-                "type": "github",
-                "user": "280north",
-                "name": "cappuccino-package",
-                "packageName": "cappuccino",
+                "type": "inline",
                 "descriptorUrl": "http://github.com/280north/cappuccino-package/raw/master/package.json",
-                "url": "http://github.com/280north/cappuccino-package/zipball/master",
-                "archive": "zip"
+                "url": "http://cappuccino.org/packages/cappuccino",
+                "packageName": "cappuccino"
             }
         },
         "ojunit": {
@@ -2566,7 +2529,7 @@
             "version": [
                 "0",
                 "0",
-                "1"
+                "2"
             ],
             "descriptorUrl": "http://github.com/280north/commonjs-closure-compiler/raw/master/package.json",
             "packageUrl": "http://github.com/280north/commonjs-closure-compiler/zipball/master",
@@ -2622,7 +2585,7 @@
             },
             "version": [
                 "0",
-                "1",
+                "2",
                 "2"
             ],
             "descriptorUrl": "http://github.com/creationix/haml-js/raw/master/package.json",
@@ -2733,6 +2696,12 @@
             "email": "george.moschovitis@gmail.com",
             "dependencies": [],
             "lib": "lib",
+            "lean": {
+                "include": [
+                    "lib/**/*",
+                    "package.json"
+                ]
+            },
             "descriptorUrl": "http://github.com/gmosx/normal-template/raw/master/package.json",
             "packageUrl": "http://github.com/gmosx/normal-template/zipball/master",
             "packageArchive": "zip",
