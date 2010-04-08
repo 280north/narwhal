@@ -192,14 +192,14 @@
             "user": "kriskowal"
         },
         "objective-j": {
-            "type": "github",
-            "user": "280north",
-            "name": "objective-j-package"
+            "type": "inline",
+            "descriptorUrl": "http://github.com/280north/objective-j-package/raw/master/package.json",
+            "url": "http://cappuccino.org/packages/objective-j"
         },
         "cappuccino": {
-            "type": "github",
-            "user": "280north",
-            "name": "cappuccino-package"
+            "type": "inline",
+            "descriptorUrl": "http://github.com/280north/cappuccino-package/raw/master/package.json",
+            "url": "http://cappuccino.org/packages/cappuccino"
         },
         "ojunit": {
             "type": "github",
