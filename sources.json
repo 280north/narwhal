@@ -180,7 +180,7 @@
         },
         "mongodb": {
             "type": "github",
-            "user": "mrclash",
+            "user": "sergi",
             "name": "narwhal-mongodb"
         },
         "underscore": {
