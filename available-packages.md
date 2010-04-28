@@ -2,7 +2,11 @@
 layout: default
 title: "available packages"
 ---
-Run `tusk install name` to install any of the available packages:
+
+Available Packages
+==================
+
+You can download and install packages using the `tusk` application that comes with Narwhal.  Check out `tusk help` for details.  These are some of the packages:
 
 * `activejs`: The Cross Platform JavaScript MVC, http://activejs.org/
 * `appengine`: A port of the Python Google App Engine SDK to JavaScript
