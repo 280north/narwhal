@@ -2,6 +2,8 @@
 layout: default
 title: "available packages"
 ---
+Run `tusk install name` to install any of the available packages:
+
 * `activejs`: The Cross Platform JavaScript MVC, http://activejs.org/
 * `appengine`: A port of the Python Google App Engine SDK to JavaScript
 * `appengine-java-sdk`: Java components necessary for deploying applications on Google's App Engine.
