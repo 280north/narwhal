@@ -7,13 +7,13 @@ Download a version of Narwhal then follow the [quick start guide](http://narwhal
 Bleeding Edge
 -------------
 
-* [Download zip](http://github.com/tlrobinson/narwhal/zipball/master)
-* [Download tar](http://github.com/tlrobinson/narwhal/tarball/master)
+* [Download zip](http://github.com/280north/narwhal/zipball/master)
+* [Download tar](http://github.com/280north/narwhal/tarball/master)
 
-* Git: `git clone git://github.com/tlrobinson/narwhal.git`
+* Git: `git clone git://github.com/280north/narwhal.git`
 
-* [View tree](http://github.com/tlrobinson/narwhal/tree/master)
-* [View commit](http://github.com/tlrobinson/narwhal/commit/master)
+* [View tree](http://github.com/280north/narwhal/tree/master)
+* [View commit](http://github.com/280north/narwhal/commit/master)
 
 
 Releases
@@ -21,5 +21,4 @@ Releases
 
 <div id="releases-list">Loading...</div>
 <script type="text/javascript" charset="utf-8" src="js/releases.js"></script>
-<script type="text/javascript" charset="utf-8" src="http://github.com/api/v2/json/repos/show/tlrobinson/narwhal/tags?callback=showreleases"></script>
-
+<script type="text/javascript" charset="utf-8" src="http://github.com/api/v2/json/repos/show/280north/narwhal/tags?callback=showreleases"></script>
