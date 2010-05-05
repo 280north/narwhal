@@ -2860,6 +2860,43 @@
                 }
             ],
             "dependencies": []
+        },
+        "jison": {
+            "name": "jison",
+            "author": {
+                "name": "Zach Carter",
+                "url": "http://zaa.ch/"
+            },
+            "description": "A parser generator modeled after Bison.",
+            "keywords": [
+                "jison",
+                "parser",
+                "lexer"
+            ],
+            "version": [
+                "0",
+                "1"
+            ],
+            "descriptorUrl": "http://github.com/zaach/jison/package.json",
+            "packageUrl": "http://github.com/zaach/jison/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "zaach",
+                "name": "jison",
+                "ref": "master",
+                "packageName": "jison",
+                "descriptorUrl": "http://github.com/zaach/jison/package.json",
+                "url": "http://github.com/zaach/jison/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Zach Carter",
+                    "url": "http://zaa.ch/"
+                }
+            ],
+            "dependencies": []
         }
     }
 }
