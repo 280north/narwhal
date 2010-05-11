@@ -71,20 +71,20 @@ URI.prototype.from = function (other) {
  */
 URI.prototype.toString = function () {
     return exports.format(this);
-}
+};
 
 URI.parse = function(uri) {
     require("narwhal/deprecated").deprecated("URI.parse is deprecated, use require('uri').parse");
     return new URI(uri);
-}
+};
 
 exports.unescape = URI.unescape = function(uri, plus) {
     return decodeURI(uri).replace(/\+/g, " ");
-}
+};
 
 exports.unescapeComponent = URI.unescapeComponent = function(uri, plus) {
     return decodeURIComponent(uri).replace(/\+/g, " ");
-}
+};
 
 // from Chiron's HTTP module:
 
@@ -166,7 +166,7 @@ exports.strictExpression = new RegExp( /* url */
 
 /**** Parser
     returns a URI parser function given
-    a regular expression that renders 
+    a regular expression that renders
     `expressionKeys` and returns an `Object`
     mapping all `keys` to values.
 */
@@ -179,8 +179,9 @@ exports.Parser = function (expression) {
 
         var items = this instanceof URI ? this : Object.create(URI.prototype);
         var parts = expression.exec(url);
+        var i;
 
-        for (var i = 0; i < parts.length; i++) {
+        for (i = 0; i < parts.length; i++) {
             items[exports.expressionKeys[i]] = parts[i] ? parts[i] : "";
         }
 
@@ -193,7 +194,7 @@ exports.Parser = function (expression) {
 
         /* normalize */
         var directories = [];
-        for (var i = 0; i < items.directories.length; i++) {
+        for (i = 0; i < items.directories.length; i++) {
             var directory = items.directories[i];
             if (directory == '.') {
             } else if (directory == '..') {
@@ -233,11 +234,11 @@ exports.format = function (object) {
         object.domain;
     var userInfo = (
             object.user ||
-            object.password 
+            object.password
         ) ?
         (
-            (object.user || "") + 
-            (object.password ? ":" + object.password : "") 
+            (object.user || "") +
+            (object.password ? ":" + object.password : "")
         ) :
         object.userInfo;
     var authority = (
@@ -246,7 +247,7 @@ exports.format = function (object) {
             object.port
         ) ? (
             (userInfo ? userInfo + "@" : "") +
-            (domain || "") + 
+            (domain || "") +
             (object.port ? ":" + object.port : "")
         ) :
         object.authority;
@@ -276,7 +277,7 @@ exports.format = function (object) {
     a relative location and a source location.
 */
 exports.resolveObject = function (source, relative) {
-    if (!source) 
+    if (!source)
         return relative;
 
     source = exports.parse(source);

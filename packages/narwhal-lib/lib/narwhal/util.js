@@ -10,7 +10,7 @@
 // that is, that return a function that can be tested
 // against various objects if they're only "partially
 // completed", or fewer arguments than needed are used.
-// 
+//
 // this enables the idioms:
 //      [1, 2, 3].every(lt(4)) eq true
 //      [1, 2, 3].map(add(1)) eq [2, 3, 4]
@@ -302,7 +302,7 @@ exports.isArguments = function (object) {
     if (
         !typeof object == "object" ||
         !Object.prototype.hasOwnProperty.call(object, 'callee') ||
-        !object.callee || 
+        !object.callee ||
         // It should be a Function object ([[Class]] === 'Function')
         Object.prototype.toString.call(object.callee) !== '[object Function]' ||
         typeof object.length != 'number'
@@ -462,7 +462,7 @@ exports.get = exports.operator('get', 2, function (object, key, value) {
             throw new Error("KeyError: " + exports.repr(key));
         }
         return object[key];
-    } 
+    }
     throw new Error("Object does not have keys: " + exports.repr(object));
 });
 
@@ -593,7 +593,7 @@ exports.all = exports.operator('all', 1, function (array) {
     return true;
 });
 
-exports.any = exports.operator('all', 1, function (array) {
+exports.any = exports.operator('any', 1, function (array) {
     array = exports.array.coerce(array);
     for (var i = 0; i < array.length; i++)
         if (array[i])
@@ -673,7 +673,7 @@ exports.eq = exports.operator('eq', 2, function (a, b, stack) {
             a.global === b.global &&
             a.ignoreCase === b.ignoreCase &&
             a.multiline === b.multiline;
-    if (typeof a === "function") { 
+    if (typeof a === "function") {
         var caller = stack[stack.length - 1];
         // XXX what is this for?  can it be axed?
         // it comes from the "equiv" project code
@@ -709,15 +709,15 @@ exports.gt = exports.operator('gt', 2, function (a, b) {
     return !(exports.lt(a, b) || exports.eq(a, b));
 });
 
-exports.le = exports.operator(2, 'le', function (a, b) {
+exports.le = exports.operator('le', 2, function (a, b) {
     return exports.lt(a, b) || exports.eq(a, b);
 });
 
-exports.ge = exports.operator(2, 'ge', function (a, b) {
+exports.ge = exports.operator('ge', 2, function (a, b) {
     return !exports.lt(a, b);
 });
 
-exports.mul = exports.operator(2, 'mul', function (a, b) {
+exports.mul = exports.operator('mul', 2, function (a, b) {
     if (typeof a == "string")
         return exports.string.mul(a, b);
     return a * b;
@@ -758,7 +758,7 @@ exports.by = function (relation) {
     return comparator;
 };
 
-exports.compare = exports.operator(2, 'compare', function (a, b) {
+exports.compare = exports.operator('compare', 2, function (a, b) {
     if (exports.no(a) !== exports.no(b))
         return exports.no(b) - exports.no(a);
     if (typeof a === "number" && typeof b === "number")
@@ -813,11 +813,11 @@ exports.reversed = function (array) {
     return exports.reverse(exports.array.copy(array));
 };
 
-exports.hash = exports.operator(1, 'hash', function (object) {
+exports.hash = exports.operator('hash', 1, function (object) {
     return '' + object;
 });
 
-exports.unique = exports.operator(1, 'unique', function (array, eq, hash) {
+exports.unique = exports.operator('unique', 1, function (array, eq, hash) {
     var visited = {};
     if (!eq) eq = exports.eq;
     if (!hash) hash = exports.hash;
@@ -834,7 +834,7 @@ exports.unique = exports.operator(1, 'unique', function (array, eq, hash) {
 
 // string
 
-exports.string = exports.operator(1, 'toString', function (object) {
+exports.string = exports.operator('toString', 1, function (object) {
     return '' + object;
 });
 
@@ -874,7 +874,7 @@ exports.escape = function (value, strictJson) {
             exports.repr(value)
         );
     return value.replace(
-        escapeExpression, 
+        escapeExpression,
         function (match) {
             if (escapePatterns[match])
                 return escapePatterns[match];
@@ -900,6 +900,17 @@ exports.escape = function (value, strictJson) {
 */
 exports.enquote = function (value, strictJson) {
     return '"' + exports.escape(value, strictJson) + '"';
+};
+
+/**
+ * remove adjacent characters
+ * todo: i'm not sure if this works correctly without the second argument
+ */
+exports.squeeze = function (s) {
+    var set = arguments.length > 0 ? "["+Array.prototype.join.call(arguments.slice(1), '')+"]" : ".|\\n",
+        regex = new RegExp("("+set+")\\1+", "g");
+
+    return s.replace(regex, "$1");
 };
 
 /*** expand
@@ -941,12 +952,12 @@ exports.expand = function (str, tabLength) {
 
 var trimBeginExpression = /^\s\s*/g;
 exports.trimBegin = function (value) {
-    return String(value).replace(trimBeginExpression, "");  
+    return String(value).replace(trimBeginExpression, "");
 };
 
 var trimEndExpression = /\s\s*$/g;
 exports.trimEnd = function (value) {
-    return String(value).replace(trimEndExpression, "");    
+    return String(value).replace(trimEndExpression, "");
 };
 
 exports.trim = function (value) {

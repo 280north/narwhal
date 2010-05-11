@@ -29,6 +29,22 @@ exports.testPadEnd = function () {
 };
 */
 
+exports.testSqueeze = function () {
+    assert.isEqual("http://imperium.gov/",
+                   util.squeeze("http://imperium.gov/"));
+    assert.isEqual("http:/imperium.gov/",
+                   util.squeeze("http://imperium.gov/", "/"));
+    assert.isEqual("htp://imperium.gov/",
+                   util.squeeze("http://imperium.gov/", "t"));
+    assert.isEqual("",
+                   util.squeeze(""));
+    assert.isEqual(" ",
+                   util.squeeze(" ", " "));
+    assert.isEqual("o",
+                   util.squeeze("ooo", "o"));
+};
+
+
 if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
 
