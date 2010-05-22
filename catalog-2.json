@@ -461,6 +461,12 @@
             "jars": [
                 "jars/simple-4.1.10.jar"
             ],
+            "lean": {
+                "include": [
+                    "lib/**/*",
+                    "package.json"
+                ]
+            },
             "version": [
                 "0",
                 "2",
@@ -964,7 +970,8 @@
                 "cycle",
                 "nonblank",
                 "uncomment",
-                "dog"
+                "dog",
+                "samp"
             ],
             "author": {
                 "name": "Kris Kowal",
@@ -1539,7 +1546,8 @@
             "email": "nathan.stott@whiteboard-it.com",
             "dependencies": [
                 "jack",
-                "ejs"
+                "ejs",
+                "observable"
             ],
             "lib": "lib",
             "descriptorUrl": "http://github.com/nrstott/bogart/raw/master/package.json",
@@ -1751,18 +1759,40 @@
         "silk": {
             "name": "silk",
             "description": "A comprehensive set of 16x16px icons.",
-            "license": "CC-BY-2.5 (http://creativecommons.org/licenses/by/2.5/)",
-            "url": "http://www.famfamfam.com/lab/icons/silk/",
+            "version": [
+                "1",
+                "3"
+            ],
+            "licenses": [
+                {
+                    "type": "CC-BY-2.5",
+                    "url": "http://creativecommons.org/licenses/by/2.5/"
+                },
+                {
+                    "type": "CC-BY-3.0",
+                    "url": "http://creativecommons.org/licenses/by/3.0/"
+                }
+            ],
+            "homepage": "http://www.famfamfam.com/lab/icons/silk/",
             "keywords": [
                 "media",
                 "icons",
                 "silk",
                 "famfamfam"
             ],
-            "author": {
-                "name": "Mark James",
-                "email": "mjames@gmail.com"
-            },
+            "contributors": [
+                {
+                    "name": "Mark James",
+                    "email": "mjames@gmail.com"
+                }
+            ],
+            "maintainers": [
+                {
+                    "name": "Kris Kowal",
+                    "email": "kris@cixar.com",
+                    "web": "http://askawizard.blogspot.com"
+                }
+            ],
             "descriptorUrl": "http://github.com/kriskowal/silk/raw/master/package.json",
             "packageUrl": "http://github.com/kriskowal/silk/zipball/master",
             "packageArchive": "zip",
@@ -1774,14 +1804,7 @@
                 "url": "http://github.com/kriskowal/silk/zipball/master",
                 "archive": "zip"
             },
-            "contributors": [
-                {
-                    "name": "Mark James",
-                    "email": "mjames@gmail.com"
-                }
-            ],
-            "dependencies": [],
-            "version": []
+            "dependencies": []
         },
         "objective-j": {
             "name": "objective-j",
@@ -1826,12 +1849,12 @@
                     "url": "http://contributors.cappuccino.org/"
                 }
             ],
-            "cappuccino-revision": "e7199780799d27389752a038fc55c3211e740ead",
-            "cappuccino-timestamp": 1270590371528,
+            "cappuccino-revision": "b2fdc89e1d25aba355fbcbd6efab7c6c59a03f19",
+            "cappuccino-timestamp": 1270877123439,
             "version": [
                 "0",
                 "8",
-                "0"
+                "1"
             ],
             "descriptorUrl": "http://github.com/280north/objective-j-package/raw/master/package.json",
             "packageUrl": "http://cappuccino.org/packages/objective-j",
@@ -1890,12 +1913,12 @@
                     "url": "http://contributors.cappuccino.org/"
                 }
             ],
-            "cappuccino-revision": "e7199780799d27389752a038fc55c3211e740ead",
-            "cappuccino-timestamp": 1270590371812,
+            "cappuccino-revision": "b2fdc89e1d25aba355fbcbd6efab7c6c59a03f19",
+            "cappuccino-timestamp": 1270877123979,
             "version": [
                 "0",
                 "8",
-                "0"
+                "1"
             ],
             "descriptorUrl": "http://github.com/280north/cappuccino-package/raw/master/package.json",
             "packageUrl": "http://cappuccino.org/packages/cappuccino",
@@ -2155,6 +2178,10 @@
                 "schema",
                 "query"
             ],
+            "engines": {
+                "node": ">=0.1.30",
+                "rhino": true
+            },
             "githubName": "commonjs-utils",
             "type": "zip",
             "location": "http://github.com/kriszyp/commonjs-utils/zipball/master",
@@ -2654,16 +2681,17 @@
             "description": "Haml ported to server-side Javascript. This is a traditional server-side templating language.",
             "keywords": [
                 "haml",
-                "template",
-                "nodejs"
+                "template"
             ],
+            "main": "./lib/haml",
             "author": {
-                "name": "Tim Caswell"
+                "name": "Tim Caswell",
+                "email": "tim@creationix.com"
             },
             "version": [
                 "0",
                 "2",
-                "2"
+                "5"
             ],
             "descriptorUrl": "http://github.com/creationix/haml-js/raw/master/package.json",
             "packageUrl": "http://github.com/creationix/haml-js/zipball/master",
@@ -2678,7 +2706,8 @@
             },
             "contributors": [
                 {
-                    "name": "Tim Caswell"
+                    "name": "Tim Caswell",
+                    "email": "tim@creationix.com"
                 }
             ],
             "dependencies": []
@@ -2938,6 +2967,40 @@
                 }
             ],
             "dependencies": []
+        },
+        "jison": {
+            "name": "jison",
+            "author": {
+                "name": "Zach Carter"
+            },
+            "email": "zach@carter.name",
+            "keywords": [
+                "jison",
+                "parser",
+                "lexer",
+                "compiler"
+            ],
+            "githubName": "jison",
+            "type": "zip",
+            "location": "http://github.com/zaach/jison/zipball/master",
+            "descriptorUrl": "http://github.com/zaach/jison/raw/master/package.json",
+            "packageUrl": "http://github.com/zaach/jison/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "zaach",
+                "packageName": "jison",
+                "descriptorUrl": "http://github.com/zaach/jison/raw/master/package.json",
+                "url": "http://github.com/zaach/jison/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Zach Carter"
+                }
+            ],
+            "dependencies": [],
+            "version": []
         }
     }
 }

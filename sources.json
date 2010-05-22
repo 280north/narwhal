@@ -343,6 +343,10 @@
             "type": "github",
             "user": "tlrobinson",
             "name": "zipjs"
+        },
+        "jison": {
+            "type": "github",
+            "user": "zaach"
         }
     }
 }
