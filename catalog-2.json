@@ -3001,6 +3001,98 @@
             ],
             "dependencies": [],
             "version": []
+        },
+        "jslint": {
+            "name": "jslint",
+            "description": "CommonJS based command-line front-end for JSLint with support for Unix pipes and configurable through command line options.",
+            "version": [
+                "0",
+                "2",
+                "1"
+            ],
+            "licenses": [
+                {
+                    "type": "new BSD",
+                    "url": "http://www.bramstein.com/licenses/BSD.txt"
+                }
+            ],
+            "maintainers": [
+                {
+                    "name": "Bram Stein",
+                    "web": "http://www.bramstein.com/",
+                    "email": "b.l.stein@gmail.com"
+                }
+            ],
+            "repositories": [
+                {
+                    "type": "git",
+                    "url": "http://github.com/bramstein/jslint"
+                }
+            ],
+            "dependencies": [
+                "jslint-core"
+            ],
+            "directories": {
+                "lib": "lib",
+                "bin": "bin"
+            },
+            "descriptorUrl": "http://github.com/bramstein/jslint/raw/master/package.json",
+            "packageUrl": "http://github.com/bramstein/jslint/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "bramstein",
+                "packageName": "jslint",
+                "descriptorUrl": "http://github.com/bramstein/jslint/raw/master/package.json",
+                "url": "http://github.com/bramstein/jslint/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": []
+        },
+        "jslint-core": {
+            "name": "jslint-core",
+            "maintainers": [
+                {
+                    "name": "Douglas Crockford",
+                    "web": "http://www.crockford.com/"
+                },
+                {
+                    "name": "Bram Stein",
+                    "web": "http://www.bramstein.com/",
+                    "email": "b.l.stein@gmail.com"
+                }
+            ],
+            "licenses": [
+                {
+                    "type": "MIT with \"Good not Evil\" clause.",
+                    "url": "http://www.jslint.com/fulljslint.js"
+                }
+            ],
+            "homepage": "http://jslint.com/",
+            "description": "The JavaScript Code Quality Tool",
+            "keywords": [
+                "JavaScript",
+                "lint",
+                "jslint",
+                "jslint-core",
+                "fulljslint"
+            ],
+            "version": [
+                "2010-04-06"
+            ],
+            "descriptorUrl": "http://github.com/bramstein/jslint-core/raw/master/package.json",
+            "packageUrl": "http://github.com/bramstein/jslint-core/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "bramstein",
+                "packageName": "jslint-core",
+                "descriptorUrl": "http://github.com/bramstein/jslint-core/raw/master/package.json",
+                "url": "http://github.com/bramstein/jslint-core/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [],
+            "dependencies": []
         }
     }
 }

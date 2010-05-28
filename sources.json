@@ -347,6 +347,14 @@
         "jison": {
             "type": "github",
             "user": "zaach"
+        },
+        "jslint": {
+            "type": "github",
+            "user": "bramstein"
+        },
+        "jslint-core": {
+            "type": "github",
+            "user": "bramstein"
         }
     }
 }
