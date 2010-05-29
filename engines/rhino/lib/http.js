@@ -35,7 +35,7 @@ exports.open = function(url, mode, options) {
                 this.status = Number(connection.getResponseCode());
                 this.statusText = String(connection.getResponseMessage() || "");
                 for (var i = 0; ; i++) {
-                    var key = connection.getHeaderFieldKey(i), value = connection.getHeaderField(i)
+                    var key = connection.getHeaderFieldKey(i), value = connection.getHeaderField(i);
                     if (! key && ! value)
                         break;
                     if (key)
@@ -61,7 +61,7 @@ exports.open = function(url, mode, options) {
         },
         copy : IO.prototype.copy
     }
-    return request
+    return request;
 };
 
 exports.read = function(url) {
