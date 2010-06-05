@@ -2827,6 +2827,36 @@
             },
             "version": []
         },
+        "wu.js": {
+            "name": "wu.js",
+            "author": {
+                "name": "Nick Fitzgerald",
+                "url": "http://fitzgeraldnick.com",
+                "email": "fitzgen@gmail.com"
+            },
+            "description": "A lazy, functional Javascript library that ain't nuthin' ta f*ck wit.",
+            "dependencies": [],
+            "contributors": [
+                {
+                    "name": "Nick Fitzgerald",
+                    "url": "http://fitzgeraldnick.com",
+                    "email": "fitzgen@gmail.com"
+                }
+            ],
+            "keywords": [],
+            "descriptorUrl": "http://github.com/fitzgen/wu.js/raw/master/package.json",
+            "packageUrl": "http://github.com/fitzgen/wu.js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "fitzgen",
+                "packageName": "wu.js",
+                "descriptorUrl": "http://github.com/fitzgen/wu.js/raw/master/package.json",
+                "url": "http://github.com/fitzgen//zipball/master",
+                "archive": "zip"
+            },
+            "version": []
+        },
         "zipjs": {
             "name": "zipjs",
             "author": {

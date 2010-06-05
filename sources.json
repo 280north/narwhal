@@ -330,6 +330,10 @@
             "user": "tlrobinson",
             "name": "commonjs-sqlite-jdbc"
         },
+        "wu.js": {
+            "type": "github",
+            "user": "fitzgen"
+        }
         "zipjs": {
             "type": "github",
             "user": "tlrobinson"
