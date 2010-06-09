@@ -93,10 +93,6 @@
             "user": "kriskowal",
             "descriptor": {}
         },
-        "template": {
-            "type": "github",
-            "user": "gmosx"
-        },
         "markdown": {
             "type": "github",
             "user": "gmosx"
@@ -338,6 +334,11 @@
             "type": "github",
             "user": "tlrobinson",
             "name": "commonjs-sqlite-jdbc"
+        },
+        "wu": {
+            "type": "github",
+            "user": "fitzgen",
+            "name": "wu.js"
         },
         "zip": {
             "type": "github",

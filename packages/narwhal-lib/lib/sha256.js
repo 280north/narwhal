@@ -1,4 +1,7 @@
+
+// Copyright 2006-2010 webtoolkit.info
 // http://www.webtoolkit.info/
+
 // Secure Hash Algorithm (SHA256)
 // Ported to Chiron and Narwhal by Kris Kowal
 

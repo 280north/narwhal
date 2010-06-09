@@ -1,5 +1,7 @@
 
-// from http://www.webtoolkit.info/ Javascript crc32
+// Copyright 2006-2010 webtoolkit.info
+// http://www.webtoolkit.info/
+
 // ported by:
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 // with contributions:

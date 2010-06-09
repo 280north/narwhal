@@ -498,7 +498,8 @@
             },
             "email": "george.moschovitis@gmail.com",
             "dependencies": [
-                "jack"
+                "narwhal-lib",
+                "jack-lib"
             ],
             "contributors": [
                 {
@@ -510,7 +511,7 @@
                 }
             ],
             "lib": "lib",
-            "main": "examples/simple/jackconfig",
+            "main": "examples/config.js",
             "lean": {
                 "include": [
                     "lib/**/*",
@@ -883,38 +884,6 @@
             },
             "contributors": [],
             "dependencies": [],
-            "version": []
-        },
-        "template": {
-            "name": "template",
-            "description": "A simple templating engine",
-            "keywords": [
-                "template",
-                "text",
-                "json"
-            ],
-            "author": {
-                "name": "George Moschovitis"
-            },
-            "email": "george.moschovitis@gmail.com",
-            "dependencies": [],
-            "lib": "lib",
-            "descriptorUrl": "http://github.com/gmosx/template/raw/master/package.json",
-            "packageUrl": "http://github.com/gmosx/template/zipball/master",
-            "packageArchive": "zip",
-            "source": {
-                "type": "github",
-                "user": "gmosx",
-                "packageName": "template",
-                "descriptorUrl": "http://github.com/gmosx/template/raw/master/package.json",
-                "url": "http://github.com/gmosx/template/zipball/master",
-                "archive": "zip"
-            },
-            "contributors": [
-                {
-                    "name": "George Moschovitis"
-                }
-            ],
             "version": []
         },
         "markdown": {
@@ -2932,6 +2901,58 @@
                 "archive": "zip"
             },
             "version": []
+        },
+        "wu": {
+            "name": "wu",
+            "description": "A lazy, functional Javascript library that ain't nuthin' ta f*ck wit.",
+            "author": {
+                "name": "Nick Fitzgerald",
+                "url": "http://fitzgeraldnick.com",
+                "email": "fitzgen@gmail.com"
+            },
+            "bugs": "http://github.com/fitzgen/wu.js/issues",
+            "licenses": [
+                {
+                    "type": "MIT",
+                    "url": "http://www.opensource.org/licenses/mit-license.php "
+                }
+            ],
+            "repositories": [
+                {
+                    "type": "git",
+                    "url": "git://github.com/fitzgen/wu.js.git"
+                }
+            ],
+            "url": "http://fitzgen.github.com/wu.js",
+            "version": [
+                "0",
+                "1",
+                "3"
+            ],
+            "directories": {
+                "lib": "./lib"
+            },
+            "main": "./lib/wu",
+            "descriptorUrl": "http://github.com/fitzgen/wu.js/raw/master/package.json",
+            "packageUrl": "http://github.com/fitzgen/wu.js/zipball/master",
+            "packageArchive": "zip",
+            "source": {
+                "type": "github",
+                "user": "fitzgen",
+                "name": "wu.js",
+                "packageName": "wu",
+                "descriptorUrl": "http://github.com/fitzgen/wu.js/raw/master/package.json",
+                "url": "http://github.com/fitzgen/wu.js/zipball/master",
+                "archive": "zip"
+            },
+            "contributors": [
+                {
+                    "name": "Nick Fitzgerald",
+                    "url": "http://fitzgeraldnick.com",
+                    "email": "fitzgen@gmail.com"
+                }
+            ],
+            "dependencies": []
         },
         "zip": {
             "name": "zip",
