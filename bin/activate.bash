@@ -45,6 +45,12 @@ if [ -f "$PACKAGE_HOME"/narwhal.conf ]; then
 fi
 
 if [ "$NARWHAL" ]; then
-    export PATH="$("$NARWHAL" --package "$PACKAGE_HOME" --path :)"
+    # try to get the PATH for Narwhal packages. Print a warning if it fails.
+    PATH_NEW="$("$NARWHAL" --package "$PACKAGE_HOME" --path :)"
+    if [ "$?" -ne 0 ]; then
+        echo "Warning: Unable to setup PATH for Narwhal." 1>&2
+    else
+        export PATH="$PATH_NEW"
+    fi
 fi
 
