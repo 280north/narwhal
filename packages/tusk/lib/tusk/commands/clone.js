@@ -68,7 +68,7 @@ exports.clone = function (options, names) {
         }).join(' ') + '\0)');
         if (os.system(command))
             throw "'" + command.join(" ") + "' failed";
-        require("./install").finishInstall(targetPath);
+        require("./install").finish(targetPath);
     });
 };
 
