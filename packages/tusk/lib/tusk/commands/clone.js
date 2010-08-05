@@ -21,6 +21,9 @@ parser.option('-u', '--user', 'user')
     .help('overrides the user name from which to clone the package')
     .set();
 
+parser.option('-s', '--ssh', 'ssh')
+    .help('clone using the git@github.com style url.')
+    .set(true);
 
 parser.action(function (options) {
     exports.clone.call(this, options, options.args);
@@ -49,7 +52,7 @@ exports.clone = function (options, names) {
         var command = [
             'git',
             'clone',
-            owner ?
+            (owner || options.ssh) ?
             (
                 'git@github.com:' + user +
                 '/' + githubName + '.git'
