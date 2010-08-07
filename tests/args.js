@@ -1,6 +1,6 @@
 
-var util = require('util');
-var args = require('args');
+var util = require('narwhal/util');
+var args = require('narwhal/args');
 var assert = require('test/assert');
 
 // subclass Parser to prevent it from assertively
@@ -26,6 +26,7 @@ exports.testOptions = require("./args/options");
 exports.testDomain = require("./args/domain");
 exports.testShifting = require("./args/shifting");
 exports.testChoices = require("./args/choices");
+exports.testActions = require("./args/actions");
 
 if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));

@@ -112,12 +112,12 @@ exports.Parser.prototype.act = function (args, options) {
 
 exports.Parser.prototype.action = function (action) {
     if (this._action) {
-        action = (function (previous) {
+        action = (function (previous, next) {
             return function () {
                 previous.apply(this, arguments);
-                action.apply(this, arguments);
+                next.apply(this, arguments);
             };
-        })(action);
+         })(this._action, action);
     }
     this._action = action;
     return this;
