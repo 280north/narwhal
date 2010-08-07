@@ -298,6 +298,7 @@ Contributors
 * [Kris Zyp](http://www.sitepen.com/blog/author/kzyp/)
 * [Nathan Stott](http://nathan.whiteboard-it.com/)
 * [Toby Ho](http://tobyho.com)
+* Abhinav Gupta
 
 
 License
