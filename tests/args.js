@@ -27,6 +27,7 @@ exports.testDomain = require("./args/domain");
 exports.testShifting = require("./args/shifting");
 exports.testChoices = require("./args/choices");
 exports.testActions = require("./args/actions");
+exports.testCommands = require("./args/commands");
 
 if (require.main == module.id)
     require("os").exit(require("test/runner").run(exports));
