@@ -53,11 +53,14 @@ exports.Parser.prototype.def = function (name, value) {
 
 exports.Parser.prototype.reset = function (options) {
     for (var name in this._def) {
-        if (util.has(this._def, name))
+        if (util.has(this._def, name) && !util.has(options, name))
             options[name] = util.copy(this._def[name]);
     }
     this._options.forEach(function (option) {
-        options[option.getName()] = option._def;
+        if (!(option instanceof self.Option))
+            return;
+        if (!util.has(options, option.getName()))
+            options[option.getName()] = option._def;
     });
 };
 
@@ -379,16 +382,7 @@ exports.Parser.prototype.parse = function (args, options, noCommand, allowInterl
     };
 
     // initial values
-    for (var name in this._def) {
-        if (util.has(this._def, name) && !util.has(options, name))
-            options[name] = util.copy(this._def[name]);
-    }
-    this._options.forEach(function (option) {
-        if (!(option instanceof self.Option))
-            return;
-        if (!util.has(options, option.getName()))
-            options[option.getName()] = option._def;
-    });
+    this.reset(options);
 
     var interleavedArgs = [];
 
