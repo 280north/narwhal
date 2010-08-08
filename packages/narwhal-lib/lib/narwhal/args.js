@@ -100,6 +100,7 @@ exports.Parser.prototype.interleaved = function (value) {
     if (value === undefined)
         value = true;
     this._interleaved = value;
+    return this;
 };
 
 exports.Parser.prototype.act = function (args, options) {
@@ -517,8 +518,10 @@ exports.Argument.prototype.name = function (name) {
     return this;
 };
 
-exports.Argument.prototype.optional = function () {
-    this._optional = true;
+exports.Argument.prototype.optional = function (value) {
+    if (value === undefined)
+        value = true;
+    this._optional = value;
     return this;
 };
 
@@ -703,7 +706,7 @@ exports.Option.prototype.validate = function (validate) {
 };
 
 exports.Option.prototype.input = function () {
-    this.set().validate(function (value) {
+    return this.set().validate(function (value) {
         if (value == "-")
             return system.stdin;
         else
@@ -712,7 +715,7 @@ exports.Option.prototype.input = function () {
 };
 
 exports.Option.prototype.output = function () {
-    this.set().validate(function (value) {
+    return this.set().validate(function (value) {
         if (value == "-")
             return system.stdout;
         else
@@ -819,13 +822,17 @@ exports.Option.prototype.help = function (text) {
     return this;
 };
 
-exports.Option.prototype.halt = function () {
-    this._halt = true;
+exports.Option.prototype.halt = function (value) {
+    if (value == undefined)
+        value = true;
+    this._halt = value;
     return this;
 };
 
-exports.Option.prototype.hidden = function () {
-    this._hidden = true;
+exports.Option.prototype.hidden = function (value) {
+    if (value === undefined)
+        value = true;
+    this._hidden = value;
     return this;
 };
 
