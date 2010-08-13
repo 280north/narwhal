@@ -84,6 +84,7 @@ exports.Parser.prototype.def = function (name, value) {
  * @param {Object} options  parser state
  */
 exports.Parser.prototype.reset = function (options) {
+    var self = this;
     for (var name in this._def) {
         if (util.has(this._def, name) && !util.has(options, name))
             options[name] = util.copy(this._def[name]);
