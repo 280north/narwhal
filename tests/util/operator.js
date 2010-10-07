@@ -1,6 +1,6 @@
 
 var assert = require('test/assert');
-var util = require("util");
+var util = require("narwhal/util");
 
 exports.testNegative = function () {
     var foo = {"repr": 10};

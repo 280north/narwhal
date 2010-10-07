@@ -5,6 +5,6 @@ require("narwhal").deprecated(
 "used by the event-loop and event-loop-setup modules.");
 
 var EXPORTS = require("event-loop");
-var UTIL = require("util");
+var UTIL = require("narwhal/util");
 UTIL.update(exports, EXPORTS);
 

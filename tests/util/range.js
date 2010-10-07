@@ -1,6 +1,6 @@
 
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 exports.testRange1 = function () {
     assert.eq([0, 1, 2], util.range(3));

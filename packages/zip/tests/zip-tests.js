@@ -1,6 +1,6 @@
 var FILE = require("file");
 var ASSERT = require("test/assert");
-var UTIL = require("util");
+var UTIL = require("narwhal/util");
 
 var UNZIP = require("unzip");
 var INFLATE = require("inflate");

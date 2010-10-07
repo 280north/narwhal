@@ -1,5 +1,5 @@
 
-var args = require('args');
+var args = require("narwhal/args");
 var assert = require("test/assert");
 var test = require("../args");
 

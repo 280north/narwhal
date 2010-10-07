@@ -4,8 +4,8 @@
 var system = require("system");
 var fs = require("file");
 var json = require("json");
-var util = require("util");
-var args = require("args");
+var util = require("narwhal/util");
+var args = require("narwhal/args");
 var parser = exports.parser = new args.Parser();
 
 parser.help('initializes a Narwhal package/project directory');

@@ -192,7 +192,7 @@ var ByteString = exports.ByteString = function() {
         this._length    = arguments[2];
     }
     else {
-        var util = require("util");
+        var util = require("narwhal/util");
         throw new Error("Illegal arguments to ByteString constructor: " + util.repr(arguments));
     }
     

@@ -1,6 +1,6 @@
 
 var assert = require("assert");
-var UTIL = require("util");
+var UTIL = require("narwhal/util");
 var Q = require("events");
 
 exports["test NodeJS API"] = function () {

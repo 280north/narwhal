@@ -1,5 +1,5 @@
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 exports["test completes key"] = function() {
     assert.eq("world", util.complete({}, { hello: "world" }).hello);

@@ -2,7 +2,7 @@
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
 var UPDATE = require("../update");
-var ARGS = require("args");
+var ARGS = require("narwhal/args");
 var FS = require("file");
 
 var parser = exports.parser = new ARGS.Parser();

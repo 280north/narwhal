@@ -2,10 +2,10 @@
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
 var tusk = require("../../tusk");
-var util = require("util");
+var util = require("narwhal/util");
 var http = require("http-client");
-var packages = require("packages");
-var stream = require("term").stream;
+var packages = require("narwhal/packages");
+var stream = require("narwhal/term").stream;
 
 var Parser = exports.Parser = function () {
 };

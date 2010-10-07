@@ -3,8 +3,8 @@
 
 var tusk = require("../../tusk");
 var os = require("os");
-var util = require("util");
-var args = require("args");
+var util = require("narwhal/util");
+var args = require("narwhal/args");
 
 var parser = exports.parser = new args.Parser();
 

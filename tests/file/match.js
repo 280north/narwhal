@@ -1,7 +1,7 @@
 
 var assert = require("test/assert");
 var file = require("file");
-var util = require("util");
+var util = require("narwhal/util");
 
 util.forEachApply([
     ["", "", true],

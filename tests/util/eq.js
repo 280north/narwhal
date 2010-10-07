@@ -1,6 +1,6 @@
 
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 exports.testUndefined = function () {
     assert.isTrue(util.eq(undefined, undefined));

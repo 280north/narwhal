@@ -1,7 +1,7 @@
 var OS = require("os");
 var ASSERT = require("assert");
 var UTIL = require("UTIL");
-var stream = require("term").stream;
+var stream = require("narwhal/term").stream;
 
 // config
 var random = false;

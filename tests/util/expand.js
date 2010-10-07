@@ -1,6 +1,6 @@
 
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 var expandOracle = function (line, tabLength, initial) {
     if (!tabLength) tabLength = 4;

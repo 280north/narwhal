@@ -4,15 +4,15 @@
 
 var system = require("system");
 var fs = require("file");
-var packages = require("packages");
-var util = require("util");
+var packages = require("narwhal/packages");
+var util = require("narwhal/util");
 var json = require("json");
 var http = require("http-client");
 
 exports.catalogVersion = 2;
 exports.minCatalogVersion = 2;
 
-var args = require("args");
+var args = require("narwhal/args");
 var parser = exports.parser = new args.Parser();
 
 parser.help('A Narwhal project package manager.');

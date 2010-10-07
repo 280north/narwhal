@@ -1,6 +1,6 @@
 
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 exports.testArray = function () {
     assert.isTrue(util.isArrayLike([]));

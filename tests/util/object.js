@@ -1,6 +1,6 @@
 
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 exports.testObject = function () {
     assert.eq({"a": 10}, util.object({"a": 10}));

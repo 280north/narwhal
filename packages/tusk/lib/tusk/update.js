@@ -3,12 +3,12 @@
 
 var FS = require("file");
 var TUSK = require("../tusk");
-var UTIL = require("util");
+var UTIL = require("narwhal/util");
 var URI = require("uri");
 var JSON = require("json");
 var ASSERT = require("assert");
-var PACKAGES = require("packages");
-var stream = require("term").stream;
+var PACKAGES = require("narwhal/packages");
+var stream = require("narwhal/term").stream;
 
 exports.defaultSources = {"includes": [
     "http://github.com/280north/narwhal/raw/master/catalog-2.json"

@@ -1,5 +1,5 @@
 
-var util = require('util');
+var util = require("narwhal/util");
 var assert = require('test/assert');
 var fs = require('file');
 

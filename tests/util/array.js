@@ -1,6 +1,6 @@
 
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 exports.testArray = function () {
     assert.eq([1,2,3], util.array([1,2,3]));

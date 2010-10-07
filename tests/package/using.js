@@ -1,8 +1,8 @@
 
 var ASSERT = require("assert");
 var FILE = require("file");
-var UTIL = require("util");
-var SANDBOX = require("sandbox").Sandbox;
+var UTIL = require("narwhal/util");
+var SANDBOX = require("narwhal/sandbox").Sandbox;
 
 
 exports.testAll = function() {
@@ -21,7 +21,7 @@ exports.testAll = function() {
     }    
     
     require("global");
-    var packages = require("packages");
+    var packages = require("narwhal/packages");
     packages.load([
         FILE.Path(module.path).dirname().join("_files", "test-sea").valueOf(),
         system.prefix

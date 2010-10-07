@@ -4,13 +4,13 @@
 // -- veged Sergey Berezhnoy TODO
 
 var tusk = require("../../tusk");
-var util = require("util");
-var args = require("args");
+var util = require("narwhal/util");
+var args = require("narwhal/args");
 var fs = require("file");
 var json = require("json");
 var http = require("http-client");
 var zip = require("zip");
-var packages = require("packages");
+var packages = require("narwhal/packages");
 var URI = require("uri");
 var UUID = require("uuid");
 

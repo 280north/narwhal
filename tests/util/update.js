@@ -1,5 +1,5 @@
 var assert = require("test/assert");
-var util = require("util");
+var util = require("narwhal/util");
 
 exports["test returns updated object"] = function() {
     var obj = {};

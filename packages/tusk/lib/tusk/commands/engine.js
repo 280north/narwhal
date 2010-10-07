@@ -4,9 +4,9 @@
 var system = require('system');
 var os = require('os');
 var fs = require('file');
-var util = require('util');
+var util = require("narwhal/util");
 var tusk = require('../../tusk');
-var args = require('args');
+var args = require("narwhal/args");
 
 var parser = exports.parser = new args.Parser();
 
@@ -15,7 +15,7 @@ parser.help('selects a engine for the current "sea"');
 parser.arg('engine').optional();
 
 parser.action(function (options) {
-    var packages = require("packages");
+    var packages = require("narwhal/packages");
     
     var self = this;
     var directory = tusk.getDirectory();

@@ -3,7 +3,7 @@
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 
 var IO = require("io").IO,
-    UTIL = require("util");
+    UTIL = require("narwhal/util");
 
 exports.IO = function (url) {
     return new IO(

@@ -1,6 +1,6 @@
 var assert = require("test/assert");
 var fs = require("file");
-var util = require("util");
+var util = require("narwhal/util");
 
 var tests = [
     [true,  'cat',          'cat'],

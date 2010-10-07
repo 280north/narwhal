@@ -1,7 +1,7 @@
 #!/usr/bin/env narwhal
 
 var assert = require('test/assert');
-var sandbox = require('sandbox').sandbox;
+var sandbox = require("narwhal/sandbox").sandbox;
 var fs = require('file');
 
 [

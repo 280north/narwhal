@@ -63,12 +63,12 @@ function createWorker(scriptName, setup, workerName){
     var workerQueue, 
         workerGlobal = createEnvironment();
     
-    var sandbox = workerGlobal.require("sandbox").Sandbox({
+    var sandbox = workerGlobal.require("narwhal/sandbox").Sandbox({
             system: workerGlobal.system,
             loader: workerGlobal.require.loader,
             modules: {
                 "event-queue": workerGlobal.require("event-queue"),
-                packages: workerGlobal.require("packages")
+                packages: workerGlobal.require("narwhal/packages")
             },
             debug: workerGlobal.require.loader.debug
         });
