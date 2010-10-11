@@ -907,7 +907,7 @@ exports.enquote = function (value, strictJson) {
  * todo: i'm not sure if this works correctly without the second argument
  */
 exports.squeeze = function (s) {
-    var set = arguments.length > 0 ? "["+Array.prototype.join.call(arguments.slice(1), '')+"]" : ".|\\n",
+    var set = arguments.length > 0 ? "["+Array.prototype.slice.call(arguments, 1).join('')+"]" : ".|\\n",
         regex = new RegExp("("+set+")\\1+", "g");
 
     return s.replace(regex, "$1");
