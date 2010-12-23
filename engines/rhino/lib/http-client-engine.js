@@ -7,10 +7,10 @@ var IO = require("io").IO;
 exports.open = function(url, mode, options) {
     var connection, output, input;
 
-    function startRequest() {
+    function initConnection() {
         connection = new java.net.URL(url).openConnection();
         connection.setDoInput(true);
-        connection.setDoOutput(true);
+        connection.setDoOutput(false);
         connection.setRequestMethod(options.method);
         connection.setInstanceFollowRedirects(!!options.followRedirects);
 
@@ -20,20 +20,29 @@ exports.open = function(url, mode, options) {
             }
         }
 
-        connection.connect();
-
-        output = new IO(null, connection.getOutputStream());
+        output = null;
         input = null;
     }
 
-    startRequest();
+    function startRequest(writeable) {
+        if (!connection.connected)
+        {
+            connection.setDoOutput(writeable);
+            connection.connect();
+            if (writeable)
+                output = new IO(null, connection.getOutputStream());
+        }
+    }
+
+    initConnection();
 
     var request = {
         status : null,
         headers : {},
         read : function() {
             if (!input) {
-                output.close();
+                startRequest(false); // open a readable connection if not already open
+                output && output.close();
                 input = new IO(connection.getInputStream(), null);
                 this.status = Number(connection.getResponseCode());
                 this.statusText = String(connection.getResponseMessage() || "");
@@ -55,17 +64,19 @@ exports.open = function(url, mode, options) {
                 // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4620571
                 if (options.followRedirects && this.status >= 300 && this.status < 400) {
                     // TODO: should we change the method to GET if it was not a GET like curl does?
-                    startRequest();
+                    initConnection();
                     return this.read.apply(this, arguments);
                 }
             }
             return input.read.apply(input, arguments);
         },
         write : function() {
+            startRequest(true); // open a writeable connection if not already open
             output.write.apply(output, arguments);
             return this;
         },
         flush : function() {
+            startRequest(true); // open a writeable connection if not already open
             output.flush.apply(output, arguments);
             return this;
         },
