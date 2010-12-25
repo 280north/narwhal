@@ -25,12 +25,10 @@ exports.open = function(url, mode, options) {
     }
 
     function startRequest(writeable) {
-        if (!connection.connected)
-        {
-            connection.setDoOutput(writeable);
-            connection.connect();
-            if (writeable)
-                output = new IO(null, connection.getOutputStream());
+        connection.setDoOutput(writeable);
+        connection.connect();
+        if (!output && writeable) {
+            output = new IO(null, connection.getOutputStream());
         }
     }
 
