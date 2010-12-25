@@ -1,6 +1,8 @@
 
 // -- kriskowal Kris Kowal Copyright (C) 2009-2010 MIT License
 // -- tlrobinson Tom Robinson
+// -- jukart Jürgen Kartnaller
+// -- paulbaumgart Paul Baumgart
 
 var IO = require("io").IO;
 
