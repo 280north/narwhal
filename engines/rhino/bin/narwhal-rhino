@@ -22,15 +22,6 @@ fi
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/jna.jar
 BOOTCLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar
 JAVA_OPTS=""
-isOpenJDK=`java -version 2>&1 | grep -i "OpenJDK" | wc -l`
-
-# See http://github.com/tlrobinson/narwhal\
-# /issuesearch?state=open&q=openjdk#issue/61/comment/289520
-# for further explanation
-#
-#if [ $isOpenJDK -gt 0 ]; then
-#    JAVA_OPTS="-Xbootclasspath:/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar"
-#fi
 
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
