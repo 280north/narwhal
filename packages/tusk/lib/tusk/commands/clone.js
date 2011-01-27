@@ -25,6 +25,10 @@ parser.option('-s', '--ssh', 'ssh')
     .help('clone using the git@github.com style url.')
     .set(true);
 
+parser.option('--http', 'http')
+    .help('close using http instead of the git protocol')
+    .set(true);
+
 parser.action(function (options) {
     exports.clone.call(this, options, options.args);
 });
@@ -58,7 +62,14 @@ exports.clone = function (options, names) {
                 '/' + githubName + '.git'
             ):
             (
-                'git://github.com/' +
+                (options.http ?
+                (
+                    'http'
+                ):
+                (
+                    'git'
+                )) +
+                '://github.com/' +
                 user + '/' + githubName + '.git'
             ),
             targetPath
