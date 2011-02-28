@@ -9,8 +9,19 @@ var IO = require("io").IO;
 exports.open = function(url, mode, options) {
     var connection, output, input;
 
+    function findProxy() {
+        selector = java.net.ProxySelector.getDefault();
+        proxies = selector.select(java.net.URI(url));
+
+        //This list is never empty -- at the very least, it contains
+        //java.net.Proxy.NO_PROXY.  See java.net.ProxySelector.select()
+        //and java.net.Proxy.
+        return proxies.get(0);
+    }
+
     function initConnection() {
-        connection = new java.net.URL(url).openConnection();
+        proxy = findProxy();
+        connection = new java.net.URL(url).openConnection(proxy);
         connection.setDoInput(true);
         connection.setDoOutput(false);
         connection.setRequestMethod(options.method);
