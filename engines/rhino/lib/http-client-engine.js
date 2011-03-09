@@ -9,14 +9,36 @@ var IO = require("io").IO;
 exports.open = function(url, mode, options) {
     var connection, output, input;
 
+    function setAuthenticator () {
+        var username = java.lang.System.getProperty("http.proxyUsername");
+        var password = java.lang.System.getProperty("http.proxyPassword");
+
+        if(username == null || password == null) {
+          return;
+        }
+
+	java.net.Authenticator.setDefault(
+          new Authenticator( 
+            { 'getPasswordAuthentication' : 
+               function() {
+	            return new PasswordAuthentication(username, 
+                                                      password.toCharArray())
+	       }
+  	    })
+        );
+
+    }
+
     function findProxy() {
+        setAuthenticator();
         selector = java.net.ProxySelector.getDefault();
         proxies = selector.select(java.net.URI(url));
+        print(url);
 
         //This list is never empty -- at the very least, it contains
         //java.net.Proxy.NO_PROXY.  See java.net.ProxySelector.select()
         //and java.net.Proxy.
-        return proxies.get(0);
+	return proxies.get(0);
     }
 
     function initConnection() {

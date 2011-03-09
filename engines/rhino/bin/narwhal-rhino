@@ -22,14 +22,30 @@ fi
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/jna.jar
 BOOTCLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar
 
-# Parse the http_proxy environment variable.
-# http://cache.myproxy.com:42/ => cache.myproxy.com
-http_proxy_host=`echo $http_proxy | sed 's/http:\/\/\(.*\):.*/\1/'`
+#Thanks, Glenn Jackman.
+#stackoverflow.com/questions/1199613/
+username=$(echo $http_proxy | ruby -ruri -e 'puts URI.parse(gets.chomp).user')
+password=$(echo $http_proxy | ruby -ruri -e 'puts URI.parse(gets.chomp).password')
+port=$(echo $http_proxy | ruby -ruri -e 'puts URI.parse(gets.chomp).port')
+host=$(echo $http_proxy | ruby -ruri -e 'puts URI.parse(gets.chomp).host')
 
-# http://cache.myproxy.com:42/ =>  42
-http_proxy_port=`echo $http_proxy | sed 's/http:\/\/.*:\(.*\)\//\1/'`
+if [ "$username" == "nil" ]; then
+  username=
+fi
+if [ $password == "nil" ]; then
+  password=
+fi
+if [ $host == "nil" ]; then
+  host=
+fi
+if [ $port == "nil" ]; then
+  port=
+fi
 
-JAVA_OPTS="-Dhttp.proxyHost=$http_proxy_host -Dhttp.proxyPort=$http_proxy_port"
+JAVA_OPTS="-Dhttp.proxyHost=$host -Dhttp.proxyPort=$port"
+JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyUser=$username -Dhttp.proxyPassword=$password"
+
+echo $JAVA_OPTS
 
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
