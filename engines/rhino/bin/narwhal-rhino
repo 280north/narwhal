@@ -45,8 +45,6 @@ fi
 JAVA_OPTS="-Dhttp.proxyHost=$host -Dhttp.proxyPort=$port"
 JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyUser=$username -Dhttp.proxyPassword=$password"
 
-echo $JAVA_OPTS
-
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
 fi
