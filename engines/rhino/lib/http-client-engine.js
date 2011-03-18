@@ -3,15 +3,42 @@
 // -- tlrobinson Tom Robinson
 // -- jukart Jürgen Kartnaller
 // -- paulbaumgart Paul Baumgart
+// -- danielphelps Daniel Phelps
 
-var IO = require("io").IO;
+var IO = require("io").IO,
+    URI =  require("uri");
+
+var http_proxy = java.lang.System.getProperty("narwhal.http_proxy");
+if (http_proxy) {
+    var proxySettings = URI.parse(http_proxy);
+    java.lang.System.setProperty("http.proxyHost", proxySettings.domain);
+    java.lang.System.setProperty("http.proxyPort", proxySettings.port);
+    java.lang.System.setProperty("http.proxyUsername", proxySettings.user);
+    java.lang.System.setProperty("http.proxyPassword", proxySettings.password);
+}
 
 exports.open = function(url, mode, options) {
     var connection, output, input;
 
-    function findProxy() {
-        selector = java.net.ProxySelector.getDefault();
-        proxies = selector.select(java.net.URI(url));
+    function setAuthenticator() {
+        var username = java.lang.System.getProperty("http.proxyUsername");
+        var password = java.lang.System.getProperty("http.proxyPassword");
+        var passwordAuthentication = function() {
+            return new PasswordAuthentication(username, password.toCharArray());
+        };
+
+        if (username && password) {
+            java.net.Authenticator.setDefault(
+                new Authenticator({
+                    "getPasswordAuthentication": passwordAuthentication
+                })
+            );
+        }
+    }
+
+    function getProxy() {
+        var selector = java.net.ProxySelector.getDefault();
+        var proxies = selector.select(java.net.URI(url));
 
         //This list is never empty -- at the very least, it contains
         //java.net.Proxy.NO_PROXY.  See java.net.ProxySelector.select()
@@ -20,8 +47,7 @@ exports.open = function(url, mode, options) {
     }
 
     function initConnection() {
-        proxy = findProxy();
-        connection = new java.net.URL(url).openConnection(proxy);
+        connection = new java.net.URL(url).openConnection(getProxy());
         connection.setDoInput(true);
         connection.setDoOutput(false);
         connection.setRequestMethod(options.method);

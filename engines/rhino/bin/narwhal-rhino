@@ -22,14 +22,7 @@ fi
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/jna.jar
 BOOTCLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar
 
-# Parse the http_proxy environment variable.
-# http://cache.myproxy.com:42/ => cache.myproxy.com
-http_proxy_host=`echo $http_proxy | sed 's/http:\/\/\(.*\):.*/\1/'`
-
-# http://cache.myproxy.com:42/ =>  42
-http_proxy_port=`echo $http_proxy | sed 's/http:\/\/.*:\(.*\)\//\1/'`
-
-JAVA_OPTS="-Dhttp.proxyHost=$http_proxy_host -Dhttp.proxyPort=$http_proxy_port"
+JAVA_OPTS="-Dnarwhal.http_proxy=$http_proxy"
 
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
