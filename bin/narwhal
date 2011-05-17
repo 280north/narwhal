@@ -26,6 +26,11 @@ if [ -f "narwhal.local.conf" ]; then
     source "narwhal.local.conf"
 fi
 
+# if JAVA_HOME is set, prepend JAVA_HOME/bin to PATH so correct JVM is used
+if [ -d "$JAVA_HOME" ]; then
+    export PATH=$JAVA_HOME/bin:$PATH
+fi
+
 if [ -n "$NARWHAL_DEBUG" ]; then
     export NARWHAL_DEBUG
 fi
