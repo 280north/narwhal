@@ -549,7 +549,7 @@ exports.updateUsingCatalog = function(options, usingCatalog, path, id, packageDa
             usingCatalog[id]["packages"][pair[0]] = exports.normalizePackageDescriptor(pair[1]);
         });
     }
-    if(UTIL.has(options, "includeBuildDependencies") &&
+    if(options && UTIL.has(options, "includeBuildDependencies") &&
        options.includeBuildDependencies &&
        UTIL.has(packageDatum, "build") &&
        UTIL.has(packageDatum.build, "using")) {
