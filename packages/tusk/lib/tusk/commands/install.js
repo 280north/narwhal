@@ -23,6 +23,10 @@ parser.args('package');
 parser.option('-f', '--force', 'force')
     .bool()
     .help('causes packages to be installed in the project packages directory regardless of whether they are installed elsewhere');
+
+parser.option('-r', '--resume', 'resume')
+    .bool()
+    .help('resumes installing using valid zip files already fetched');
 /*
 parser.option('-l', '--lean', 'lean')
     .bool()
@@ -174,8 +178,10 @@ exports.install = function (options, names) {
         if (options.simulate)
             return;
         var zipFile = zipsDirectory.join(name + '.zip')
-        if (options.resume && zipFile.isFile())
+        if (options.resume && zipFile.isFile()) {
+            print('Downloading skipped: file ' +  zipFile + ' already fetched and valid' );
             return;
+        }
         var targetPath = tusk.getDirectory().join('packages', name);
         http.copy(info.packageUrl, zipFile);
     });
