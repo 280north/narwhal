@@ -23,6 +23,10 @@ parser.args('package');
 parser.option('-f', '--force', 'force')
     .bool()
     .help('causes packages to be installed in the project packages directory regardless of whether they are installed elsewhere');
+
+parser.option('-r', '--resume', 'resume')
+    .bool()
+    .help('resumes installing using valid zip files already fetched');
 /*
 parser.option('-l', '--lean', 'lean')
     .bool()
@@ -174,8 +178,10 @@ exports.install = function (options, names) {
         if (options.simulate)
             return;
         var zipFile = zipsDirectory.join(name + '.zip')
-        if (options.resume && zipFile.isFile())
+        if (options.resume && zipFile.isFile()) {
+            print('Downloading skipped: file ' +  zipFile + ' already fetched and valid' );
             return;
+        }
         var targetPath = tusk.getDirectory().join('packages', name);
         http.copy(info.packageUrl, zipFile);
     });
@@ -230,6 +236,26 @@ exports.install = function (options, names) {
                     notes[name].files.push(path);
                     print(" + " + path);
                     path.write(entry.read('b'), 'b');
+
+                    // extract MSDOS date and time from 2 bytes fields
+                    // word's fields are: 
+                    //      0x  |0 1 2 3 4 5 6 7 8 9 A B C D E F|
+                    //     date |   date  | month |     year    |
+                    //     time |  second   |  minute |  hour   |
+                    var year,month,day,hour,minute,second;
+                    var file_date =  entry._header.last_mod_file_date;
+                    var file_time =  entry._header.last_mod_file_time;
+
+                    day    = ( (file_date >>  0) & 0x1F);
+                    month  = ( (file_date >>  5) & 0x0F) - 1   ; // Javascript months belongs to [0;11] rather than [1,12]
+                    year   = ( (file_date >>  9) & 0x7F) + 1980; // MSDOS date starts 1980-01-01-00:00:00
+                    second = ( (file_time >>  0) & 0x1F) * 2   ; // MSDOS time seconds fields marks 2 seconds units [0,29] 
+                    minute = ( (file_time >>  5) & 0x3F);
+                    hour   = ( (file_time >> 11) & 0x7F);
+
+                    var fileDateTime = new Date(year, month, day, hour, minute, second); 
+                    path.touch(fileDateTime);
+                    delete fileDateTime;
                 });
             }
 
