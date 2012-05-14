@@ -22,7 +22,7 @@ fi
 CLASSPATH=$NARWHAL_ENGINE_HOME/jars/jna.jar
 BOOTCLASSPATH=$NARWHAL_ENGINE_HOME/jars/js.jar
 
-JAVA_OPTS="-Dnarwhal.http_proxy=$http_proxy"
+JAVA_OPTS="-Dnarwhal.http_proxy=$http_proxy -Djava.awt.headless=true"
 
 if [ -n "$NARWHAL_CLASSPATH" ]; then
     CLASSPATH=$NARWHAL_CLASSPATH:$CLASSPATH
@@ -64,8 +64,8 @@ if [ $# -lt 1 ]; then
         RLWRAP=""
         CLASSPATH="$CLASSPATH:$NARWHAL_ENGINE_HOME/jars/jline.jar"
     fi
-    $RLWRAP java $JAVA_OPTS $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
+    exec $RLWRAP java $JAVA_OPTS $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -f "$BOOTSTRAP" -f -
 else
-    java $JAVA_OPTS $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -version "$NARWHAL_JS_VERSION" "$BOOTSTRAP" "$0" "$@"
+    exec java $JAVA_OPTS $NARWHAL_JAVA_ARGUMENTS -cp "$BOOTCLASSPATH:$CLASSPATH" "$JAVA_MAIN" -version "$NARWHAL_JS_VERSION" "$BOOTSTRAP" "$0" "$@"
 fi
 
