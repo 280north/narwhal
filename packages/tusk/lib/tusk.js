@@ -47,6 +47,8 @@ parser.command('reheat', module.id + '/commands/reheat');
 
 parser.command('clone', module.id + '/commands/clone');
 
+parser.command('clone_http', module.id + '/commands/clone_http');
+
 parser.command('catalog', module.id + '/commands/catalog');
 
 parser.command('orphans', null)
